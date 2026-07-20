@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全球风光储充装机数据简报 · 2026-07-09</title>
+<meta name="description" content="全球风光储充装机数据追踪，覆盖光伏、风电、储能、充电桩四大板块，分区域统计">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f4f7fe;
+  --bg-surface: #ffffff;
+  --text: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --border: #e2e8f0;
+  --border-hover: #cbd5e1;
+  --accent: #2563eb;
+  --accent-light: #dbeafe;
+  --accent-green: #1a6b3a;
+  --accent-blue: #1a4f7a;
+  --accent-red: #c0392b;
+  --shadow: rgba(15, 23, 42, 0.04);
+  --shadow-hover: rgba(15, 23, 42, 0.08);
+  --serif: 'Noto Serif SC', Georgia, serif;
+  --sans: 'Inter', 'Noto Sans SC', 'PingFang SC', sans-serif;
+  --mono: 'Roboto Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.65;
+}
+
+/* ── HEADER ── */
+.site-header {
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px;
+  position: relative;
+}
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.logo-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.logo-mark {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+.site-name {
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  color: var(--text);
+  line-height: 1.2;
+}
+.site-name-en {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 400;
+  color: var(--text-muted);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  display: block;
+  margin-top: 1px;
+}
+.site-nav {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+.site-nav a {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color .2s;
+  position: relative;
+  padding-bottom: 2px;
+}
+.site-nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #2563eb, #7c3aed);
+  transition: width .2s;
+  border-radius: 1px;
+}
+.site-nav a:hover {
+  color: var(--accent);
+}
+.site-nav a:hover::after {
+  width: 100%;
+}
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 50%, #f0f9ff 100%);
+  padding: 24px 24px 20px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 50%; right: 10%;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.06) 0%, transparent 70%);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 20%; left: 8%;
+  width: 160px; height: 160px;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-inner {
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+.hero-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.hero-title {
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  line-height: 1.2;
+  margin-bottom: 6px;
+  color: var(--text);
+  font-family: var(--serif);
+}
+.hero-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+  font-weight: 400;
+}
+.hero-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-weight: 300;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* ── MAIN ── */
+.main {
+  flex: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px 64px;
+  width: 100%;
+}
+
+.section-label {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+  margin-top: 48px;
+}
+
+/* ── STATS CARDS ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-bottom: 48px;
+}
+.stat-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 1px 3px var(--shadow);
+  transition: all .25s ease;
+}
+.stat-card:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -4px var(--shadow-hover);
+}
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--card-color, var(--text));
+}
+.stat-icon {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+.stat-tag {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--card-color, var(--text-muted));
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+.stat-value {
+  font-family: var(--serif);
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 4px;
+  color: var(--text);
+}
+.stat-unit {
+  font-size: 14px;
+  color: var(--text-muted);
+  font-weight: 300;
+}
+.stat-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 8px;
+  font-weight: 300;
+}
+
+.card-solar { --card-color: #d4a017; }
+.card-wind { --card-color: #1a6b3a; }
+.card-storage { --card-color: #1a4f7a; }
+.card-charging { --card-color: #c85000; }
+
+/* ── TABLES ── */
+.table-section {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 32px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px var(--shadow);
+}
+.table-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.table-title {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+}
+.table-subtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 300;
+  margin-top: 4px;
+}
+.table-unit {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  background: var(--bg);
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+.table-wrap {
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+th {
+  background: var(--bg);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+td {
+  font-variant-numeric: tabular-nums;
+}
+tr:hover { background: #f1f5f9; }
+.total-row { background: #f8fafc !important; }
+.total-row td {
+  font-weight: 700;
+  border-top: 2px solid var(--border);
+  border-bottom: 2px solid var(--text);
+}
+.text-right { text-align: right; }
+.text-center { text-align: center; }
+.text-muted { color: var(--text-muted); font-size: 11px; }
+
+/* ── REGION COLOR BARS ── */
+.region-bar {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+/* ── NOTES ── */
+.notes {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-top: 48px;
+  box-shadow: 0 1px 3px var(--shadow);
+}
+.notes h3 {
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 14px;
+  color: var(--text);
+}
+.notes ul {
+  list-style: none;
+  padding: 0;
+}
+.notes li {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  margin-bottom: 10px;
+  padding-left: 16px;
+  position: relative;
+}
+.notes li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ── FOOTER ── */
+.site-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-surface);
+}
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.footer-brand {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: .02em;
+}
+.footer-note {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+  .site-header, .hero, .main { padding-left: 20px; padding-right: 20px; }
+  .header-inner { justify-content: center; text-align: center; }
+  .site-nav { display: none; }
+  .hero { padding: 18px 20px 14px; }
+  .hero-title { font-size: 28px; }
+  .stats-grid { grid-template-columns: 1fr; }
+  th, td { padding: 8px 10px; font-size: 12px; }
+  .footer-inner { justify-content: center; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo-group">
+      <div class="logo-mark">L</div>
+      <div>
+        <div class="site-name">老丁实验室</div>
+        <div class="site-name-en">Laodinglab</div>
+      </div>
+    </div>
+    <nav class="site-nav">
+      <a href="/chinapowermarket">市场研究</a>
+      <a href="/powerstation_fin_model">投资模型</a>
+      <a href="/newenergynews">每日简报</a>
+      <a href="/globalnewenergydata">全球数据</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Global New Energy Data</div>
+    <h1 class="hero-title">全球风光储充装机数据简报</h1>
+    <p class="hero-subtitle">报告日期：2026-07-09</p>
+    <p class="hero-desc">Global Solar, Wind, Storage & Charging Infrastructure Tracker 数据截至 2026-07底为主，部分区域截至当月，版本 v1.0，月度更新更新。</p>
+  </div>
+</section>
+
+<main class="main">
+
+  <div class="section-label">全球概览 · Global Overview</div>
+  <div class="stats-grid">
+    <div class="stat-card card-solar">
+      <div class="stat-icon">☀️</div>
+      <div class="stat-tag">光伏累计装机</div>
+      <div class="stat-value">2375<span class="stat-unit"> GW</span></div>
+      <div class="stat-desc">2025年全球新增约510 GW，光伏占可再生能源新增75%</div>
+    </div>
+    <div class="stat-card card-wind">
+      <div class="stat-icon">💨</div>
+      <div class="stat-tag">风电累计装机</div>
+      <div class="stat-value">1299<span class="stat-unit"> GW</span></div>
+      <div class="stat-desc">2025年全球新增165 GW，同比增长40%，创历史新高</div>
+    </div>
+    <div class="stat-card card-storage">
+      <div class="stat-icon">🔋</div>
+      <div class="stat-tag">新型储能累计装机</div>
+      <div class="stat-value">380<span class="stat-unit"> GWh</span></div>
+      <div class="stat-desc">不含抽水蓄能；中国、美国、欧洲为全球三大市场</div>
+    </div>
+    <div class="stat-card card-charging">
+      <div class="stat-icon">🔌</div>
+      <div class="stat-tag">充电桩累计数量</div>
+      <div class="stat-value">1500<span class="stat-unit"> 万个</span></div>
+      <div class="stat-desc">中国占全球约80%，公共与私人桩合计</div>
+    </div>
+  </div>
+
+  <div class="section-label">光伏 · Solar PV</div>
+  <div class="table-section">
+    <div class="table-header">
+      <div>
+        <div class="table-title">☀️ 全球光伏累计装机分区域统计</div>
+        <div class="table-subtitle">累计光伏并网装机规模 &nbsp;|&nbsp; 分集中式、工商业分布式、户用分布式</div>
+      </div>
+      <div class="table-unit">单位：GW</div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>区域</th>
+            <th>合计</th>
+            <th>集中式</th>
+            <th>工商业分布式</th>
+            <th>户用分布式</th>
+            <th>占全球比例</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        <tr >
+            <td><strong>中国</strong></td>
+            <td>1200</td>
+            <td>660</td>
+            <td>280</td>
+            <td>260</td>
+            <td>50.5%</td>
+        </tr>
+        <tr >
+            <td><strong>欧洲</strong></td>
+            <td>380</td>
+            <td>180</td>
+            <td>120</td>
+            <td>80</td>
+            <td>16.0%</td>
+        </tr>
+        <tr >
+            <td><strong>美国</strong></td>
+            <td>240</td>
+            <td>140</td>
+            <td>55</td>
+            <td>45</td>
+            <td>10.1%</td>
+        </tr>
+        <tr >
+            <td><strong>加拿大</strong></td>
+            <td>8</td>
+            <td>5</td>
+            <td>2</td>
+            <td>1</td>
+            <td>0.34%</td>
+        </tr>
+        <tr >
+            <td><strong>拉美</strong></td>
+            <td>85</td>
+            <td>50</td>
+            <td>25</td>
+            <td>10</td>
+            <td>3.58%</td>
+        </tr>
+        <tr >
+            <td><strong>亚洲（中国外）</strong></td>
+            <td>320</td>
+            <td>180</td>
+            <td>80</td>
+            <td>60</td>
+            <td>13.5%</td>
+        </tr>
+        <tr >
+            <td><strong>非洲</strong></td>
+            <td>25</td>
+            <td>15</td>
+            <td>6</td>
+            <td>4</td>
+            <td>1.05%</td>
+        </tr>
+        <tr >
+            <td><strong>其他</strong></td>
+            <td>117</td>
+            <td>65</td>
+            <td>32</td>
+            <td>20</td>
+            <td>4.93%</td>
+        </tr>
+        <tr class="total-row">
+            <td><strong>合计</strong></td>
+            <td>2375</td>
+            <td>1295</td>
+            <td>600</td>
+            <td>480</td>
+            <td>100%</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-label">风电 · Wind Power</div>
+  <div class="table-section">
+    <div class="table-header">
+      <div>
+        <div class="table-title">💨 全球风电累计装机分区域统计</div>
+        <div class="table-subtitle">累计风电并网装机规模（含陆上风电与海上风电） &nbsp;|&nbsp; 分陆上风电与海上风电</div>
+      </div>
+      <div class="table-unit">单位：GW</div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>区域</th>
+            <th>合计</th>
+            <th>陆上风电</th>
+            <th>海上风电</th>
+            <th>占全球比例</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        <tr >
+            <td><strong>中国</strong></td>
+            <td>640</td>
+            <td>580</td>
+            <td>60</td>
+            <td>49.3%</td>
+        </tr>
+        <tr >
+            <td><strong>欧洲</strong></td>
+            <td>300</td>
+            <td>215</td>
+            <td>85</td>
+            <td>23.1%</td>
+        </tr>
+        <tr >
+            <td><strong>美国</strong></td>
+            <td>161</td>
+            <td>145</td>
+            <td>16</td>
+            <td>12.4%</td>
+        </tr>
+        <tr >
+            <td><strong>加拿大</strong></td>
+            <td>18</td>
+            <td>17</td>
+            <td>1</td>
+            <td>1.39%</td>
+        </tr>
+        <tr >
+            <td><strong>拉美</strong></td>
+            <td>55</td>
+            <td>52</td>
+            <td>3</td>
+            <td>4.23%</td>
+        </tr>
+        <tr >
+            <td><strong>亚洲（中国外）</strong></td>
+            <td>95</td>
+            <td>88</td>
+            <td>7</td>
+            <td>7.31%</td>
+        </tr>
+        <tr >
+            <td><strong>非洲</strong></td>
+            <td>12</td>
+            <td>12</td>
+            <td>0</td>
+            <td>0.92%</td>
+        </tr>
+        <tr >
+            <td><strong>其他</strong></td>
+            <td>18</td>
+            <td>17</td>
+            <td>1</td>
+            <td>1.39%</td>
+        </tr>
+        <tr class="total-row">
+            <td><strong>合计</strong></td>
+            <td>1299</td>
+            <td>1126</td>
+            <td>173</td>
+            <td>100%</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-label">储能 · Energy Storage</div>
+  <div class="table-section">
+    <div class="table-header">
+      <div>
+        <div class="table-title">🔋 全球储能累计装机分区域统计</div>
+        <div class="table-subtitle">累计储能装机规模（以能量口径计，含新型储能与抽水蓄能） &nbsp;|&nbsp; 新型储能按应用场景细分</div>
+      </div>
+      <div class="table-unit">单位：GWh</div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>区域</th>
+            <th>新型储能合计</th>
+            <th>电源侧</th>
+            <th>电网侧/独立储能</th>
+            <th>工商业</th>
+            <th>户用</th>
+            <th>抽水蓄能</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        <tr >
+            <td><strong>中国</strong></td>
+            <td>360</td>
+            <td>100</td>
+            <td>210</td>
+            <td>35</td>
+            <td>15</td>
+            <td>1200</td>
+        </tr>
+        <tr >
+            <td><strong>欧洲</strong></td>
+            <td>70</td>
+            <td>15</td>
+            <td>30</td>
+            <td>15</td>
+            <td>10</td>
+            <td>300</td>
+        </tr>
+        <tr >
+            <td><strong>美国</strong></td>
+            <td>165</td>
+            <td>35</td>
+            <td>85</td>
+            <td>30</td>
+            <td>15</td>
+            <td>250</td>
+        </tr>
+        <tr >
+            <td><strong>加拿大</strong></td>
+            <td>3</td>
+            <td>1</td>
+            <td>1.50</td>
+            <td>0.30</td>
+            <td>0.20</td>
+            <td>180</td>
+        </tr>
+        <tr >
+            <td><strong>拉美</strong></td>
+            <td>5</td>
+            <td>2</td>
+            <td>1.50</td>
+            <td>0.80</td>
+            <td>0.70</td>
+            <td>15</td>
+        </tr>
+        <tr >
+            <td><strong>亚洲（中国外）</strong></td>
+            <td>45</td>
+            <td>15</td>
+            <td>18</td>
+            <td>8</td>
+            <td>4</td>
+            <td>50</td>
+        </tr>
+        <tr >
+            <td><strong>非洲</strong></td>
+            <td>2</td>
+            <td>0.80</td>
+            <td>0.70</td>
+            <td>0.30</td>
+            <td>0.20</td>
+            <td>5</td>
+        </tr>
+        <tr >
+            <td><strong>其他</strong></td>
+            <td>8</td>
+            <td>2.20</td>
+            <td>3.30</td>
+            <td>1.50</td>
+            <td>1</td>
+            <td>10</td>
+        </tr>
+        <tr class="total-row">
+            <td><strong>合计</strong></td>
+            <td>658</td>
+            <td>171</td>
+            <td>350</td>
+            <td>90.9</td>
+            <td>46.1</td>
+            <td>2010</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-label">充电桩 · EV Charging</div>
+  <div class="table-section">
+    <div class="table-header">
+      <div>
+        <div class="table-title">🔌 全球充电桩累计数量分区域统计</div>
+        <div class="table-subtitle">累计充电桩数量（公共桩+私人桩） &nbsp;|&nbsp; 按功率与场景分类</div>
+      </div>
+      <div class="table-unit">单位：万个</div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>区域</th>
+            <th>合计</th>
+            <th>公共快充(>50kW)</th>
+            <th>公共慢充(≤50kW)</th>
+            <th>私人桩</th>
+            <th>占全球比例</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        <tr >
+            <td><strong>中国</strong></td>
+            <td>1200</td>
+            <td>180</td>
+            <td>120</td>
+            <td>900</td>
+            <td>80.0%</td>
+        </tr>
+        <tr >
+            <td><strong>欧洲</strong></td>
+            <td>150</td>
+            <td>15</td>
+            <td>55</td>
+            <td>80</td>
+            <td>10.0%</td>
+        </tr>
+        <tr >
+            <td><strong>美国</strong></td>
+            <td>80</td>
+            <td>10</td>
+            <td>25</td>
+            <td>45</td>
+            <td>5.33%</td>
+        </tr>
+        <tr >
+            <td><strong>加拿大</strong></td>
+            <td>8</td>
+            <td>1</td>
+            <td>2</td>
+            <td>5</td>
+            <td>0.53%</td>
+        </tr>
+        <tr >
+            <td><strong>拉美</strong></td>
+            <td>10</td>
+            <td>1</td>
+            <td>3</td>
+            <td>6</td>
+            <td>0.67%</td>
+        </tr>
+        <tr >
+            <td><strong>亚洲（中国外）</strong></td>
+            <td>35</td>
+            <td>5</td>
+            <td>12</td>
+            <td>18</td>
+            <td>2.33%</td>
+        </tr>
+        <tr >
+            <td><strong>非洲</strong></td>
+            <td>3</td>
+            <td>0.20</td>
+            <td>1</td>
+            <td>1.80</td>
+            <td>0.20%</td>
+        </tr>
+        <tr >
+            <td><strong>其他</strong></td>
+            <td>14</td>
+            <td>1.80</td>
+            <td>5</td>
+            <td>7.20</td>
+            <td>0.93%</td>
+        </tr>
+        <tr class="total-row">
+            <td><strong>合计</strong></td>
+            <td>1500</td>
+            <td>214</td>
+            <td>223</td>
+            <td>1063</td>
+            <td>100%</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  
+    <div class="notes">
+        <h3>📋 数据说明与备注</h3>
+        <ul>
+            <li><strong>光伏数据：</strong>基于 IRENA《Renewable Capacity Statistics 2026》及国家能源局公开数据。中国集中式/分布式比例参考2025年上半年的约54:46拆分，其中分布式进一步按工商业约58.6%、户用约41.4%估算。全球总计与各区域加总因四舍五入可能存在差异。</li>
+            <li><strong>风电数据：</strong>基于 GWEC《Global Wind Report 2026》。中国风电累计640.5 GW（含陆上约580 GW、海上约60 GW）。欧洲含欧盟成员国及英国、挪威、土耳其等。其他区域为估算值。</li>
+            <li><strong>储能数据：</strong>新型储能（电化学为主）按 GWh 能量口径统计。中国数据来源于 CNESA DataLink（截至2025年12月底）。美国数据来源于 SEIA/Benchmark Mineral Intelligence。抽水蓄能单独列示。"电源侧"指新能源配储、火储联合等；"电网侧/独立储能"指独立共享储能、电网侧储能电站；"工商业/户用"为用户侧储能。</li>
+            <li><strong>充电桩数据：</strong>单位为"万个"。中国数据来源于中国充电联盟。"快充"指功率>50kW的直流桩，"慢充"指功率≤50kW的交流/直流桩。其他区域数据为IEA及各国协会公开数据的估算值。</li>
+            <li><strong>统计口径差异：</strong>不同区域的数据统计截止时间可能不一致，已在各区域单元格中标注。全球总计可能与各区域加总略有差异，系因不同来源统计口径不同所致。</li>
+            <li><strong>"其他"区域：</strong>全球总计减去已列明区域（中国、欧洲、美国、加拿大、拉美、亚洲除中国、非洲）后的余项，包含大洋洲、俄罗斯及中亚等。</li>
+        </ul>
+    </div>
+    
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span class="footer-brand">老丁实验室 · Laodinglab</span>
+    <span class="footer-note">laodinglab.com · 独立研究 · 持续更新</span>
+  </div>
+</footer>
+
+</body>
+</html>
