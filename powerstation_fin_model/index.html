@@ -1,0 +1,1611 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>光伏电站 IRR 模型 · 逐年电价</title>
+    <script>
+        function parseCSV(csvString) {
+            const lines = csvString.split('\n').filter(line => line.trim() !== '');
+            const headers = lines[0].split(',').map(header => header.trim());
+            const data = [];
+            for (let i = 1; i < lines.length; i++) {
+                const values = lines[i].split(',').map(value => value.trim());
+                const row = {};
+                headers.forEach((header, index) => { row[header] = values[index] || ''; });
+                data.push(row);
+            }
+            return { data, errors: [] };
+        }
+        function generateCSV(headers, rows) {
+            const csvRows = [headers.join(',')];
+            rows.forEach(row => { csvRows.push(row.join(',')); });
+            return csvRows.join('\n');
+        }
+    </script>
+    <style>
+        :root {
+            --bg-page: #f0f4f8;
+            --bg-surface: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-card-alt: #f1f5f9;
+            --bg-input: #f8fafc;
+            --border: #e2e8f0;
+            --border-medium: #cbd5e1;
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --blue: #2563eb;
+            --blue-light: #dbeafe;
+            --blue-dark: #1d4ed8;
+            --teal: #0891b2;
+            --green: #16a34a;
+            --green-light: #dcfce7;
+            --red: #dc2626;
+            --orange: #d97706;
+            --grad-blue: linear-gradient(135deg, #2563eb, #1d4ed8);
+            --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 18px;
+            --radius-xl: 24px;
+            --font: 'Microsoft YaHei', 'Arial', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --font-mono: 'Arial', 'SF Mono', monospace;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: var(--bg-page);
+            background-image:
+                radial-gradient(ellipse at 15% 40%, rgba(37,99,235,0.04) 0%, transparent 55%),
+                radial-gradient(ellipse at 85% 15%, rgba(8,145,178,0.03) 0%, transparent 50%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            font-family: var(--font);
+            color: var(--text-primary);
+        }
+        .container {
+            max-width: 1440px;
+            width: 100%;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 28px 32px;
+            position: relative;
+            animation: fadeSlideUp 0.5s ease-out;
+        }
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -1px; left: 8%; right: 8%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--blue), transparent);
+            opacity: 0.5;
+        }
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes glowPulse {
+            0%, 100% { text-shadow: 0 0 16px rgba(37,99,235,0.15); }
+            50% { text-shadow: 0 0 36px rgba(37,99,235,0.28); }
+        }
+        h2 {
+            margin: 0 0 20px 0;
+            font-weight: 600;
+            font-size: 1.62rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        h2 span {
+            background: var(--blue-light);
+            border: 1px solid rgba(37,99,235,0.15);
+            font-size: 0.92rem;
+            padding: 4px 12px;
+            border-radius: 30px;
+            color: var(--blue-dark);
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        /* ========== 区域卡片 ========== */
+        .area-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 18px 20px 20px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 16px;
+        }
+        .area-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.94rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--blue-dark);
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+        .area-title .dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--blue);
+            flex-shrink: 0;
+        }
+
+        /* ========== 输入网格 ========== */
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 14px 16px;
+        }
+        .param-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .param-item label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+        .input-row {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .unit {
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.90rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        /* ========== 数值微调器 ========== */
+        .spinner-wrap {
+            display: flex;
+            align-items: center;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            transition: 0.2s;
+            flex: 1;
+        }
+        .spinner-wrap:focus-within {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+        }
+        .spinner-btn {
+            background: var(--bg-card-alt);
+            border: none;
+            color: var(--text-secondary);
+            width: 28px;
+            height: 36px;
+            font-size: 1.22rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            user-select: none;
+            font-family: var(--font-mono);
+        }
+        .spinner-btn:hover {
+            background: var(--blue-light);
+            color: var(--blue-dark);
+        }
+        .spinner-btn:active {
+            background: var(--blue);
+            color: white;
+        }
+        .spinner-wrap input {
+            border: none;
+            background: transparent;
+            padding: 8px 2px;
+            width: 100%;
+            font-size: 1.00rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            outline: none;
+            text-align: center;
+            font-family: var(--font-mono);
+            -moz-appearance: textfield;
+        }
+        .spinner-wrap input::-webkit-inner-spin-button,
+        .spinner-wrap input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+
+        /* ========== textarea ========== */
+        .param-row {
+            display: flex;
+            align-items: flex-start;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 2px 10px;
+            transition: 0.2s;
+        }
+        .param-row:focus-within {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+        }
+        .param-row textarea {
+            border: none;
+            background: transparent;
+            padding: 9px 4px 9px 0;
+            width: 100%;
+            font-size: 0.97rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            outline: none;
+            resize: vertical;
+            font-family: var(--font-mono);
+            min-height: 52px;
+        }
+
+        /* ========== compact grid ========== */
+        .compact-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        /* ========== Tab 切换 ========== */
+        .tab-bar {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 14px;
+        }
+        .tab-btn {
+            background: var(--bg-card-alt);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 7px 20px;
+            border-radius: 40px;
+            font-weight: 500;
+            font-size: 0.97rem;
+            cursor: pointer;
+            transition: 0.15s;
+            font-family: var(--font);
+        }
+        .tab-btn.active {
+            background: var(--grad-blue);
+            color: #ffffff;
+            border-color: transparent;
+            font-weight: 700;
+        }
+        .tab-btn:hover:not(.active) {
+            border-color: var(--border-medium);
+            color: var(--text-primary);
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* ========== 统一定价单输入 ========== */
+        .single-input-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg-card-alt);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 10px 16px;
+        }
+        .single-input-row label {
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            min-width: 80px;
+        }
+        .single-input-row .spinner-wrap {
+            max-width: 140px;
+        }
+
+        /* ========== 电价行 ========== */
+        .price-row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .price-row .param-item { flex: 1; min-width: 200px; }
+
+        /* ========== 结果面板 ========== */
+        .result-panel {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            align-items: flex-start;
+            margin: 25px 0 20px;
+        }
+        .irr-card {
+            background: linear-gradient(145deg, #ffffff, #f8fafc);
+            border: 1px solid rgba(37,99,235,0.12);
+            padding: 24px 32px;
+            border-radius: var(--radius-xl);
+            min-width: 260px;
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+        .irr-card::after {
+            content: '';
+            position: absolute;
+            top: -50%; right: -30%;
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(37,99,235,0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .irr-big {
+            font-size: 3.52rem;
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--blue);
+            animation: glowPulse 3s ease-in-out infinite;
+            font-family: var(--font-mono);
+        }
+        .irr-label {
+            font-size: 1.02rem;
+            color: var(--text-muted);
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        .npv-mini {
+            font-size: 1.07rem;
+            margin-top: 12px;
+            color: var(--teal);
+            font-weight: 500;
+        }
+        .backsolve-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 20px 28px;
+            flex: 1;
+            min-width: 320px;
+            box-shadow: var(--shadow-sm);
+        }
+        .backsolve-title {
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+            font-size: 1.17rem;
+        }
+        .target-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .target-input {
+            display: flex;
+            align-items: center;
+            background: var(--bg-input);
+            border-radius: 40px;
+            padding: 4px 12px 4px 18px;
+            border: 1px solid var(--border);
+        }
+        .target-input input {
+            border: none;
+            background: transparent;
+            width: 90px;
+            padding: 10px 2px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: right;
+            outline: none;
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+        }
+        .target-unit { color: var(--text-muted); font-weight: 500; margin-left: 4px; }
+        .calc-btn {
+            background: var(--grad-blue);
+            border: none;
+            color: #ffffff;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1.02rem;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 20px rgba(37,99,235,0.18);
+        }
+        .calc-btn:hover {
+            transform: scale(0.97);
+            box-shadow: 0 6px 24px rgba(37,99,235,0.28);
+        }
+        .result-price {
+            background: var(--blue-light);
+            border: 1px solid rgba(37,99,235,0.15);
+            border-radius: 40px;
+            padding: 12px 22px;
+            margin-top: 16px;
+            font-size: 1.22rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .result-price .value {
+            font-weight: 700;
+            color: var(--blue-dark);
+            font-size: 1.92rem;
+            font-family: var(--font-mono);
+        }
+        .footnote {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-top: 20px;
+            border-top: 1px solid var(--border);
+            padding-top: 16px;
+            line-height: 1.7;
+        }
+        .footnote strong { color: var(--text-secondary); }
+        .attribution {
+            color: var(--text-muted);
+            font-size: 0.87rem;
+            text-align: right;
+            margin-top: 8px;
+            opacity: 0.6;
+        }
+
+        /* ========== 敏感性分析 ========== */
+        .sensitivity-section {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            margin: 25px 0 20px;
+        }
+        .sensitivity-tabs { display: flex; gap: 8px; }
+        .sensitivity-tabs button {
+            background: var(--bg-card-alt);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 7px 18px;
+            border-radius: 40px;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 0.97rem;
+            transition: 0.15s;
+            font-family: var(--font);
+        }
+        .sensitivity-tabs button.active {
+            background: var(--grad-blue);
+            color: #ffffff;
+            border-color: transparent;
+            font-weight: 700;
+        }
+        .sensitivity-controls {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 16px;
+            padding: 12px 16px;
+            background: var(--bg-card-alt);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+        }
+        .sensitivity-controls label {
+            font-size: 0.90rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+        .sensitivity-controls select {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 6px 10px;
+            font-size: 0.97rem;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            outline: none;
+            font-family: var(--font);
+        }
+        .sensitivity-controls select:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+        }
+        .sensitivity-controls button {
+            background: var(--grad-blue);
+            border: none;
+            color: #ffffff;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 0.97rem;
+            cursor: pointer;
+            transition: 0.15s;
+            font-family: var(--font);
+        }
+        .sensitivity-controls button:hover {
+            box-shadow: 0 4px 16px rgba(37,99,235,0.25);
+        }
+        .sensitivity-controls select option {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        /* ========== 指标卡片 ========== */
+        .metrics-row {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin: 0 0 24px;
+        }
+        .metric-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 14px 20px;
+            flex: 1;
+            min-width: 130px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-sm);
+        }
+        .metric-card .m-label {
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+        .metric-card .m-value {
+            font-size: 1.72rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+            line-height: 1.3;
+        }
+        .metric-card .m-sub {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+        .metric-card.small-input {
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+        }
+        .metric-card.small-input label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+        .metric-card.small-input .param-row {
+            flex: 1;
+            max-width: 110px;
+        }
+
+        /* ========== 滚动条 ========== */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-page); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb { background: var(--border-medium); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* ========== 顶部三区域横向布局 ========== */
+        .top-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .top-row > .area-card {
+            margin-bottom: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .top-row .area-title {
+            font-size: 0.82rem;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+        }
+        .top-row .input-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 8px 6px;
+        }
+        .top-row .param-item label {
+            font-size: 0.72rem;
+        }
+        .top-row .spinner-wrap input {
+            padding: 5px 1px;
+            font-size: 0.88rem;
+        }
+        .top-row .spinner-btn {
+            width: 22px;
+            height: 30px;
+            font-size: 1rem;
+        }
+        .top-row .unit {
+            font-size: 0.78rem;
+        }
+        .top-row .price-row {
+            gap: 8px;
+            flex-direction: column;
+        }
+        .top-row .price-row .param-item {
+            min-width: auto;
+            flex: none;
+        }
+        .top-row .param-row {
+            padding: 2px 6px;
+        }
+        .top-row .param-row textarea {
+            padding: 6px 2px 6px 0;
+            font-size: 0.85rem;
+            min-height: 36px;
+        }
+        .top-row .single-input-row {
+            padding: 6px 10px;
+            gap: 8px;
+        }
+        .top-row .single-input-row label {
+            font-size: 0.82rem;
+            min-width: 60px;
+        }
+        .top-row .tab-bar {
+            margin-bottom: 8px;
+        }
+        .top-row .tab-btn {
+            padding: 5px 14px;
+            font-size: 0.85rem;
+        }
+        .top-row .compact-grid {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+        }
+        .top-row .compact-grid .param-item label {
+            font-size: 0.68rem;
+        }
+        .top-row .compact-grid .spinner-wrap input {
+            font-size: 0.82rem;
+        }
+        .top-row .compact-grid .spinner-btn {
+            width: 18px;
+            height: 26px;
+            font-size: 0.88rem;
+        }
+        /* 阶梯定价tab下，租金运维两组在小屏下堆叠 */
+        #tab-tiered > div {
+            gap: 12px !important;
+        }
+        .top-row #tab-tiered > div > div {
+            flex: 1 1 100% !important;
+            min-width: auto !important;
+        }
+
+        /* ========== 结果区域重新布局 ========== */
+        .result-row-1 {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 16px;
+            margin: 20px 0 16px;
+            align-items: stretch;
+        }
+        .result-row-2 {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+            align-items: stretch;
+        }
+        .result-row-1 .irr-card {
+            min-width: auto;
+            padding: 18px 20px;
+        }
+        .result-row-1 .irr-big {
+            font-size: 2.6rem;
+        }
+        .result-row-1 .irr-label {
+            font-size: 0.88rem;
+        }
+        .result-row-1 .npv-mini {
+            font-size: 0.92rem;
+        }
+        .result-row-1 .metric-card {
+            min-width: auto;
+            justify-content: center;
+        }
+        .result-row-1 .metric-card .m-value {
+            font-size: 1.42rem;
+        }
+        .result-row-2 .backsolve-card {
+            min-width: auto;
+            padding: 16px 20px;
+        }
+        .result-row-2 .backsolve-title {
+            font-size: 1.0rem;
+            margin-bottom: 12px;
+        }
+        .result-row-2 .result-price .value {
+            font-size: 1.52rem;
+        }
+        .result-row-2 .metric-card.small-input {
+            flex-direction: column;
+            justify-content: center;
+            gap: 8px;
+        }
+        .result-row-2 .metric-card.small-input label {
+            font-size: 0.72rem;
+        }
+        .result-row-2 .metric-card.small-input .param-row {
+            max-width: none;
+            width: 100%;
+        }
+
+        /* ========== 响应式 ========== */
+        @media (max-width: 1100px) {
+            .top-row {
+                grid-template-columns: 1fr;
+            }
+            .top-row .area-card {
+                margin-bottom: 16px;
+            }
+            .top-row .input-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
+            .top-row .compact-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+            .result-row-1 {
+                grid-template-columns: 1fr 1fr;
+            }
+            .result-row-1 .irr-card {
+                grid-column: 1 / -1;
+            }
+            .result-row-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+        @media (max-width: 640px) {
+            .container {
+                padding: 16px 12px;
+            }
+            .result-row-1 {
+                grid-template-columns: 1fr;
+            }
+            .result-row-1 .irr-card {
+                grid-column: auto;
+            }
+            .top-row .input-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .top-row .compact-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>☀️ 光伏电站 IRR 模型 <span>逐年电价</span></h2>
+
+    <div class="top-row">
+<!-- ============================================================ -->
+    <!-- 区域一：电站基础信息 -->
+    <!-- ============================================================ -->
+    <div class="area-card">
+        <div class="area-title"><span class="dot"></span>电站基础信息</div>
+        <div class="input-grid">
+            <div class="param-item">
+                <label>装机容量</label>
+                <div class="input-row">
+                    <div class="spinner-wrap" data-step="1" data-min="0.1">
+                        <button class="spinner-btn" data-dir="-1">−</button>
+                        <input type="number" id="capacity" value="100" step="1" min="0.1">
+                        <button class="spinner-btn" data-dir="1">+</button>
+                    </div>
+                    <span class="unit">MW</span>
+                </div>
+            </div>
+            <div class="param-item">
+                <label>初始投资单价</label>
+                <div class="input-row">
+                    <div class="spinner-wrap" data-step="0.1" data-min="0">
+                        <button class="spinner-btn" data-dir="-1">−</button>
+                        <input type="number" id="unitPrice" value="3.0" step="0.1" min="0">
+                        <button class="spinner-btn" data-dir="1">+</button>
+                    </div>
+                    <span class="unit">元/W</span>
+                </div>
+            </div>
+            <div class="param-item">
+                <label>存续周期</label>
+                <div class="input-row">
+                    <div class="spinner-wrap" data-step="1" data-min="1">
+                        <button class="spinner-btn" data-dir="-1">−</button>
+                        <input type="number" id="years" value="25" step="1" min="1" max="50">
+                        <button class="spinner-btn" data-dir="1">+</button>
+                    </div>
+                    <span class="unit">年</span>
+                </div>
+            </div>
+            <div class="param-item">
+                <label>首年发电量</label>
+                <div class="input-row">
+                    <div class="spinner-wrap" data-step="0.01" data-min="0">
+                        <button class="spinner-btn" data-dir="-1">−</button>
+                        <input type="number" id="firstYearYield" value="1.0" step="0.01" min="0">
+                        <button class="spinner-btn" data-dir="1">+</button>
+                    </div>
+                    <span class="unit">度/W</span>
+                </div>
+            </div>
+            <div class="param-item">
+                <label>首年衰减率</label>
+                <div class="input-row">
+                    <div class="spinner-wrap" data-step="0.1" data-min="0">
+                        <button class="spinner-btn" data-dir="-1">−</button>
+                        <input type="number" id="degrad1" value="1.0" step="0.1" min="0" max="20">
+                        <button class="spinner-btn" data-dir="1">+</button>
+                    </div>
+                    <span class="unit">%</span>
+                </div>
+            </div>
+            <div class="param-item">
+                <label>线性衰减率</label>
+                <div class="input-row">
+                    <div class="spinner-wrap" data-step="0.01" data-min="0">
+                        <button class="spinner-btn" data-dir="-1">−</button>
+                        <input type="number" id="degradLinear" value="0.4" step="0.01" min="0">
+                        <button class="spinner-btn" data-dir="1">+</button>
+                    </div>
+                    <span class="unit">%/年</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 区域二：电价及政策 -->
+    <!-- ============================================================ -->
+    <div class="area-card">
+        <div class="area-title"><span class="dot" style="background:#16a34a;"></span>电价及政策</div>
+        <div class="input-grid" style="margin-bottom:14px;">
+            <div class="param-item">
+                <label>机制年限</label>
+                <div class="input-row">
+                    <div class="spinner-wrap" data-step="1" data-min="0">
+                        <button class="spinner-btn" data-dir="-1">−</button>
+                        <input type="number" id="mechYears" value="12" step="1" min="0">
+                        <button class="spinner-btn" data-dir="1">+</button>
+                    </div>
+                    <span class="unit">年</span>
+                </div>
+            </div>
+            <div class="param-item">
+                <label>机制电价</label>
+                <div class="input-row">
+                    <div class="spinner-wrap" data-step="0.01" data-min="0">
+                        <button class="spinner-btn" data-dir="-1">−</button>
+                        <input type="number" id="mechPrice" value="0.35" step="0.01" min="0">
+                        <button class="spinner-btn" data-dir="1">+</button>
+                    </div>
+                    <span class="unit">元/度</span>
+                </div>
+            </div>
+            <div class="param-item">
+                <label>机制比例</label>
+                <div class="input-row">
+                    <div class="spinner-wrap" data-step="1" data-min="0">
+                        <button class="spinner-btn" data-dir="-1">−</button>
+                        <input type="number" id="mechRatio" value="80" step="1" min="0" max="100">
+                        <button class="spinner-btn" data-dir="1">+</button>
+                    </div>
+                    <span class="unit">%</span>
+                </div>
+            </div>
+        </div>
+        <div class="price-row">
+            <div class="param-item">
+                <label>现货电价均值 (若不填逐年则使用)</label>
+                <div class="input-row">
+                    <div class="spinner-wrap" data-step="0.01" data-min="0">
+                        <button class="spinner-btn" data-dir="-1">−</button>
+                        <input type="number" id="spotPriceAvg" value="0.20" step="0.01" min="0">
+                        <button class="spinner-btn" data-dir="1">+</button>
+                    </div>
+                    <span class="unit">元/度</span>
+                </div>
+            </div>
+            <div class="param-item">
+                <label>逐年电价 (逗号分隔，填满存续周期)</label>
+                <div class="param-row">
+                    <textarea id="spotPricesInput" rows="2" placeholder="例如: 0.21,0.22,0.19,0.20,... (共25个)"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 区域三：屋顶租金 & 运维费（Tab 切换） -->
+    <!-- ============================================================ -->
+    <div class="area-card">
+        <div class="area-title"><span class="dot" style="background:#d97706;"></span>屋顶租金 & 运维费</div>
+
+        <div class="tab-bar">
+            <button class="tab-btn active" data-tab="single">统一定价</button>
+            <button class="tab-btn" data-tab="tiered">阶梯定价</button>
+        </div>
+
+        <!-- 统一定价 Tab -->
+        <div id="tab-single" class="tab-content active">
+            <div class="single-input-row">
+                <label>统一租金</label>
+                <div class="spinner-wrap" data-step="0.01" data-min="0">
+                    <button class="spinner-btn" data-dir="-1">−</button>
+                    <input type="number" id="rentSingle" value="0.05" step="0.01" min="0">
+                    <button class="spinner-btn" data-dir="1">+</button>
+                </div>
+                <span class="unit">元/W/年</span>
+            </div>
+            <div class="single-input-row" style="margin-top:10px;">
+                <label>统一运维</label>
+                <div class="spinner-wrap" data-step="0.01" data-min="0">
+                    <button class="spinner-btn" data-dir="-1">−</button>
+                    <input type="number" id="omSingle" value="0.05" step="0.01" min="0">
+                    <button class="spinner-btn" data-dir="1">+</button>
+                </div>
+                <span class="unit">元/W/年</span>
+            </div>
+            <p style="font-size:0.87rem;color:var(--text-muted);margin-top:8px;">
+                系统将按五年阶梯逻辑自动分摊：1-5年 / 6-10年 / 11-15年 / 16-20年 / 21年至今 均使用此统一值
+            </p>
+        </div>
+
+        <!-- 阶梯定价 Tab -->
+        <div id="tab-tiered" class="tab-content">
+            <div style="display:flex;gap:30px;flex-wrap:wrap;">
+                <div style="flex:1;">
+                    <div style="font-size:0.87rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-secondary);margin-bottom:8px;">
+                        🏠 屋顶租金（元/W/年）
+                    </div>
+                    <div class="compact-grid">
+                        <div class="param-item"><label>1-5年</label><div class="spinner-wrap" data-step="0.01" data-min="0"><button class="spinner-btn" data-dir="-1">−</button><input type="number" id="rent1" value="0.05" step="0.01" min="0"><button class="spinner-btn" data-dir="1">+</button></div></div>
+                        <div class="param-item"><label>6-10年</label><div class="spinner-wrap" data-step="0.01" data-min="0"><button class="spinner-btn" data-dir="-1">−</button><input type="number" id="rent2" value="0.05" step="0.01" min="0"><button class="spinner-btn" data-dir="1">+</button></div></div>
+                        <div class="param-item"><label>11-15年</label><div class="spinner-wrap" data-step="0.01" data-min="0"><button class="spinner-btn" data-dir="-1">−</button><input type="number" id="rent3" value="0.05" step="0.01" min="0"><button class="spinner-btn" data-dir="1">+</button></div></div>
+                        <div class="param-item"><label>16-20年</label><div class="spinner-wrap" data-step="0.01" data-min="0"><button class="spinner-btn" data-dir="-1">−</button><input type="number" id="rent4" value="0.05" step="0.01" min="0"><button class="spinner-btn" data-dir="1">+</button></div></div>
+                        <div class="param-item"><label>21-25年</label><div class="spinner-wrap" data-step="0.01" data-min="0"><button class="spinner-btn" data-dir="-1">−</button><input type="number" id="rent5" value="0.05" step="0.01" min="0"><button class="spinner-btn" data-dir="1">+</button></div></div>
+                    </div>
+                </div>
+                <div style="flex:1;">
+                    <div style="font-size:0.87rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-secondary);margin-bottom:8px;">
+                        🔧 运维费（元/W/年）
+                    </div>
+                    <div class="compact-grid">
+                        <div class="param-item"><label>1-5年</label><div class="spinner-wrap" data-step="0.01" data-min="0"><button class="spinner-btn" data-dir="-1">−</button><input type="number" id="om1" value="0.05" step="0.01" min="0"><button class="spinner-btn" data-dir="1">+</button></div></div>
+                        <div class="param-item"><label>6-10年</label><div class="spinner-wrap" data-step="0.01" data-min="0"><button class="spinner-btn" data-dir="-1">−</button><input type="number" id="om2" value="0.05" step="0.01" min="0"><button class="spinner-btn" data-dir="1">+</button></div></div>
+                        <div class="param-item"><label>11-15年</label><div class="spinner-wrap" data-step="0.01" data-min="0"><button class="spinner-btn" data-dir="-1">−</button><input type="number" id="om3" value="0.05" step="0.01" min="0"><button class="spinner-btn" data-dir="1">+</button></div></div>
+                        <div class="param-item"><label>16-20年</label><div class="spinner-wrap" data-step="0.01" data-min="0"><button class="spinner-btn" data-dir="-1">−</button><input type="number" id="om4" value="0.05" step="0.01" min="0"><button class="spinner-btn" data-dir="1">+</button></div></div>
+                        <div class="param-item"><label>21-25年</label><div class="spinner-wrap" data-step="0.01" data-min="0"><button class="spinner-btn" data-dir="-1">−</button><input type="number" id="om5" value="0.05" step="0.01" min="0"><button class="spinner-btn" data-dir="1">+</button></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+<!-- ============================================================ -->
+    <!-- 结果区域 -->
+    <!-- ============================================================ -->
+    <div class="result-row-1">
+        <div class="irr-card">
+            <div class="irr-label">项目内部收益率 (IRR)</div>
+            <div class="irr-big" id="irrValue">6.25%</div>
+            <div class="npv-mini" id="npvAtIrr">NPV ≈ 0</div>
+        </div>
+        <div class="metric-card">
+            <span class="m-label">静态回收期</span>
+            <span class="m-value" id="staticPayback">--</span>
+            <span class="m-sub">累计现金流归正</span>
+        </div>
+        <div class="metric-card">
+            <span class="m-label">动态回收期</span>
+            <span class="m-value" id="dynamicPayback">--</span>
+            <span class="m-sub">折现后现金流归正</span>
+        </div>
+        <div class="metric-card">
+            <span class="m-label">LCOE 度电成本</span>
+            <span class="m-value" id="lcoeValue">--</span>
+            <span class="m-sub">平准化度电成本</span>
+        </div>
+    </div>
+    <div class="result-row-2">
+        <div class="backsolve-card">
+            <div class="backsolve-title">🎯 目标 IRR 反算初始投资单价</div>
+            <div class="target-row">
+                <div class="target-input">
+                    <input type="number" id="targetIrr" value="6.0" step="0.1" min="-5" max="30">
+                    <span class="target-unit">%</span>
+                </div>
+                <button class="calc-btn" id="calcBacksolve">迭代求解单价</button>
+            </div>
+            <div class="result-price">
+                <span>反算单价</span>
+                <span class="value" id="backPrice">--</span>
+            </div>
+            <div style="font-size:0.92rem;color:var(--text-muted);" id="iterInfo">调整参数后点击计算</div>
+        </div>
+        <div class="metric-card small-input">
+            <label>折现率</label>
+            <div class="param-row" style="background:var(--bg-input);border:1px solid var(--border);border-radius:8px;padding:0 10px;">
+                <input type="number" id="discountRateInput" value="5.0" step="0.1" min="0" max="30" style="border:none;background:transparent;padding:7px 4px 7px 0;width:100%;font-size:1.02rem;font-weight:600;color:var(--text-primary);outline:none;">
+                <span class="unit" style="color:var(--text-muted);">%</span>
+            </div>
+        </div>
+    </div>
+<!-- ============================================================ -->
+    <!-- 敏感性分析 -->
+    <!-- ============================================================ -->
+    <div class="sensitivity-section">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap;">
+            <span style="font-weight:600;font-size:1.22rem;">📈 敏感性分析</span>
+            <div class="sensitivity-tabs">
+                <button class="s-tab active" data-tab="tornado">单因素 (Tornado)</button>
+                <button class="s-tab" data-tab="matrix">双因素矩阵</button>
+            </div>
+        </div>
+        <div id="s-tornado" class="s-content">
+            <div class="sensitivity-controls">
+                <label>变动幅度:</label>
+                <div class="param-row" style="width:100px;"><input type="number" id="tornadoRange" value="20" min="5" max="100" step="5"><span class="unit">%</span></div>
+                <button id="runTornado">▶ 计算单因素敏感性</button>
+                <span style="margin-left:auto;font-size:1.02rem;color:var(--text-secondary);">基准 IRR: <span id="baseIrrDisplay" style="font-weight:700;color:var(--blue);">--</span></span>
+            </div>
+            <div style="display:flex;gap:20px;flex-wrap:wrap;">
+                <canvas id="tornadoCanvas" width="650" height="320" style="background:var(--bg-input);border-radius:16px;border:1px solid var(--border);"></canvas>
+                <div style="font-size:0.97rem;padding:12px 16px;background:var(--bg-input);border-radius:16px;border:1px solid var(--border);min-width:160px;align-self:flex-start;">
+                    <div style="font-weight:600;margin-bottom:8px;color:var(--text-primary);">图例</div>
+                    <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><span style="display:inline-block;width:30px;height:12px;background:#22c55e;border-radius:4px;"></span> 高值方向</div>
+                    <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><span style="display:inline-block;width:30px;height:12px;background:#ef4444;border-radius:4px;"></span> 低值方向</div>
+                    <div style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:30px;height:2px;border-top:2px dashed #38bdf8;"></span> 基准 IRR</div>
+                </div>
+            </div>
+        </div>
+        <div id="s-matrix" class="s-content" style="display:none;">
+            <div class="sensitivity-controls">
+                <label>X轴参数:</label>
+                <select id="matrixXParam">
+                    <option value="unitPrice">初始投资单价</option>
+                    <option value="spotAvg" selected>现货电价(均值)</option>
+                    <option value="firstYield">首年发电量</option>
+                    <option value="mechPrice">机制电价</option>
+                </select>
+                <label>Y轴参数:</label>
+                <select id="matrixYParam">
+                    <option value="unitPrice" selected>初始投资单价</option>
+                    <option value="spotAvg">现货电价(均值)</option>
+                    <option value="firstYield">首年发电量</option>
+                    <option value="mechPrice">机制电价</option>
+                </select>
+                <label>变动幅度:</label>
+                <div class="param-row" style="width:80px;"><input type="number" id="matrixRange" value="20" min="5" max="50" step="5"><span class="unit">%</span></div>
+                <label>网格:</label>
+                <select id="matrixGrid">
+                    <option value="4">4×4</option>
+                    <option value="5" selected>5×5</option>
+                    <option value="6">6×6</option>
+                </select>
+                <button id="runMatrix">▶ 计算双因素矩阵</button>
+            </div>
+            <div id="matrixResult" class="results-table" style="max-height:500px;overflow:auto;">
+                <p style="text-align:center;padding:20px;color:var(--text-muted);">选择参数后点击计算</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 说明 -->
+    <div class="footnote">
+        <strong>📘 计算逻辑说明（含增值税留抵、五年阶梯、逐年电价）</strong><br>
+        • 增值税：材料进项(初始投资/1.13×0.13)作为初始留抵；每年运维进项 = 运维费/1.13×0.13。销项=发电收入/1.13×0.13，抵扣后若有余额交增值税(率13%)，留抵结转下年。附加税为增值税的12%。<br>
+        • 租金/运维按每五年独立阶梯取值，超过25年用最后一个阶梯。<br>
+        • 发电量衰减：第1年 = 首年发电量 × (1 - 首年衰减率)，第t年 = 首年发电量 × (1 - 首年衰减率 - (t-1)×线性衰减率)。<br>
+        • 机制电价：前机制年限内综合电价 = 机制电价×机制比例 + 现货电价×(1-机制比例)；之后为现货电价。现货电价优先使用逐年数组（25个值），若无则用均值。<br>
+        • IRR基于税前现金流（收入-租金-运维-增值税-附加税），第0年为负初始投资。<br>
+        • 反算单价采用二分法迭代，范围[0,15]元/W。
+    </div>
+    <div class="attribution">⚙️ 单电站实时更新 · 支持25年独立电价</div>
+</div>
+
+<script>
+(function() {
+    // ===== Tab 切换 =====
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tab = btn.dataset.tab;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('tab-' + tab).classList.add('active');
+        });
+    });
+
+    // ===== Tab 切换时同步统一定价 → 阶梯值 =====
+    const rentSingleEl = document.getElementById('rentSingle');
+    const omSingleEl   = document.getElementById('omSingle');
+
+    rentSingleEl.addEventListener('input', () => {
+        const v = parseFloat(rentSingleEl.value) || 0;
+        ['rent1','rent2','rent3','rent4','rent5'].forEach(id => {
+            const inp = document.getElementById(id);
+            if (inp) inp.value = v.toFixed(2);
+        });
+        refreshSingle();
+    });
+    omSingleEl.addEventListener('input', () => {
+        const v = parseFloat(omSingleEl.value) || 0;
+        ['om1','om2','om3','om4','om5'].forEach(id => {
+            const inp = document.getElementById(id);
+            if (inp) inp.value = v.toFixed(2);
+        });
+        refreshSingle();
+    });
+
+    // 阶梯值变动时同步回统一定价（取第一个阶梯的值）
+    ['rent1','om1'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.addEventListener('input', () => {
+                const years = parseInt(document.getElementById('years').value) || 25;
+                if (years <= 5) {
+                    if (id === 'rent1') rentSingleEl.value = el.value;
+                    if (id === 'om1') omSingleEl.value = el.value;
+                }
+            });
+        }
+    });
+
+    // ===== 微调按钮初始化（从 data-step 读取步距）=====
+    document.querySelectorAll('.spinner-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const wrap = btn.closest('.spinner-wrap');
+            const inp  = wrap.querySelector('input');
+            const step = parseFloat(wrap.dataset.step) || parseFloat(inp.step) || 0.1;
+            const min  = parseFloat(wrap.dataset.min)  || parseFloat(inp.min)  || 0;
+            const max  = parseFloat(wrap.dataset.max)  || parseFloat(inp.max)  || Infinity;
+            let val = parseFloat(inp.value) || 0;
+            val += (btn.dataset.dir === '1' ? 1 : -1) * step;
+            val = Math.max(min, Math.min(max, parseFloat(val.toFixed(10))));
+            inp.value = val;
+            inp.dispatchEvent(new Event('input'));
+        });
+    });
+
+    // ===== DOM 引用 =====
+    const capacityInp    = document.getElementById('capacity');
+    const unitPriceInp   = document.getElementById('unitPrice');
+    const yearsInp       = document.getElementById('years');
+    const firstYieldInp  = document.getElementById('firstYearYield');
+    const deg1Inp        = document.getElementById('degrad1');
+    const degLinInp      = document.getElementById('degradLinear');
+    const mechYearsInp   = document.getElementById('mechYears');
+    const mechPriceInp   = document.getElementById('mechPrice');
+    const mechRatioInp   = document.getElementById('mechRatio');
+    const spotPriceAvgInp= document.getElementById('spotPriceAvg');
+    const spotPricesInput= document.getElementById('spotPricesInput');
+    const targetIrrInp   = document.getElementById('targetIrr');
+    const irrSpan        = document.getElementById('irrValue');
+    const npvSpan        = document.getElementById('npvAtIrr');
+    const backPriceSpan  = document.getElementById('backPrice');
+    const iterInfo        = document.getElementById('iterInfo');
+
+    // ===== 参数读取 =====
+    function getSingleStationParams() {
+        const capacityMW = parseFloat(capacityInp.value) || 100;
+        const unitPrice  = parseFloat(unitPriceInp.value) || 3.0;
+        const years      = parseInt(yearsInp.value) || 25;
+        const firstYield = parseFloat(firstYieldInp.value) || 1.0;
+        const deg1       = parseFloat(deg1Inp.value) / 100 || 0.01;
+        const degLin     = parseFloat(degLinInp.value) / 100 || 0.004;
+        const mechYears  = parseInt(mechYearsInp.value) || 12;
+        const mechPrice  = parseFloat(mechPriceInp.value) || 0.35;
+        const mechRatio  = parseFloat(mechRatioInp.value) / 100 || 0.8;
+        const spotAvg    = parseFloat(spotPriceAvgInp.value) ?? 0.2;
+
+        let spotPricesArray = null;
+        const text = spotPricesInput.value.trim();
+        if (text) {
+            const parts = text.split(',').map(s => parseFloat(s.trim())).filter(v => !isNaN(v));
+            if (parts.length === years) spotPricesArray = parts;
+        }
+
+        // 租金/运维：优先读阶梯值，若Tab在统一定价则统一值
+        const tab = document.querySelector('.tab-btn.active').dataset.tab;
+        let rentSteps, omSteps;
+        if (tab === 'single') {
+            const v = parseFloat(document.getElementById('rentSingle').value) ?? 0.05;
+            rentSteps = [v, v, v, v, v];
+            const ov = parseFloat(document.getElementById('omSingle').value) ?? 0.05;
+            omSteps = [ov, ov, ov, ov, ov];
+        } else {
+            rentSteps = ['rent1','rent2','rent3','rent4','rent5'].map(id =>
+                parseFloat(document.getElementById(id).value) ?? 0.05);
+            omSteps = ['om1','om2','om3','om4','om5'].map(id =>
+                parseFloat(document.getElementById(id).value) ?? 0.05);
+        }
+
+        const capacityW = capacityMW * 1e6;
+        return { capacityW, unitPrice, years, firstYield, deg1, degLin,
+                 mechYears, mechPrice, mechRatio, spotAvg, spotPricesArray,
+                 rentSteps, omSteps };
+    }
+
+    function getRentPrice(year, rentSteps) {
+        const idx = Math.floor((year - 1) / 5);
+        return rentSteps[Math.min(idx, rentSteps.length - 1)];
+    }
+    function getOMPrice(year, omSteps) {
+        const idx = Math.floor((year - 1) / 5);
+        return omSteps[Math.min(idx, omSteps.length - 1)];
+    }
+    function getYieldPerWatt(year, firstYield, deg1, degLin) {
+        if (year === 1) return firstYield * (1 - deg1);
+        return firstYield * Math.max(0, 1 - deg1 - (year - 1) * degLin);
+    }
+    function getSpotPrice(year, spotAvg, spotPricesArray) {
+        if (spotPricesArray && spotPricesArray.length >= year) return spotPricesArray[year - 1];
+        return spotAvg;
+    }
+    function getTariff(year, mechYears, mechPrice, mechRatio, spotAvg, spotPricesArray) {
+        const spot = getSpotPrice(year, spotAvg, spotPricesArray);
+        if (year <= mechYears) return mechPrice * mechRatio + spot * (1 - mechRatio);
+        return spot;
+    }
+
+    function computeCashflows(params) {
+        const { capacityW, unitPrice, years, firstYield, deg1, degLin,
+                mechYears, mechPrice, mechRatio, spotAvg, spotPricesArray,
+                rentSteps, omSteps } = params;
+
+        const initialInvestment = capacityW * unitPrice;
+        const initVatInput = initialInvestment / 1.13 * 0.13;
+        const cashflows = [-initialInvestment];
+        let carryOverVat = initVatInput;
+
+        for (let t = 1; t <= years; t++) {
+            const yieldPerWatt = getYieldPerWatt(t, firstYield, deg1, degLin);
+            const totalGen     = yieldPerWatt * capacityW;
+            const tariff        = getTariff(t, mechYears, mechPrice, mechRatio, spotAvg, spotPricesArray);
+            const revenue       = totalGen * tariff;
+            const rentCost      = getRentPrice(t, rentSteps) * capacityW;
+            const omCost        = getOMPrice(t, omSteps) * capacityW;
+            const outputVat     = revenue / 1.13 * 0.13;
+            const omVatInput    = omCost / 1.13 * 0.13;
+            const totalDeductible = omVatInput + carryOverVat;
+
+            let vatPayable, newCarryOver;
+            if (outputVat > totalDeductible) {
+                vatPayable = outputVat - totalDeductible;
+                newCarryOver = 0;
+            } else {
+                vatPayable = 0;
+                newCarryOver = totalDeductible - outputVat;
+            }
+            const surtax     = vatPayable * 0.12;
+            const pretaxProfit = revenue - rentCost - omCost - vatPayable - surtax;
+            cashflows.push(pretaxProfit);
+            carryOverVat = newCarryOver;
+        }
+        return cashflows;
+    }
+
+    function NPV(cfs, rate) {
+        return cfs.reduce((sum, cf, i) => sum + cf / Math.pow(1 + rate, i), 0);
+    }
+    function computeIRR(cashflows) {
+        if (cashflows.every(cf => cf >= 0) || cashflows.every(cf => cf <= 0)) return NaN;
+        let low = -0.8, high = 5.0;
+        const fLow = NPV(cashflows, low), fHigh = NPV(cashflows, high);
+        if (fLow * fHigh > 0) return NaN;
+        for (let i = 0; i < 100; i++) {
+            const mid = (low + high) / 2;
+            const fMid = NPV(cashflows, mid);
+            if (Math.abs(fMid) < 1e-6) return mid;
+            if (fLow * fMid <= 0) high = mid; else low = mid;
+        }
+        return (low + high) / 2;
+    }
+    function computePayback(cashflows) {
+        // 静态回收期：累计未折现现金流归正的时刻
+        // cashflows[0] = -初始投资，cashflows[1..N] = 逐年税前现金流
+        // 正确：从0开始，第0步先加入投资（负值），之后每步加第t年CF
+        let cumulative = cashflows[0]; // 第0年末 = 投资
+        for (let t = 1; t < cashflows.length; t++) {
+            cumulative += cashflows[t]; // 第t年末累计
+            if (cumulative >= 0) {
+                if (t === 1) return 1; // 第1年直接归正（投资后立即归正，异常快）
+                const before = cumulative - cashflows[t]; // 第t-1年末累计（加当前CF之前）
+                if (before >= 0) return t - 1; // 前一年已归正
+                // 第t年跨过零点，线性插值
+                const fraction = Math.abs(before) / (Math.abs(before) + cumulative);
+                return parseFloat((t - 1 + fraction).toFixed(1));
+            }
+        }
+        return null; // 永远无法归正
+    }
+    function computeDynamicPayback(cashflows, rate) {
+        // 动态回收期：累计折现现金流归正的时刻
+        // cashflows[0] = -初始投资，cashflows[1..N] = 逐年税前现金流
+        let cumulative = cashflows[0]; // 第0年末折现 = 投资（已经是负数）
+        for (let t = 1; t < cashflows.length; t++) {
+            const discounted = cashflows[t] / Math.pow(1 + rate, t);
+            const before = cumulative;
+            cumulative += discounted;
+            if (cumulative >= 0) {
+                if (t === 1) return 1; // 第1年直接归正（异常快）
+                if (before >= 0) return t - 1; // 前一年已归正
+                const fraction = Math.abs(before) / (Math.abs(before) + cumulative);
+                return parseFloat((t - 1 + fraction).toFixed(1));
+            }
+        }
+        return null; // 永远无法归正
+    }
+    function computeLCOE(params, cashflows) {
+        const { capacityW, years, firstYield, deg1, degLin } = params;
+        let totalGen = 0;
+        for (let t = 1; t <= years; t++) totalGen += getYieldPerWatt(t, firstYield, deg1, degLin) * capacityW;
+        const totalCost = cashflows.reduce((s, c, i) => i === 0 ? s - c : s + c, 0);
+        return totalGen > 0 ? totalCost / totalGen : NaN;
+    }
+
+    function refreshSingle() {
+        const params = getSingleStationParams();
+        const cfs = computeCashflows(params);
+        const irr = computeIRR(cfs);
+        const rate = parseFloat(document.getElementById('discountRateInput').value) / 100 ?? 0.05;
+        const npv0 = NPV(cfs, 0);
+        const npvRate = NPV(cfs, rate);
+
+        if (!isNaN(irr)) {
+            irrSpan.textContent = (irr * 100).toFixed(2) + '%';
+            npvSpan.textContent = `NPV(0) = ${(npv0 / 1e6).toFixed(1)} 百万元`;
+        } else {
+            irrSpan.textContent = 'N/A';
+            npvSpan.textContent = '无法计算 IRR（现金流全正或全负）';
+        }
+
+        // 回收期指标
+        const sp = computePayback(cfs);
+        const dp = computeDynamicPayback(cfs, rate);
+        document.getElementById('staticPayback').textContent =
+            (sp === null || isNaN(sp)) ? '>存续期' : sp.toFixed(1) + ' 年';
+        document.getElementById('dynamicPayback').textContent =
+            (dp === null || isNaN(dp)) ? '>存续期' : dp.toFixed(1) + ' 年';
+
+        // LCOE
+        try {
+            const lcoe = computeLCOE(params, cfs);
+            document.getElementById('lcoeValue').textContent =
+                isNaN(lcoe) ? '--' : lcoe.toFixed(3) + ' 元/度';
+        } catch(e) {
+            document.getElementById('lcoeValue').textContent = '--';
+        }
+    }
+
+    // 全局暴露给批量和敏感性分析
+    window.getSingleStationParams = getSingleStationParams;
+    window.refreshSingle = refreshSingle;
+    window.computeCashflows = computeCashflows;
+    window.computeIRR = computeIRR;
+    window.NPV = NPV;
+
+    // 反算
+    document.getElementById('calcBacksolve').addEventListener('click', () => {
+        const targetRate = parseFloat(targetIrrInp.value) / 100;
+        if (isNaN(targetRate)) { backPriceSpan.textContent = '--'; return; }
+        const params = getSingleStationParams();
+        const { capacityW, years, firstYield, deg1, degLin, mechYears, mechPrice, mechRatio,
+                 spotAvg, spotPricesArray, rentSteps, omSteps } = params;
+        let lo = 0.01, hi = 15;
+        let loopCount = 0;
+        for (let i = 0; i < 80; i++) {
+            loopCount = i;
+            const mid = (lo + hi) / 2;
+            const cfs = computeCashflows({ ...params, unitPrice: mid });
+            const r = computeIRR(cfs);
+            if (isNaN(r)) { lo = mid; continue; }
+            if (r < targetRate) lo = mid; else hi = mid;
+        }
+        const mid = (lo + hi) / 2;
+        backPriceSpan.textContent = mid.toFixed(3) + ' 元/W';
+        iterInfo.textContent = `迭代 ${loopCount + 1} 次，IRR ≈ ${(computeIRR(computeCashflows({ ...params, unitPrice: mid })) * 100).toFixed(2)}%`;
+        // 反算后同步刷新完整结果（用反算出的单价更新模型）
+        const newUnitPrice = mid;
+        document.getElementById('unitPrice').value = newUnitPrice.toFixed(3);
+        refreshSingle();
+    });
+
+    // 绑定所有参数输入 → 实时重算
+    [capacityInp, unitPriceInp, yearsInp, firstYieldInp, deg1Inp, degLinInp,
+     mechYearsInp, mechPriceInp, mechRatioInp, spotPriceAvgInp, spotPricesInput,
+     'rent1','rent2','rent3','rent4','rent5',
+     'om1','om2','om3','om4','om5',
+     'rentSingle','omSingle',
+     document.getElementById('discountRateInput')
+    ].forEach(el => {
+        if (typeof el === 'string') {
+            const inp = document.getElementById(el);
+            if (inp) inp.addEventListener('input', refreshSingle);
+        } else {
+            el.addEventListener('input', refreshSingle);
+        }
+    });
+    // textarea 用 input 事件
+    spotPricesInput.addEventListener('input', refreshSingle);
+
+    // ===== 敏感性分析 =====
+    // Tornado
+    document.getElementById('runTornado').addEventListener('click', () => {
+        const baseParams = getSingleStationParams();
+        const baseCfs = computeCashflows(baseParams);
+        const baseIRR = computeIRR(baseCfs);
+        if (isNaN(baseIRR)) { alert('基准参数无法计算IRR'); return; }
+        document.getElementById('baseIrrDisplay').textContent = (baseIRR * 100).toFixed(2) + '%';
+        const range = parseFloat(document.getElementById('tornadoRange').value) / 100 || 0.2;
+        const keys = [
+            { label: '初始投资单价', get: () => baseParams.unitPrice, set: (v) => { unitPriceInp.value = v; } },
+            { label: '现货电价均值', get: () => baseParams.spotAvg,   set: (v) => { spotPriceAvgInp.value = v; } },
+            { label: '首年发电量',    get: () => baseParams.firstYield, set: (v) => { firstYieldInp.value = v; } },
+            { label: '机制电价',      get: () => baseParams.mechPrice, set: (v) => { mechPriceInp.value = v; } },
+            { label: '机制比例',      get: () => baseParams.mechRatio * 100, set: (v) => { mechRatioInp.value = v; } }
+        ];
+        const results = keys.map(k => {
+            const baseVal = k.get();
+            const hi = baseVal * (1 + range);
+            const lo = baseVal * (1 - range);
+            k.set(hi); const irrHi = computeIRR(computeCashflows(getSingleStationParams()));
+            k.set(lo); const irrLo = computeIRR(computeCashflows(getSingleStationParams()));
+            k.set(baseVal);
+            return {
+                label: k.label,
+                irrHi: isNaN(irrHi) ? null : irrHi,
+                irrLo: isNaN(irrLo) ? null : irrLo,
+                baseIRR
+            };
+        });
+
+        const canvas = document.getElementById('tornadoCanvas');
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        ctx.clearRect(0, 0, W, H);
+
+        const marginL = 120, marginT = 30, barH = 36, gap = 8;
+        const chartW = W - marginL - 20;
+        const allIRRs = results.flatMap(r => [r.irrHi, r.irrLo, r.baseIRR]).filter(v => v !== null && !isNaN(v));
+        const minIRR = Math.min(...allIRRs) - 0.01;
+        const maxIRR = Math.max(...allIRRs) + 0.01;
+        const scale = v => marginL + ((v - minIRR) / (maxIRR - minIRR)) * chartW;
+
+        ctx.fillStyle = '#1e293b';
+        ctx.font = '13px Plus Jakarta Sans, sans-serif';
+        ctx.textAlign = 'right';
+        results.forEach((r, i) => {
+            const y = marginT + i * (barH + gap);
+            ctx.fillText(r.label, marginL - 8, y + barH / 2 + 4);
+            if (r.irrLo !== null) {
+                const loX = scale(r.irrLo), hiX = scale(r.irrHi);
+                const baseX = scale(r.baseIRR);
+                const midY = y + barH / 2;
+                // 低值 → 基准
+                ctx.fillStyle = '#ef4444';
+                ctx.fillRect(loX, y + 4, baseX - loX, barH - 8);
+                // 高值 → 基准
+                ctx.fillStyle = '#22c55e';
+                ctx.fillRect(baseX, y + 4, hiX - baseX, barH - 8);
+                // 基准线
+                ctx.strokeStyle = '#38bdf8';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([4, 3]);
+                ctx.beginPath(); ctx.moveTo(baseX, y); ctx.lineTo(baseX, y + barH); ctx.stroke();
+                ctx.setLineDash([]);
+            }
+            // 数值标签
+            ctx.fillStyle = '#1e293b';
+            ctx.font = '11px JetBrains Mono, monospace';
+            if (r.irrLo !== null) ctx.fillText((r.irrLo*100).toFixed(1)+'%', scale(r.irrLo) - 3, y + barH / 2 + 4);
+            if (r.irrHi !== null) ctx.fillText((r.irrHi*100).toFixed(1)+'%', scale(r.irrHi) + 3, y + barH / 2 + 4);
+        });
+    });
+
+    // Matrix
+    document.getElementById('runMatrix').addEventListener('click', () => {
+        const baseParams = getSingleStationParams();
+        const baseIRR = computeIRR(computeCashflows(baseParams));
+        if (isNaN(baseIRR)) { alert('基准参数无法计算IRR'); return; }
+        const range = parseFloat(document.getElementById('matrixRange').value) / 100 || 0.2;
+        const grid = parseInt(document.getElementById('matrixGrid').value) || 5;
+        const xKey = document.getElementById('matrixXParam').value;
+        const yKey = document.getElementById('matrixYParam').value;
+
+        const mapVal = {
+            unitPrice: { get: () => baseParams.unitPrice, set: (v, p) => { p.unitPrice = v; } },
+            spotAvg:   { get: () => baseParams.spotAvg,   set: (v, p) => { p.spotAvg = v; } },
+            firstYield: { get: () => baseParams.firstYield, set: (v, p) => { p.firstYield = v; } },
+            mechPrice: { get: () => baseParams.mechPrice, set: (v, p) => { p.mechPrice = v; } }
+        };
+
+        const xDef = mapVal[xKey], yDef = mapVal[yKey];
+        const xVals = Array.from({length: grid}, (_, i) => xDef.get() * (1 - range + (2 * range * i / (grid - 1))));
+        const yVals = Array.from({length: grid}, (_, i) => yDef.get() * (1 - range + (2 * range * i / (grid - 1))));
+
+        const xLabel = document.getElementById('matrixXParam').options[document.getElementById('matrixXParam').selectedIndex].text;
+        const yLabel = document.getElementById('matrixYParam').options[document.getElementById('matrixYParam').selectedIndex].text;
+
+        const matrix = [];
+        yVals.forEach(yv => {
+            const row = [];
+            xVals.forEach(xv => {
+                const p = JSON.parse(JSON.stringify(baseParams));
+                xDef.set(xv, p); yDef.set(yv, p);
+                const irr = computeIRR(computeCashflows(p));
+                row.push(irr);
+            });
+            matrix.push(row);
+        });
+
+        const allIRRs = matrix.flat().filter(v => !isNaN(v));
+        const minIRR = Math.min(...allIRRs), maxIRR = Math.max(...allIRRs);
+
+        const colorScale = v => {
+            if (isNaN(v)) return '#e2e8f0';
+            const t = (v - minIRR) / (maxIRR - minIRR);
+            if (t < 0.5) return `rgba(37,99,235,${0.15 + t * 0.7})`;
+            return `rgba(220,38,38,${0.15 + (1-t) * 0.7})`;
+        };
+
+        let html = `<table><thead><tr><th>${yLabel} \ ${xLabel}</th>`;
+        xVals.forEach(xv => { html += `<th>${xv.toFixed(3)}</th>`; });
+        html += `</tr></thead><tbody>`;
+        matrix.forEach((row, yi) => {
+            html += `<tr><th>${yVals[yi].toFixed(3)}</th>`;
+            row.forEach(cell => {
+                const color = isNaN(cell) ? '#e2e8f0' : (cell > baseIRR ? '#16a34a' : '#dc2626');
+                html += `<td style="background:${colorScale(cell)};color:${color};font-weight:600;">${isNaN(cell) ? 'N/A' : (cell*100).toFixed(2)+'%'}</td>`;
+            });
+            html += `</tr>`;
+        });
+        html += `</tbody></table>`;
+        document.getElementById('matrixResult').innerHTML = html;
+    });
+
+    // 敏感性 Tab
+    document.querySelectorAll('.s-tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.s-tab').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.s-content').forEach(c => c.style.display = 'none');
+            btn.classList.add('active');
+            document.getElementById('s-' + btn.dataset.tab).style.display = 'block';
+        });
+    });
+
+    // 初始化
+    refreshSingle();
+})();
+</script>
+</body>
+</html>
