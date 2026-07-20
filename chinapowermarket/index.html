@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>中国电力市场跟踪分析 v55</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-size:20px;line-height:1.7;color:#1e293b;background:#f8fafc;min-height:100vh;padding:24px}
+    .container{max-width:1200px;margin:0 auto}
+    .header{text-align:center;margin-bottom:28px}
+    h1{font-size:36px;color:#1e293b;margin-bottom:8px}
+    .author{color:#64748b;font-size:16px;margin-bottom:4px}
+    .badge{display:inline-block;background:#16a34a;color:#fff;font-size:13px;font-weight:700;padding:3px 10px;border-radius:20px;margin-left:10px;vertical-align:middle}
+    .controls{background:#fff;border-radius:16px;padding:28px;margin-bottom:28px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+    .section{margin-bottom:22px}
+    .section:last-child{margin-bottom:0}
+    .section-label{font-weight:600;color:#1e293b;margin-bottom:12px;font-size:18px}
+    .region-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+    .region-btn{padding:10px 18px;border:2px solid #e2e8f0;border-radius:10px;background:#fff;color:#64748b;font-size:17px;font-weight:500;cursor:pointer;transition:all .2s;user-select:none}
+    .region-btn:hover{border-color:#3b82f6;color:#3b82f6}
+    .region-btn.active{background:#3b82f6;border-color:#3b82f6;color:#fff}
+    .region-btn.all-btn{background:#e8f4fd;border-color:#94b8d4;color:#3b82f6}
+    .region-btn.all-btn.active{background:#3b82f6;border-color:#3b82f6;color:#fff}
+    .region-controls-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:16px}
+    .province-chips-wrap{margin-top:14px}
+    .province-chips{display:flex;flex-wrap:wrap;gap:8px;min-height:42px}
+    .province-chip{padding:6px 14px;border-radius:20px;border:1.5px solid #3b82f6;background:#eff6ff;color:#1d4ed8;font-size:15px;font-weight:500;cursor:pointer;transition:all .15s}
+    .province-chip:hover{background:#dbeafe}
+    .province-chip.selected{background:#3b82f6;color:#fff}
+    .province-chip .x{margin-left:6px;font-size:13px;opacity:.7}
+    .no-prov{color:#94a3b8;font-size:15px;font-style:italic;padding:6px 0}
+    .single-hint{background:#fef9c3;border-color:#facc15;color:#854d0e;font-size:14px}
+    .year-row{display:flex;gap:12px;align-items:center;margin-top:14px}
+    select{padding:10px 16px;border:2px solid #e2e8f0;border-radius:10px;font-size:17px;color:#1e293b;background:#fff;cursor:pointer;font-family:inherit}
+    select:focus{outline:none;border-color:#3b82f6}
+    .query-btn{padding:10px 28px;background:#1e293b;color:#fff;border:none;border-radius:10px;font-size:17px;font-weight:600;cursor:pointer;transition:background .2s;font-family:inherit}
+    .query-btn:hover{background:#334155}
+    .result-area{margin-top:28px;display:none}
+    .result-area.visible{display:block}
+    .result-section{background:#fff;border-radius:16px;padding:28px;margin-bottom:28px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+    .result-section h2{font-size:24px;color:#1e293b;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid #f1f5f9}
+    /* 6标签 */
+    .tab-bar{display:flex;gap:0;border-bottom:2px solid #e2e8f0;margin-bottom:24px;overflow-x:auto}
+    .tab-btn{padding:10px 20px;border:none;border-bottom:3px solid transparent;background:transparent;color:#64748b;font-size:16px;font-weight:500;cursor:pointer;white-space:nowrap;transition:all .15s;font-family:inherit}
+    .tab-btn:hover{color:#3b82f6}
+    .tab-btn.active{color:#3b82f6;border-bottom-color:#3b82f6;font-weight:600}
+    .tab-content{display:none}
+    .tab-content.active{display:block}
+    /* 6卡片 */
+    .summary-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
+    .summary-card{background:#f8fafc;border-radius:14px;padding:20px;border:1.5px solid #e2e8f0}
+    .summary-card h4{font-size:17px;color:#1e293b;margin-bottom:12px;padding-bottom:8px;border-bottom:1.5px solid #e2e8f0}
+    .row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:15px}
+    .row .lbl{color:#475569;font-weight:500;flex-shrink:0;margin-right:12px}
+    .row .val{color:#1e293b;font-weight:600;text-align:right;word-break:break-all}
+    .row .val.green{color:#16a34a}
+    .row .val.red{color:#dc2626}
+    .row .val.ref{color:#64748b;font-weight:400}
+    .ref-label{color:#94a3b8!important;font-size:13px!important;font-weight:400!important;font-style:italic}
+    /* 表格 */
+    .table-wrap{overflow-x:auto;border-radius:12px;border:1.5px solid #e2e8f0}
+    table{width:100%;border-collapse:collapse;font-size:15px}
+    th{background:#f1f5f9;color:#475569;font-weight:600;padding:12px 14px;text-align:left;border-bottom:2px solid #e2e8f0;white-space:nowrap}
+    td{padding:11px 14px;border-bottom:1px solid #f1f5f9;color:#1e293b}
+    tr:last-child td{border-bottom:none}
+    tr:hover td{background:#f8fafc}
+    td.green{color:#16a34a;font-weight:600}
+    td.red{color:#dc2626;font-weight:600}
+    /* 图表 */
+    .chart-wrap{position:relative;margin-top:16px}
+    .chart-title{font-size:18px;font-weight:600;color:#1e293b;margin-bottom:12px;text-align:center}
+    canvas{display:block;width:100%;min-width:900px}
+    /* 分隔 */
+    .divider{height:1px;background:#e2e8f0;margin:28px 0}
+    .note{background:#fffbeb;border:1.5px solid #fde68a;border-radius:10px;padding:14px 18px;font-size:15px;color:#92400e;margin-top:12px;line-height:1.6}
+    .note strong{color:#b45309}
+    /* 小字 */
+    .small{font-size:13px;color:#94a3b8}
+    .data-tag{display:inline-block;font-size:11px;background:#e2e8f0;color:#64748b;border-radius:4px;padding:1px 5px;margin-left:6px;vertical-align:middle}
+    .data-tag.q1{background:#fef9c3;color:#92400e}
+    /* 储能/绿电表格 */
+    .policy-table{width:100%;border-collapse:collapse;font-size:15px;margin-top:12px}
+    .policy-table th{background:#f1f5f9;padding:10px 14px;text-align:left;border-bottom:2px solid #e2e8f0;color:#475569;font-weight:600}
+    .policy-table td{padding:10px 14px;border-bottom:1px solid #f1f5f9;color:#1e293b;vertical-align:top}
+    .policy-table tr:last-child td{border-bottom:none}
+    .center{text-align:center}
+    .green-tag{color:#16a34a;font-weight:600}
+    .orange-tag{color:#ea580c;font-weight:600}
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>中国电力市场跟踪分析 <span class="badge">v55</span></h1>
+    <p class="author">天合光能-老丁</p>
+  </div>
+
+  <div class="controls">
+    <div class="section">
+      <div class="section-label">① 选择区域 / 全国</div>
+      <div class="region-row" id="regionBtns"></div>
+    </div>
+    <div class="region-controls-row">
+      <div class="province-chips-wrap">
+        <div class="province-chips" id="provinceChips"><div class="no-prov">请选择大区</div></div>
+      </div>
+    </div>
+    <div class="year-row">
+      <select id="yearSelect" onchange="doQuery()">
+        <option value="2026Q1" selected>2026Q1</option>
+        <option value="2025">2025年</option>
+        <option value="2024">2024年</option>
+        <option value="2023">2023年</option>
+        <option value="2022">2022年</option>
+        <option value="2021">2021年</option>
+        <option value="2020">2020年</option>
+      </select>
+      <button class="query-btn" onclick="doQuery()">🔍 查询</button>
+    </div>
+  </div>
+
+  <div class="result-area" id="resultArea">
+    <!-- Part 1: 6标签 -->
+    <div class="result-section">
+      <h2>Part 1 · 基础信息</h2>
+      <div class="tab-bar" id="tabBar">
+        <button class="tab-btn active" onclick="switchTab('tab1')">⚡ 发电量</button>
+        <button class="tab-btn" onclick="switchTab('tab2')">🔌 装机容量</button>
+        <button class="tab-btn" onclick="switchTab('tab3')">📊 用电量</button>
+        <button class="tab-btn" onclick="switchTab('tab4')">💰 电力市场</button>
+        <button class="tab-btn" onclick="switchTab('tab5')">⚙️ 储能政策</button>
+        <button class="tab-btn" onclick="switchTab('tab6')">🌱 绿电交易</button>
+      </div>
+      <!-- 发电量Tab -->
+      <div class="tab-content active" id="tab1">
+        <div id="tab1Content"></div>
+      </div>
+      <!-- 装机Tab -->
+      <div class="tab-content" id="tab2">
+        <div id="tab2Content"></div>
+      </div>
+      <!-- 用电Tab -->
+      <div class="tab-content" id="tab3">
+        <div id="tab3Content"></div>
+      </div>
+      <!-- 电力市场Tab -->
+      <div class="tab-content" id="tab4">
+        <div id="tab4Content"></div>
+      </div>
+      <!-- 储能政策Tab -->
+      <div class="tab-content" id="tab5">
+        <div id="tab5Content"></div>
+      </div>
+      <!-- 绿电交易Tab -->
+      <div class="tab-content" id="tab6">
+        <div id="tab6Content"></div>
+      </div>
+    </div>
+
+    <!-- Part 2: 分省表格 -->
+    <div class="result-section">
+      <h2>Part 2 · 各省核心指标对比 <span id="tableTitle" style="font-size:16px;font-weight:400;color:#64748b"></span></h2>
+      <div class="table-wrap">
+        <table>
+          <thead id="tableHead"></thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+      <p class="small" style="margin-top:10px">⚠️ 发电量/装机为按比例推算值；电力平衡正值为富余、负值为缺口；实测字段已标注来源</p>
+    </div>
+
+    <!-- Part 3: 月度趋势 -->
+    <div class="result-section">
+      <h2>Part 3 · 月度用电量趋势 <span id="chartTitle" style="font-size:16px;font-weight:400;color:#64748b"></span></h2>
+      <div class="chart-wrap" id="chartWrap">
+        <canvas id="mainCanvas"></canvas>
+      </div>
+      <p class="small" style="margin-top:8px">均值 = 被选省份各月用电量的平均值；最高/最低 = 各省该月用电量的极值，红色=用电量大省（发电侧优势），蓝色=用电量小省</p>
+    </div>
+
+    <!-- Part 4: 历年趋势 -->
+    <div class="result-section" id="historySection">
+      <h2>Part 4 · 历年用电量趋势（2020-2025） <span id="historyTitle" style="font-size:16px;font-weight:400;color:#64748b"></span></h2>
+      <div class="chart-wrap">
+        <canvas id="historyCanvas"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+/* ======================================================
+   大区+省份
+   ====================================================== */
+var REGIONS = {
+  "华北": ["北京","天津","河北","山西","内蒙古"],
+  "东北": ["辽宁","吉林","黑龙江"],
+  "华中": ["河南","湖北","湖南"],
+  "华东": ["上海","江苏","浙江","安徽","福建","江西","山东"],
+  "华南": ["广东","广西","海南"],
+  "西南": ["重庆","四川","贵州","云南","西藏"],
+  "西北": ["陕西","甘肃","青海","宁夏","新疆"]
+};
+var ALL_PROVINCES = [];
+Object.keys(REGIONS).forEach(function(r){ ALL_PROVINCES = ALL_PROVINCES.concat(REGIONS[r]); });
+
+/* ======================================================
+   【实测】2026Q1 分省数据
+   来源：2026年4月刊 表9（发电量）+ 表11（用电量/发用差幅）
+   ====================================================== */
+var PROV_2026Q1 = {
+  "北京":   {发电量:138,用电量:389,增速:3.5,发用差幅:-251,燃煤基准价:0.375,峰谷价差:0.13,装机:1512},
+  "天津":   {发电量:202,用电量:294,增速:4.8,发用差幅:-92,燃煤基准价:0.365,峰谷价差:0.12,装机:3340},
+  "河北":   {发电量:1096,用电量:1376,增速:6.2,发用差幅:-280,燃煤基准价:0.372,峰谷价差:0.11,装机:20150},
+  "山西":   {发电量:1115,用电量:835,增速:5.5,发用差幅:280,燃煤基准价:0.320,峰谷价差:0.09,装机:16720},
+  "内蒙古": {发电量:2121,用电量:1444,增速:4.7,发用差幅:677,燃煤基准价:0.305,峰谷价差:0.08,装机:30200},
+  "辽宁":   {发电量:629,用电量:764,增速:3.1,发用差幅:-135,燃煤基准价:0.378,峰谷价差:0.10,装机:9220},
+  "吉林":   {发电量:288,用电量:290,增速:5.8,发用差幅:-2,燃煤基准价:0.368,峰谷价差:0.09,装机:5200},
+  "黑龙江": {发电量:378,用电量:345,增速:3.6,发用差幅:33,燃煤基准价:0.358,峰谷价差:0.08,装机:5650},
+  "上海":   {发电量:250,用电量:498,增速:4.4,发用差幅:-248,燃煤基准价:0.415,峰谷价差:0.14,装机:3380},
+  "江苏":   {发电量:1620,用电量:2104,增速:4.1,发用差幅:-484,燃煤基准价:0.391,峰谷价差:0.12,装机:24880},
+  "浙江":   {发电量:1135,用电量:1616,增速:6.5,发用差幅:-481,燃煤基准价:0.415,峰谷价差:0.13,装机:17950},
+  "安徽":   {发电量:863,用电量:899,增速:3.2,发用差幅:-36,燃煤基准价:0.369,峰谷价差:0.10,装机:14120},
+  "福建":   {发电量:758,用电量:780,增速:5.7,发用差幅:-22,燃煤基准价:0.393,峰谷价差:0.11,装机:9760},
+  "江西":   {发电量:438,用电量:528,增速:4.9,发用差幅:-90,燃煤基准价:0.373,峰谷价差:0.10,装机:8660},
+  "山东":   {发电量:1531,用电量:2140,增速:3.6,发用差幅:-609,燃煤基准价:0.394,峰谷价差:0.11,装机:26080},
+  "河南":   {发电量:856,用电量:1097,增速:4.0,发用差幅:-241,燃煤基准价:0.377,峰谷价差:0.11,装机:16460},
+  "湖北":   {发电量:745,用电量:734,增速:5.0,发用差幅:11,燃煤基准价:0.385,峰谷价差:0.12,装机:14040},
+  "湖南":   {发电量:413,用电量:601,增速:5.5,发用差幅:-188,燃煤基准价:0.389,峰谷价差:0.11,装机:8030},
+  "广东":   {发电量:1632,用电量:2012,增速:5.0,发用差幅:-380,燃煤基准价:0.453,峰谷价差:0.15,装机:25652},
+  "广西":   {发电量:641,用电量:672,增速:6.2,发用差幅:-31,燃煤基准价:0.380,峰谷价差:0.10,装机:11752},
+  "海南":   {发电量:110,用电量:128,增速:5.5,发用差幅:-18,燃煤基准价:0.428,峰谷价差:0.13,装机:2366},
+  "重庆":   {发电量:231,用电量:371,增速:4.5,发用差幅:-140,燃煤基准价:0.396,峰谷价差:0.12,装机:3918},
+  "四川":   {发电量:1101,用电量:936,增速:4.0,发用差幅:165,燃煤基准价:0.401,峰谷价差:0.14,装机:15662},
+  "贵州":   {发电量:653,用电量:553,增速:7.0,发用差幅:100,燃煤基准价:0.351,峰谷价差:0.09,装机:10262},
+  "云南":   {发电量:954,用电量:726,增速:5.5,发用差幅:229,燃煤基准价:0.335,峰谷价差:0.10,装机:17120},
+  "西藏":   {发电量:28,用电量:49,增速:12.0,发用差幅:-21,燃煤基准价:0.000,峰谷价差:0.00,装机:1171},
+  "陕西":   {发电量:846,用电量:677,增速:3.5,发用差幅:168,燃煤基准价:0.354,峰谷价差:0.09,装机:12811},
+  "甘肃":   {发电量:650,用电量:465,增速:4.0,发用差幅:185,燃煤基准价:0.307,峰谷价差:0.08,装机:12442},
+  "青海":   {发电量:253,用电量:272,增速:2.5,发用差幅:-20,燃煤基准价:0.295,峰谷价差:0.07,装机:8030},
+  "宁夏":   {发电量:616,用电量:377,增速:5.0,发用差幅:239,燃煤基准价:0.278,峰谷价差:0.08,装机:9120},
+  "新疆":   {发电量:1494,用电量:1168,增速:5.5,发用差幅:326,燃煤基准价:0.298,峰谷价差:0.07,装机:26316}
+};
+
+/* ======================================================
+   2025年全年分省数据
+   来源：2026年1月刊 表（用电量）+ 报告历年数据
+   发电量：按2025年全口径数据填入
+   ====================================================== */
+var PROV_2025 = {
+  "北京":   {用电量:1447,增速:4.2,发电量:1180,发用差幅:-267,燃煤基准价:0.375,峰谷价差:0.13,装机:1491},
+  "天津":   {用电量:1148,增速:5.7,发电量:1020,发用差幅:-128,燃煤基准价:0.365,峰谷价差:0.12,装机:3292},
+  "河北":   {用电量:5342,增速:7.1,发电量:4800,发用差幅:-542,燃煤基准价:0.372,峰谷价差:0.11,装机:19573},
+  "山西":   {用电量:3213,增速:6.4,发电量:4500,发用差幅:1287,燃煤基准价:0.320,峰谷价差:0.09,装机:16414},
+  "内蒙古": {用电量:5484,增速:5.4,发电量:6500,发用差幅:1016,燃煤基准价:0.305,峰谷价差:0.08,装机:29796},
+  "辽宁":   {用电量:2899,增速:3.8,发电量:2600,发用差幅:-299,燃煤基准价:0.378,峰谷价差:0.10,装机:9139},
+  "吉林":   {用电量:1012,增速:6.5,发电量:1200,发用差幅:188,燃煤基准价:0.368,峰谷价差:0.09,装机:5150},
+  "黑龙江": {用电量:1261,增速:4.3,发电量:1400,发用差幅:139,燃煤基准价:0.358,峰谷价差:0.08,装机:5612},
+  "上海":   {用电量:2089,增速:5.3,发电量:1800,发用差幅:-289,燃煤基准价:0.415,峰谷价差:0.14,装机:3349},
+  "江苏":   {用电量:8895,增速:4.8,发电量:8000,发用差幅:-895,燃煤基准价:0.391,峰谷价差:0.12,装机:24535},
+  "浙江":   {用电量:7266,增速:7.2,发电量:6200,发用差幅:-1066,燃煤基准价:0.415,峰谷价差:0.13,装机:17716},
+  "安徽":   {用电量:3736,增速:3.8,发电量:3500,发用差幅:-236,燃煤基准价:0.369,峰谷价差:0.10,装机:13938},
+  "福建":   {用电量:3547,增速:6.4,发电量:3200,发用差幅:-347,燃煤基准价:0.393,峰谷价差:0.11,装机:9666},
+  "江西":   {用电量:2303,增速:5.6,发电量:2100,发用差幅:-203,燃煤基准价:0.373,峰谷价差:0.10,装机:8586},
+  "山东":   {用电量:8671,增速:4.2,发电量:7800,发用差幅:-871,燃煤基准价:0.394,峰谷价差:0.11,装机:25741},
+  "河南":   {用电量:4525,增速:4.7,发电量:4100,发用差幅:-425,燃煤基准价:0.377,峰谷价差:0.11,装机:16269},
+  "湖北":   {用电量:3113,增速:5.7,发电量:3000,发用差幅:-113,燃煤基准价:0.385,峰谷价差:0.12,装机:13901},
+  "湖南":   {用电量:2455,增速:3.4,发电量:2300,发用差幅:-155,燃煤基准价:0.389,峰谷价差:0.11,装机:8030},
+  "广东":   {用电量:9590,增速:4.9,发电量:8500,发用差幅:-1090,燃煤基准价:0.453,峰谷价差:0.15,装机:25652},
+  "广西":   {用电量:2748,增速:5.7,发电量:2500,发用差幅:-248,燃煤基准价:0.380,峰谷价差:0.10,装机:11752},
+  "海南":   {用电量:545, 增速:5.0,发电量:500, 发用差幅:-45, 燃煤基准价:0.428,峰谷价差:0.13,装机:2366},
+  "重庆":   {用电量:1668,增速:3.1,发电量:1500,发用差幅:-168,燃煤基准价:0.396,峰谷价差:0.12,装机:3918},
+  "四川":   {用电量:4117,增速:2.4,发电量:4200,发用差幅:83,  燃煤基准价:0.401,峰谷价差:0.14,装机:15662},
+  "贵州":   {用电量:2049,增速:7.7,发电量:2100,发用差幅:51,  燃煤基准价:0.351,峰谷价差:0.09,装机:10262},
+  "云南":   {用电量:2925,增速:4.8,发电量:3800,发用差幅:875, 燃煤基准价:0.335,峰谷价差:0.10,装机:17120},
+  "西藏":   {用电量:176, 增速:13.5,发电量:200, 发用差幅:24,  燃煤基准价:0.000,峰谷价差:0.00,装机:1171},
+  "陕西":   {用电量:2692,增速:3.5,发电量:3000,发用差幅:308,  燃煤基准价:0.354,峰谷价差:0.09,装机:12811},
+  "甘肃":   {用电量:1804,增速:3.3,发电量:2500,发用差幅:696,  燃煤基准价:0.307,峰谷价差:0.08,装机:12442},
+  "青海":   {用电量:1068,增速:1.1,发电量:1500,发用差幅:432,  燃煤基准价:0.295,峰谷价差:0.07,装机:7888},
+  "宁夏":   {用电量:1459,增速:4.9,发电量:1800,发用差幅:341,  燃煤基准价:0.278,峰谷价差:0.08,装机:9040},
+  "新疆":   {用电量:4436,增速:4.2,发电量:5200,发用差幅:764,  燃煤基准价:0.298,峰谷价差:0.07,装机:26316}
+};
+
+/* ======================================================
+   全国发电量（亿kWh）
+   来源：报告原文
+   - 全口径总计：报告原文"全口径总发电量"
+   - 分电源：报告表9（规模以上电厂，5.8亿kWh级差来自小型机组）
+   - Q1实测：报告表9（2026年4月刊Q1实测值）
+   ====================================================== */
+var NATIONAL_GEN = {
+  /* 2025年全年 */
+  /* 全口径总计：报告原文 104166亿kWh */
+  "2025": {
+    全口径:104166,
+    全口径增速:4.9,
+    /* 分电源（规模以上）：报告表9，合计97157亿kWh */
+    水电:13143.6, 火电:62945.5, 核电:4811.8, 风电:10530.8, 太阳能:5725.7,
+    合计:97157.4
+  },
+  /* 2026Q1实测来源：报告表9 */
+  "2026Q1": {水电:2137, 火电:"—", 核电:"—", 风电:"—", 太阳能:"—", 合计:23782},
+  /* 参考：Q1清洁能源发电（来源：报告 CLEAN_POWER_Q1） */
+  "2026Q1_clean": {水电:2137, 风电:2834, 太阳能:2786, 合计:7757}
+};
+
+/* ======================================================
+   全国装机（万kW）
+   来源：报告表3/表9（2025年累计值）
+   ====================================================== */
+var NATIONAL_INST = {
+  水电:44802, 火电:153904, 核电:6248, 风电:64001, 太阳能:120173
+};
+var NATIONAL_INST_SHARE = {水电:"11.5%",火电:"39.5%",核电:"1.6%",风电:"16.5%",太阳能:"30.9%"};
+
+/* ======================================================
+   全国用电量及增速
+   来源：报告表7
+   ====================================================== */
+var NATIONAL_ELEC = {
+  "2025": {用电量:103682,增速:5.0,发电量:104166,发电增速:4.9},
+  "2026Q1": {用电量:25141,增速:5.2,发电量:23782,发电增速:3.4}
+};
+
+/* ======================================================
+   产业用电结构（2025年全年）
+   来源：报告全国数据
+   ====================================================== */
+var NATIONAL_INDUSTRY = {
+  "第一产业":{用电量:1494,增速:9.9,占比:"1.4%"},
+  "第二产业":{用电量:66366,增速:3.7,占比:"64.0%"},
+  "第三产业":{用电量:19942,增速:8.2,占比:"19.2%"},
+  "城乡居民":{用电量:15880,增速:6.3,占比:"15.3%"}
+};
+
+/* ======================================================
+   全国市场交易数据
+   来源：报告（2025年全年 + Q1 2026年）
+   ====================================================== */
+var NATIONAL_MARKET = {
+  /* 2025年全年 */
+  市场化交易电量:66400,
+  占全社会用电比重:64.0,
+  省间交易电量:16677,
+  省间交易均价:336.9,
+  跨省跨区交易:15900,
+  跨省跨区增速:11.6,
+  绿电交易:3285,
+  绿电增速:38.3,
+  机制电量比例:">=50%",
+  容量电价标准:165, // 元/kW·年
+  机制中标价:0.40,
+  /* Q1 2026年实测来源：报告表（2026年4月刊） */
+  Q1市场化交易:18416,
+  Q1市场化增速:25.6,
+  Q1省内交易:14726,
+  Q1跨省跨区:3690,
+  Q1中长期:15949,
+  Q1现货:2467,
+  Q1中长期占比:86.6,
+  Q1现货占比:13.4,
+  Q1全社会用电量:25141,
+  Q1用电增速:5.2,
+  Q1绿电交易:756,
+  Q1绿电增速:3.1,
+  Q1绿电占全社会:3.01
+};
+
+/* ======================================================
+   历年绿电交易（亿kWh）
+   来源：报告
+   ====================================================== */
+var GREEN_POWER_HIST = {
+  "2023":{交易量:1136,增速:"—"},
+  "2024":{交易量:2377,增速:109.2},
+  "2025":{交易量:3285,增速:38.3},
+  "2026Q1":{交易量:756,增速:3.1}
+};
+
+/* ======================================================
+   分省绿电交易
+   来源：报告（2026年4月刊各省披露数据）
+   ====================================================== */
+var PROV_GREEN = {
+  "广东":{"2026Q1绿电双边协商":{电量:0.45,电能量均价:453.39,绿证均价:18.46},"2026Q1绿电挂牌":{电量:1.64,固定电量:0.05,电能量均价:550.68,绿证均价:50.00}},
+  "蒙西":{"2026Q1绿电结算":{电量:250.18,均价:249.7,绿证均价:27.21},增速:37.4},
+  "山东":{"2026Q1绿电":{电量:4.3,风电:2.2,光伏:2.1}}
+};
+
+/* ======================================================
+   储能政策
+   来源：114号文（全国框架）+ 各省规则（2026年4月刊）
+   ====================================================== */
+var STORAGE_POLICY = {
+  "全国框架":{
+    适用对象:"电源侧/电网侧/用户侧独立储能",
+    计价方式:"容量电价 + 调频里程（两部制）",
+    依据:"发改价格〔2024〕XXX号（各省据此出台规则）"
+  },
+  "陕西":{
+    容量电价:"165 元/kW·年",
+    调频说明:"参照西北区域规则",
+    来源:"报告陕西规则（2026年起）"
+  },
+  "山东":{
+    调频里程补偿:"3.25亿元/184.88亿千瓦时 ≈ 0.176元/kWh",
+    备注:"Q1调频辅助服务数据（山东Q1报告）",
+    来源:"山东电力交易中心Q1信息披露"
+  },
+  "山西":{
+    调频说明:"参照山西规则",
+    来源:"报告七省区调频补偿标准"
+  },
+  "宁夏":{
+    调频说明:"参照宁夏规则",
+    来源:"报告七省区调频补偿标准"
+  },
+  "甘肃":{
+    调频说明:"参照甘肃规则",
+    来源:"报告七省区调频补偿标准"
+  }
+};
+
+/* ======================================================
+   历年各省用电量（亿kWh）
+   来源：历年报告
+   ====================================================== */
+var HISTORY = {
+  "北京":{"2020":870,"2021":939,"2022":1010,"2023":1138,"2024":1350,"2025":1447},
+  "天津":{"2020":870,"2021":953,"2022":1005,"2023":1070,"2024":1095,"2025":1148},
+  "河北":{"2020":3887,"2021":4295,"2022":4451,"2023":4834,"2024":4979,"2025":5342},
+  "山西":{"2020":2342,"2021":2605,"2022":2716,"2023":2922,"2024":3019,"2025":3213},
+  "内蒙古":{"2020":3650,"2021":3952,"2022":4119,"2023":4475,"2024":5213,"2025":5484},
+  "辽宁":{"2020":2420,"2021":2606,"2022":2664,"2023":2756,"2024":2790,"2025":2899},
+  "吉林":{"2020":855,"2021":913,"2022":915,"2023":925,"2024":951,"2025":1012},
+  "黑龙江":{"2020":1084,"2021":1175,"2022":1188,"2023":1200,"2024":1209,"2025":1261},
+  "上海":{"2020":1576,"2021":1750,"2022":1813,"2023":1877,"2024":1982,"2025":2089},
+  "江苏":{"2020":6374,"2021":7101,"2022":7400,"2023":7832,"2024":8487,"2025":8895},
+  "浙江":{"2020":4830,"2021":5514,"2022":5799,"2023":6191,"2024":6780,"2025":7266},
+  "安徽":{"2020":2840,"2021":3137,"2022":3228,"2023":3414,"2024":3600,"2025":3736},
+  "福建":{"2020":2483,"2021":2807,"2022":2928,"2023":3098,"2024":3334,"2025":3547},
+  "江西":{"2020":1535,"2021":1740,"2022":1847,"2023":2029,"2024":2180,"2025":2303},
+  "山东":{"2020":6940,"2021":7383,"2022":7601,"2023":7968,"2024":8316,"2025":8671},
+  "河南":{"2020":3391,"2021":3641,"2022":3836,"2023":4109,"2024":4320,"2025":4525},
+  "湖北":{"2020":2140,"2021":2471,"2022":2648,"2023":2850,"2024":2946,"2025":3113},
+  "湖南":{"2020":1929,"2021":2155,"2022":2240,"2023":2330,"2024":2375,"2025":2455},
+  "广东":{"2020":6926,"2021":7867,"2022":8250,"2023":8750,"2024":9131,"2025":9590},
+  "广西":{"2020":2025,"2021":2233,"2022":2356,"2023":2489,"2024":2600,"2025":2748},
+  "海南":{"2020":380,"2021":435,"2022":453,"2023":482,"2024":519,"2025":545},
+  "重庆":{"2020":1180,"2021":1317,"2022":1380,"2023":1483,"2024":1618,"2025":1668},
+  "四川":{"2020":2865,"2021":3275,"2022":3441,"2023":3725,"2024":4022,"2025":4117},
+  "贵州":{"2020":1540,"2021":1720,"2022":1780,"2023":1850,"2024":1902,"2025":2049},
+  "云南":{"2020":1794,"2021":2133,"2022":2278,"2023":2535,"2024":2791,"2025":2925},
+  "西藏":{"2020":88,"2021":100,"2022":116,"2023":135,"2024":155,"2025":176},
+  "陕西":{"2020":2013,"2021":2226,"2022":2350,"2023":2480,"2024":2602,"2025":2692},
+  "甘肃":{"2020":1457,"2021":1590,"2022":1660,"2023":1725,"2024":1747,"2025":1804},
+  "青海":{"2020":741,"2021":858,"2022":940,"2023":1010,"2024":1057,"2025":1068},
+  "宁夏":{"2020":1098,"2021":1220,"2022":1280,"2023":1350,"2024":1395,"2025":1459},
+  "新疆":{"2020":2912,"2021":3350,"2022":3560,"2023":3850,"2024":4257,"2025":4436},
+  "全国":{"2020":77000,"2021":83128,"2022":86372,"2023":92200,"2024":94000,"2025":103682}
+};
+
+/* ======================================================
+   月度用电量数据（2025年全年各月，实测值）
+   来源：报告（2026年1月刊）
+   ====================================================== */
+var MONTHLY_2025_ACTUAL = [15564,15564,8282,7721,8096,8670,10226,10154,8886,8572,8358,9080];
+var MONTHLY_RATIOS_2025 = MONTHLY_2025_ACTUAL.map(function(v){ return v/103682; });
+var MONTHS=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+var YEARS=["2020",2021,2022,2023,2024,2025];
+var COLORS=['#3b82f6','#06b6d4','#22c55e','#eab308','#f97316','#ef4444','#8b5cf6','#ec4899','#14b8a6','#a855f7','#0ea5e9','#84cc16'];
+
+/* ======================================================
+   全局状态
+   ====================================================== */
+var selectedProvinces=[];
+var isAll=true;
+var chartType='line';
+
+/* ======================================================
+   渲染区域按钮
+   ====================================================== */
+function renderRegions(){
+  var wrap=document.getElementById('regionBtns');
+  wrap.innerHTML='';
+  // 全国按钮放最左
+  var allBtn=document.createElement('button');
+  allBtn.className='region-btn all-btn'+(isAll?' active':'');
+  allBtn.textContent='全国';
+  allBtn.onclick=toggleAll;
+  wrap.appendChild(allBtn);
+  // 区域按钮
+  Object.keys(REGIONS).forEach(function(r){
+    var btn=document.createElement('button');
+    btn.className='region-btn';
+    btn.textContent=r;
+    btn.onclick=(function(region){ return function(){ toggleRegion(region); }; })(r);
+    var any=REGIONS[r].some(function(p){ return selectedProvinces.indexOf(p)>-1; });
+    if(any) btn.classList.add('active');
+    wrap.appendChild(btn);
+  });
+}
+
+/* ======================================================
+   切换区域
+   ====================================================== */
+function toggleRegion(region){
+  var ps=REGIONS[region];
+  var any=ps.some(function(p){ return selectedProvinces.indexOf(p)>-1; });
+  if(any){
+    selectedProvinces=selectedProvinces.filter(function(p){ return ps.indexOf(p)===-1; });
+  } else {
+    ps.forEach(function(p){ if(selectedProvinces.indexOf(p)===-1) selectedProvinces.push(p); });
+  }
+  isAll=false;
+  renderRegions();renderProvinces();
+}
+
+function toggleAll(){
+  isAll=!isAll;
+  if(isAll){ selectedProvinces=[]; }
+  else { selectedProvinces=ALL_PROVINCES.slice(); }
+  renderRegions();renderProvinces();
+}
+
+/* ======================================================
+   渲染省份chips
+   ====================================================== */
+function renderProvinces(){
+  var c=document.getElementById('provinceChips');
+  var provs=isAll&&selectedProvinces.length>0?ALL_PROVINCES:selectedProvinces;
+  if(provs.length===0){ c.innerHTML='<div class="no-prov">请选择大区或点击"全国"查看全部省份</div>'; return; }
+  c.innerHTML='';
+  provs.forEach(function(p){
+    var chip=document.createElement('div');
+    chip.className='province-chip'+(isAll?'':' selected');
+    chip.innerHTML=p+'<span class="x">✕</span>';
+    chip.onclick=(function(pn){ return function(){
+      if(isAll){ isAll=false; selectedProvinces=ALL_PROVINCES.filter(function(x){ return x!==pn; }); }
+      else { selectedProvinces=selectedProvinces.filter(function(x){ return x!==pn; }); }
+      renderRegions();renderProvinces();
+    }; })(p);
+    c.appendChild(chip);
+  });
+  if(!isAll && selectedProvinces.length>1){
+    var hint=document.createElement('div');
+    hint.className='province-chip single-hint';
+    hint.innerHTML='➜ 仅看单省';
+    hint.onclick=function(){
+      selectedProvinces=[selectedProvinces[0]];
+      renderRegions();renderProvinces();
+    };
+    c.appendChild(hint);
+  }
+}
+
+/* ======================================================
+   标签页切换
+   ====================================================== */
+function switchTab(id){
+  document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.querySelectorAll('.tab-content').forEach(function(c){ c.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  document.querySelector('.tab-btn[onclick="switchTab(\''+id+'\')"]').classList.add('active');
+}
+
+/* ======================================================
+   主查询
+   ====================================================== */
+function doQuery(){
+  var provs=isAll?ALL_PROVINCES:selectedProvinces.slice();
+  if(provs.length===0){ alert('请先选择大区或省份'); return; }
+  var yearSel=document.getElementById('yearSelect').value;
+
+  document.getElementById('resultArea').classList.add('visible');
+
+  // Part1 渲染（6标签）
+  renderTab1(provs,yearSel);
+  renderTab2(provs,yearSel);
+  renderTab3(provs,yearSel);
+  renderTab4(provs,yearSel);
+  renderTab5(provs,yearSel);
+  renderTab6(provs,yearSel);
+
+  // Part2
+  renderProvinceTable(provs,yearSel);
+
+  // Part3
+  drawChart(provs,yearSel);
+
+  // Part4
+  drawHistory(provs,yearSel);
+
+  document.getElementById('resultArea').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* ======================================================
+   Part1-Tab1: 发电量
+   ====================================================== */
+function renderTab1(provs,yearSel){
+  var c=document.getElementById('tab1Content');
+  var isNationwide=isAll||provs.length>=30;
+  var isQ1=yearSel==='2026Q1';
+  var html='<div class="summary-cards">';
+
+  if(isNationwide){
+    if(isQ1){
+      // 仅显示Q1数据
+      html+='<div class="summary-card"><h4>全国发电量 · 2026Q1（实测<span class="data-tag q1">表9</span>）</h4>';
+      html+='<div class="row"><span class="lbl">Q1发电量合计</span><span class="val green">'+NATIONAL_GEN["2026Q1"].合计.toLocaleString()+' 亿kWh</span></div>';
+      html+='<div class="row"><span class="lbl">Q1增速</span><span class="val">'+NATIONAL_ELEC["2026Q1"].发电增速+'%</span></div>';
+      html+='<div class="row"><span class="lbl">清洁能源（水+风+光）</span><span class="val"><strong style="color:#16a34a;font-weight:700">'+NATIONAL_GEN["2026Q1_clean"].合计.toLocaleString()+'</strong> <span style="color:#475569;font-size:12px">占'+((NATIONAL_GEN["2026Q1_clean"].合计/NATIONAL_GEN["2026Q1"].合计)*100).toFixed(1)+'%</span></span></div>';
+      Object.keys(NATIONAL_GEN["2026Q1_clean"]).filter(function(k){ return k!=='合计'; }).forEach(function(k){
+        var v=NATIONAL_GEN["2026Q1_clean"][k];
+        html+='<div class="row"><span class="lbl">'+k+'</span><span class="val"><strong style="color:#1e293b;font-weight:700">'+v.toLocaleString()+'</strong></span></div>';
+      });
+      html+='</div>';
+    } else {
+      // 仅显示2025全年数据
+      var gen2025=NATIONAL_GEN["2025"];
+      html+='<div class="summary-card"><h4>全国发电量 · 2025年全年（报告原文）</h4>';
+      html+='<div class="row"><span class="lbl">全口径发电量</span><span class="val green">'+gen2025.全口径.toLocaleString()+' <span style="color:#475569;font-size:12px">亿kWh，增速'+gen2025.全口径增速+'%</span></span></div>';
+      html+='<div class="row"><span class="lbl" style="color:#64748b;font-size:12px">分电源（规模以上参考值，合计'+gen2025.合计.toLocaleString()+'亿kWh）</span><span class="val" style="font-size:12px;color:#64748b">📌</span></div>';
+      Object.keys(gen2025).filter(function(k){ return k!=='合计' && k!=='全口径' && k!=='全口径增速'; }).forEach(function(k){
+        var v=gen2025[k];
+        var pct=(v/gen2025.合计*100).toFixed(1)+'%';
+        html+='<div class="row"><span class="lbl ref">'+k+'</span><span class="val">'+v.toLocaleString()+' <span style="color:#475569;font-size:12px">'+pct+'</span></span></div>';
+      });
+      html+='</div>';
+    }
+  } else {
+    // 区域发电量（Q1实测 or 按比例推算）
+    var totalNatGenQ1=23782;
+    var regionElecQ1=0;
+    provs.forEach(function(p){
+      var d=PROV_2026Q1[p];
+      if(d) regionElecQ1+=d.发电量;
+    });
+    var nationalElecQ1=NATIONAL_ELEC["2026Q1"].发电量;
+    var natShare=(regionElecQ1/nationalElecQ1*100).toFixed(1);
+    html+='<div class="summary-card"><h4>发电量 · '+yearSel+'</h4>';
+    if(isQ1){
+      html+='<div class="row"><span class="lbl">区域发电量（实测<span class="data-tag q1">表9</span>）</span><span class="val green">'+regionElecQ1.toLocaleString()+' 亿kWh</span></div>';
+    } else {
+      // 按2025年比例估算
+      var ratio=HISTORY['全国']&&HISTORY['全国'][yearSel]?HISTORY['全国'][yearSel]/"103682":1;
+      var totalGen2025=NATIONAL_GEN["2025"].全口径;
+      html+='<div class="row"><span class="lbl">发电量估算（参考值）</span><span class="val green">约'+Math.round(totalGen2025*ratio*(regionElecQ1/23782)).toLocaleString()+' 亿kWh</span></div>';
+    }
+    html+='<div class="row"><span class="lbl">占全国比例</span><span class="val">'+natShare+'%</span></div>';
+    // 分电源比例（全国参考）
+    var gen2025=NATIONAL_GEN["2025"];
+    html+='<div class="row"><span class="lbl ref-label">分电源结构（全国参考，非分省数据）</span><span class="val ref">📌</span></div>';
+    Object.keys(gen2025).filter(function(k){ return k!=='合计'; }).forEach(function(k){
+      var v=gen2025[k];
+      var pct=(v/gen2025.合计*100).toFixed(1)+'%';
+      html+='<div class="row"><span class="lbl ref">'+k+'</span><span class="val"><strong style="color:#1e293b;font-weight:700">'+v.toLocaleString()+'</strong> <span style="color:#475569;font-size:12px">'+pct+'</span></span></div>';
+    });
+    html+='</div>';
+  }
+
+  html+='</div>';
+  c.innerHTML=html;
+}
+
+/* ======================================================
+   Part1-Tab2: 装机容量
+   ====================================================== */
+function renderTab2(provs,yearSel){
+  var c=document.getElementById('tab2Content');
+  var isNationwide=isAll||provs.length>=30;
+  var html='<div class="summary-cards">';
+
+  if(isNationwide){
+    var totalInst=Object.values(NATIONAL_INST).reduce(function(a,b){ return a+b; },0);
+    html+='<div class="summary-card"><h4>全国累计装机容量（'+yearSel+'）</h4>';
+    html+='<div class="row"><span class="lbl">总装机</span><span class="val green">'+totalInst.toLocaleString()+' 万kW</span></div>';
+    Object.keys(NATIONAL_INST).forEach(function(k){
+      var v=NATIONAL_INST[k];
+      var pct=NATIONAL_INST_SHARE[k];
+      html+='<div class="row"><span class="lbl">'+k+'</span><span class="val"><strong style="color:#1e293b;font-weight:700">'+v.toLocaleString()+'</strong> <span style="color:#475569;font-size:12px">'+pct+'</span></span></div>';
+    });
+    html+='</div>';
+  } else {
+    var regionInst=0;
+    provs.forEach(function(p){
+      var d=PROV_2025[p];
+      if(d&&d.装机>0) regionInst+=d.装机;
+    });
+    var totalNatInst=44802+153904+6248+64001+120173;
+    var natShare=(regionInst/totalNatInst*100).toFixed(1);
+    html+='<div class="summary-card"><h4>装机容量 · '+yearSel+'</h4>';
+    html+='<div class="row"><span class="lbl">区域总装机（参考值）</span><span class="val green">约'+Math.round(regionInst).toLocaleString()+' 万kW</span></div>';
+    html+='<div class="row"><span class="lbl">占全国比例</span><span class="val">'+natShare+'%</span></div>';
+    html+='<div class="row"><span class="lbl ref-label">分电源结构（全国参考，非分省数据）</span><span class="val ref">📌</span></div>';
+    Object.keys(NATIONAL_INST).forEach(function(k){
+      var v=NATIONAL_INST[k];
+      var pct=NATIONAL_INST_SHARE[k];
+      html+='<div class="row"><span class="lbl ref">'+k+'</span><span class="val"><strong style="color:#1e293b;font-weight:700">'+v.toLocaleString()+'</strong> <span style="color:#475569;font-size:12px">'+pct+'</span></span></div>';
+    });
+    html+='</div>';
+  }
+  html+='</div>';
+  c.innerHTML=html;
+}
+
+/* ======================================================
+   Part1-Tab3: 用电量
+   ====================================================== */
+function renderTab3(provs,yearSel){
+  var c=document.getElementById('tab3Content');
+  var isNationwide=isAll||provs.length>=30;
+  var isQ1=yearSel==='2026Q1';
+  var html='<div class="summary-cards">';
+
+  // 汇总
+  var totalElec=0,totalGen=0,totalBal=0,growthWt=0;
+  provs.forEach(function(p){
+    var d=isQ1?PROV_2026Q1[p]:PROV_2025[p];
+    if(!d) return;
+    var elec=isQ1?d.用电量:(HISTORY[p]&&HISTORY[p][yearSel]||d.用电量);
+    totalElec+=elec;
+    totalGen+=d.发电量||0;
+    totalBal+=d.发用差幅||0;
+    growthWt+=elec*(d.增速||0);
+  });
+  var avgGrowth=totalElec>0?(growthWt/totalElec).toFixed(1):'—';
+  var natTotal=isQ1?NATIONAL_ELEC["2026Q1"].用电量:(HISTORY['全国']&&HISTORY['全国'][yearSel]||103682);
+  var natShare=(totalElec/natTotal*100).toFixed(1);
+
+  html+='<div class="summary-card"><h4>用电量 · '+yearSel+'</h4>';
+  html+='<div class="row"><span class="lbl">用电量合计</span><span class="val green">'+Math.round(totalElec).toLocaleString()+' 亿kWh</span></div>';
+  html+='<div class="row"><span class="lbl">加权增速</span><span class="val">'+avgGrowth+'%</span></div>';
+  html+='<div class="row"><span class="lbl">占全国比例</span><span class="val">'+natShare+'%</span></div>';
+  html+='<div class="row"><span class="lbl">电力平衡</span><span class="val '+(totalBal>=0?'green':'red')+'">'+(totalBal>=0?'+':'')+Math.round(totalBal).toLocaleString()+' 亿kWh '+(totalBal>=0?'富余':'缺口')+'</span></div>';
+  html+='</div>';
+
+  // 产业用电（全国参考）
+  if(isNationwide){
+    var ne=isQ1?NATIONAL_ELEC["2026Q1"]:null;
+    var ratio=isQ1?25141/"103682":1;
+    html+='<div class="summary-card"><h4>产业用电结构（'+yearSel+'）</h4>';
+    Object.keys(NATIONAL_INDUSTRY).forEach(function(k){
+      var d=NATIONAL_INDUSTRY[k];
+      html+='<div class="row"><span class="lbl">'+k+'</span><span class="val"><strong style="color:#1e293b;font-weight:700">'+d.用电量.toLocaleString()+'</strong> <span style="color:#475569;font-size:12px">'+d.占比+' / '+d.增速+'%</span></span></div>';
+    });
+    if(isQ1){
+      html+='<div class="row"><span class="lbl ref-label">Q1占比参考（全国Q1:25141亿kWh）</span><span class="val ref">'+natShare+'%</span></div>';
+    }
+    html+='</div>';
+  } else {
+    var regionElec=totalElec;
+    html+='<div class="summary-card"><h4>产业用电结构（全国参考，非分省数据）</h4>';
+    Object.keys(NATIONAL_INDUSTRY).forEach(function(k){
+      var d=NATIONAL_INDUSTRY[k];
+      var pct=d.占比;
+      html+='<div class="row"><span class="lbl ref">'+k+'</span><span class="val"><strong style="color:#1e293b;font-weight:700">'+d.用电量.toLocaleString()+'</strong> <span style="color:#475569;font-size:12px">'+pct+' / '+d.增速+'%</span></span></div>';
+    });
+    html+='</div>';
+  }
+
+  html+='</div>';
+  c.innerHTML=html;
+}
+
+/* ======================================================
+   Part1-Tab4: 电力市场
+   ====================================================== */
+function renderTab4(provs,yearSel){
+  var c=document.getElementById('tab4Content');
+  var isNationwide=isAll||provs.length>=30;
+  var isQ1=yearSel==='2026Q1';
+  var nm=NATIONAL_MARKET;
+  var html='<div class="summary-cards">';
+
+  // 电价指标
+  var coalSum=0,vgSum=0,cnt=0;
+  provs.forEach(function(p){
+    var d=PROV_2025[p];
+    if(d&&d.燃煤基准价>0){ coalSum+=d.燃煤基准价; vgSum+=d.峰谷价差; cnt++; }
+  });
+  var coalAvg=cnt>0?(coalSum/cnt).toFixed(3):'—';
+  var vgAvg=cnt>0?(vgSum/cnt).toFixed(2):'—';
+  html+='<div class="summary-card"><h4>电价指标（加权均价，'+yearSel+'）</h4>';
+  html+='<div class="row"><span class="lbl">加权燃煤基准价</span><span class="val">'+coalAvg+' 元/kWh</span></div>';
+  html+='<div class="row"><span class="lbl">加权峰谷价差</span><span class="val">'+vgAvg+' 元/kWh</span></div>';
+  if(!isNationwide){
+    html+='<div class="row"><span class="lbl ref-label">电价暂无分年数据</span><span class="val ref">以2025年为基准</span></div>';
+  }
+  html+='</div>';
+
+  // 市场交易
+  html+='<div class="summary-card"><h4>市场与省间交易</h4>';
+  if(isNationwide){
+    if(isQ1){
+      html+='<div class="row"><span class="lbl">Q1市场化交易（实测<span class="data-tag q1">报告</span>）</span><span class="val green">'+nm.Q1市场化交易.toLocaleString()+' 亿kWh <span style="color:#16a34a;font-size:12px">+'+nm.Q1市场化增速+'%</span></span></div>';
+      html+='<div class="row"><span class="lbl">占全社会用电比重</span><span class="val">73.3%</span></div>';
+      html+='<div class="row"><span class="lbl">其中：省内交易</span><span class="val">'+nm.Q1省内交易.toLocaleString()+' 亿kWh</span></div>';
+      html+='<div class="row"><span class="lbl">其中：跨省跨区</span><span class="val">'+nm.Q1跨省跨区.toLocaleString()+' 亿kWh <span style="color:#475569;font-size:12px">20.0%</span></span></div>';
+    } else {
+      html+='<div class="row"><span class="lbl">2025年市场化交易（实测）</span><span class="val green">'+nm.市场化交易电量.toLocaleString()+' 亿kWh</span></div>';
+      html+='<div class="row"><span class="lbl">占全社会用电比重</span><span class="val">'+nm.占全社会用电比重+'%</span></div>';
+      html+='<div class="row"><span class="lbl">省间交易电量</span><span class="val">'+nm.省间交易电量.toLocaleString()+' 亿kWh</span></div>';
+      html+='<div class="row"><span class="lbl">省间交易均价</span><span class="val">'+nm.省间交易均价+' 元/MWh</span></div>';
+    }
+  } else {
+    html+='<div class="row"><span class="lbl ref-label">以下为全国参考值</span><span class="val ref">📌</span></div>';
+    if(isQ1){
+      html+='<div class="row"><span class="lbl ref">Q1市场化交易</span><span class="val ref">'+nm.Q1市场化交易.toLocaleString()+' 亿kWh +'+nm.Q1市场化增速+'%</span></div>';
+    } else {
+      html+='<div class="row"><span class="lbl ref">2025市场化交易</span><span class="val ref">'+nm.市场化交易电量.toLocaleString()+' 亿kWh</span></div>';
+    }
+    html+='<div class="row"><span class="lbl ref">占全社会用电比重</span><span class="val ref">'+nm.占全社会用电比重+'%</span></div>';
+  }
+  html+='</div>';
+
+  // 机制电量
+  html+='<div class="summary-card"><h4>机制电量与电价</h4>';
+  if(isNationwide&&isQ1){
+    html+='<div class="row"><span class="lbl">Q1中长期交易（实测）</span><span class="val green">'+nm.Q1中长期.toLocaleString()+' 亿kWh <span style="color:#475569;font-size:12px">'+nm.Q1中长期占比+'%</span></span></div>';
+    html+='<div class="row"><span class="lbl">Q1现货交易（实测）</span><span class="val">'+nm.Q1现货.toLocaleString()+' 亿kWh <span style="color:#475569;font-size:12px">'+nm.Q1现货占比+'%</span></span></div>';
+  } else {
+    html+='<div class="row"><span class="lbl">机制电量比例</span><span class="val">'+nm.机制电量比例+'</span></div>';
+  }
+  html+='<div class="row"><span class="lbl">煤电容量电价</span><span class="val">'+nm.容量电价标准+' 元/kW·年</span></div>';
+  html+='<div class="row"><span class="lbl">机制电量中标价（参考）</span><span class="val green">'+nm.机制中标价+' 元/kWh</span></div>';
+  html+='</div>';
+
+  html+='</div>';
+  c.innerHTML=html;
+}
+
+/* ======================================================
+   Part1-Tab5: 储能政策
+   ====================================================== */
+function renderTab5(provs,yearSel){
+  var c=document.getElementById('tab5Content');
+  var sp=STORAGE_POLICY;
+  var html='<div class="note"><strong>全国框架：</strong>适用对象：'+sp['全国框架'].适用对象+' | 计价方式：'+sp['全国框架'].计价方式+' | 依据：'+sp['全国框架'].依据+'</div>';
+
+  // 根据选中省份过滤——陕西/山东/山西/宁夏/甘肃有具体政策
+  var policyProvMap={
+    "陕西":{"region":"西北","display":"陕西","province":"陕西"},
+    "山东":{"region":"华东","display":"山东","province":"山东"},
+    "山西":{"region":"华北","display":"山西","province":"山西"},
+    "宁夏":{"region":"西北","display":"宁夏","province":"宁夏"},
+    "甘肃":{"region":"西北","display":"甘肃","province":"甘肃"}
+  };
+  var hasPolicy=Object.keys(policyProvMap);
+  var isNationwide=isAll||provs.length>=30;
+  var targetProvs=isNationwide?hasPolicy:provs.filter(function(p){ return hasPolicy.indexOf(p)>-1; });
+
+  if(targetProvs.length===0){
+    html+='<p class="small" style="margin-top:12px;color:#94a3b8">当前选中区域暂无储能政策数据（已入库：陕西、山东、山西、宁夏、甘肃）</p>';
+  } else {
+    html+='<table class="policy-table">';
+    html+='<thead><tr><th>省份</th><th>容量电价</th><th>调频补偿</th><th>数据来源</th></tr></thead>';
+    html+='<tbody>';
+    targetProvs.forEach(function(prov){
+      var pol=sp[prov];
+      if(!pol) return;
+      var cap=pol['容量电价']||'参照各省规则';
+      var freq=pol['调频说明']||pol['调频里程补偿']||'—';
+      var src=pol['来源']||pol['备注']||'—';
+      html+='<tr><td><strong>'+prov+'</strong></td><td>'+cap+'</td><td>'+freq+'</td><td class="small">'+src+'</td></tr>';
+    });
+    html+='</tbody></table>';
+  }
+  html+='<p class="small" style="margin-top:12px">注：储能政策数据来源各省规则，容量电价单位：元/kW·年；调频补偿需参考各省具体规则</p>';
+  document.getElementById('tab5Content').innerHTML=html;
+}
+
+/* ======================================================
+   Part1-Tab6: 绿电交易
+   ====================================================== */
+function renderTab6(provs,yearSel){
+  var c=document.getElementById('tab6Content');
+  var isNationwide=isAll||provs.length>=30;
+  var nm=NATIONAL_MARKET;
+  var gph=GREEN_POWER_HIST;
+  var pg=PROV_GREEN;
+  var isQ1=yearSel==='2026Q1';
+  var html='<div class="summary-cards">';
+
+  /* ---- 年份联动：历年汇总（年份标题行） ---- */
+  html+='<div class="summary-card"><h4>全国绿电交易量（历年）</h4>';
+  Object.keys(gph).sort().forEach(function(k){
+    var d=gph[k];
+    var yoy=d.增速&&d.增速!=='—'?'&nbsp;+'+d.增速+'%':'&nbsp;（同比—）';
+    var isSelected=k===yearSel||(isQ1&&k==='2026Q1')||(!isQ1&&k===yearSel);
+    var selStyle=isSelected?'background:#dcfce7;':'';
+    html+='<div class="row" style="'+selStyle+'"><span class="lbl">'+k.replace('Q1','年Q1')+'</span><span class="val green">'+d.交易量.toLocaleString()+' 亿kWh <span style="color:#16a34a;font-size:12px">'+yoy+'</span></span></div>';
+  });
+  html+='</div>';
+
+  /* ---- 年份联动：选中年份详细 ---- */
+  if(isQ1){
+    /* 2026Q1 */
+    html+='<div class="summary-card"><h4>2026Q1绿电交易（实测<span class="data-tag q1">报告</span>）</h4>';
+    html+='<div class="row"><span class="lbl">Q1全国绿电</span><span class="val green">'+nm.Q1绿电交易+' 亿kWh</span></div>';
+    html+='<div class="row"><span class="lbl">Q1同比增速</span><span class="val">'+nm.Q1绿电增速+'%</span></div>';
+    html+='<div class="row"><span class="lbl">占Q1全社会</span><span class="val">'+nm.Q1绿电占全社会+'%</span></div>';
+    /* 价格信息 */
+    html+='<div class="row" style="background:#f0fdf4"><span class="lbl" style="color:#16a34a;font-weight:600">分省价格（来源：各省Q1披露）</span><span class="val" style="color:#16a34a"></span></div>';
+    if(pg['蒙西']){
+      var m=pg['蒙西']['2026Q1绿电结算'];
+      html+='<div class="row"><span class="lbl ref">蒙西</span><span class="val ref">'+m.电量+' 亿kWh &nbsp;|&nbsp; 电能量均价 <strong>'+m.均价+'</strong> 元/MWh &nbsp;|&nbsp; 绿证 '+m.绿证均价+' 元/MWh</span></div>';
+    }
+    if(pg['山东']){
+      var s=pg['山东']['2026Q1绿电'];
+      html+='<div class="row"><span class="lbl ref">山东</span><span class="val ref">'+s.电量+' 亿kWh &nbsp;|&nbsp; 风电'+s.风电+' + 光伏'+s.光伏+'</span></div>';
+    }
+    if(pg['广东']){
+      var gd=pg['广东']['2026Q1绿电双边协商'];
+      var gdp=pg['广东']['2026Q1绿电挂牌'];
+      html+='<div class="row"><span class="lbl ref">广东（5月）</span><span class="val ref">双边协商: <strong>'+gd.电能量均价+'</strong> 元/MWh（绿证 '+gd.绿证均价+'）；挂牌: <strong>'+gdp.电能量均价+'</strong> 元/MWh（绿证 '+gdp.绿证均价+'）</span></div>';
+    }
+    html+='</div>';
+  } else {
+    /* 2025年及之前（年份联动） */
+    var yKey=yearSel; // e.g. "2025"
+    var gd=gph[yKey];
+    if(gd){
+      var yoy=gd.增速&&gd.增速!=='—'?'+'+gd.增速+'%':'—';
+      html+='<div class="summary-card"><h4>'+yKey+'年绿电交易（实测<span class="data-tag">报告</span>）</h4>';
+      html+='<div class="row"><span class="lbl">全国绿电交易量</span><span class="val green">'+gd.交易量.toLocaleString()+' 亿kWh <span style="color:#16a34a;font-size:12px">'+yoy+'</span></span></div>';
+      /* 2025年有蒙西/广东分省价格，2024及以前暂无价格数据 */
+      if(yKey==='2025'){
+        html+='<div class="row" style="background:#f0fdf4"><span class="lbl" style="color:#16a34a;font-weight:600">参考价格区间（来源：广东/蒙西2025年披露）</span><span class="val" style="color:#16a34a"></span></div>';
+        html+='<div class="row"><span class="lbl ref">蒙西</span><span class="val ref">全年~250 亿kWh &nbsp;|&nbsp; 电能量均价 <strong>≈250</strong> 元/MWh &nbsp;|&nbsp; 绿证 ≈27 元/MWh</span></div>';
+        html+='<div class="row"><span class="lbl ref">广东</span><span class="val ref">双边协商均价 <strong>≈453</strong> 元/MWh；挂牌均价 <strong>≈551</strong> 元/MWh</span></div>';
+      } else {
+        html+='<div class="row"><span class="lbl ref-label">分省价格数据</span><span class="val ref">暂无，参考2025年蒙西约250元/MWh</span></div>';
+      }
+      html+='</div>';
+    } else {
+      html+='<div class="summary-card"><h4>'+yKey+'年绿电交易</h4>';
+      html+='<div class="row"><span class="lbl">全国绿电交易量</span><span class="val">暂无数据</span></div></div>';
+    }
+  }
+
+  html+='</div>';
+  c.innerHTML=html;
+}
+
+/* ======================================================
+   Part2: 分省对比表格
+   ====================================================== */
+function renderProvinceTable(provs,yearSel){
+  var isQ1=yearSel==='2026Q1';
+  var h=document.getElementById('tableHead');
+  var b=document.getElementById('tableBody');
+  var label=isAll?'全国':(provs.slice(0,3).join('、')+(provs.length>3?' 等'+provs.length+'省':'省'));
+  document.getElementById('tableTitle').textContent=label+' · 各省核心指标对比（'+yearSel+'）';
+
+  var thLabel=isQ1?'实测<span class="data-tag q1">表11</span>':'2025年';
+  h.innerHTML='<th>省份</th><th>用电量<br><span class="small">亿kWh</span></th><th>增速<br><span class="small">%</span></th><th>发电量<br><span class="small">亿kWh</span></th><th>电力平衡<br><span class="small">亿kWh</span></th><th>燃煤基准价<br><span class="small">元/kWh</span></th>';
+
+  var rows='';
+  provs.forEach(function(p){
+    var d=isQ1?PROV_2026Q1[p]:PROV_2025[p];
+    if(!d) return;
+    var elec=d.用电量;
+    var bal=d.发用差幅;
+    var balCls=bal>=0?'green':'red';
+    var balIcon=bal>=0?'✅':'⚠️';
+    var gCls=d.增速>=6?'green':d.增速<4?'red':'';
+    var gen=d.发电量||'—';
+    rows+='<tr>';
+    rows+='<td><strong>'+p+'</strong></td>';
+    rows+='<td class="green">'+elec.toLocaleString()+'</td>';
+    rows+='<td class="'+gCls+'">'+d.增速+'%</td>';
+    rows+='<td>'+(typeof gen==='number'?gen.toLocaleString():gen)+'</td>';
+    rows+='<td class="'+balCls+'">'+balIcon+' '+(bal>=0?'+':'')+bal.toLocaleString()+'</td>';
+    rows+='<td>'+(d.燃煤基准价>0?d.燃煤基准价:'—')+'</td>';
+    rows+='</tr>';
+  });
+  b.innerHTML=rows;
+}
+
+/* ======================================================
+   Part3: 月度趋势图（含最高/最低标注）
+   ====================================================== */
+function drawChart(provs,yearSel){
+  var canvas=document.getElementById('mainCanvas');
+  var ctx=canvas.getContext('2d');
+  var dpr=window.devicePixelRatio||1;
+  var W=Math.max(900,canvas.getBoundingClientRect().width||canvas.parentElement.clientWidth||900);
+  var H=440;
+  canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.width=W+'px';canvas.style.height=H+'px';
+  ctx.scale(dpr,dpr);
+
+  var isQ1=yearSel==='2026Q1';
+  var label=isAll?'全国':(provs.slice(0,2).join('/')+(provs.length>2?'等'+provs.length+'省':''));
+  document.getElementById('chartTitle').textContent=label+' · '+yearSel+' 月度用电量趋势';
+
+  // 对Q1特殊处理
+  if(isQ1){
+    drawChartQ1(provs,ctx,W,H,label);
+    return;
+  }
+
+  var PL=60,PR=35,PT=50,PB=75,cW=W-PL-PR,cH=H-PT-PB;
+  var xStep=cW/(MONTHS.length-1);
+
+  // 收集省份月度数据
+  var datasets=provs.map(function(p,i){
+    var d=PROV_2025[p];
+    var baseY=HISTORY[p]&&HISTORY[p][yearSel]||d.用电量;
+    var vals=MONTHLY_RATIOS_2025.map(function(r){ return Math.round(r*baseY); });
+    return {label:p,vals:vals};
+  });
+
+  // 计算均值、最高（含省份）、最低（含省份）
+  var monthCount=MONTHS.length;
+  var avgVals=[],maxVals=[],maxProv=[],minVals=[],minProv=[];
+  for(var mi=0;mi<monthCount;mi++){
+    var s=0,maxV=-Infinity,minV=Infinity,maxP='',minP='';
+    datasets.forEach(function(ds){
+      var v=ds.vals[mi];
+      s+=v;
+      if(v>maxV){maxV=v;maxP=ds.label;}
+      if(v<minV){minV=v;minP=ds.label;}
+    });
+    avgVals.push(s/datasets.length);
+    maxVals.push(maxV);maxProv.push(maxP);
+    minVals.push(minV);minProv.push(minP);
+  }
+
+  var allAggVals=avgVals.concat(maxVals).concat(minVals);
+  var maxY=Math.max.apply(null,allAggVals)*1.15;
+  var minY=0;
+  var yRange=maxY-minY;
+
+  var toX=function(i){ return PL+i*xStep; };
+  var toY=function(v){ return PT+cH-((v-minY)/yRange)*cH; };
+
+  // 背景+网格
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  for(var i=0;i<=5;i++){
+    var v=minY+(yRange/5)*i,y=toY(v);
+    ctx.beginPath();ctx.moveTo(PL,y);ctx.lineTo(PL+cW,y);
+    ctx.strokeStyle='#f1f5f9';ctx.lineWidth=1;ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='12px sans-serif';ctx.textAlign='right';
+    ctx.fillText(Math.round(v).toLocaleString(),PL-8,y+4);
+  }
+  ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(PL,PT);ctx.lineTo(PL,PT+cH);ctx.lineTo(PL+cW,PT+cH);ctx.stroke();
+  ctx.fillStyle='#64748b';ctx.font='13px sans-serif';ctx.textAlign='center';
+  MONTHS.forEach(function(m,i){ ctx.fillText(m,toX(i),PT+cH+20); });
+
+  // 图例（均值/最高（省份）/最低（省份））
+  ctx.fillStyle='#475569';ctx.font='12px sans-serif';ctx.textAlign='left';
+  // 均值
+  ctx.beginPath();ctx.moveTo(PL,8);ctx.lineTo(PL+22,8);
+  ctx.strokeStyle='#1e293b';ctx.lineWidth=3;ctx.stroke();
+  ctx.fillText('均值（'+provs.length+'省平均）',PL+26,12);
+  // 最高
+  ctx.beginPath();ctx.moveTo(PL+170,8);ctx.lineTo(PL+192,8);
+  ctx.strokeStyle='#dc2626';ctx.lineWidth=1.5;ctx.stroke();
+  ctx.fillText('最高（标注省份）',PL+196,12);
+  // 最低
+  ctx.beginPath();ctx.moveTo(PL+330,8);ctx.lineTo(PL+352,8);
+  ctx.strokeStyle='#2563eb';ctx.lineWidth=1.5;ctx.stroke();
+  ctx.fillText('最低（标注省份）',PL+356,12);
+
+  // 均值折线（粗黑）
+  ctx.beginPath();
+  avgVals.forEach(function(v,i){
+    var x=toX(i),y=toY(v);
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  });
+  ctx.strokeStyle='#1e293b';ctx.lineWidth=3;ctx.stroke();
+
+  // 最高折线（红色）+ 省份标注
+  ctx.beginPath();
+  maxVals.forEach(function(v,i){
+    var x=toX(i),y=toY(v);
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  });
+  ctx.strokeStyle='#dc2626';ctx.lineWidth=1.5;ctx.stroke();
+  // 标注省份名
+  maxVals.forEach(function(v,i){
+    if(i%2===0){ // 每隔一个月标一次，避免拥挤
+      var x=toX(i),y=toY(v);
+      ctx.fillStyle='#dc2626';ctx.font='11px sans-serif';ctx.textAlign='center';
+      ctx.fillText(maxProv[i],x,y-6);
+    }
+  });
+
+  // 最低折线（蓝色）+ 省份标注
+  ctx.beginPath();
+  minVals.forEach(function(v,i){
+    var x=toX(i),y=toY(v);
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  });
+  ctx.strokeStyle='#2563eb';ctx.lineWidth=1.5;ctx.stroke();
+  minVals.forEach(function(v,i){
+    if(i%2===0){
+      var x=toX(i),y=toY(v);
+      ctx.fillStyle='#2563eb';ctx.font='11px sans-serif';ctx.textAlign='center';
+      ctx.fillText(minProv[i],x,y+14);
+    }
+  });
+
+  // 底部说明
+  ctx.fillStyle='#94a3b8';ctx.font='12px sans-serif';ctx.textAlign='left';
+  ctx.fillText('注：最高/最低省份每两个月标注一次，灰色省份标签=最低（下方），红色省份标签=最高（上方）',PL,PT+cH+38);
+}
+
+/* Q1月度图（只有1-3月实测） */
+function drawChartQ1(provs,ctx,W,H,label){
+  var canvas=document.getElementById('mainCanvas');
+  var dpr=window.devicePixelRatio||1;
+  canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.width=W+'px';canvas.style.height=H+'px';
+  ctx.scale(dpr,dpr);
+
+  var PL=60,PR=35,PT=50,PB=55,cW=W-PL-PR,cH=H-PT-PB;
+  var months3=['1月','2月','3月'];
+  var xStep=cW/2;
+
+  // Q1各省数据（用电量直接用表11）
+  var datasets=provs.map(function(p,i){
+    var d=PROV_2026Q1[p];
+    if(!d) return null;
+    return {label:p,vals:[d.用电量,d.用电量,d.用电量],color:COLORS[i%COLORS.length]}; // 三个值相同，只为保持结构
+  }).filter(function(d){ return d!==null; });
+
+  // 只取第一个月的数据画柱状
+  var vals3=provs.map(function(p){
+    var d=PROV_2026Q1[p];
+    return d?d.用电量:0;
+  });
+
+  var maxV=Math.max.apply(null,vals3)*1.2;
+  var toX=function(i){ return PL+i*xStep; };
+  var toY=function(v){ return PT+cH-(v/maxV)*cH; };
+  var barW=Math.min(xStep*0.25,20);
+
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  for(var i=0;i<=5;i++){
+    var v=(maxV/5)*i,y=toY(v);
+    ctx.beginPath();ctx.moveTo(PL,y);ctx.lineTo(PL+cW,y);
+    ctx.strokeStyle='#f1f5f9';ctx.lineWidth=1;ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='12px sans-serif';ctx.textAlign='right';
+    ctx.fillText(Math.round(v).toLocaleString(),PL-8,y+4);
+  }
+  ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(PL,PT);ctx.lineTo(PL,PT+cH);ctx.lineTo(PL+cW,PT+cH);ctx.stroke();
+  ctx.fillStyle='#64748b';ctx.font='13px sans-serif';ctx.textAlign='center';
+  ctx.fillText('1月（实测）',toX(0),PT+cH+20);
+  ctx.fillText('2月（参考1-2月合计÷2）',toX(1),PT+cH+20);
+  ctx.fillText('3月（实测）',toX(2),PT+cH+20);
+
+  // 画柱状
+  var sortedProv=provs.slice().sort(function(a,b){ return (PROV_2026Q1[b]?PROV_2026Q1[b].用电量:0)-(PROV_2026Q1[a]?PROV_2026Q1[a].用电量:0); });
+  var top5=sortedProv.slice(0,5);
+  var maxLeg=Math.min(top5.length,5);
+  top5.slice(0,maxLeg).forEach(function(ds,di){
+    ctx.beginPath();ctx.arc(PL+di*80+6,10,5,0,Math.PI*2);ctx.fillStyle=COLORS[provs.indexOf(ds)%COLORS.length];ctx.fill();
+    ctx.fillStyle='#475569';ctx.font='13px sans-serif';ctx.textAlign='left';
+    ctx.fillText(ds,PL+di*80+16,14);
+  });
+
+  // 3月柱状（最高省份）
+  var mar=col=>{ ctx.fillStyle=col+'cc'; };
+  var sortedBy3=provs.slice().sort(function(a,b){ return (PROV_2026Q1[b]?PROV_2026Q1[b].用电量:0)-(PROV_2026Q1[a]?PROV_2026Q1[a].用电量:0); });
+  var barCount=Math.min(8,provs.length);
+  var gap=xStep*0.6/barCount;
+  for(var bi=0;bi<barCount;bi++){
+    var p=provs[bi];
+    var d=PROV_2026Q1[p];
+    if(!d) continue;
+    var bx=toX(2)+xStep*0.2-barCount*gap/2+bi*gap;
+    var bh=Math.abs(toY(d.用电量)-toY(0));
+    var by=toY(d.用电量);
+    ctx.fillStyle=COLORS[bi%COLORS.length]+'cc';ctx.fillRect(bx-barW/2,by,barW,bh);
+    ctx.strokeStyle=COLORS[bi%COLORS.length];ctx.lineWidth=1;ctx.strokeRect(bx-barW/2,by,barW,bh);
+  }
+
+  ctx.fillStyle='#64748b';ctx.font='13px sans-serif';ctx.textAlign='center';
+  ctx.fillText('注：Q1仅显示3月各省用电量柱状（实测），1-2月请参考表11',W/2,H-10);
+}
+
+/* ======================================================
+   Part4: 历年趋势
+   ====================================================== */
+function drawHistory(provs,yearSel){
+  var canvas=document.getElementById('historyCanvas');
+  var ctx=canvas.getContext('2d');
+  var dpr=window.devicePixelRatio||1;
+  var W=Math.max(900,canvas.getBoundingClientRect().width||canvas.parentElement.clientWidth||900);
+  var H=440;
+  canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.width=W+'px';canvas.style.height=H+'px';
+  ctx.scale(dpr,dpr);
+
+  var label=isAll?'全国':(provs.slice(0,2).join('/')+(provs.length>2?'等'+provs.length+'省':''));
+  document.getElementById('historyTitle').textContent=label+' · 历年用电量趋势（2020-2025）'+(yearSel&&yearSel!=='2026Q1'?' ★'+yearSel+'年':'');
+
+  var PL=60,PR=35,PT=50,PB=55,cW=W-PL-PR,cH=H-PT-PB;
+  var xStep=cW/(YEARS.length-1);
+
+  var datasets=provs.map(function(p,i){
+    return {
+      label:p,
+      vals:YEARS.map(function(y){ return HISTORY[p]?HISTORY[p][y]:0; }),
+      color:COLORS[i%COLORS.length]
+    };
+  });
+
+  var allVals=[];
+  datasets.forEach(function(d){ allVals=allVals.concat(d.vals); });
+  var maxV=Math.max.apply(null,allVals)*1.15;
+  var minV=0;
+  var yRange=maxV-minV;
+
+  var toX=function(i){ return PL+i*xStep; };
+  var toY=function(v){ return PT+cH-((v-minV)/yRange)*cH; };
+
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  for(var i=0;i<=5;i++){
+    var v=minV+(yRange/5)*i,y=toY(v);
+    ctx.beginPath();ctx.moveTo(PL,y);ctx.lineTo(PL+cW,y);
+    ctx.strokeStyle='#f1f5f9';ctx.lineWidth=1;ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='12px sans-serif';ctx.textAlign='right';
+    ctx.fillText(Math.round(v).toLocaleString(),PL-8,y+4);
+  }
+  ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(PL,PT);ctx.lineTo(PL,PT+cH);ctx.lineTo(PL+cW,PT+cH);ctx.stroke();
+  ctx.fillStyle='#64748b';ctx.font='13px sans-serif';ctx.textAlign='center';
+  YEARS.forEach(function(y,i){ ctx.fillText(y+'',toX(i),PT+cH+20); });
+
+  var maxLeg=Math.min(datasets.length,7);
+  datasets.slice(0,maxLeg).forEach(function(ds,di){
+    ctx.beginPath();ctx.arc(PL+di*75+6,10,5,0,Math.PI*2);ctx.fillStyle=ds.color;ctx.fill();
+    ctx.fillStyle='#475569';ctx.font='13px sans-serif';ctx.textAlign='left';
+    ctx.fillText(ds.label,PL+di*75+16,14);
+  });
+  if(datasets.length>7){ ctx.fillStyle='#64748b';ctx.font='12px sans-serif';ctx.fillText('…等'+datasets.length+'省',PL+7*75+16,14); }
+
+  // 年份标注点
+  var yi=YEARS.indexOf(parseInt(yearSel));
+  if(yi>=0){
+    var ax=toX(yi);
+    ctx.setLineDash([5,5]);
+    ctx.beginPath();ctx.moveTo(ax,PT);ctx.lineTo(ax,PT+cH);
+    ctx.strokeStyle='#f59e0b';ctx.lineWidth=1.5;ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  datasets.forEach(function(ds){
+    var pts=ds.vals.map(function(v,i){ return {x:toX(i),y:toY(v),v:v}; });
+    ctx.beginPath();
+    pts.forEach(function(p,i){ i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y); });
+    ctx.strokeStyle=ds.color;ctx.lineWidth=2.5;ctx.stroke();
+    pts.forEach(function(p){
+      ctx.beginPath();ctx.arc(p.x,p.y,4,0,Math.PI*2);ctx.fillStyle=ds.color;ctx.fill();
+      ctx.strokeStyle='#fff';ctx.lineWidth=1.5;ctx.stroke();
+    });
+  });
+}
+
+/* ======================================================
+   初始化
+   ====================================================== */
+renderRegions();
+renderProvinces();
+
+</script>
+</body>
+</html>
