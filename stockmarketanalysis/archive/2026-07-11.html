@@ -1,0 +1,1780 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全球选股模型 v4.3 · 2026-07-11 盘后报告</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f4f7fe;
+            --bg-surface: #ffffff;
+            --text: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --border: #e2e8f0;
+            --border-hover: #cbd5e1;
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --shadow: rgba(15, 23, 42, 0.04);
+            --shadow-hover: rgba(15, 23, 42, 0.08);
+            --sans: 'Inter', 'Noto Sans SC', 'PingFang SC', sans-serif;
+            --serif: 'Noto Serif SC', Georgia, serif;
+            --primary: #2563eb;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --warning: #ca8a04;
+            --buy: #16a34a;
+            --sell: #dc2626;
+            --hold: #ca8a04;
+            --card: #ffffff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+            width: 100%;
+        }
+
+        /* ── HEADER ── */
+        .site-header {
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 24px;
+            position: relative;
+        }
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .logo-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .logo-mark {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            flex-shrink: 0;
+        }
+        .site-name {
+            font-family: var(--sans);
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: .02em;
+            color: var(--text);
+            line-height: 1.2;
+        }
+        .site-name-en {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 9px;
+            font-weight: 400;
+            color: var(--text-muted);
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            display: block;
+            margin-top: 1px;
+        }
+        .site-nav {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .site-nav a {
+            font-family: var(--sans);
+            font-size: 13px;
+            font-weight: 400;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color .2s;
+            position: relative;
+            padding-bottom: 2px;
+        }
+        .site-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #2563eb, #7c3aed);
+            transition: width .2s;
+            border-radius: 1px;
+        }
+        .site-nav a:hover {
+            color: var(--accent);
+        }
+        .site-nav a:hover::after {
+            width: 100%;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 50%, #f0f9ff 100%);
+            padding: 24px 24px 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%; right: 10%;
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.06) 0%, transparent 70%);
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 20%; left: 8%;
+            width: 160px; height: 160px;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.04) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero-inner {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-eyebrow {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 10px;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+        .hero-title {
+            font-size: 40px;
+            font-weight: 700;
+            letter-spacing: -.01em;
+            line-height: 1.2;
+            margin-bottom: 6px;
+            color: var(--text);
+            font-family: var(--serif);
+        }
+        .hero-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-weight: 300;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+        .hero-stats {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 15px 0 0;
+            flex-wrap: wrap;
+        }
+        .hero-stat {
+            text-align: center;
+            padding: 15px 25px;
+            background: var(--bg-surface);
+            border-radius: 10px;
+            min-width: 120px;
+            border: 1px solid var(--border);
+        }
+        .hero-stat .number {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        .hero-stat .label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .stat-buy .number { color: var(--buy); }
+        .stat-sell .number { color: var(--sell); }
+        .stat-hold .number { color: var(--hold); }
+
+        /* ── MAIN ── */
+        .main {
+            flex: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 32px 24px 56px;
+            width: 100%;
+        }
+        .section {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px var(--shadow);
+        }
+        .section h2 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+        .market-subheader {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin: 20px 0 10px;
+            padding: 8px 12px;
+            background: var(--bg);
+            border-radius: 6px;
+            border-left: 3px solid var(--accent);
+        }
+        .market-subheader-td {
+            background: var(--bg);
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-align: left;
+            padding: 8px 12px;
+        }
+        .params-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 12px;
+        }
+        .param-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: var(--bg);
+            border-radius: 6px;
+        }
+        .param-item .label { color: var(--text-muted); }
+        .param-item .value { font-weight: 600; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+        th, td {
+            padding: 10px 8px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        th {
+            background: var(--bg);
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            position: sticky;
+            top: 0;
+        }
+        tr:hover { background: #f1f5f9; }
+        .rank {
+            font-weight: 700;
+            color: var(--text-muted);
+            width: 40px;
+            text-align: center;
+        }
+        .score {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        .score-buy { color: var(--buy); }
+        .score-sell { color: var(--sell); }
+        .market-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .market-cn { background: #dbeafe; color: #1d4ed8; }
+        .market-hk { background: #dcfce7; color: #15803d; }
+        .market-us { background: #fef3c7; color: #a16207; }
+        .up { color: var(--buy); }
+        .down { color: var(--sell); }
+        .code { color: var(--text-muted); font-size: 0.8rem; }
+        .badge {
+            display: inline-block;
+            padding: 1px 6px;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+        .badge-major { background: #fee2e2; color: #991b1b; }
+        .badge-general { background: #fef3c7; color: #92400e; }
+        .badge-watch { background: #e0e7ff; color: #3730a3; }
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+        .alert-success { background: #dcfce7; color: #166534; }
+        .alert-warning { background: #fef3c7; color: #92400e; }
+        .alert-danger { background: #fee2e2; color: #991b1b; }
+        .text-center { text-align: center; }
+        .text-muted { color: var(--text-muted); }
+
+        /* ── 折叠详情 ── */
+        .detail-fold {
+            background: var(--bg);
+            border-radius: 8px;
+            padding: 12px 16px;
+            cursor: pointer;
+        }
+        .detail-fold summary {
+            font-weight: 600;
+            color: var(--text-secondary);
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .detail-fold summary::before {
+            content: '▶';
+            font-size: 0.7rem;
+            transition: transform 0.2s;
+        }
+        .detail-fold[open] summary::before {
+            transform: rotate(90deg);
+        }
+        .detail-fold[open] {
+            background: var(--card);
+            border: 1px solid var(--border);
+        }
+
+        /* ── FOOTER ── */
+        .site-footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--border);
+            background: var(--bg-surface);
+            margin-top: 20px;
+        }
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .footer-brand {
+            font-family: var(--sans);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            letter-spacing: .02em;
+        }
+        .footer-note {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 10px;
+            color: var(--text-muted);
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+        .footer-disclaimer {
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            max-width: 800px;
+        }
+        @media (max-width: 768px) {
+            body { padding: 0; }
+            .section { padding: 15px; }
+            table { font-size: 0.8rem; }
+            th, td { padding: 6px 4px; }
+            .site-header, .hero, .main { padding-left: 20px; padding-right: 20px; }
+            .header-inner { justify-content: center; text-align: center; }
+            .site-nav { display: none; }
+            .hero { padding: 18px 20px 14px; }
+            .hero-title { font-size: 28px; }
+            .footer-inner { justify-content: center; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo-group">
+      <div class="logo-mark">L</div>
+      <div>
+        <div class="site-name">老丁实验室</div>
+        <div class="site-name-en">Laodinglab</div>
+      </div>
+    </div>
+    <nav class="site-nav">
+      <a href="/">首页</a>
+      <a href="/stockmarketanalysis">选股模型</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Post-Market Report · 2026-07-11</div>
+    <h1 class="hero-title">全球选股模型 v4.3</h1>
+    <p class="hero-desc">多因子量化选股模型盘后报告，基于质量、估值、事件、技术、动量五维因子评分。</p>
+    <div class="hero-stats">
+        <div class="hero-stat stat-buy">
+            <div class="number">0</div>
+            <div class="label">买入建议</div>
+        </div>
+        <div class="hero-stat stat-sell">
+            <div class="number">0</div>
+            <div class="label">卖出建议</div>
+        </div>
+        <div class="hero-stat stat-hold">
+            <div class="number">29</div>
+            <div class="label">持有清单</div>
+        </div>
+    </div>
+  </div>
+</section>
+
+<main class="main">
+    <div class="container">
+
+        <div class="section">
+            <h2>⚙️ 策略参数</h2>
+            <div class="params-grid">
+                <div class="param-item">
+                    <span class="label">买入阈值</span>
+                    <span class="value">≥ 60 分</span>
+                </div>
+                <div class="param-item">
+                    <span class="label">卖出阈值</span>
+                    <span class="value">≤ 40 分</span>
+                </div>
+                <div class="param-item">
+                    <span class="label">质量因子权重</span>
+                    <span class="value">30%</span>
+                </div>
+                <div class="param-item">
+                    <span class="label">估值因子权重</span>
+                    <span class="value">20%</span>
+                </div>
+                <div class="param-item">
+                    <span class="label">事件因子权重</span>
+                    <span class="value">20%</span>
+                </div>
+                <div class="param-item">
+                    <span class="label">技术因子权重</span>
+                    <span class="value">15%</span>
+                </div>
+                <div class="param-item">
+                    <span class="label">动量因子权重</span>
+                    <span class="value">15%</span>
+                </div>
+                <div class="param-item">
+                    <span class="label">股票池</span>
+                    <span class="value">A股15 | 港股12 | 美股15</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🛡️ 风控状态</h2>
+            <div class="alert alert-success">✅ 所有风控指标正常</div>
+
+        </div>
+
+        
+        <div class="section">
+            <h2>📈 持有清单</h2>
+            <p class="section-desc">图例: <strong>H</strong>=高分持有(≥60) | <strong>M</strong>=中等持有(40-59) | <strong>M↓</strong>=从高分滑落</p>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>代码</th>
+                            <th>名称</th>
+                            <th>市场</th>
+                            <th>状态</th>
+                            <th>评分</th>
+                            <th>入选日期</th>
+                            <th>初始价</th>
+                            <th>当前价</th>
+                            <th>总收益</th>
+                            <th>持有天数</th>
+                            <th>变化主因</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+            <tr>
+                <td class="code">600519.SH</td>
+                <td><strong>贵州茅台</strong></td>
+                <td><span class="market-badge market-cn">CN</span></td>
+                <td class="score score-buy">H</td>
+                <td>62.5</td>
+                <td>2026-07-11</td>
+                <td>1204.98</td>
+                <td>1204.98</td>
+                <td class="">+0.00%</td>
+                <td>0天</td>
+                <td><small class="text-muted">横盘震荡 | 接近高点</small></td>
+            </tr>
+            <tr>
+                <td class="code">600887.SH</td>
+                <td><strong>伊利股份</strong></td>
+                <td><span class="market-badge market-cn">CN</span></td>
+                <td class="score score-buy">H</td>
+                <td>66.8</td>
+                <td>2026-07-11</td>
+                <td>24.88</td>
+                <td>24.88</td>
+                <td class="">+0.00%</td>
+                <td>0天</td>
+                <td><small class="text-muted">横盘震荡 | 接近高点</small></td>
+            </tr>
+            <tr>
+                <td class="code">300750.SZ</td>
+                <td><strong>宁德时代</strong></td>
+                <td><span class="market-badge market-cn">CN</span></td>
+                <td class="score score-buy">H</td>
+                <td>60.5</td>
+                <td>2026-07-11</td>
+                <td>348.76</td>
+                <td>348.76</td>
+                <td class="">+0.00%</td>
+                <td>0天</td>
+                <td><small class="text-muted">横盘震荡 | 接近高点</small></td>
+            </tr>
+            <tr>
+                <td class="code">601012.SH</td>
+                <td><strong>隆基绿能</strong></td>
+                <td><span class="market-badge market-cn">CN</span></td>
+                <td class="score score-buy">H</td>
+                <td>67.4</td>
+                <td>2026-07-11</td>
+                <td>12.11</td>
+                <td>12.11</td>
+                <td class="">+0.00%</td>
+                <td>0天</td>
+                <td><small class="text-muted">横盘震荡 | 接近高点</small></td>
+            </tr>
+            <tr>
+                <td class="code">601398.SH</td>
+                <td><strong>工商银行</strong></td>
+                <td><span class="market-badge market-cn">CN</span></td>
+                <td class="score score-buy">H</td>
+                <td>64.6</td>
+                <td>2026-07-11</td>
+                <td>7.33</td>
+                <td>7.33</td>
+                <td class="">+0.00%</td>
+                <td>0天</td>
+                <td><small class="text-muted">横盘震荡 | 接近高点</small></td>
+            </tr>
+            <tr>
+                <td class="code">600036.SH</td>
+                <td><strong>招商银行</strong></td>
+                <td><span class="market-badge market-cn">CN</span></td>
+                <td class="score score-buy">H</td>
+                <td>64.5</td>
+                <td>2026-07-11</td>
+                <td>36.88</td>
+                <td>36.88</td>
+                <td class="">+0.00%</td>
+                <td>0天</td>
+                <td><small class="text-muted">横盘震荡 | 接近高点</small></td>
+            </tr>
+            <tr>
+                <td class="code">600276.SH</td>
+                <td><strong>恒瑞医药</strong></td>
+                <td><span class="market-badge market-cn">CN</span></td>
+                <td class="score score-buy">H</td>
+                <td>62.7</td>
+                <td>2026-07-11</td>
+                <td>55.75</td>
+                <td>55.75</td>
+                <td class="">+0.00%</td>
+                <td>0天</td>
+                <td><small class="text-muted">横盘震荡 | 接近高点</small></td>
+            </tr>
+            <tr>
+                <td class="code">603259.SH</td>
+                <td><strong>药明康德</strong></td>
+                <td><span class="market-badge market-cn">CN</span></td>
+                <td class="score score-buy">H</td>
+                <td>69.3</td>
+                <td>2026-07-11</td>
+                <td>123.3</td>
+                <td>123.3</td>
+                <td class="">+0.00%</td>
+                <td>0天</td>
+                <td><small class="text-muted">横盘震荡 | 接近高点</small></td>
+            </tr>
+            <tr>
+                <td class="code">600941.SH</td>
+                <td><strong>中国移动</strong></td>
+                <td><span class="market-badge market-cn">CN</span></td>
+                <td class="score score-buy">H</td>
+                <td>61.2</td>
+                <td>2026-07-11</td>
+                <td>89.98</td>
+                <td>89.98</td>
+                <td class="">+0.00%</td>
+                <td>0天</td>
+                <td><small class="text-muted">横盘震荡 | 接近高点</small></td>
+            </tr>
+            <tr>
+                <td class="code">601088.SH</td>
+                <td><strong>中国神华</strong></td>
+                <td><span class="market-badge market-cn">CN</span></td>
+                <td class="score score-buy">H</td>
+                <td>67.8</td>
+                <td>2026-07-11</td>
+                <td>42.04</td>
+                <td>42.04</td>
+                <td class="">+0.00%</td>
+                <td>0天</td>
+                <td><small class="text-muted">横盘震荡 | 接近高点</small></td>
+            </tr>
+            <tr>
+                <td class="code">601668.SH</td>
+                <td><strong>中国建筑</strong></td>
+                <td><span class="market-badge market-cn">CN</span></td>
+                <td class="score score-buy">H</td>
+                <td>64.9</td>
+                <td>2026-07-11</td>
+                <td>4.59</td>
+                <td>4.59</td>
+                <td class="">+0.00%</td>
+                <td>0天</td>
+                <td><small class="text-muted">横盘震荡 | 接近高点</small></td>
+            </tr>
+            <tr>
+                <td class="code">00700.HK</td>
+                <td><strong>腾讯控股</strong></td>
+                <td><span class="market-badge market-hk">HK</span></td>
+                <td class="score score-buy">H</td>
+                <td>62.8</td>
+                <td>2026-07-11</td>
+                <td>460.2</td>
+                <td>460.2</td>
+                <td class="">+0.00%</td>
+                <td>0天</td>
+                <td><small class="text-muted">横盘震荡 | 接近高点</small></td>
+            </tr>
+            <tr>
+                <td class="code">09988.HK</td>
+                <td><strong>阿里巴巴</strong></td>
+                <td><span class="market-badge market-hk">HK</span></td>
+                <td class="score score-buy">H</td>
+                <td>67.1</td>
+                <td>2026-07-11</td>
+                <td>110.2</td>
+                <td>110.2</td>
+                <td class="">+0.00%</td>
+                <td>0天</td>
+                <td><small class="text-muted">横盘震荡 | 接近高点</small></td>
+            </tr>
+            <tr>
+                <td class="code">01810.HK</td>
+                <td><strong>小米集团</strong></td>
+                <td><span class="market-badge market-hk">HK</span></td>
+                <td class="score score-buy">H</td>
+                <td>61.9</td>
+                <td>2026-07-11</td>
+                <td>25.84</td>
+                <td>25.84</td>
+                <td class="">+0.00%</td>
+                <td>0天</td>
+                <td><small class="text-muted">横盘震荡 | 接近高点</small></td>
+            </tr>
+            <tr>
+                <td class="code">00005.HK</td>
+                <td><strong>汇丰控股</strong></td>
+                <td><span class="market-badge market-hk">HK</span></td>
+                <td class="score score-buy">H</td>
+                <td>67.2</td>
+                <td>2026-07-11</td>
+                <td>153.5</td>
+                <td>153.5</td>
+                <td class="">+0.00%</td>
+                <td>0天</td>
+                <td><small class="text-muted">横盘震荡 | 接近高点</small></td>
+            </tr>
+            <tr>
+                <td class="code">00388.HK</td>
+                <td><strong>香港交易所</strong></td>
+                <td><span class="market-badge market-hk">HK</span></td>
+                <td class="score score-buy">H</td>
+                <td>60.8</td>
+                <td>2026-07-11</td>
+                <td>385.0</td>
+                <td>385.0</td>
+                <td class="">+0.00%</td>
+                <td>0天</td>
+                <td><small class="text-muted">横盘震荡 | 接近高点</small></td>
+            </tr>
+            <tr>
+                <td class="code">02020.HK</td>
+                <td><strong>安踏体育</strong></td>
+                <td><span class="market-badge market-hk">HK</span></td>
+                <td class="score score-buy">H</td>
+                <td>64.6</td>
+                <td>2026-07-11</td>
+                <td>72.95</td>
+                <td>72.95</td>
+                <td class="">+0.00%</td>
+                <td>0天</td>
+                <td><small class="text-muted">横盘震荡 | 接近高点</small></td>
+            </tr>
+            <tr>
+                <td class="code">00883.HK</td>
+                <td><strong>中海油</strong></td>
+                <td><span class="market-badge market-hk">HK</span></td>
+                <td class="score score-buy">H</td>
+                <td>63.2</td>
+                <td>2026-07-11</td>
+                <td>21.82</td>
+                <td>21.82</td>
+                <td class="">+0.00%</td>
+                <td>0天</td>
+                <td><small class="text-muted">横盘震荡 | 接近高点</small></td>
+            </tr>
+            <tr>
+                <td class="code">01898.HK</td>
+                <td><strong>中煤能源</strong></td>
+                <td><span class="market-badge market-hk">HK</span></td>
+                <td class="score score-buy">H</td>
+                <td>67.9</td>
+                <td>2026-07-11</td>
+                <td>9.92</td>
+                <td>9.92</td>
+                <td class="">+0.00%</td>
+                <td>0天</td>
+                <td><small class="text-muted">横盘震荡 | 接近高点</small></td>
+            </tr>
+            <tr>
+                <td class="code">01113.HK</td>
+                <td><strong>长实集团</strong></td>
+                <td><span class="market-badge market-hk">HK</span></td>
+                <td class="score score-buy">H</td>
+                <td>63.9</td>
+                <td>2026-07-11</td>
+                <td>45.46</td>
+                <td>45.46</td>
+                <td class="">+0.00%</td>
+                <td>0天</td>
+                <td><small class="text-muted">横盘震荡 | 接近高点</small></td>
+            </tr>
+            <tr>
+                <td class="code">02318.HK</td>
+                <td><strong>中国平安</strong></td>
+                <td><span class="market-badge market-hk">HK</span></td>
+                <td class="score score-buy">H</td>
+                <td>66.5</td>
+                <td>2026-07-11</td>
+                <td>53.05</td>
+                <td>53.05</td>
+                <td class="">+0.00%</td>
+                <td>0天</td>
+                <td><small class="text-muted">横盘震荡 | 接近高点</small></td>
+            </tr>
+            <tr>
+                <td class="code">NVDA.O</td>
+                <td><strong>英伟达</strong></td>
+                <td><span class="market-badge market-us">US</span></td>
+                <td class="score score-buy">H</td>
+                <td>71.0</td>
+                <td>2026-07-11</td>
+                <td>210.96</td>
+                <td>210.96</td>
+                <td class="">+0.00%</td>
+                <td>0天</td>
+                <td><small class="text-muted">横盘震荡 | 接近高点</small></td>
+            </tr>
+            <tr>
+                <td class="code">AMD.O</td>
+                <td><strong>AMD</strong></td>
+                <td><span class="market-badge market-us">US</span></td>
+                <td class="score score-buy">H</td>
+                <td>61.5</td>
+                <td>2026-07-11</td>
+                <td>557.89</td>
+                <td>557.89</td>
+                <td class="">+0.00%</td>
+                <td>0天</td>
+                <td><small class="text-muted">横盘震荡 | 接近高点</small></td>
+            </tr>
+            <tr>
+                <td class="code">TSLA.O</td>
+                <td><strong>特斯拉</strong></td>
+                <td><span class="market-badge market-us">US</span></td>
+                <td class="score score-buy">H</td>
+                <td>63.4</td>
+                <td>2026-07-11</td>
+                <td>407.76</td>
+                <td>407.76</td>
+                <td class="">+0.00%</td>
+                <td>0天</td>
+                <td><small class="text-muted">横盘震荡 | 接近高点</small></td>
+            </tr>
+            <tr>
+                <td class="code">JPM.N</td>
+                <td><strong>摩根大通</strong></td>
+                <td><span class="market-badge market-us">US</span></td>
+                <td class="score score-buy">H</td>
+                <td>63.8</td>
+                <td>2026-07-11</td>
+                <td>336.47</td>
+                <td>336.47</td>
+                <td class="">+0.00%</td>
+                <td>0天</td>
+                <td><small class="text-muted">横盘震荡 | 接近高点</small></td>
+            </tr>
+            <tr>
+                <td class="code">V.N</td>
+                <td><strong>Visa</strong></td>
+                <td><span class="market-badge market-us">US</span></td>
+                <td class="score score-buy">H</td>
+                <td>69.9</td>
+                <td>2026-07-11</td>
+                <td>348.97</td>
+                <td>348.97</td>
+                <td class="">+0.00%</td>
+                <td>0天</td>
+                <td><small class="text-muted">横盘震荡 | 接近高点</small></td>
+            </tr>
+            <tr>
+                <td class="code">JNJ.N</td>
+                <td><strong>强生</strong></td>
+                <td><span class="market-badge market-us">US</span></td>
+                <td class="score score-buy">H</td>
+                <td>70.1</td>
+                <td>2026-07-11</td>
+                <td>256.98</td>
+                <td>256.98</td>
+                <td class="">+0.00%</td>
+                <td>0天</td>
+                <td><small class="text-muted">横盘震荡 | 接近高点</small></td>
+            </tr>
+            <tr>
+                <td class="code">PFE.N</td>
+                <td><strong>辉瑞</strong></td>
+                <td><span class="market-badge market-us">US</span></td>
+                <td class="score score-buy">H</td>
+                <td>60.6</td>
+                <td>2026-07-11</td>
+                <td>24.17</td>
+                <td>24.17</td>
+                <td class="">+0.00%</td>
+                <td>0天</td>
+                <td><small class="text-muted">横盘震荡 | 接近高点</small></td>
+            </tr>
+            <tr>
+                <td class="code">LLY.N</td>
+                <td><strong>礼来</strong></td>
+                <td><span class="market-badge market-us">US</span></td>
+                <td class="score score-buy">H</td>
+                <td>62.5</td>
+                <td>2026-07-11</td>
+                <td>1188.58</td>
+                <td>1188.58</td>
+                <td class="">+0.00%</td>
+                <td>0天</td>
+                <td><small class="text-muted">横盘震荡 | 接近高点</small></td>
+            </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+
+        
+        <div class="section">
+            <h2>✅ 买入建议</h2>
+            <p class="text-muted text-center">今日无满足条件的股票</p>
+        </div>
+        
+
+        
+        <div class="section">
+            <h2>⚠️ 卖出建议</h2>
+            <p class="text-muted text-center">今日无满足条件的股票</p>
+        </div>
+        
+
+        
+
+        
+    <div class="section">
+        <h2>📋 全量因子明细</h2>
+        <details class="detail-fold">
+            <summary>点击展开查看全部因子明细（共 42 只股票）</summary>
+            <div style="overflow-x: auto; margin-top: 15px;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>代码</th>
+                            <th>名称</th>
+                            <th>市场</th>
+                            <th>综合</th>
+                            <th>质量</th>
+                            <th>估值</th>
+                            <th>事件</th>
+                            <th>技术</th>
+                            <th>动量</th>
+                            <th>PE</th>
+                            <th>PB</th>
+                            <th>MA20</th>
+                            <th>MA60</th>
+                            <th>RSI14</th>
+                            <th>波动率</th>
+                            <th>回撤</th>
+                            <th>涨跌</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+        <tr>
+            <td class="code">600519.SH</td>
+            <td>贵州茅台</td>
+            <td><span class="market-badge market-cn">CN</span></td>
+            <td class="score score-buy">62.5</td>
+            <td>66.5</td>
+            <td>66.7</td>
+            <td>52.9</td>
+            <td>67.5</td>
+            <td>62.5</td>
+            <td>18.21</td>
+            <td>6.47</td>
+            <td>1198.298</td>
+            <td>1274.2102</td>
+            <td>53.05</td>
+            <td>21.9</td>
+            <td>-18.48</td>
+            <td>+1.93%</td>
+        </tr>
+        <tr>
+            <td class="code">000858.SZ</td>
+            <td>五粮液</td>
+            <td><span class="market-badge market-cn">CN</span></td>
+            <td class="score ">57.3</td>
+            <td>47.9</td>
+            <td>78.3</td>
+            <td>52.9</td>
+            <td>57.5</td>
+            <td>62.5</td>
+            <td>22.7</td>
+            <td>2.23</td>
+            <td>74.431</td>
+            <td>84.597</td>
+            <td>46.14</td>
+            <td>26.98</td>
+            <td>-31.53</td>
+            <td>+3.94%</td>
+        </tr>
+        <tr>
+            <td class="code">600887.SH</td>
+            <td>伊利股份</td>
+            <td><span class="market-badge market-cn">CN</span></td>
+            <td class="score score-buy">66.8</td>
+            <td>71.0</td>
+            <td>78.3</td>
+            <td>50.0</td>
+            <td>67.5</td>
+            <td>72.5</td>
+            <td>13.02</td>
+            <td>2.92</td>
+            <td>24.6785</td>
+            <td>25.3383</td>
+            <td>56.56</td>
+            <td>20.73</td>
+            <td>-11.62</td>
+            <td>+0.12%</td>
+        </tr>
+        <tr>
+            <td class="code">300750.SZ</td>
+            <td>宁德时代</td>
+            <td><span class="market-badge market-cn">CN</span></td>
+            <td class="score score-buy">60.5</td>
+            <td>61.4</td>
+            <td>66.7</td>
+            <td>68.8</td>
+            <td>42.5</td>
+            <td>52.5</td>
+            <td>20.43</td>
+            <td>4.94</td>
+            <td>385.513</td>
+            <td>410.7002</td>
+            <td>31.07</td>
+            <td>46.68</td>
+            <td>-24.18</td>
+            <td>-7.12%</td>
+        </tr>
+        <tr>
+            <td class="code">002594.SZ</td>
+            <td>比亚迪</td>
+            <td><span class="market-badge market-cn">CN</span></td>
+            <td class="score ">55.3</td>
+            <td>48.9</td>
+            <td>66.7</td>
+            <td>53.8</td>
+            <td>67.5</td>
+            <td>52.5</td>
+            <td>29.79</td>
+            <td>3.54</td>
+            <td>85.52</td>
+            <td>93.5395</td>
+            <td>60.05</td>
+            <td>39.7</td>
+            <td>-25.9</td>
+            <td>+3.60%</td>
+        </tr>
+        <tr>
+            <td class="code">688981.SH</td>
+            <td>中芯国际</td>
+            <td><span class="market-badge market-cn">CN</span></td>
+            <td class="score ">54.8</td>
+            <td>43.2</td>
+            <td>38.3</td>
+            <td>76.2</td>
+            <td>67.5</td>
+            <td>52.5</td>
+            <td>276.6</td>
+            <td>7.33</td>
+            <td>147.5365</td>
+            <td>131.6657</td>
+            <td>61.28</td>
+            <td>76.29</td>
+            <td>-21.85</td>
+            <td>-5.77%</td>
+        </tr>
+        <tr>
+            <td class="code">601012.SH</td>
+            <td>隆基绿能</td>
+            <td><span class="market-badge market-cn">CN</span></td>
+            <td class="score score-buy">67.4</td>
+            <td>49.4</td>
+            <td>76.7</td>
+            <td>92.5</td>
+            <td>57.5</td>
+            <td>62.5</td>
+            <td>-13.28</td>
+            <td>1.82</td>
+            <td>12.66</td>
+            <td>14.5502</td>
+            <td>40.81</td>
+            <td>33.1</td>
+            <td>-33.48</td>
+            <td>+2.37%</td>
+        </tr>
+        <tr>
+            <td class="code">601398.SH</td>
+            <td>工商银行</td>
+            <td><span class="market-badge market-cn">CN</span></td>
+            <td class="score score-buy">64.6</td>
+            <td>59.5</td>
+            <td>85.0</td>
+            <td>48.2</td>
+            <td>77.5</td>
+            <td>72.5</td>
+            <td>7.04</td>
+            <td>0.67</td>
+            <td>7.228</td>
+            <td>7.2855</td>
+            <td>47.42</td>
+            <td>24.42</td>
+            <td>-9.51</td>
+            <td>+0.83%</td>
+        </tr>
+        <tr>
+            <td class="code">600036.SH</td>
+            <td>招商银行</td>
+            <td><span class="market-badge market-cn">CN</span></td>
+            <td class="score score-buy">64.5</td>
+            <td>64.0</td>
+            <td>85.0</td>
+            <td>45.8</td>
+            <td>67.5</td>
+            <td>72.5</td>
+            <td>6.17</td>
+            <td>0.84</td>
+            <td>37.1845</td>
+            <td>37.9822</td>
+            <td>46.06</td>
+            <td>22.73</td>
+            <td>-11.05</td>
+            <td>+0.90%</td>
+        </tr>
+        <tr>
+            <td class="code">600276.SH</td>
+            <td>恒瑞医药</td>
+            <td><span class="market-badge market-cn">CN</span></td>
+            <td class="score score-buy">62.7</td>
+            <td>53.2</td>
+            <td>51.7</td>
+            <td>75.8</td>
+            <td>77.5</td>
+            <td>62.5</td>
+            <td>45.57</td>
+            <td>5.93</td>
+            <td>51.945</td>
+            <td>51.9137</td>
+            <td>69.01</td>
+            <td>44.21</td>
+            <td>-20.1</td>
+            <td>+0.25%</td>
+        </tr>
+        <tr>
+            <td class="code">603259.SH</td>
+            <td>药明康德</td>
+            <td><span class="market-badge market-cn">CN</span></td>
+            <td class="score score-buy">69.3</td>
+            <td>67.9</td>
+            <td>53.3</td>
+            <td>85.0</td>
+            <td>52.5</td>
+            <td>72.5</td>
+            <td>18.28</td>
+            <td>4.63</td>
+            <td>115.385</td>
+            <td>106.084</td>
+            <td>68.65</td>
+            <td>50.71</td>
+            <td>-14.66</td>
+            <td>+1.84%</td>
+        </tr>
+        <tr>
+            <td class="code">600941.SH</td>
+            <td>中国移动</td>
+            <td><span class="market-badge market-cn">CN</span></td>
+            <td class="score score-buy">61.2</td>
+            <td>55.0</td>
+            <td>85.0</td>
+            <td>44.2</td>
+            <td>67.5</td>
+            <td>72.5</td>
+            <td>14.37</td>
+            <td>1.37</td>
+            <td>89.3265</td>
+            <td>93.2533</td>
+            <td>48.05</td>
+            <td>19.34</td>
+            <td>-12.81</td>
+            <td>+1.43%</td>
+        </tr>
+        <tr>
+            <td class="code">601857.SH</td>
+            <td>中国石油</td>
+            <td><span class="market-badge market-cn">CN</span></td>
+            <td class="score ">58.2</td>
+            <td>52.4</td>
+            <td>85.0</td>
+            <td>46.6</td>
+            <td>57.5</td>
+            <td>62.5</td>
+            <td>10.73</td>
+            <td>1.07</td>
+            <td>9.158</td>
+            <td>10.3335</td>
+            <td>53.85</td>
+            <td>27.54</td>
+            <td>-27.12</td>
+            <td>-1.38%</td>
+        </tr>
+        <tr>
+            <td class="code">601088.SH</td>
+            <td>中国神华</td>
+            <td><span class="market-badge market-cn">CN</span></td>
+            <td class="score score-buy">67.8</td>
+            <td>56.4</td>
+            <td>73.3</td>
+            <td>83.0</td>
+            <td>67.5</td>
+            <td>62.5</td>
+            <td>17.68</td>
+            <td>1.82</td>
+            <td>41.1115</td>
+            <td>44.7843</td>
+            <td>60.27</td>
+            <td>32.72</td>
+            <td>-23.09</td>
+            <td>-0.21%</td>
+        </tr>
+        <tr>
+            <td class="code">601668.SH</td>
+            <td>中国建筑</td>
+            <td><span class="market-badge market-cn">CN</span></td>
+            <td class="score score-buy">64.9</td>
+            <td>62.0</td>
+            <td>85.0</td>
+            <td>50.0</td>
+            <td>67.5</td>
+            <td>72.5</td>
+            <td>5.0</td>
+            <td>0.38</td>
+            <td>4.5455</td>
+            <td>4.748</td>
+            <td>45.59</td>
+            <td>19.78</td>
+            <td>-13.2</td>
+            <td>+0.66%</td>
+        </tr>
+        <tr>
+            <td class="code">00700.HK</td>
+            <td>腾讯控股</td>
+            <td><span class="market-badge market-hk">HK</span></td>
+            <td class="score score-buy">62.8</td>
+            <td>48.9</td>
+            <td>85.0</td>
+            <td>54.5</td>
+            <td>77.5</td>
+            <td>72.5</td>
+            <td>16.81</td>
+            <td>1.15</td>
+            <td>442.61</td>
+            <td>457.8716</td>
+            <td>57.42</td>
+            <td>37.55</td>
+            <td>-20.27</td>
+            <td>-2.00%</td>
+        </tr>
+        <tr>
+            <td class="code">09988.HK</td>
+            <td>阿里巴巴</td>
+            <td><span class="market-badge market-hk">HK</span></td>
+            <td class="score score-buy">67.1</td>
+            <td>47.4</td>
+            <td>85.0</td>
+            <td>77.5</td>
+            <td>67.5</td>
+            <td>72.5</td>
+            <td>18.01</td>
+            <td>0.93</td>
+            <td>101.1175</td>
+            <td>118.9453</td>
+            <td>56.79</td>
+            <td>59.56</td>
+            <td>-35.92</td>
+            <td>+2.04%</td>
+        </tr>
+        <tr>
+            <td class="code">03690.HK</td>
+            <td>美团</td>
+            <td><span class="market-badge market-hk">HK</span></td>
+            <td class="score ">54.3</td>
+            <td>50.4</td>
+            <td>63.3</td>
+            <td>50.0</td>
+            <td>67.5</td>
+            <td>52.5</td>
+            <td>-18.79</td>
+            <td>0.0</td>
+            <td>73.255</td>
+            <td>79.3492</td>
+            <td>63.48</td>
+            <td>45.07</td>
+            <td>-27.61</td>
+            <td>+0.25%</td>
+        </tr>
+        <tr>
+            <td class="code">01810.HK</td>
+            <td>小米集团</td>
+            <td><span class="market-badge market-hk">HK</span></td>
+            <td class="score score-buy">61.9</td>
+            <td>54.9</td>
+            <td>76.7</td>
+            <td>59.5</td>
+            <td>67.5</td>
+            <td>62.5</td>
+            <td>14.45</td>
+            <td>0.0</td>
+            <td>23.927</td>
+            <td>28.096</td>
+            <td>56.95</td>
+            <td>50.15</td>
+            <td>-33.89</td>
+            <td>+3.36%</td>
+        </tr>
+        <tr>
+            <td class="code">00005.HK</td>
+            <td>汇丰控股</td>
+            <td><span class="market-badge market-hk">HK</span></td>
+            <td class="score score-buy">67.2</td>
+            <td>80.9</td>
+            <td>60.0</td>
+            <td>46.0</td>
+            <td>77.5</td>
+            <td>72.5</td>
+            <td>16.06</td>
+            <td>3.82</td>
+            <td>148.495</td>
+            <td>143.8111</td>
+            <td>69.57</td>
+            <td>16.55</td>
+            <td>-8.08</td>
+            <td>+0.79%</td>
+        </tr>
+        <tr>
+            <td class="code">00388.HK</td>
+            <td>香港交易所</td>
+            <td><span class="market-badge market-hk">HK</span></td>
+            <td class="score score-buy">60.8</td>
+            <td>51.5</td>
+            <td>66.7</td>
+            <td>58.0</td>
+            <td>67.5</td>
+            <td>72.5</td>
+            <td>27.49</td>
+            <td>3.25</td>
+            <td>375.18</td>
+            <td>398.4467</td>
+            <td>60.0</td>
+            <td>21.5</td>
+            <td>-15.18</td>
+            <td>+1.21%</td>
+        </tr>
+        <tr>
+            <td class="code">09633.HK</td>
+            <td>农夫山泉</td>
+            <td><span class="market-badge market-hk">HK</span></td>
+            <td class="score ">54.2</td>
+            <td>47.5</td>
+            <td>66.7</td>
+            <td>50.0</td>
+            <td>52.5</td>
+            <td>62.5</td>
+            <td>25.44</td>
+            <td>2.84</td>
+            <td>41.893</td>
+            <td>43.4723</td>
+            <td>40.57</td>
+            <td>43.4</td>
+            <td>-16.47</td>
+            <td>-1.34%</td>
+        </tr>
+        <tr>
+            <td class="code">02020.HK</td>
+            <td>安踏体育</td>
+            <td><span class="market-badge market-hk">HK</span></td>
+            <td class="score score-buy">64.6</td>
+            <td>69.9</td>
+            <td>78.3</td>
+            <td>50.0</td>
+            <td>67.5</td>
+            <td>62.5</td>
+            <td>13.56</td>
+            <td>3.37</td>
+            <td>71.8975</td>
+            <td>76.1466</td>
+            <td>56.01</td>
+            <td>30.28</td>
+            <td>-20.43</td>
+            <td>+1.67%</td>
+        </tr>
+        <tr>
+            <td class="code">00883.HK</td>
+            <td>中海油</td>
+            <td><span class="market-badge market-hk">HK</span></td>
+            <td class="score score-buy">63.2</td>
+            <td>71.9</td>
+            <td>71.7</td>
+            <td>50.0</td>
+            <td>57.5</td>
+            <td>62.5</td>
+            <td>7.67</td>
+            <td>5.87</td>
+            <td>22.059</td>
+            <td>25.0619</td>
+            <td>43.69</td>
+            <td>31.98</td>
+            <td>-29.32</td>
+            <td>+0.09%</td>
+        </tr>
+        <tr>
+            <td class="code">01898.HK</td>
+            <td>中煤能源</td>
+            <td><span class="market-badge market-hk">HK</span></td>
+            <td class="score score-buy">67.9</td>
+            <td>70.4</td>
+            <td>71.7</td>
+            <td>77.9</td>
+            <td>57.5</td>
+            <td>52.5</td>
+            <td>8.19</td>
+            <td>4.35</td>
+            <td>10.4761</td>
+            <td>12.0357</td>
+            <td>37.91</td>
+            <td>41.1</td>
+            <td>-32.86</td>
+            <td>-0.70%</td>
+        </tr>
+        <tr>
+            <td class="code">01113.HK</td>
+            <td>长实集团</td>
+            <td><span class="market-badge market-hk">HK</span></td>
+            <td class="score score-buy">63.9</td>
+            <td>73.5</td>
+            <td>65.0</td>
+            <td>43.3</td>
+            <td>67.5</td>
+            <td>72.5</td>
+            <td>14.67</td>
+            <td>3.92</td>
+            <td>44.855</td>
+            <td>46.83</td>
+            <td>57.87</td>
+            <td>20.37</td>
+            <td>-14.74</td>
+            <td>+1.56%</td>
+        </tr>
+        <tr>
+            <td class="code">02318.HK</td>
+            <td>中国平安</td>
+            <td><span class="market-badge market-hk">HK</span></td>
+            <td class="score score-buy">66.5</td>
+            <td>71.9</td>
+            <td>71.7</td>
+            <td>59.1</td>
+            <td>67.5</td>
+            <td>62.5</td>
+            <td>6.44</td>
+            <td>5.75</td>
+            <td>53.7275</td>
+            <td>57.6355</td>
+            <td>47.04</td>
+            <td>32.23</td>
+            <td>-20.74</td>
+            <td>-0.38%</td>
+        </tr>
+        <tr>
+            <td class="code">AAPL.O</td>
+            <td>苹果</td>
+            <td><span class="market-badge market-us">US</span></td>
+            <td class="score ">56.4</td>
+            <td>65.9</td>
+            <td>40.0</td>
+            <td>33.9</td>
+            <td>77.5</td>
+            <td>72.5</td>
+            <td>38.17</td>
+            <td>8.26</td>
+            <td>297.9345</td>
+            <td>292.9293</td>
+            <td>62.11</td>
+            <td>35.29</td>
+            <td>-12.71</td>
+            <td>-0.28%</td>
+        </tr>
+        <tr>
+            <td class="code">MSFT.O</td>
+            <td>微软</td>
+            <td><span class="market-badge market-us">US</span></td>
+            <td class="score ">57.2</td>
+            <td>63.9</td>
+            <td>65.0</td>
+            <td>28.8</td>
+            <td>67.5</td>
+            <td>72.5</td>
+            <td>22.94</td>
+            <td>16.79</td>
+            <td>380.588</td>
+            <td>406.3778</td>
+            <td>52.82</td>
+            <td>37.39</td>
+            <td>-23.38</td>
+            <td>+0.19%</td>
+        </tr>
+        <tr>
+            <td class="code">GOOGL.O</td>
+            <td>谷歌</td>
+            <td><span class="market-badge market-us">US</span></td>
+            <td class="score ">55.0</td>
+            <td>63.0</td>
+            <td>40.0</td>
+            <td>28.8</td>
+            <td>67.5</td>
+            <td>82.5</td>
+            <td>27.24</td>
+            <td>13.11</td>
+            <td>358.073</td>
+            <td>367.3347</td>
+            <td>42.54</td>
+            <td>32.03</td>
+            <td>-16.15</td>
+            <td>-0.48%</td>
+        </tr>
+        <tr>
+            <td class="code">NVDA.O</td>
+            <td>英伟达</td>
+            <td><span class="market-badge market-us">US</span></td>
+            <td class="score score-buy">71.0</td>
+            <td>63.0</td>
+            <td>46.7</td>
+            <td>84.8</td>
+            <td>77.5</td>
+            <td>82.5</td>
+            <td>32.31</td>
+            <td>6.53</td>
+            <td>201.594</td>
+            <td>208.0865</td>
+            <td>50.29</td>
+            <td>34.99</td>
+            <td>-18.23</td>
+            <td>+4.03%</td>
+        </tr>
+        <tr>
+            <td class="code">META.O</td>
+            <td>Meta</td>
+            <td><span class="market-badge market-us">US</span></td>
+            <td class="score ">52.8</td>
+            <td>64.9</td>
+            <td>53.3</td>
+            <td>20.0</td>
+            <td>77.5</td>
+            <td>62.5</td>
+            <td>24.33</td>
+            <td>27.5</td>
+            <td>582.5029</td>
+            <td>611.5433</td>
+            <td>68.73</td>
+            <td>61.41</td>
+            <td>-21.08</td>
+            <td>+5.97%</td>
+        </tr>
+        <tr>
+            <td class="code">AMD.O</td>
+            <td>AMD</td>
+            <td><span class="market-badge market-us">US</span></td>
+            <td class="score score-buy">61.5</td>
+            <td>46.9</td>
+            <td>45.0</td>
+            <td>92.8</td>
+            <td>52.5</td>
+            <td>62.5</td>
+            <td>182.91</td>
+            <td>3.05</td>
+            <td>531.7645</td>
+            <td>451.6608</td>
+            <td>53.15</td>
+            <td>85.32</td>
+            <td>-16.61</td>
+            <td>+2.04%</td>
+        </tr>
+        <tr>
+            <td class="code">TSLA.O</td>
+            <td>特斯拉</td>
+            <td><span class="market-badge market-us">US</span></td>
+            <td class="score score-buy">63.4</td>
+            <td>45.0</td>
+            <td>58.3</td>
+            <td>70.8</td>
+            <td>77.5</td>
+            <td>82.5</td>
+            <td>374.09</td>
+            <td>1.09</td>
+            <td>401.0365</td>
+            <td>405.2608</td>
+            <td>51.99</td>
+            <td>58.65</td>
+            <td>-15.75</td>
+            <td>+0.30%</td>
+        </tr>
+        <tr>
+            <td class="code">AMZN.O</td>
+            <td>亚马逊</td>
+            <td><span class="market-badge market-us">US</span></td>
+            <td class="score ">57.5</td>
+            <td>63.0</td>
+            <td>46.7</td>
+            <td>42.0</td>
+            <td>67.5</td>
+            <td>72.5</td>
+            <td>29.35</td>
+            <td>8.36</td>
+            <td>240.0745</td>
+            <td>254.0265</td>
+            <td>50.99</td>
+            <td>34.28</td>
+            <td>-17.45</td>
+            <td>-0.69%</td>
+        </tr>
+        <tr>
+            <td class="code">COST.O</td>
+            <td>Costco</td>
+            <td><span class="market-badge market-us">US</span></td>
+            <td class="score ">54.3</td>
+            <td>58.0</td>
+            <td>45.0</td>
+            <td>50.0</td>
+            <td>52.5</td>
+            <td>62.5</td>
+            <td>46.09</td>
+            <td>19.88</td>
+            <td>953.844</td>
+            <td>988.1055</td>
+            <td>38.32</td>
+            <td>23.01</td>
+            <td>-16.27</td>
+            <td>+0.36%</td>
+        </tr>
+        <tr>
+            <td class="code">UNH.N</td>
+            <td>联合健康</td>
+            <td><span class="market-badge market-us">US</span></td>
+            <td class="score ">58.0</td>
+            <td>68.9</td>
+            <td>40.0</td>
+            <td>50.0</td>
+            <td>62.5</td>
+            <td>62.5</td>
+            <td>31.97</td>
+            <td>13.28</td>
+            <td>414.7323</td>
+            <td>386.189</td>
+            <td>64.59</td>
+            <td>24.37</td>
+            <td>-6.06</td>
+            <td>-1.64%</td>
+        </tr>
+        <tr>
+            <td class="code">JPM.N</td>
+            <td>摩根大通</td>
+            <td><span class="market-badge market-us">US</span></td>
+            <td class="score score-buy">63.8</td>
+            <td>79.4</td>
+            <td>46.7</td>
+            <td>48.2</td>
+            <td>62.5</td>
+            <td>72.5</td>
+            <td>16.11</td>
+            <td>20.89</td>
+            <td>329.5216</td>
+            <td>313.1712</td>
+            <td>63.39</td>
+            <td>24.9</td>
+            <td>-6.72</td>
+            <td>+0.30%</td>
+        </tr>
+        <tr>
+            <td class="code">V.N</td>
+            <td>Visa</td>
+            <td><span class="market-badge market-us">US</span></td>
+            <td class="score score-buy">69.9</td>
+            <td>66.4</td>
+            <td>46.7</td>
+            <td>83.5</td>
+            <td>77.5</td>
+            <td>72.5</td>
+            <td>30.42</td>
+            <td>11.47</td>
+            <td>338.439</td>
+            <td>326.9781</td>
+            <td>67.96</td>
+            <td>23.17</td>
+            <td>-6.51</td>
+            <td>+0.22%</td>
+        </tr>
+        <tr>
+            <td class="code">JNJ.N</td>
+            <td>强生</td>
+            <td><span class="market-badge market-us">US</span></td>
+            <td class="score score-buy">70.1</td>
+            <td>68.9</td>
+            <td>40.0</td>
+            <td>97.5</td>
+            <td>77.5</td>
+            <td>55.0</td>
+            <td>29.78</td>
+            <td>8.63</td>
+            <td>247.903</td>
+            <td>234.4913</td>
+            <td>70.98</td>
+            <td>32.47</td>
+            <td>-7.27</td>
+            <td>-0.82%</td>
+        </tr>
+        <tr>
+            <td class="code">PFE.N</td>
+            <td>辉瑞</td>
+            <td><span class="market-badge market-us">US</span></td>
+            <td class="score score-buy">60.6</td>
+            <td>49.0</td>
+            <td>80.0</td>
+            <td>65.6</td>
+            <td>52.5</td>
+            <td>62.5</td>
+            <td>18.45</td>
+            <td>1.31</td>
+            <td>24.6885</td>
+            <td>25.5757</td>
+            <td>37.79</td>
+            <td>24.29</td>
+            <td>-12.7</td>
+            <td>-0.33%</td>
+        </tr>
+        <tr>
+            <td class="code">LLY.N</td>
+            <td>礼来</td>
+            <td><span class="market-badge market-us">US</span></td>
+            <td class="score score-buy">62.5</td>
+            <td>67.4</td>
+            <td>31.7</td>
+            <td>67.5</td>
+            <td>62.5</td>
+            <td>72.5</td>
+            <td>42.22</td>
+            <td>28.15</td>
+            <td>1164.746</td>
+            <td>1055.1824</td>
+            <td>65.62</td>
+            <td>35.02</td>
+            <td>-8.18</td>
+            <td>-2.33%</td>
+        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </details>
+    </div>
+    
+
+    </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span class="footer-brand">老丁实验室 · Laodinglab</span>
+    <span class="footer-note">laodinglab.com · 独立研究 · 持续更新</span>
+  </div>
+</footer>
+
+</body>
+</html>
