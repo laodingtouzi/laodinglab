@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>天合光能舆情监控 · 第3期 (2026-07-21)</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2c5f7c;
+  --primary-light: #e8f0f5;
+  --accent: #c9a227;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #1a1a2e;
+  --text-secondary: #4a5568;
+  --text-muted: #718096;
+  --border: #e2e8f0;
+  --shadow: 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-hover: 0 4px 16px rgba(0,0,0,0.1);
+  --radius: 12px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  font-size: 15px;
+}
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Header */
+header {
+  background: linear-gradient(135deg, var(--primary) 0%, #1a3a4f 100%);
+  color: white;
+  padding: 40px 30px;
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-hover);
+}
+header h1 {
+  font-family: 'Noto Serif SC', Georgia, serif;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+header .subtitle {
+  font-size: 14px;
+  opacity: 0.85;
+  margin-bottom: 16px;
+}
+header .meta-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 13px;
+  opacity: 0.8;
+}
+header .meta-bar span {
+  background: rgba(255,255,255,0.12);
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+/* Navigation */
+nav {
+  background: var(--card-bg);
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 10px;
+  z-index: 100;
+}
+nav .nav-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+nav .nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+nav a {
+  font-size: 13px;
+  color: var(--primary);
+  text-decoration: none;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: var(--primary-light);
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+nav a:hover {
+  background: var(--primary);
+  color: white;
+}
+
+/* Section */
+.section {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.section-title {
+  font-family: 'Noto Serif SC', Georgia, serif;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 18px 24px;
+  background: linear-gradient(90deg, var(--primary-light) 0%, transparent 100%);
+  border-left: 4px solid var(--primary);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-title .count {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-left: auto;
+}
+.section-content {
+  padding: 0 24px 24px;
+}
+
+/* News Item — Compact */
+.news-item {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.news-item:last-child {
+  border-bottom: none;
+}
+.news-title-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+.news-title-link {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--primary);
+  text-decoration: none;
+  line-height: 1.4;
+  flex: 1;
+}
+.news-title-link:hover {
+  text-decoration: underline;
+  color: #1a3a4f;
+}
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.news-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.meta-date { font-weight: 500; }
+.meta-source { font-style: italic; }
+.meta-link {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+.meta-link:hover { text-decoration: underline; }
+.news-summary {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.news-summary p {
+  text-align: justify;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Sentiment */
+.sentiment-card {
+  text-align: center;
+  padding: 24px;
+  border-radius: var(--radius);
+  margin-bottom: 20px;
+}
+.sentiment-card.sentiment-negative {
+  background: linear-gradient(135deg, #fee2e2 0%, #fef2f2 100%);
+  border: 1px solid #fca5a5;
+}
+.sentiment-card.sentiment-neutral {
+  background: linear-gradient(135deg, #fef3c7 0%, #fffbeb 100%);
+  border: 1px solid #fcd34d;
+}
+.sentiment-card.sentiment-positive {
+  background: linear-gradient(135deg, #d1fae5 0%, #ecfdf5 100%);
+  border: 1px solid #6ee7b7;
+}
+.sentiment-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+.sentiment-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+}
+.sentiment-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+.sentiment-col {
+  background: var(--bg);
+  padding: 16px;
+  border-radius: 8px;
+}
+.sentiment-col h4 {
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+.sentiment-col ul {
+  list-style: none;
+  font-size: 13px;
+}
+.sentiment-col li {
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--border);
+  line-height: 1.6;
+}
+.sentiment-col li:last-child { border-bottom: none; }
+.sentiment-col li.pos { color: #065f46; }
+.sentiment-col li.neg { color: #991b1b; }
+.sentiment-col li.watch { color: #5b21b6; }
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 30px 20px;
+  color: var(--text-muted);
+  font-size: 13px;
+  border-top: 1px solid var(--border);
+  margin-top: 20px;
+}
+footer .sources {
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+footer .disclaimer {
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  header h1 { font-size: 22px; }
+  header { padding: 24px 20px; }
+  .section-content { padding: 0 16px 16px; }
+  .news-title-link { font-size: 14px; }
+  nav { position: static; }
+}
+
+/* Smooth scroll */
+html { scroll-behavior: smooth; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>🔍 天合光能舆情监控报告</h1>
+  <div class="subtitle">监控对象：天合光能股份有限公司 &nbsp;|&nbsp; 共聚合 8 条资讯</div>
+  <div class="meta-bar">
+    <span>📅 报告日期：2026-07-21</span>
+    <span>📋 第 3 期</span>
+  </div>
+</header>
+
+<nav>
+  <div class="nav-title">📑 快速导航</div>
+  <div class="nav-links">
+    <a href="#company">🔴 🏢 公司动态</a>
+<a href="#personnel">🔴 👤 人事变动</a>
+<a href="#finance">🔴 💰 财务与股价</a>
+<a href="#storage">🟡 🔋 储能与技术</a>
+<a href="#policy">🟢 📜 政策与行业</a>
+<a href="#sentiment">📊 舆情综合研判</a>
+  </div>
+</nav>
+
+
+    <section class="section" id="company">
+      <h2 class="section-title">🔴 🏢 公司动态 <span class="count">(1条)</span></h2>
+      <div class="section-content">
+        
+    <div class="news-item" id="news-0">
+      <div class="news-title-row">
+        <a href="https://basic.10jqka.com.cn/688599/" target="_blank" class="news-title-link">天合光能发布可转债转股结果暨股份变动公告，8月27日披露中报</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">公司公告</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-07-18</span>
+        <span class="meta-source">📰 同花顺财经</span>
+        <a href="https://basic.10jqka.com.cn/688599/" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>公司发布可转债转股结果暨股份变动等2篇公告；2026年中报将于8月27日披露；7月17日融资余额12.99亿元，融资净买入-996.4万元。</p></div>
+    </div>
+    
+      </div>
+    </section>
+    
+    <section class="section" id="personnel">
+      <h2 class="section-title">🔴 👤 人事变动 <span class="count">(0条)</span></h2>
+      <div class="section-content">
+        
+      </div>
+    </section>
+    
+    <section class="section" id="finance">
+      <h2 class="section-title">🔴 💰 财务与股价 <span class="count">(6条)</span></h2>
+      <div class="section-content">
+        
+    <div class="news-item" id="news-1">
+      <div class="news-title-row">
+        <a href="https://quote.eastmoney.com/unify/r/1.688599" target="_blank" class="news-title-link">天合光能7月20日收涨4.30%报12.86元，总市值301.25亿元</a>
+        <span class="tag" style="background:#dbeafe;color:#1e40af;border:1px solid #60a5fa">行情资金</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-07-21</span>
+        <span class="meta-source">📰 东方财富网</span>
+        <a href="https://quote.eastmoney.com/unify/r/1.688599" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>7月20日收盘报12.86元，上涨4.30%，成交额5.82亿元，换手率2.00%，总市值301.25亿元；此前十个交易日累计下跌约14.9%，股价仍处近一年低位区间。</p></div>
+    </div>
+    
+    <div class="news-item" id="news-2">
+      <div class="news-title-row">
+        <a href="http://finance.eastmoney.com/a/202607203812140146.html" target="_blank" class="news-title-link">科创板股上半年业绩提前看 24股净利润增幅翻倍</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">个股新闻</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-07-20</span>
+        <span class="meta-source">📰 证券时报网</span>
+        <a href="http://finance.eastmoney.com/a/202607203812140146.html" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>纳微科技 2026.07.09 预增 119.50 医药生物 688548 广钢气体 2026.07.03 预增 112.72 电子 688183 生益电子 2026.07.14 预增 109.00 电子 688231 隆达股份 2026.…</p></div>
+    </div>
+    
+    <div class="news-item" id="news-3">
+      <div class="news-title-row">
+        <a href="http://finance.eastmoney.com/a/202607163809277724.html" target="_blank" class="news-title-link">天合光能上半年预计净亏损1.8亿元至3.6亿元</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">个股新闻</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-07-16</span>
+        <span class="meta-source">📰 央广财经</span>
+        <a href="http://finance.eastmoney.com/a/202607163809277724.html" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>7月16日，天合光能（688599.SH）发布公告，预计2026年半年度归属于母公司所有者的净利润为亏损1.80亿元至3.60亿元。本次业绩变动主要系组件业务盈利能力改善，储能及分布式系统业务贡献正向利润，以及处置股权资产取得投资收益和公允…</p></div>
+    </div>
+    
+    <div class="news-item" id="news-4">
+      <div class="news-title-row">
+        <a href="http://finance.eastmoney.com/a/202607163809172651.html" target="_blank" class="news-title-link">天合光能：预计2026年半年度净亏损1.80亿元至3.60亿元</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">个股新闻</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-07-16</span>
+        <span class="meta-source">📰 每日经济新闻</span>
+        <a href="http://finance.eastmoney.com/a/202607163809172651.html" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>7月16日，天合光能688599.SH)公告称，预计2026年半年度归属于母公司所有者的净利润为亏损1.80亿元至3.60亿元。业绩变动主要系组件业务盈利能力改善，储能及分布式系统业务贡献正向利润，以及处置股权资产取得投资收益和公允价值变动…</p></div>
+    </div>
+    
+    <div class="news-item" id="news-5">
+      <div class="news-title-row">
+        <a href="http://finance.eastmoney.com/a/202607163809183948.html" target="_blank" class="news-title-link">天合光能上半年净利预亏1.8亿—3.6亿元，同比减亏</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">个股新闻</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-07-16</span>
+        <span class="meta-source">📰 北京商报</span>
+        <a href="http://finance.eastmoney.com/a/202607163809183948.html" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>北京商报讯（记者马换换李佳雪）7月16日晚间，天合光能（688599）发布2026年半年度业绩预告显示，公司预计上半年实现归属净利润为-3.6亿元到-1.8亿元，上年同期约为-29.18亿元，同比减亏。</p></div>
+    </div>
+    
+    <div class="news-item" id="news-6">
+      <div class="news-title-row">
+        <a href="http://finance.eastmoney.com/a/202607163809212161.html" target="_blank" class="news-title-link">账面减亏难掩主业承压，天合光能上半年扣非预亏最高近30亿元，年内股价跌超26%</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">个股新闻</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-07-16</span>
+        <span class="meta-source">📰 深圳商报·读创</span>
+        <a href="http://finance.eastmoney.com/a/202607163809212161.html" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>7月16日晚间，国内光伏组件龙头天合光能（688599）披露2026年半年度业绩预告，预计归属于母公司所有者的净利润为亏损1.80亿元至3.60亿元，较上年同期29.18亿元的亏损额大幅收窄。</p></div>
+    </div>
+    
+      </div>
+    </section>
+    
+    <section class="section" id="storage">
+      <h2 class="section-title">🟡 🔋 储能与技术 <span class="count">(1条)</span></h2>
+      <div class="section-content">
+        
+    <div class="news-item" id="news-7">
+      <div class="news-title-row">
+        <a href="https://www.sohu.com/a/1047438024_115863" target="_blank" class="news-title-link">超2.4GWh，天合/隆基等8企获储能订单</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">储能订单</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-07-08</span>
+        <span class="meta-source">📰 集邦光储观察</span>
+        <a href="https://www.sohu.com/a/1047438024_115863" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>7月7日，天合光能与安徽锦天新能源正式签订2.61MWh储能合作订单，共计10台Potentia蓝海2工商业储能柜，为天合面向工商业场景的新一代液冷储能产品。</p></div>
+    </div>
+    
+      </div>
+    </section>
+    
+    <section class="section" id="policy">
+      <h2 class="section-title">🟢 📜 政策与行业 <span class="count">(0条)</span></h2>
+      <div class="section-content">
+        
+      </div>
+    </section>
+    
+
+
+    <section class="section sentiment-section" id="sentiment">
+      <h2 class="section-title">📊 舆情综合研判</h2>
+      <div class="section-content">
+        <div class="sentiment-card sentiment-neutral">
+          <div class="sentiment-label">总体判断</div>
+          <div class="sentiment-value">中报预亏同比减亏现改善迹象，储能订单持续落地</div>
+        </div>
+        <div class="sentiment-grid">
+          <div class="sentiment-col">
+            <h4>🟢 利好因素</h4>
+            <ul><li class="pos">✅ 上半年预亏1.8亿-3.6亿元，较去年同期大幅减亏</li><li class="pos">✅ 签订2.61MWh工商业储能订单，Potentia蓝海2液冷柜落地</li><li class="pos">✅ 7月20日股价反弹4.30%，成交额放大至5.82亿元</li><li class="pos">✅ 科创板半年报预告整体向好，板块情绪边际改善</li></ul>
+          </div>
+          <div class="sentiment-col">
+            <h4>🔴 风险因素</h4>
+            <ul><li class="neg">⚠️ 扣非预亏最高近30亿元，主业盈利能力仍承压</li><li class="neg">⚠️ 年内股价跌超26%，处于近一年低位区间</li><li class="neg">⚠️ 融资净买入为负，资金面持续偏谨慎</li><li class="neg">⚠️ 光伏行业供需失衡与价格竞争格局未根本改善</li></ul>
+          </div>
+          <div class="sentiment-col">
+            <h4>👁️ 关键观察点</h4>
+            <ul><li class="watch">👁️ 8月27日中报正式披露，关注减亏幅度与毛利率变化</li><li class="watch">👁️ 储能海外订单交付与工商业储能放量节奏</li><li class="watch">👁️ 可转债转股进展及股本变动情况</li><li class="watch">👁️ 组件价格走势与行业“反内卷”政策落地效果</li></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+
+<footer>
+  <div class="sources">📰 信息来源：东方财富个股新闻 (AkShare)、kimi_search_v2</div>
+  <div>老丁实验室 · laodinglab.com/trinasolarnews</div>
+  <div class="disclaimer">⚠️ 免责声明：本报告由自动化系统聚合公开信息生成，仅提供标题与链接，内容需阅读原文了解。不构成投资建议。</div>
+</footer>
+
+</div>
+</body>
+</html>
