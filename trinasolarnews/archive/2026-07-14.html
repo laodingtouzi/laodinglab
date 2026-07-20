@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>天合光能舆情监控 · 第5期 (2026-07-14)</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2c5f7c;
+  --primary-light: #e8f0f5;
+  --accent: #c9a227;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #1a1a2e;
+  --text-secondary: #4a5568;
+  --text-muted: #718096;
+  --border: #e2e8f0;
+  --shadow: 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-hover: 0 4px 16px rgba(0,0,0,0.1);
+  --radius: 12px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  font-size: 15px;
+}
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Header */
+header {
+  background: linear-gradient(135deg, var(--primary) 0%, #1a3a4f 100%);
+  color: white;
+  padding: 40px 30px;
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-hover);
+}
+header h1 {
+  font-family: 'Noto Serif SC', Georgia, serif;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+header .subtitle {
+  font-size: 14px;
+  opacity: 0.85;
+  margin-bottom: 16px;
+}
+header .meta-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 13px;
+  opacity: 0.8;
+}
+header .meta-bar span {
+  background: rgba(255,255,255,0.12);
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+/* Navigation */
+nav {
+  background: var(--card-bg);
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 10px;
+  z-index: 100;
+}
+nav .nav-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+nav .nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+nav a {
+  font-size: 13px;
+  color: var(--primary);
+  text-decoration: none;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: var(--primary-light);
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+nav a:hover {
+  background: var(--primary);
+  color: white;
+}
+
+/* Section */
+.section {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.section-title {
+  font-family: 'Noto Serif SC', Georgia, serif;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 18px 24px;
+  background: linear-gradient(90deg, var(--primary-light) 0%, transparent 100%);
+  border-left: 4px solid var(--primary);
+  color: var(--primary);
+}
+.section-content {
+  padding: 0 24px 24px;
+}
+
+/* News Item */
+.news-item {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+}
+.news-item:last-child {
+  border-bottom: none;
+}
+.news-header {
+  margin-bottom: 10px;
+}
+.news-title-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.news-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.4;
+  flex: 1;
+}
+.tag {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.news-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.meta-date { font-weight: 500; }
+.meta-source { font-style: italic; }
+.meta-link {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+.meta-link:hover { text-decoration: underline; }
+.news-summary {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+.news-summary p {
+  text-align: justify;
+}
+
+/* Sentiment */
+.sentiment-section {}
+.sentiment-card {
+  text-align: center;
+  padding: 24px;
+  border-radius: var(--radius);
+  margin-bottom: 20px;
+}
+.sentiment-card.sentiment-negative {
+  background: linear-gradient(135deg, #fee2e2 0%, #fef2f2 100%);
+  border: 1px solid #fca5a5;
+}
+.sentiment-card.sentiment-neutral {
+  background: linear-gradient(135deg, #fef3c7 0%, #fffbeb 100%);
+  border: 1px solid #fcd34d;
+}
+.sentiment-card.sentiment-positive {
+  background: linear-gradient(135deg, #d1fae5 0%, #ecfdf5 100%);
+  border: 1px solid #6ee7b7;
+}
+.sentiment-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+.sentiment-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+}
+.sentiment-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+.sentiment-col {
+  background: var(--bg);
+  padding: 16px;
+  border-radius: 8px;
+}
+.sentiment-col h4 {
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+.sentiment-col ul {
+  list-style: none;
+  font-size: 13px;
+}
+.sentiment-col li {
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--border);
+  line-height: 1.6;
+}
+.sentiment-col li:last-child { border-bottom: none; }
+.sentiment-col li.pos { color: #065f46; }
+.sentiment-col li.neg { color: #991b1b; }
+.sentiment-col li.watch { color: #5b21b6; }
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 30px 20px;
+  color: var(--text-muted);
+  font-size: 13px;
+  border-top: 1px solid var(--border);
+  margin-top: 20px;
+}
+footer .sources {
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+footer .disclaimer {
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  header h1 { font-size: 22px; }
+  header { padding: 24px 20px; }
+  .section-content { padding: 0 16px 16px; }
+  .news-title { font-size: 15px; }
+  nav { position: static; }
+}
+
+/* Smooth scroll */
+html { scroll-behavior: smooth; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>🔍 天合光能舆情监控报告</h1>
+  <div class="subtitle">监控对象：天合光能股份有限公司 &nbsp;|&nbsp; 监控周期：近1-2周及重点回溯</div>
+  <div class="meta-bar">
+    <span>📅 报告日期：2026-07-14</span>
+    <span>📋 第 5 期</span>
+  </div>
+</header>
+
+<nav>
+  <div class="nav-title">📑 快速导航</div>
+  <div class="nav-links">
+    <a href="#executive_changes">🔴 🔄 高管人事变动</a>
+<a href="#financial_performance">🔴 💰 财务与业绩</a>
+<a href="#energy_storage">🟡 🔋 储能业务动态</a>
+<a href="#tianhe_fujia">🟡 🏠 天合富家动态</a>
+<a href="#executive_statements">🟡 🎤 高管公开发声</a>
+<a href="#risks_controversies">🔴 ⚠️ 风险与争议</a>
+<a href="#market_position">🟢 📊 市场与竞争</a>
+<a href="#sentiment">📊 舆情综合研判</a>
+  </div>
+</nav>
+
+
+    <section class="section" id="executive_changes">
+      <h2 class="section-title">🔴 🔄 高管人事变动</h2>
+      <div class="section-content">
+        
+      </div>
+    </section>
+    
+    <section class="section" id="financial_performance">
+      <h2 class="section-title">🔴 💰 财务与业绩</h2>
+      <div class="section-content">
+        
+    <div class="news-item" id="news-0">
+      <div class="news-header">
+        <div class="news-title-row">
+          <h3 class="news-title">天合光能发布2025年年度报告</h3>
+          <span class="tag" style="background:#dbeafe;color:#1e40af;border:1px solid #60a5fa">业绩</span>
+        </div>
+        <div class="news-meta">
+          <span class="meta-date">📅 2026-07-14</span>
+          <span class="meta-source">📰 新浪财经</span>
+          <a href="http://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688599&id=12285103" target="_blank" class="meta-link">阅读原文 →</a>
+        </div>
+      </div>
+      <div class="news-summary">
+        <p>天合光能发布2025年年度报告，全年营业收入672.79亿元，同比减少16.20%；归母净利润亏损69.94亿元。公司储能业务海外市场出货量快速增长，全球组件出货量超67GW，210组件累计出货量超236GW稳居全球第一。公司拟不派发现金红利，以集中竞价方式累计回购金额约5.6亿元。</p>
+      </div>
+    </div>
+    
+    <div class="news-item" id="news-1">
+      <div class="news-header">
+        <div class="news-title-row">
+          <h3 class="news-title">天合光能一季度净利润亏损2.83亿元 同比减亏78.56%</h3>
+          <span class="tag" style="background:#dbeafe;color:#1e40af;border:1px solid #60a5fa">业绩</span>
+        </div>
+        <div class="news-meta">
+          <span class="meta-date">📅 2026-04-29</span>
+          <span class="meta-source">📰 第一财经/头条</span>
+          <a href="https://www.toutiao.com/w/1863807127570506/" target="_blank" class="meta-link">阅读原文 →</a>
+        </div>
+      </div>
+      <div class="news-summary">
+        <p>天合光能披露2026年一季报，实现营业收入168.3亿元，同比增长17.4%；归母净利润亏损2.83亿元，同比减亏78.56%。公司经营活动现金流净额达40.92亿元，为走出亏损的先行指标。多家光伏龙头将2026年视为扭亏关键之年。</p>
+      </div>
+    </div>
+    
+      </div>
+    </section>
+    
+    <section class="section" id="energy_storage">
+      <h2 class="section-title">🟡 🔋 储能业务动态</h2>
+      <div class="section-content">
+        
+    <div class="news-item" id="news-2">
+      <div class="news-header">
+        <div class="news-title-row">
+          <h3 class="news-title">超34GWh！储能大厂订单潮，天合储能海外订单超12GWh</h3>
+          <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">储能</span>
+        </div>
+        <div class="news-meta">
+          <span class="meta-date">📅 2026-07-12</span>
+          <span class="meta-source">📰 新浪财经/集邦光储</span>
+          <a href="https://finance.sina.com.cn/wm/2026-07-12/doc-inihpymx4567875.shtml" target="_blank" class="meta-link">阅读原文 →</a>
+        </div>
+      </div>
+      <div class="news-summary">
+        <p>近期储能市场迎来订单签约高峰，十余家头部企业密集官宣海外新订单，累计超34GWh。天合光能是出海龙头之一，2026年储能出货目标15-16GWh，海外在手订单已超12GWh。公司储能业务毛利率有望突破20%，成为公司第二大增长引擎。</p>
+      </div>
+    </div>
+    
+    <div class="news-item" id="news-3">
+      <div class="news-header">
+        <div class="news-title-row">
+          <h3 class="news-title">天合储能签约日本九州160MWh储能订单</h3>
+          <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">储能</span>
+        </div>
+        <div class="news-meta">
+          <span class="meta-date">📅 2026-06-12</span>
+          <span class="meta-source">📰 集邦光储</span>
+          <a href="https://www.energytrend.cn/news/20260612-147785.html" target="_blank" class="meta-link">阅读原文 →</a>
+        </div>
+      </div>
+      <div class="news-summary">
+        <p>天合储能宣布签署日本九州地区160MWh超高压电池储能项目供货合同，采用自研Elementa 2储能系统，搭载314Ah大容量磷酸铁锂电芯。项目将于2026年完成设备交付，2027年投入商业运营。该产品已获得日本JIS8715-2R防火蔓延认证。</p>
+      </div>
+    </div>
+    
+    <div class="news-item" id="news-4">
+      <div class="news-header">
+        <div class="news-title-row">
+          <h3 class="news-title">天合储能/融和元储/东方日升斩获1.13GWh海外储能订单</h3>
+          <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">储能</span>
+        </div>
+        <div class="news-meta">
+          <span class="meta-date">📅 2026-07-14</span>
+          <span class="meta-source">📰 储能中国网</span>
+          <a href="http://cnnes.cc/qiye/20250225/10152.html" target="_blank" class="meta-link">阅读原文 →</a>
+        </div>
+      </div>
+      <div class="news-summary">
+        <p>天合储能与Pacific Green达成合作，共同推进澳大利亚南澳Limestone Coast North Energy Park项目，规模250MW/500MWh。该项目企业价值约4.60亿澳元，建成后将是南澳最大的新能源园区之一。天合储能作为电芯供应商和电池舱集成商提供全套解决方案。</p>
+      </div>
+    </div>
+    
+    <div class="news-item" id="news-5">
+      <div class="news-header">
+        <div class="news-title-row">
+          <h3 class="news-title">天合光能签约2.61MWh工商业储能合作</h3>
+          <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">储能</span>
+        </div>
+        <div class="news-meta">
+          <span class="meta-date">📅 2026-07-07</span>
+          <span class="meta-source">📰 天合光能官网</span>
+          <a href="https://www.trinasolar.com/cn/" target="_blank" class="meta-link">阅读原文 →</a>
+        </div>
+      </div>
+      <div class="news-summary">
+        <p>天合光能与安徽锦天新能源签订储能合作订单，签约规模2.61MWh，共计10台Potentia蓝海2工商业储能柜。该产品是天合面向工商业场景打造的新一代液冷储能标杆产品。</p>
+      </div>
+    </div>
+    
+      </div>
+    </section>
+    
+    <section class="section" id="tianhe_fujia">
+      <h2 class="section-title">🟡 🏠 天合富家动态</h2>
+      <div class="section-content">
+        
+    <div class="news-item" id="news-6">
+      <div class="news-header">
+        <div class="news-title-row">
+          <h3 class="news-title">2026 SNEC现场观察：天合富家的&#x27;升维之战&#x27;——从光伏屋顶到AI赋能的数智综合能源</h3>
+          <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">业务动态</span>
+        </div>
+        <div class="news-meta">
+          <span class="meta-date">📅 2026-06-04</span>
+          <span class="meta-source">📰 中国能源报/今日头条</span>
+          <a href="https://www.toutiao.com/article/7647438008756601382/" target="_blank" class="meta-link">阅读原文 →</a>
+        </div>
+      </div>
+      <div class="news-summary">
+        <p>天合富家在2026 SNEC上发布战略升级，从分布式光伏公司进化为AI赋能的数智综合能源运营服务商。总经理金锐提出&#x27;AI in all&#x27;战略，发布天盈AI和天益AI两大模型，切入&#x27;算电协同&#x27;新赛道。天合富家已加入零碳园区创建服务工作组，自持分布式光伏资产规模4-6GW。</p>
+      </div>
+    </div>
+    
+    <div class="news-item" id="news-7">
+      <div class="news-header">
+        <div class="news-title-row">
+          <h3 class="news-title">天合富家30亿元户用光伏REITs成功挂牌上市</h3>
+          <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">业务动态</span>
+        </div>
+        <div class="news-meta">
+          <span class="meta-date">📅 2026-03-17</span>
+          <span class="meta-source">📰 澎湃新闻/今日头条</span>
+          <a href="https://www.toutiao.com/article/7618228904053981759/" target="_blank" class="meta-link">阅读原文 →</a>
+        </div>
+      </div>
+      <div class="news-summary">
+        <p>天合富家新能源基础设施碳中和绿色持有型不动产ABS在上海证券交易所成功挂牌，规模30亿元，底层资产为10省份28000多个户用分布式光伏电站，总装机990.34MW。这是光伏行业首单户用分布式光伏机构间REITs，副总裁丁华章透露每年将有6-8GW资产进入ABS平台。</p>
+      </div>
+    </div>
+    
+      </div>
+    </section>
+    
+    <section class="section" id="executive_statements">
+      <h2 class="section-title">🟡 🎤 高管公开发声</h2>
+      <div class="section-content">
+        
+    <div class="news-item" id="news-8">
+      <div class="news-header">
+        <div class="news-title-row">
+          <h3 class="news-title">CCTV专访高纪凡：25次创造和刷新世界纪录的光伏领军者</h3>
+          <span class="tag" style="background:#fef3c7;color:#92400e;border:1px solid #fbbf24">高管发声</span>
+        </div>
+        <div class="news-meta">
+          <span class="meta-date">📅 2026-07-14</span>
+          <span class="meta-source">📰 CCTV/央视网</span>
+          <a href="https://people.cctv.com/2024/05/27/ARTIZjDzp5VKhf1HRMD5ygIq240527.shtml" target="_blank" class="meta-link">阅读原文 →</a>
+        </div>
+      </div>
+      <div class="news-summary">
+        <p>央视网发布专访光伏科学与技术国家重点实验室主任、天合光能创始人高纪凡。高纪凡回顾2012年光伏行业寒冬时坚持不砍研发投入的决策，强调技术创新是企业穿越周期的核心。天合光能已25次创造和刷新光伏电池转换效率和组件输出功率世界纪录。</p>
+      </div>
+    </div>
+    
+      </div>
+    </section>
+    
+    <section class="section" id="risks_controversies">
+      <h2 class="section-title">🔴 ⚠️ 风险与争议</h2>
+      <div class="section-content">
+        
+    <div class="news-item" id="news-9">
+      <div class="news-header">
+        <div class="news-title-row">
+          <h3 class="news-title">天合光能2025年亏损69.94亿元，光伏行业普遍承压</h3>
+          <span class="tag" style="background:#fee2e2;color:#991b1b;border:1px solid #f87171">风险</span>
+        </div>
+        <div class="news-meta">
+          <span class="meta-date">📅 2026-02-26</span>
+          <span class="meta-source">📰 财联社</span>
+          <a href="https://www.cls.cn/detail/2296373" target="_blank" class="meta-link">阅读原文 →</a>
+        </div>
+      </div>
+      <div class="news-summary">
+        <p>天合光能2025年归母净利润亏损69.94亿元，上年亏损34.43亿元，亏损幅度扩大。光伏行业面临阶段性供需失衡，产业链各环节开工率低位，组件业务盈利能力下滑。尽管下半年价格回升，但硅料、银浆等原材料成本快速上涨仍侵蚀利润。公司计提资产减值准备对业绩产生影响。</p>
+      </div>
+    </div>
+    
+    <div class="news-item" id="news-10">
+      <div class="news-header">
+        <div class="news-title-row">
+          <h3 class="news-title">天合光能与阿特斯专利纠纷持续，索赔10.58亿元</h3>
+          <span class="tag" style="background:#fee2e2;color:#991b1b;border:1px solid #f87171">风险</span>
+        </div>
+        <div class="news-meta">
+          <span class="meta-date">📅 2025-02-11</span>
+          <span class="meta-source">📰 财联社</span>
+          <a href="https://www.cls.cn/detail/1939236" target="_blank" class="meta-link">阅读原文 →</a>
+        </div>
+      </div>
+      <div class="news-summary">
+        <p>天合光能就阿特斯及其子公司侵害两项发明专利权向江苏省高院提起诉讼，索赔合计10.58亿元。涉案专利为&#x27;太阳能电池模块&#x27;和&#x27;太阳能电池及其制造方法&#x27;，最初由韩国LG电子持有，2024年天合光能从晶科能源子公司处获得。此前双方已在美国、欧洲多地发生专利纠纷。</p>
+      </div>
+    </div>
+    
+      </div>
+    </section>
+    
+    <section class="section" id="market_position">
+      <h2 class="section-title">🟢 📊 市场与竞争</h2>
+      <div class="section-content">
+        
+    <div class="news-item" id="news-11">
+      <div class="news-header">
+        <div class="news-title-row">
+          <h3 class="news-title">天合光能钙钛矿/晶体硅叠层组件全球高端户用市场首单签约</h3>
+          <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">市场</span>
+        </div>
+        <div class="news-meta">
+          <span class="meta-date">📅 2026-07-03</span>
+          <span class="meta-source">📰 天合光能官网/中国能源新闻网</span>
+          <a href="https://www.cpnn.com.cn/qiye/jishu2023/202606/t20260617_1895757.html" target="_blank" class="meta-link">阅读原文 →</a>
+        </div>
+      </div>
+      <div class="news-summary">
+        <p>天合光能凭借自主研发的高效钙钛矿/晶体硅叠层光伏组件，成功获得全球高端分布式客户首单签约，落地新西兰。该组件基于900+W叠层技术体系，BOS综合成本降低15%-20%，同面积发电量提升20%-30%。标志着叠层技术从实验室到商业化的关键跨越。</p>
+      </div>
+    </div>
+    
+    <div class="news-item" id="news-12">
+      <div class="news-header">
+        <div class="news-title-row">
+          <h3 class="news-title">天合光能叠层技术产品出口新西兰</h3>
+          <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">市场</span>
+        </div>
+        <div class="news-meta">
+          <span class="meta-date">📅 2026-06-16</span>
+          <span class="meta-source">📰 搜狐</span>
+          <a href="https://www.sohu.com/a/1037522849_120578424" target="_blank" class="meta-link">阅读原文 →</a>
+        </div>
+      </div>
+      <div class="news-summary">
+        <p>天合光能自主研发的高效钙钛矿/晶体硅叠层光伏组件首单签约来自新西兰高端分布式客户。叠层组件通过超高光电转化效率，助力系统BOS成本降低15%-20%，同面积发电量提升20%-30%。新西兰项目落地是叠层技术全球商业化布局的关键里程碑。</p>
+      </div>
+    </div>
+    
+      </div>
+    </section>
+    
+
+
+    <section class="section sentiment-section" id="sentiment">
+      <h2 class="section-title">📊 舆情综合研判</h2>
+      <div class="section-content">
+        <div class="sentiment-card sentiment-neutral">
+          <div class="sentiment-label">总体判断</div>
+          <div class="sentiment-value">谨慎中性偏正面</div>
+        </div>
+        
+        <div class="sentiment-grid">
+          <div class="sentiment-col">
+            <h4>🟢 利好因素</h4>
+            <ul><li class="pos">✅ 储能业务海外订单饱满，2026年出货目标15-16GWh，成为第二增长引擎</li><li class="pos">✅ 钙钛矿/晶体硅叠层组件实现全球首单商业化签约，技术领先</li><li class="pos">✅ 一季度同比减亏78.56%，经营现金流40.92亿元，扭亏信号显现</li><li class="pos">✅ 天合富家30亿元REITs成功发行，创新融资模式打通资产闭环</li><li class="pos">✅ 高纪凡坚持研发投入战略，25次刷新世界纪录，技术护城河深厚</li></ul>
+          </div>
+          <div class="sentiment-col">
+            <h4>🔴 风险因素</h4>
+            <ul><li class="neg">⚠️ 2025年全年亏损69.94亿元，亏损幅度同比扩大，行业供需失衡未根本改善</li><li class="neg">⚠️ 光伏组件价格仍处低位，毛利率承压，全年盈利能力下滑</li><li class="neg">⚠️ 与阿特斯专利纠纷索赔10.58亿元，诉讼结果存在不确定性</li><li class="neg">⚠️ 资产负债率高达77.99%，财务杠杆风险需关注</li></ul>
+          </div>
+          <div class="sentiment-col">
+            <h4>👁️ 关键观察点</h4>
+            <ul><li class="watch">👁️ Q2-Q3组件价格能否持续回升，实现毛利率转正</li><li class="watch">👁️ 储能业务海外订单交付进度及盈利兑现情况</li><li class="watch">👁️ 天合富家REITs扩募及资产出表节奏</li><li class="watch">👁️ 阿特斯专利诉讼进展及潜在赔偿影响</li></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+
+<footer>
+  <div class="sources">📰 信息来源：财联社、新浪财经、搜狐、北极星光伏网、中国能源报、中国能源新闻网、今日头条、CCTV、集邦光储、储能中国网</div>
+  <div>老丁实验室 · laodinglab.com/trinasolarnews</div>
+  <div class="disclaimer">⚠️ 免责声明：本报告由自动化系统整理生成，内容仅供参考，不构成投资建议。信息来源为公开网络检索，不保证完整性与准确性。</div>
+</footer>
+
+</div>
+</body>
+</html>
