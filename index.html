@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>老丁实验室 · Laodinglab</title>
+<meta name="description" content="老丁实验室 — 中国电力市场研究、电站投资模型、新能源每日简报、全球风光储充装机数据追踪">
+<meta property="og:type" content="website">
+<meta property="og:title" content="老丁实验室 · Laodinglab">
+<meta property="og:description" content="专注中国电力市场与新能源领域的独立研究平台，提供市场洞察、量化模型与行业动态追踪">
+<meta property="og:image" content="https://laodinglab.com/logo-og.png">
+<meta property="og:url" content="https://laodinglab.com">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="老丁实验室 · Laodinglab">
+<meta name="twitter:description" content="专注中国电力市场与新能源领域的独立研究平台">
+<meta name="twitter:image" content="https://laodinglab.com/logo-og.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* 莫兰迪商务风配色 */
+  --bg: #edeae6;
+  --bg-surface: #f7f6f4;
+  --bg-dark: #2d3a4f;
+  --bg-dark-light: #364765;
+  
+  --text: #2a3445;
+  --text-secondary: #5c6b80;
+  --text-muted: #9a9a9e;
+  --text-on-dark: #e1dad8;
+  --text-on-dark-muted: #a8a4a0;
+  
+  --border: #d0cbc5;
+  --border-hover: #b8b2aa;
+  --border-dark: rgba(225, 218, 216, 0.12);
+  
+  --accent: #B69C91;
+  --accent-light: #e8ddd5;
+  --accent-2: #76819C;
+  --accent-2-light: #e0e3e8;
+  --accent-3: #9a8a80;
+  --accent-4: #5c6b80;
+  
+  --shadow: rgba(42, 52, 69, 0.06);
+  --shadow-hover: rgba(42, 52, 69, 0.12);
+  --shadow-dark: rgba(0, 0, 0, 0.15);
+  
+  --sans: 'Inter', 'Noto Sans SC', 'PingFang SC', sans-serif;
+  --serif: 'Noto Serif SC', Georgia, serif;
+  --mono: 'Roboto Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── HEADER ── */
+.site-header {
+  background: var(--bg-dark);
+  border-bottom: 1px solid var(--border-dark);
+  padding: 14px 24px;
+  position: relative;
+}
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.logo-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.logo-mark {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-3));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+.site-name {
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  color: var(--text-on-dark);
+  line-height: 1.2;
+}
+.site-name-en {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 400;
+  color: var(--text-on-dark-muted);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  display: block;
+  margin-top: 1px;
+}
+.site-nav {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+.site-nav a {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-on-dark-muted);
+  text-decoration: none;
+  transition: color .2s;
+  position: relative;
+  padding-bottom: 2px;
+}
+.site-nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transition: width .2s;
+  border-radius: 1px;
+}
+.site-nav a:hover {
+  color: var(--text-on-dark);
+}
+.site-nav a:hover::after {
+  width: 100%;
+}
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(135deg, #2a3445 0%, #364765 50%, #3d4f6b 100%);
+  padding: 36px 24px 32px;
+  text-align: center;
+  border-bottom: 1px solid var(--border-dark);
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 50%; right: 10%;
+  width: 220px; height: 220px;
+  background: radial-gradient(circle, rgba(182, 156, 145, 0.08) 0%, transparent 70%);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 20%; left: 8%;
+  width: 180px; height: 180px;
+  background: radial-gradient(circle, rgba(118, 129, 156, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-inner {
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+.hero-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--text-on-dark-muted);
+  margin-bottom: 8px;
+}
+.hero-title {
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  line-height: 1.2;
+  margin-bottom: 8px;
+  color: var(--text-on-dark);
+  font-family: var(--serif);
+}
+.hero-title span {
+  font-family: var(--mono);
+  font-weight: 400;
+  letter-spacing: .1em;
+  font-size: 0.5em;
+  display: block;
+  margin-top: 4px;
+  color: var(--text-on-dark-muted);
+}
+.hero-desc {
+  font-size: 13px;
+  color: var(--text-on-dark-muted);
+  line-height: 1.7;
+  font-weight: 300;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* ── MAIN ── */
+.main {
+  flex: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 36px 24px 56px;
+  width: 100%;
+}
+
+.section-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-label::before {
+  content: '';
+  display: block;
+  width: 12px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  border-radius: 1px;
+}
+
+/* ── CARDS ── */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+  margin-bottom: 40px;
+}
+
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  transition: all .25s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 1px 3px var(--shadow);
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--card-gradient, linear-gradient(90deg, var(--accent), var(--accent-2)));
+  opacity: 0;
+  transition: opacity .25s;
+}
+.card:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -4px var(--shadow-hover);
+}
+.card:hover::before {
+  opacity: 1;
+}
+
+.card-1 { --card-gradient: linear-gradient(90deg, #76819C, #5c6b80); }
+.card-2 { --card-gradient: linear-gradient(90deg, #B69C91, #9a8a80); }
+.card-3 { --card-gradient: linear-gradient(90deg, #9a8a80, #B69C91); }
+.card-4 { --card-gradient: linear-gradient(90deg, #5c6b80, #76819C); }
+
+.card-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  margin-bottom: 14px;
+  border: 1px solid var(--border);
+  transition: transform .2s, border-color .2s;
+}
+.card:hover .card-icon {
+  transform: scale(1.05);
+  border-color: var(--border-hover);
+}
+.card-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.card-title {
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+.card-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  flex: 1;
+  font-weight: 300;
+}
+.card-cta {
+  margin-top: 16px;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--accent-4);
+  letter-spacing: .04em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color .2s;
+}
+.card:hover .card-cta { color: var(--accent); }
+.card-cta::after {
+  content: '→';
+  transition: transform .2s;
+  font-weight: 400;
+}
+.card:hover .card-cta::after { transform: translateX(4px); }
+
+/* NEW badge */
+.badge-new {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: .1em;
+  background: var(--accent-light);
+  color: #7a5e53;
+  padding: 2px 6px;
+  border-radius: 3px;
+  vertical-align: middle;
+  margin-left: 4px;
+  font-weight: 500;
+}
+
+/* ── ABOUT ── */
+.about {
+  padding: 28px 0;
+  border-top: 1px solid var(--border);
+}
+.about-title {
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text);
+  letter-spacing: .02em;
+}
+.about-text {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 640px;
+  font-weight: 300;
+}
+
+/* ── FOOTER ── */
+.site-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border-dark);
+  background: var(--bg-dark);
+}
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.footer-brand {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-on-dark-muted);
+  letter-spacing: .02em;
+}
+.footer-note {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-on-dark-muted);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.footer-hidden-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 8px;
+}
+.footer-hidden-links a {
+  color: inherit;
+  text-decoration: none;
+  vertical-align: middle;
+  transition: opacity .2s;
+  line-height: 1;
+}
+
+@media (max-width: 768px) {
+  .site-header, .hero, .main { padding-left: 20px; padding-right: 20px; }
+  .header-inner { justify-content: center; text-align: center; }
+  .site-nav { display: none; }
+  .hero { padding: 24px 20px 20px; }
+  .hero-title { font-size: 18px; }
+  .cards { grid-template-columns: 1fr; }
+  .card { padding: 20px; }
+  .card-desc { font-size: 14px; }
+  .about-text { font-size: 14px; }
+  .footer-inner { justify-content: center; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo-group">
+      <div class="logo-mark">L</div>
+      <div>
+        <div class="site-name">老丁实验室</div>
+        <div class="site-name-en">Laodinglab</div>
+      </div>
+    </div>
+    <nav class="site-nav">
+      <a href="/newenergynews">每日简报</a>
+      <a href="/globalnewenergydata">全球数据</a>
+      <a href="/chinapowermarket">市场研究</a>
+      <a href="/powerstation_fin_model">投资模型</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Independent Research</div>
+    <h1 class="hero-title">
+      老丁实验室
+      <span>LAODING LABORATORY</span>
+    </h1>
+    <p class="hero-desc">专注中国电力市场与新能源领域的独立研究与数据追踪，提供市场洞察、量化模型与行业动态追踪。</p>
+  </div>
+</section>
+
+<main class="main">
+  <div class="section-label">研究内容 · Projects</div>
+
+  <div class="cards">
+
+    <!-- 1. 新能源简报 -->
+    <a href="/newenergynews" class="card card-3">
+      <div class="card-icon">📰</div>
+      <div class="card-tag">Daily Brief <span class="badge-new">DAILY</span></div>
+      <div class="card-title">新能源简报</div>
+      <p class="card-desc">每日追踪全球光伏、储能、电力市场动态，涵盖政策、市场、技术三大维度，聚焦中国市场与海外动向。</p>
+      <div class="card-cta">阅读简报</div>
+    </a>
+
+    <!-- 2. 全球风光储充装机数据 -->
+    <a href="/globalnewenergydata" class="card card-4">
+      <div class="card-icon">🌍</div>
+      <div class="card-tag">Data Tracker <span class="badge-new">MONTHLY</span></div>
+      <div class="card-title">全球风光储充装机数据</div>
+      <p class="card-desc">按月追踪全球光伏、风电、储能、充电桩四大板块的分区域装机数据，覆盖中国、欧美、拉美、非洲等八大区域。</p>
+      <div class="card-cta">查看数据</div>
+    </a>
+
+    <!-- 3. 中国电力市场分析 -->
+    <a href="/chinapowermarket" class="card card-1">
+      <div class="card-icon">⚡</div>
+      <div class="card-tag">Market Research</div>
+      <div class="card-title">中国电力市场分析</div>
+      <p class="card-desc">深度解析中国电力市场化改革进程，涵盖现货市场、辅助服务、绿电交易及省间交易机制的研究与追踪。</p>
+      <div class="card-cta">进入研究</div>
+    </a>
+
+    <!-- 4. 电站投资模型 -->
+    <a href="/powerstation_fin_model" class="card card-2">
+      <div class="card-icon">📊</div>
+      <div class="card-tag">Quantitative Model</div>
+      <div class="card-title">电站投资模型</div>
+      <p class="card-desc">光伏及储能电站全生命周期财务模型，支持IRR、NPV、LCOE敏感性分析，适用于项目可行性研究与投资决策。</p>
+      <div class="card-cta">查看模型</div>
+    </a>
+
+  </div>
+
+  <div class="about">
+    <div class="about-title">关于老丁实验室</div>
+    <p class="about-text">老丁实验室是一个专注于中国电力与新能源领域的独立研究平台，致力于用清晰的数据和严谨的分析，帮助从业者理解快速变化中的能源市场。内容涵盖市场机制研究、投资量化工具与行业动态追踪。</p>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span class="footer-brand">老丁实验室 · Laodinglab</span>
+    <span class="footer-note">laodinglab.com · 独立研究 · 持续更新</span>
+    <span class="footer-hidden-links">
+      <a href="/trinasolarnews" style="opacity:.5;color:#B69C91;font-size:18px;" onmouseover="this.style.opacity='.95'" onmouseout="this.style.opacity='.5'">●</a>
+      <a href="/stockmarketanalysis" style="opacity:.4;color:#B69C91;font-size:15px;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='.4'">📈</a>
+    </span>
+  </div>
+</footer>
+
+</body>
+</html>
