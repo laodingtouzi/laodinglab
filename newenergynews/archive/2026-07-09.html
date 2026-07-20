@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新能源要闻 · 第22期 · 2026-07-09 · 老丁实验室</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f8f9fa;
+            --bg-surface: #ffffff;
+            --text: #1a1a2e;
+            --text-secondary: #4a5568;
+            --text-muted: #718096;
+            --border: #e2e8f0;
+            --border-light: #edf2f7;
+            --accent: #2c5f7c;
+            --accent-light: #e8f0f5;
+            --accent-warm: #8b5a2b;
+            --shadow: rgba(0, 0, 0, 0.04);
+            --shadow-hover: rgba(0, 0, 0, 0.08);
+            --sans: 'Inter', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            --serif: 'Noto Serif SC', Georgia, 'Songti SC', serif;
+            --tag-policy: #1a6b3a;
+            --tag-policy-bg: #e8f0e8;
+            --tag-market: #2c5f7c;
+            --tag-market-bg: #e8f0f5;
+            --tag-tech: #744c9e;
+            --tag-tech-bg: #f0e8f5;
+            --tag-sentiment: #b85c38;
+            --tag-sentiment-bg: #f5ebe8;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            width: 100%;
+        }
+
+        /* ── HEADER ── */
+        .site-header {
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .logo-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo-mark {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #2c5f7c, #5a8fa8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            flex-shrink: 0;
+        }
+        .site-name {
+            font-family: var(--serif);
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            color: var(--text);
+            line-height: 1.2;
+        }
+        .site-name-en {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 11px;
+            font-weight: 400;
+            color: var(--text-muted);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            display: block;
+            margin-top: 1px;
+        }
+        .site-nav {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+        .site-nav a {
+            font-family: var(--sans);
+            font-size: 13px;
+            font-weight: 400;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+            position: relative;
+            padding-bottom: 2px;
+        }
+        .site-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #2c5f7c, #5a8fa8);
+            transition: width 0.2s;
+            border-radius: 1px;
+        }
+        .site-nav a:hover { color: var(--accent); }
+        .site-nav a:hover::after { width: 100%; }
+
+        /* ── HERO ── */
+        .hero {
+            background: linear-gradient(135deg, #f8fafc 0%, #e8f0f5 50%, #f0f5f8 100%);
+            padding: 40px 24px 32px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%; right: 10%;
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(44, 95, 124, 0.06) 0%, transparent 70%);
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+        .hero-inner {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-eyebrow {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 13px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+        .hero-title {
+            font-family: var(--serif);
+            font-size: 38px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            line-height: 1.2;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+        .hero-date {
+            font-size: 16px;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        .hero-desc {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-weight: 300;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+        .hero-stats {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-stat {
+            text-align: center;
+            padding: 12px 24px;
+            background: var(--bg-surface);
+            border-radius: 10px;
+            min-width: 100px;
+            border: 1px solid var(--border);
+        }
+        .hero-stat .number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .hero-stat .label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* ── MAIN ── */
+        .main {
+            flex: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px 24px 56px;
+            width: 100%;
+        }
+        
+        .section-divider {
+            text-align: center;
+            margin: 48px 0;
+            position: relative;
+        }
+        .section-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+        }
+        .section-divider-text {
+            display: inline-block;
+            padding: 0 24px;
+            background: var(--bg);
+            position: relative;
+            font-family: var(--serif);
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--accent);
+            letter-spacing: 0.05em;
+        }
+        .section-divider-sub {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+        
+        .content-section {
+            margin-bottom: 40px;
+        }
+        .section-title {
+            font-family: var(--serif);
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--accent-light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+        .summary-box {
+            background: var(--accent-light);
+            border-left: 4px solid var(--accent);
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 24px;
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+        .summary-box strong {
+            color: var(--accent);
+        }
+        
+        .subsection-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--accent);
+            margin: 24px 0 12px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .news-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            transition: box-shadow 0.2s, transform 0.1s;
+        }
+        .news-card:hover {
+            box-shadow: 0 2px 8px var(--shadow-hover);
+            transform: translateY(-1px);
+        }
+        .news-card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+        .tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+        .tag-policy { background: var(--tag-policy-bg); color: var(--tag-policy); }
+        .tag-market { background: var(--tag-market-bg); color: var(--tag-market); }
+        .tag-tech { background: var(--tag-tech-bg); color: var(--tag-tech); }
+        .tag-sentiment { background: var(--tag-sentiment-bg); color: var(--tag-sentiment); }
+        .source {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        .news-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 6px;
+            line-height: 1.5;
+        }
+        .news-summary {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        .text-muted {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        
+        .region-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .region-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+        }
+        .region-card h4 {
+            font-family: var(--serif);
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .sources-section {
+            margin-top: 48px;
+            padding-top: 32px;
+            border-top: 2px solid var(--border);
+        }
+        .sources-section h3 {
+            font-family: var(--serif);
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 20px;
+        }
+        .source-category {
+            margin-bottom: 16px;
+        }
+        .source-category h5 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+        .source-category ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .source-category li {
+            font-size: 14px;
+            color: var(--text-muted);
+            background: var(--border-light);
+            padding: 4px 10px;
+            border-radius: 4px;
+        }
+        
+        /* ── FOOTER ── */
+        .site-footer {
+            padding: 20px 24px;
+            border-top: 1px solid var(--border);
+            background: var(--bg-surface);
+            margin-top: 20px;
+        }
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-brand {
+            font-family: var(--serif);
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+        .footer-note {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 10px;
+            color: var(--text-muted);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .footer-disclaimer {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            max-width: 800px;
+        }
+        
+        @media (max-width: 768px) {
+            .hero { padding: 24px 20px 20px; }
+            .hero-title { font-size: 28px; }
+            .main { padding: 20px 16px 40px; }
+            .section-divider-text { font-size: 18px; }
+            .section-title { font-size: 20px; }
+            .news-card { padding: 12px 16px; }
+            .site-nav { display: none; }
+            .header-inner { justify-content: center; text-align: center; }
+            .footer-inner { justify-content: center; text-align: center; flex-direction: column; }
+            .region-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo-group">
+      <div class="logo-mark">L</div>
+      <div>
+        <div class="site-name">老丁实验室</div>
+        <div class="site-name-en">Laodinglab</div>
+      </div>
+    </div>
+    <nav class="site-nav" style="display:none;">
+      <a href="/">首页</a>
+      <a href="/stockmarketanalysis">选股模型</a>
+      <a href="/globalnewenergydata">装机数据</a>
+      <a href="/newenergynews">新能源要闻</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">New Energy Daily Brief · 第22期 · 2026-07-09 周四</div>
+    <h1 class="hero-title">新能源要闻简报</h1>
+    <div class="hero-date">第22期 · 2026-07-09 周四</div>
+    <p class="hero-desc">覆盖光伏、风电、储能、氢能、电力体系（智能微网、电网设备、电力交易、虚拟电厂）等领域每日要闻</p>
+  </div>
+</section>
+
+<main class="main">
+    <div class="container">
+    
+        <!-- 中国市场 -->
+        <div class="content-section">
+            <h2 class="section-title">🇨🇳 国内新能源动态</h2>
+            <p class="section-subtitle">中国市场 · 光伏 · 风电 · 储能 · 氢能</p>
+            
+            <div class="summary-box">
+                <strong>今日要闻摘要</strong><br>
+                广东首批发电类虚拟电厂以报量报价方式正式参与电力现货市场交易，标志虚拟电厂市场化迈入新阶段。风电储能氢能领域持续活跃，电建能建中报显示新能源装机增长强劲。
+            </div>
+            
+            <h3 class="subsection-title">📋 官方政策</h3>
+            <div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-policy">政策</span>
+                <span class="source">低碳网</span>
+            </div>
+            <h4 class="news-title">广东首批发电类虚拟电厂参与电力现货市场交易</h4>
+            <p class="news-summary">广东首批发电类虚拟电厂——来自深圳、佛山、中山等地，总容量约33兆瓦的5家虚拟电厂交易单元，近期以报量报价方式正式参与电力现货市场交易。虚拟电厂把电网中散落的充电桩、空调、储能站、分布式新能源等电力负荷聚合起来，以一个整体参与电力市场交易。</p>
+        </div>
+<div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-policy">政策</span>
+                <span class="source">智慧能源日课</span>
+            </div>
+            <h4 class="news-title">机制电价改革与新能源市场化发展持续推进</h4>
+            <p class="news-summary">国家发改委《关于深化新能源上网电价市场化改革的意见》（136号文）自2025年2月发布以来，各省已进入省级衔接文件密集出台期。山东率先发布新增新能源项目参与电力市场实施细则，广东2025年电力市场规模达6500亿千瓦时。</p>
+        </div>
+            
+            <h3 class="subsection-title">🏭 行业动态</h3>
+            <div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-market">市场</span>
+                <span class="source">百度资讯</span>
+            </div>
+            <h4 class="news-title">电建能建新能源装机增长强劲，储能氢能齐发力</h4>
+            <p class="news-summary">电建能建中报显示，新能源装机增长强劲。能建三年跑出了57.6%的高复合增长率，运营资产飙升。能建国内已拿下7600万千瓦新能源开发指标，在储能、氢能领域更有扩张野心，储备超过50个绿色氢氨醇项目。</p>
+        </div>
+<div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-market">市场</span>
+                <span class="source">新浪财经</span>
+            </div>
+            <h4 class="news-title">风电储能氢能动态：金风科技、明阳智能等龙头持续布局</h4>
+            <p class="news-summary">金风科技通过旗下金风储能布局「风火储」一体化项目，开展「风氢耦合」示范项目；明阳智能布局储能变流器及系统集成，推动「风光储一体化」项目落地，成立专门的氢能事业部。</p>
+        </div>
+            
+            <h3 class="subsection-title">🏢 企业动态</h3>
+            <div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-market">市场</span>
+                <span class="source">北极星智能电网</span>
+            </div>
+            <h4 class="news-title">东北区域首家虚拟电厂率先参与电力交易</h4>
+            <p class="news-summary">国网吉林电动汽车公司作为东北区域内首家市场注册、首批参与电力交易的虚拟电厂，共聚合可调节负荷资源总容量36.61万千瓦，填补东北区域在该领域的空白。目前达成2026年度交易电量1.79亿千瓦时。</p>
+        </div>
+            
+            <h3 class="subsection-title">📊 舆情速递</h3>
+            <div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-sentiment">舆情</span>
+                <span class="source">识微科技</span>
+            </div>
+            <h4 class="news-title">中国新能源汽车出海面临多维舆情风险</h4>
+            <p class="news-summary">随着出海规模扩大，围绕质量争议、政策摩擦、本地化不足、品牌认知差异等问题的舆情风险在同步上升。海外舆情传播具有更强的制度化媒体环境与更严格的消费者保护机制，任何产品质量问题都可能迅速被放大为行业级讨论。</p>
+        </div>
+        </div>
+        
+        <div class="section-divider">
+            <span class="section-divider-text">⋅ ⋅ ⋅</span>
+        </div>
+        
+        <!-- 充电与电网 -->
+        <div class="content-section">
+            <h2 class="section-title">⚡ 充电与电网</h2>
+            <p class="section-subtitle">充电桩 · 电力市场 · 虚拟电厂 · 分布式能源 · 智能微网</p>
+            
+            <div class="summary-box">
+                <strong>今日要闻摘要</strong><br>
+                虚拟电厂从试点示范到规模应用加速推进。南方五省区启动虚拟电厂参与电力市场交易，福建、湖南、浙江、江苏等多地虚拟电厂陆续投入运行。
+            </div>
+            
+            <div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-policy">政策</span>
+                <span class="source">南方电网</span>
+            </div>
+            <h4 class="news-title">南方五省区启动虚拟电厂参与电力市场交易</h4>
+            <p class="news-summary">根据广东省能源局、国家能源局南方监管局印发的《广东省虚拟电厂参与电力市场交易实施方案》，满足市场准入条件的虚拟电厂运营商及聚合资源可参与广东电力市场交易。负荷型虚拟电厂聚合用户侧可调节资源，发电类虚拟电厂整合分布式发电资源。</p>
+        </div>
+<div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-market">市场</span>
+                <span class="source">中国日报</span>
+            </div>
+            <h4 class="news-title">福建虚拟电厂首次参与电力现货市场交易</h4>
+            <p class="news-summary">福建首批虚拟电厂运营商作为新兴市场主体，正式参与福建电力现货市场交易。万帮星星充电作为首批聚合商之一，聚合37个电动汽车充电站，可调节负荷1.38万千瓦，已接入新型电力负荷管理系统。</p>
+        </div>
+<div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-market">市场</span>
+                <span class="source">北极星智能电网</span>
+            </div>
+            <h4 class="news-title">国网浙江电力省级虚拟电厂管理平台已聚合全省多类资源</h4>
+            <p class="news-summary">截至9月20日，国网浙江电力省级虚拟电厂管理平台已聚合全省2.67万余户空调、5223个充电桩、839户新型储能、81户数据中心、551户景观照明、87户自备电厂，以及25.02万户分布式电源等零散负荷资源。</p>
+        </div>
+<div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-market">市场</span>
+                <span class="source">央视/车桩能源网</span>
+            </div>
+            <h4 class="news-title">央视报道：储能行业迎来变革时刻，虚拟电厂将大幅增长</h4>
+            <p class="news-summary">136号文提出推动新能源全面入市，上网电价由市场交易形成，同时取消强制配储，储能行业迎来变革时刻。央视报道指出，今年虚拟电厂将迎来大幅增长，在江苏连云港港口、电动拖船、电动重卡、换电站等可调节用电负荷被聚合起来参与电力市场交易。</p>
+        </div>
+        </div>
+        
+        <div class="section-divider">
+            <span class="section-divider-text">⋅ ⋅ ⋅</span>
+        </div>
+        
+        <!-- 全球动态 -->
+        <div class="content-section">
+            <h2 class="section-title">🌍 全球新能源市场</h2>
+            <p class="section-subtitle">欧洲 · 北美 · 亚太 · 政策与市场动态</p>
+            
+            <div class="summary-box">
+                <strong>今日要闻摘要</strong><br>
+                欧盟强化本土制造政策持续推进，欧美筑起关税壁垒影响中国新能源车出海。欧盟《工业加速器法案》草案核心目标在电动汽车、电池和光伏等领域强化本土制造。
+            </div>
+            
+            <div class="region-grid">
+                <div class="region-card">
+                    <h4>🇪🇺 欧洲 / Europe</h4>
+                    <div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-policy">政策</span>
+                <span class="source">财新周刊</span>
+            </div>
+            <h4 class="news-title">欧盟《工业加速器法案》草案强化本土制造</h4>
+            <p class="news-summary">2026年3月，欧盟委员会公布《工业加速器法案》草案，核心目标是要在电动汽车、电池和光伏等领域强化欧盟本土制造，同时对关键领域外商投资提出多项限制条件。大众集团、雷诺集团和Stellantis集团针对法案发布联合声明，支持强化本土制造。</p>
+        </div>
+<div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-policy">政策</span>
+                <span class="source">头条汽车</span>
+            </div>
+            <h4 class="news-title">欧盟对华电动汽车反补贴关税正式生效</h4>
+            <p class="news-summary">2024年10月31日起，欧盟对华电动汽车加征的反补贴关税正式生效，为期5年，不同车企适用的税率从17.0%到35.3%不等。叠加欧盟原本10%的进口关税，实际税率达到30.7%。宝马正就中国产MINI与欧盟委员会进行谈判，希望通过价格承诺方案替代反补贴税。</p>
+        </div>
+                </div>
+                <div class="region-card">
+                    <h4>🇺🇸 北美 / Americas</h4>
+                    <div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-policy">政策</span>
+                <span class="source">头条汽车</span>
+            </div>
+            <h4 class="news-title">美国对华电动汽车征收100%关税</h4>
+            <p class="news-summary">美国已对华电动汽车加征100%的关税。此外，加拿大、土耳其等国也对中国电动汽车筑起了关税壁垒。拜登政府以防范国家安全风险为由，宣布对从中国进口的汽车展开调查。</p>
+        </div>
+                </div>
+                <div class="region-card">
+                    <h4>🌏 亚太其他 / Asia-Pacific</h4>
+                    <div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-market">市场</span>
+                <span class="source">识微科技</span>
+            </div>
+            <h4 class="news-title">中国新能源汽车出海从「产品输出」进入「体系输出」阶段</h4>
+            <p class="news-summary">2026年，中国新能源汽车出海已经从「产品输出」进入「体系输出」阶段，整车、供应链、品牌与服务网络同步走向海外市场。随着出海规模扩大，围绕质量争议、政策摩擦、本地化不足等问题的舆情风险也在同步上升。</p>
+        </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 信息来源 -->
+        <div class="sources-section">
+            <h3>附录：信息来源统计</h3>
+            <div class="source-category"><h5>中国官方</h5><ul><li>南方电网</li><li>国家能源局</li><li>国家发改委</li></ul></div><div class="source-category"><h5>行业媒体与研究</h5><ul><li>北极星智能电网</li><li>低碳网</li><li>智慧能源日课</li><li>车桩能源网</li></ul></div><div class="source-category"><h5>国际媒体与研究</h5><ul><li>财新周刊</li><li>中国日报</li><li>识微科技</li></ul></div>
+        </div>
+        
+    </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span class="footer-brand">老丁实验室 · Laodinglab</span>
+    <span class="footer-note">laodinglab.com · 独立研究 · 持续更新</span>
+  </div>
+  <div class="footer-inner" style="margin-top: 8px;">
+    <span class="footer-disclaimer">⚠️ 免责声明：本简报由自动化系统整理生成，内容仅供参考，不构成投资建议。信息来源为公开新闻，请自行核实。</span>
+  </div>
+</footer>
+
+</body>
+</html>
