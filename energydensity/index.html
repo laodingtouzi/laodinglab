@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>能源能量密度分析报告 — 历史演进、现状格局与未来趋势</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #f5f3f0;
+    --card: #ffffff;
+    --text: #3a3631;
+    --text-light: #6b6258;
+    --text-muted: #9a9088;
+    --border: #e2ddd6;
+    --accent: #7b8a6e;
+    --accent2: #b08d6e;
+    --accent3: #6e8390;
+    --accent4: #9a7b8a;
+    --red: #c47b6e;
+    --green: #7b9a6e;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --radius: 8px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    font-size: 15px;
+  }
+  .container { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  /* Header */
+  .report-header {
+    text-align: center;
+    padding: 60px 24px 48px;
+    background: linear-gradient(135deg, #7b8a6e 0%, #6e8390 100%);
+    color: #fff;
+    border-radius: var(--radius);
+    margin-bottom: 40px;
+  }
+  .report-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 12px; letter-spacing: 1px; }
+  .report-header .subtitle { font-size: 16px; opacity: 0.85; margin-bottom: 20px; }
+  .report-header .meta { font-size: 13px; opacity: 0.7; }
+
+  /* Section */
+  section { margin-bottom: 48px; }
+  h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    border-left: 4px solid var(--accent);
+    padding-left: 14px;
+    margin-bottom: 20px;
+    line-height: 1.4;
+  }
+  h3 {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--accent3);
+    margin: 24px 0 12px;
+  }
+  h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-light);
+    margin: 16px 0 8px;
+  }
+  p { margin-bottom: 14px; color: var(--text); }
+  .highlight { background: #f0ede8; padding: 1px 6px; border-radius: 3px; font-weight: 600; }
+
+  /* Cards */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+  }
+
+  /* Summary box */
+  .summary-box {
+    background: linear-gradient(135deg, #f0ede8, #ebe7e0);
+    border-left: 4px solid var(--accent2);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin-bottom: 32px;
+  }
+  .summary-box h3 { margin-top: 0; color: var(--accent2); }
+  .summary-box ul { padding-left: 20px; }
+  .summary-box li { margin-bottom: 8px; }
+
+  /* Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+    background: var(--card);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  th {
+    background: var(--accent);
+    color: #fff;
+    padding: 12px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+  }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+  tr:nth-child(even) td { background: #faf9f7; }
+  tr:last-child td { border-bottom: none; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+  td.up { color: var(--red); }
+  td.down { color: var(--green); }
+
+  /* Chart container */
+  .chart-container {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin: 20px 0;
+    box-shadow: var(--shadow);
+  }
+  .chart-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; color: var(--text); }
+  .chart-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+  .chart-wrap { position: relative; height: 400px; }
+  .chart-wrap.tall { height: 480px; }
+  .chart-wrap.short { height: 320px; }
+
+  /* Grid */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+
+  /* Stat cards */
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 20px 0; }
+  @media (max-width: 768px) { .stat-grid { grid-template-columns: repeat(2, 1fr); } }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 16px;
+    text-align: center;
+    box-shadow: var(--shadow);
+  }
+  .stat-card .value { font-size: 26px; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+  .stat-card .label { font-size: 12px; color: var(--text-muted); }
+  .stat-card .change { font-size: 12px; margin-top: 4px; font-weight: 600; }
+  .stat-card .change.up { color: var(--red); }
+  .stat-card .change.down { color: var(--green); }
+
+  /* Callout */
+  .callout {
+    border-left: 4px solid var(--accent3);
+    background: #f4f6f7;
+    padding: 16px 20px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .callout strong { color: var(--accent3); }
+
+  .tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin: 0 2px;
+  }
+  .tag.lfp { background: #d4decc; color: #5a6e4e; }
+  .tag.nmc { background: #ddd0c4; color: #8a6e54; }
+  .tag.ssb { background: #c4d4de; color: #4e6e7e; }
+  .tag.na { background: #decdc4; color: #8a5e4e; }
+  .tag.h2 { background: #dccede; color: #6e4e7e; }
+  .tag.vrfb { background: #cedede; color: #4e7e7e; }
+
+  ul.clean { padding-left: 20px; margin: 12px 0; }
+  ul.clean li { margin-bottom: 6px; }
+
+  .footer {
+    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid var(--border);
+    margin-top: 48px;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+
+  /* ── LAODINGLAB HEADER ── */
+  .ll-header {
+    background: #2d3a4f;
+    border-bottom: 1px solid rgba(225,218,216,0.12);
+    padding: 14px 24px;
+  }
+  .ll-header-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 8px;
+  }
+  .ll-logo-group { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+  .ll-logo-mark {
+    width: 28px; height: 28px; border-radius: 6px;
+    background: linear-gradient(135deg, #B69C91, #9a8a80);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; color: #fff; flex-shrink: 0;
+  }
+  .ll-site-name { font-size: 15px; font-weight: 600; color: #e1dad8; line-height: 1.2; }
+  .ll-site-name-en {
+    font-family: 'Roboto Mono', monospace; font-size: 9px; font-weight: 400;
+    color: #a8a4a0; letter-spacing: .12em; text-transform: uppercase;
+    display: block; margin-top: 1px;
+  }
+  .ll-nav { display: flex; gap: 18px; align-items: center; }
+  .ll-nav a {
+    font-size: 13px; font-weight: 400; color: #a8a4a0;
+    text-decoration: none; transition: color .2s; position: relative; padding-bottom: 2px;
+  }
+  .ll-nav a::after {
+    content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px;
+    background: linear-gradient(90deg, #B69C91, #76819C); transition: width .2s; border-radius: 1px;
+  }
+  .ll-nav a:hover { color: #e1dad8; }
+  .ll-nav a:hover::after { width: 100%; }
+  .ll-nav a.active { color: #e1dad8; }
+  .ll-nav a.active::after { width: 100%; }
+  @media (max-width: 768px) { .ll-nav { display: none; } .ll-header-inner { justify-content: center; } }
+
+  /* ── LAODINGLAB FOOTER ── */
+  .ll-footer {
+    padding: 16px 24px; border-top: 1px solid rgba(225,218,216,0.12); background: #2d3a4f;
+  }
+  .ll-footer-inner {
+    max-width: 1100px; margin: 0 auto; display: flex;
+    justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
+  }
+  .ll-footer-brand { font-size: 13px; font-weight: 600; color: #a8a4a0; }
+  .ll-footer-note {
+    font-family: 'Roboto Mono', monospace; font-size: 10px; color: #a8a4a0;
+    letter-spacing: .08em; text-transform: uppercase;
+  }
+  .ll-footer-links { display: flex; align-items: center; gap: 4px; margin-left: 8px; }
+  .ll-footer-links a { color: inherit; text-decoration: none; transition: opacity .2s; line-height: 1; }
+  @media (max-width: 768px) { .ll-footer-inner { justify-content: center; text-align: center; } }
+</style>
+</head>
+<body>
+
+<header class="ll-header">
+  <div class="ll-header-inner">
+    <a href="/" class="ll-logo-group">
+      <div class="ll-logo-mark">L</div>
+      <div>
+        <div class="ll-site-name">老丁实验室</div>
+        <div class="ll-site-name-en">Laodinglab</div>
+      </div>
+    </a>
+    <nav class="ll-nav">
+      <a href="/newenergynews">每日简报</a>
+      <a href="/globalnewenergydata">全球数据</a>
+      <a href="/chinapowermarket">市场研究</a>
+      <a href="/powerstation_fin_model">投资模型</a>
+      <a href="/professionalreports/" class="active">其他专业报告</a>
+    </nav>
+  </div>
+</header>
+
+<div class="container">
+
+<!-- Header -->
+<div class="report-header">
+  <h1>能源能量密度分析报告</h1>
+  <div class="subtitle">历史演进 · 现状格局 · 未来趋势 · 成本贡献</div>
+  <div class="meta">编制日期：2026年7月 | 覆盖范围：全谱系主流能源形式 | 数据来源：BNEF / DOE / 行业研报</div>
+</div>
+
+<!-- 执行摘要 -->
+<div class="summary-box">
+  <h3>执行摘要</h3>
+  <ul>
+    <li><strong>能量密度是能源技术的核心指标。</strong>从木柴（16 MJ/kg）到核裂变（390万 MJ/kg），人类能源利用史本质上是能量密度跃迁史。当前主流能源跨越7个数量级。</li>
+    <li><strong>锂电池十年演进：</strong>磷酸铁锂电芯从2015年~125 Wh/kg提升至2025年190 Wh/kg（+52%）；三元锂逼近石墨负极理论天花板~300 Wh/kg；固态电池已突破400 Wh/kg，试制达520 Wh/kg。</li>
+    <li><strong>成本史诗级下降：</strong>锂电池包价格从2010年$1,474/kWh降至2025年$108/kWh（-93%），储能包首次跌破$70/kWh。能量密度提升贡献了约4个百分点的年化降本率。</li>
+    <li><strong>未来5-10年关键拐点：</strong>2025-2030年半固态电池过渡期（350-450 Wh/kg），2030年后全固态规模化（500-600 Wh/kg）；钠电池1-2年内追平LFP；液流电池锁定长时储能赛道。</li>
+    <li><strong>核心判断：</strong>技术迭代周期已从1.8年延长至3.2年，能量密度年增速从15%放缓至7%——"容易的增益"正在耗尽，下一轮突破依赖固态电解质、硅碳负极等底层材料创新。</li>
+  </ul>
+</div>
+
+<!-- 第一部分：全谱系能量密度基准 -->
+<section>
+  <h2>一、全谱系能源能量密度基准对比（2025年现状）</h2>
+  <p>能量密度（Energy Density）指单位质量或单位体积所储存的能量，通常以 <strong>MJ/kg</strong>（质量能量密度）或 <strong>Wh/kg</strong>（电芯比能量）计量。这是衡量能源形式"浓缩程度"的最核心指标——直接决定了续航、占地、运输成本和应用边界。</p>
+
+  <p>以下为全谱系主流能源形式的质量能量密度基准值。注意横跨7个数量级，采用对数坐标呈现：</p>
+
+  <div class="chart-container">
+    <div class="chart-title">图1：全谱系能源质量能量密度对比（对数坐标，MJ/kg）</div>
+    <div class="chart-desc">数据来源：DOE / IEA / 学术文献综合整理。核能数据为纯燃料理论值，实际工程转化效率另计。</div>
+    <div class="chart-wrap tall">
+      <canvas id="chartAllEnergy"></canvas>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>能源形式</th>
+        <th>类别</th>
+        <th class="num">能量密度 (MJ/kg)</th>
+        <th class="num">折算 (Wh/kg)</th>
+        <th>备注</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>核聚变（氘氚）</td><td>核能</td><td class="num">300,000,000</td><td class="num">8.33×10¹⁰</td><td>1kg聚变燃料≈1100万kg煤</td></tr>
+      <tr><td>核裂变（纯U-235）</td><td>核能</td><td class="num">77,000,000</td><td class="num">2.14×10¹⁰</td><td>快堆可更高</td></tr>
+      <tr><td>核裂变（3.5%浓缩铀）</td><td>核能</td><td class="num">3,900,000</td><td class="num">1.08×10⁹</td><td>商业核电站实际燃料</td></tr>
+      <tr><td>氢气（H₂）</td><td>化学燃料</td><td class="num">143</td><td class="num">39,700</td><td>最高化学燃料，但储运难</td></tr>
+      <tr><td>天然气（甲烷）</td><td>化石能源</td><td class="num">55</td><td class="num">15,300</td><td>压缩态</td></tr>
+      <tr><td>汽油</td><td>化石能源</td><td class="num">46</td><td class="num">12,800</td><td>—</td></tr>
+      <tr><td>柴油</td><td>化石能源</td><td class="num">45</td><td class="num">12,500</td><td>—</td></tr>
+      <tr><td>原油</td><td>化石能源</td><td class="num">42</td><td class="num">11,700</td><td>—</td></tr>
+      <tr><td>煤炭（无烟煤）</td><td>化石能源</td><td class="num">33</td><td class="num">9,200</td><td>—</td></tr>
+      <tr><td>煤炭（烟煤）</td><td>化石能源</td><td class="num">24</td><td class="num">6,700</td><td>—</td></tr>
+      <tr><td>木柴</td><td>生物质</td><td class="num">16</td><td class="num">4,400</td><td>—</td></tr>
+      <tr><td>锂电池（三元，电芯）</td><td>电化学储能</td><td class="num">~1.08</td><td class="num">300</td><td>2025年量产水平</td></tr>
+      <tr><td>锂电池（LFP，电芯）</td><td>电化学储能</td><td class="num">~0.68</td><td class="num">190</td><td>2025年刀片二代</td></tr>
+      <tr><td>钠离子电池（电芯）</td><td>电化学储能</td><td class="num">~0.65</td><td class="num">180</td><td>2025年量产水平</td></tr>
+      <tr><td>固态电池（电芯）</td><td>电化学储能</td><td class="num">~1.44</td><td class="num">400</td><td>2025年欣旺达发布</td></tr>
+      <tr><td>全钒液流电池</td><td>电化学储能</td><td class="num">~0.07-0.18</td><td class="num">20-50</td><td>系统级更低</td></tr>
+      <tr><td>铅酸电池</td><td>电化学储能</td><td class="num">0.14</td><td class="num">39</td><td>传统技术</td></tr>
+      <tr><td>抽水蓄能（100m落差）</td><td>机械储能</td><td class="num">0.001</td><td class="num">0.28</td><td>受地理条件约束</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <strong>关键洞察：</strong>化石能源与核能的能量密度是"燃料本体"属性，几乎不可改变；而电池的能量密度是"工程技术"属性，随技术进步持续提升。这意味着——<strong>电池的能量密度仍在快速演进中，而化石能源的能量密度已锁死。</strong>这是新能源替代化石能源的底层逻辑之一。
+  </div>
+</section>
+
+<!-- 第二部分：过去10年技术演进 -->
+<section>
+  <h2>二、过去10年技术演进（2015→2025）</h2>
+
+  <h3>2.1 锂电池：从125到300 Wh/kg的跃迁</h3>
+  <p>过去十年是锂电池能量密度提升最快的十年，但增速呈前快后慢的衰减特征。核心驱动力从"材料体系迭代"逐步转向"结构创新"，最终逼近石墨负极的理论天花板。</p>
+
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="value">+52%</div>
+      <div class="label">LFP电芯能量密度提升</div>
+      <div class="change up">125→190 Wh/kg（2015-2025）</div>
+    </div>
+    <div class="stat-card">
+      <div class="value">+88%</div>
+      <div class="label">三元锂电芯能量密度提升</div>
+      <div class="change up">160→300 Wh/kg（2010-2025）</div>
+    </div>
+    <div class="stat-card">
+      <div class="value">-93%</div>
+      <div class="label">电池包价格累计降幅</div>
+      <div class="change down">$1,474→$108/kWh</div>
+    </div>
+    <div class="stat-card">
+      <div class="value">7%</div>
+      <div class="label">能量密度年增速（当前）</div>
+      <div class="change down">峰值15%已放缓</div>
+    </div>
+  </div>
+
+  <div class="chart-container">
+    <div class="chart-title">图2：主流锂电池电芯能量密度演进（2010-2025，Wh/kg）</div>
+    <div class="chart-desc">数据来源：BNEF / 真锂研究 / 企业公告。LFP以比亚迪刀片为代表，三元以CATL/松下高镍体系为代表。</div>
+    <div class="chart-wrap">
+      <canvas id="chartBatteryHistory"></canvas>
+    </div>
+  </div>
+
+  <h4>分阶段特征：</h4>
+  <table>
+    <thead>
+      <tr><th>阶段</th><th>时间</th><th>LFP (Wh/kg)</th><th>三元 (Wh/kg)</th><th>核心驱动力</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>快速提升期</td><td>2010-2015</td><td class="num">90→125</td><td class="num">160→220</td><td>正极材料优化、工艺改进</td></tr>
+      <tr><td>结构创新期</td><td>2015-2020</td><td class="num">125→170</td><td class="num">220→270</td><td>刀片电池/CTP、高镍化(NMC811)</td></tr>
+      <tr><td>天花板期</td><td>2020-2025</td><td class="num">170→190</td><td class="num">270→300</td><td>硅碳负极掺混、结构极限压榨</td></tr>
+      <tr><td>固态突破期</td><td>2025+</td><td class="num">190→</td><td class="num">300→400+</td><td>固态电解质、锂金属负极</td></tr>
+    </tbody>
+  </table>
+
+  <p><strong>关键转折：</strong>2018-2023年间，三元锂能量密度在270-280 Wh/kg区间停滞长达5年——这标志着传统石墨负极架构的物理极限。2024-2025年的增量（→300 Wh/kg）主要来自硅碳负极掺混和系统级CTP优化，属于"榨干最后一滴"的渐进式改良。</p>
+
+  <div class="callout">
+    <strong>迭代放缓信号：</strong>Bernstein报告显示，全球新能源汽车技术迭代周期从2021年的1.8年延长至2025年的3.2年，动力电池能量密度年增长率从15%降至7%。比亚迪王传福坦言技术领先度"不如前几年"——整个行业正从"大干快上"进入"冷静期"。
+  </div>
+
+  <h3>2.2 钠离子电池：从0到175 Wh/kg的产业化突围</h3>
+  <p>钠离子电池是过去5年最重要的新增技术路线。2023年出货仅0.7 GWh，2024年跃升至3.7 GWh（+428%），2025年上半年已达3.5 GWh，进入规模化放量阶段。</p>
+
+  <table>
+    <thead>
+      <tr><th>指标</th><th>2023年</th><th>2025年</th><th>变化</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>量产电芯能量密度</td><td class="num">~140 Wh/kg</td><td class="num">175-180 Wh/kg</td><td class="up">+25-29%</td></tr>
+      <tr><td>实验室最高</td><td class="num">~160 Wh/kg</td><td class="num">220 Wh/kg</td><td class="up">+38%</td></tr>
+      <tr><td>出货量</td><td class="num">0.7 GWh</td><td class="num">~7 GWh（预计全年）</td><td class="up">+900%</td></tr>
+      <tr><td>量产成本</td><td class="num">~0.6元/Wh</td><td class="num">~0.5元/Wh</td><td class="down">-17%</td></tr>
+      <tr><td>循环寿命</td><td class="num">3000次</td><td class="num">10000+次</td><td class="up">+233%</td></tr>
+    </tbody>
+  </table>
+
+  <p>宁德时代"钠新"电池达到175 Wh/kg并通过GB38031-2025新国标认证；欣旺达钠电超180 Wh/kg；力神第三代规划190-220 Wh/kg。<strong>行业判断：1-2年内钠电将与LFP能量密度持平</strong>（中科海钠胡勇胜），规模化后成本可降至0.3元/Wh，比当前再降30%+。</p>
+
+  <h3>2.3 氢燃料电池：功率密度翻倍，系统能量密度持续提升</h3>
+  <p>氢气本体能量密度143 MJ/kg为化学燃料最高，但"储运+转化"的系统损耗大幅削弱了终端可用能量密度。过去5年的进步集中在燃料电池系统端：</p>
+
+  <table>
+    <thead>
+      <tr><th>指标</th><th>2020年</th><th>2025年</th><th>变化</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>燃料电池功率密度</td><td class="num">~2.5 kW/L</td><td class="num">4.2 kW/L（三代）</td><td class="up">+68%</td></tr>
+      <tr><td>系统能量密度</td><td class="num">~5.0 kWh/kg</td><td class="num">6.8 kWh/kg</td><td class="up">+36%</td></tr>
+      <tr><td>单车装机功率</td><td class="num">52.9 kW</td><td class="num">132.3 kW</td><td class="up">+150%</td></tr>
+      <tr><td>系统成本</td><td class="num">~6000元/kW</td><td class="num">3500元/kW</td><td class="down">-42%</td></tr>
+      <tr><td>电堆寿命</td><td class="num">~10000h</td><td class="num">20000h</td><td class="up">+100%</td></tr>
+    </tbody>
+  </table>
+
+  <p>DOE储氢系统目标：2025年质量能量密度1.8 kWh/kg、体积密度1.3 kWh/L，ultimate目标分别为2.2 kWh/kg和1.7 kWh/L。Siltrax已实现9.7 kW/kg的gravimetric功率密度，超越NEDO 2030年目标。</p>
+
+  <h3>2.4 全钒液流电池：锁定长时储能赛道</h3>
+  <p>液流电池能量密度先天偏低（20-50 Wh/kg，约为锂电的1/5），但循环寿命（15000-20000次）和本质安全性构成差异化优势。2025年并网规模约2.16 GWh，系统中标价跌破2元/Wh。</p>
+
+  <table>
+    <thead>
+      <tr><th>指标</th><th>2023年</th><th>2025年</th><th>趋势</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>电芯能量密度</td><td class="num">~25 Wh/kg</td><td class="num">~40 Wh/kg（实验室）</td><td class="up">+60%</td></tr>
+      <tr><td>系统成本（4h）</td><td class="num">~2.6元/Wh</td><td class="num">~1.96元/Wh</td><td class="down">-25%</td></tr>
+      <tr><td>循环寿命</td><td class="num">15000次</td><td class="num">20000+次</td><td class="up">+33%</td></tr>
+      <tr><td>全生命周期度电成本</td><td class="num">—</td><td class="num">0.36-0.48元/kWh</td><td>长时场景低于锂电</td></tr>
+    </tbody>
+  </table>
+
+  <p>混酸/盐酸体系电解液在实验室实现40 Wh/kg，较传统硫酸体系提升超60%。政策端"十五五"规划要求2027年长时储能（≥4h）占比不低于30%，为液流电池提供了明确的政策窗口。</p>
+</section>
+
+<!-- 第三部分：成本演进 -->
+<section>
+  <h2>三、成本演进：93%的史诗级下降</h2>
+  <p>电池成本下降是过去15年最重要的产业现象之一。BNEF数据显示，锂电池包均价从2010年$1,474/kWh降至2025年$108/kWh，累计降幅93%。这一下降由两个引擎驱动：<strong>规模制造的学习曲线效应</strong>和<strong>能量密度提升的材料节省效应</strong>。</p>
+
+  <div class="chart-container">
+    <div class="chart-title">图3：锂电池包均价下降曲线（2010-2026，USD/kWh）</div>
+    <div class="chart-desc">数据来源：BloombergNEF 2025 Battery Price Survey。2026年为预测值。储能包首次成为最低价细分市场。</div>
+    <div class="chart-wrap">
+      <canvas id="chartCostHistory"></canvas>
+    </div>
+  </div>
+
+  <h3>3.1 能量密度对成本的贡献机制</h3>
+  <p>MIT学者Ziegler & Trancik（2021）的研究量化了这一关系：</p>
+
+  <table>
+    <thead>
+      <tr><th>降本驱动因素</th><th>年化贡献率</th><th>机制说明</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>规模制造（学习曲线）</td><td class="num">~13%/年</td><td>每产量翻倍，成本降20%（学习率）</td></tr>
+      <tr><td>能量密度提升</td><td class="num">~4%/年</td><td>同等容量所需材料更少，BOM成本下降</td></tr>
+      <tr><td>综合改善率</td><td class="num">~17%/年</td><td>两者叠加效应</td></tr>
+    </tbody>
+  </table>
+
+  <p>这意味着：<strong>能量密度提升贡献了约24%的总降本幅度</strong>（4/17）。具体传导路径为：能量密度↑ → 单位容量材料用量↓ → 正极/负极/电解液/隔膜BOM↓ → 电芯成本↓ → Pack成本↓。</p>
+
+  <h3>3.2 2025年成本结构细分</h3>
+  <div class="grid-2">
+    <div class="card">
+      <h4>按应用场景（2025 BNEF）</h4>
+      <table>
+        <tbody>
+          <tr><td>储能包（BESS）</td><td class="num">$70/kWh</td></tr>
+          <tr><td>电动车包（BEV）</td><td class="num">$99/kWh</td></tr>
+          <tr><td>两轮/三轮车</td><td class="num">$133/kWh</td></tr>
+          <tr><td>全球均价</td><td class="num">$108/kWh</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:13px;color:var(--text-muted)">储能包同比降45%，首次成为最低价细分市场</p>
+    </div>
+    <div class="card">
+      <h4>按化学体系（2025 BNEF）</h4>
+      <table>
+        <tbody>
+          <tr><td>LFP包</td><td class="num">$81/kWh</td></tr>
+          <tr><td>NMC包</td><td class="num">$128/kWh</td></tr>
+          <tr><td>最低LFP电芯</td><td class="num">$36/kWh</td></tr>
+          <tr><td>最低LFP包</td><td class="num">$50/kWh</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:13px;color:var(--text-muted)">LFP比NMC便宜37%，无钴无镍优势凸显</p>
+    </div>
+  </div>
+
+  <h3>3.3 区域成本差异</h3>
+  <table>
+    <thead>
+      <tr><th>区域</th><th>包均价</th><th>vs 中国</th><th>2025年降幅</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>中国</td><td class="num">$84/kWh</td><td>—</td><td class="down">-13%</td></tr>
+      <tr><td>北美</td><td class="num">~$121/kWh</td><td>+44%</td><td class="down">-4%</td></tr>
+      <tr><td>欧洲</td><td class="num">~$131/kWh</td><td>+56%</td><td class="down">-8%</td></tr>
+    </tbody>
+  </table>
+  <p>中国凭借完整产业链、过度产能和激烈竞争，保持了显著的成本优势。中国储能电芯产能约557 GWh，是全球需求的两倍以上。</p>
+</section>
+
+<!-- 第四部分：未来趋势 -->
+<section>
+  <h2>四、未来5-10年趋势预测（2025→2035）</h2>
+
+  <h3>4.1 电池技术路线图：固态化是核心拐点</h3>
+  <p>行业共识的技术演进路径清晰：液态锂离子 → 半固态/固液混合 → 全固态。这是能量密度从300 Wh/kg突破到500+ Wh/kg的唯一可行路径。</p>
+
+  <div class="chart-container">
+    <div class="chart-title">图4：电池能量密度路线图与预测（2025-2035，Wh/kg）</div>
+    <div class="chart-desc">预测依据：清华大学欧阳明高团队路线图、企业公告（CATL/欣旺达/国轩高科）、CIBF2026展会信息。固态电池量产时间表存在不确定性。</div>
+    <div class="chart-wrap tall">
+      <canvas id="chartBatteryFuture"></canvas>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>技术路线</th><th>2025年</th><th>2030年（预测）</th><th>2035年（预测）</th><th>关键瓶颈</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="tag lfp">LFP液态</span></td>
+        <td class="num">190 Wh/kg</td>
+        <td class="num">210-230 Wh/kg</td>
+        <td class="num">~250 Wh/kg</td>
+        <td>正极理论极限</td>
+      </tr>
+      <tr>
+        <td><span class="tag nmc">三元液态</span></td>
+        <td class="num">300 Wh/kg</td>
+        <td class="num">350-400 Wh/kg</td>
+        <td class="num">~400 Wh/kg</td>
+        <td>硅碳负极膨胀问题</td>
+      </tr>
+      <tr>
+        <td><span class="tag ssb">半固态</span></td>
+        <td class="num">400 Wh/kg</td>
+        <td class="num">450 Wh/kg</td>
+        <td class="num">—</td>
+        <td>过渡技术，循环寿命待验证</td>
+      </tr>
+      <tr>
+        <td><span class="tag ssb">全固态</span></td>
+        <td class="num">520 Wh/kg（试制）</td>
+        <td class="num">500-600 Wh/kg</td>
+        <td class="num">600-700 Wh/kg</td>
+        <td>固固界面阻抗、量产工艺</td>
+      </tr>
+      <tr>
+        <td><span class="tag na">钠离子</span></td>
+        <td class="num">180 Wh/kg</td>
+        <td class="num">200-220 Wh/kg</td>
+        <td class="num">~230 Wh/kg</td>
+        <td>正极比容量、硬碳成本</td>
+      </tr>
+      <tr>
+        <td><span class="tag vrfb">全钒液流</span></td>
+        <td class="num">40 Wh/kg</td>
+        <td class="num">50-60 Wh/kg</td>
+        <td class="num">~70 Wh/kg</td>
+        <td>电解液浓度、膜材料</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <strong>关键判断：</strong>截至2026年6月，全球7家公司投入超100亿美元，<strong>零款全固态电池实现商业化装车</strong>。300 Wh/kg被定义为"下一代电池竞争高地"，400-500 Wh/kg为长远目标。固态电池不会完全替代液态电池，但将在电动航空、人形机器人、超长续航汽车等高端场景全面渗透。
+  </div>
+
+  <h3>4.2 成本下行路径预测</h3>
+  <div class="chart-container">
+    <div class="chart-title">图5：各电池技术成本下行预测（2025-2030，元/Wh）</div>
+    <div class="chart-desc">预测依据：BNEF（锂电）、中科海钠/伊维经济研究院（钠电）、中国报告大厅（液流）。固态电池成本因未量产暂不纳入。</div>
+    <div class="chart-wrap">
+      <canvas id="chartCostFuture"></canvas>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>技术路线</th><th>2025年成本</th><th>2030年预测</th><th>降幅</th><th>降本驱动</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>LFP电池包</td><td class="num">~0.6元/Wh</td><td class="num">~0.4元/Wh</td><td class="down">-33%</td><td>规模效应+CTP工艺</td></tr>
+      <tr><td>储能系统EPC</td><td class="num">~0.8元/Wh</td><td class="num">~0.5元/Wh</td><td class="down">-38%</td><td>大容量电芯+系统集成</td></tr>
+      <tr><td>钠离子电池</td><td class="num">~0.5元/Wh</td><td class="num">~0.3元/Wh</td><td class="down">-40%</td><td>材料成本天然低20%</td></tr>
+      <tr><td>全钒液流系统</td><td class="num">~2.0元/Wh</td><td class="num">~1.5元/Wh</td><td class="down">-25%</td><td>非氟膜量产+电解液降本</td></tr>
+      <tr><td>氢燃料电池系统</td><td class="num">~3500元/kW</td><td class="num">~1500元/kW</td><td class="down">-57%</td><td>规模化+贵金属减量</td></tr>
+    </tbody>
+  </table>
+
+  <h3>4.3 各能源形式未来5-10年定位</h3>
+  <div class="grid-2">
+    <div class="card">
+      <h4>短时高频场景（0.5-4h）</h4>
+      <ul class="clean">
+        <li><span class="tag lfp">LFP</span> 绝对主导，成本已进入0.4-0.5元/Wh时代</li>
+        <li><span class="tag na">钠电</span> 1-2年追平LFP能量密度，低温/安全场景差异化竞争</li>
+        <li>系统目标：500元/kWh，单循环度电成本0.1元</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>长时储能场景（4-24h）</h4>
+      <ul class="clean">
+        <li><span class="tag vrfb">液流</span> 政策驱动占比≥30%（2027目标）</li>
+        <li>全生命周期度电成本已低于锂电（0.36-0.48 vs 0.62-0.8元/kWh）</li>
+        <li>压缩空气（CAES）、重力储能补充</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>高端移动场景</h4>
+      <ul class="clean">
+        <li><span class="tag ssb">固态</span> 电动航空（400+ Wh/kg刚需）</li>
+        <li>人形机器人、超长续航汽车（>800km）</li>
+        <li>高安全+高比能双重需求，固态不可替代</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>重载/长距离场景</h4>
+      <ul class="clean">
+        <li><span class="tag h2">氢能</span> 重卡、船舶、航空（>400kW装机）</li>
+        <li>系统成本2030年目标1500元/kW（-57%）</li>
+        <li>绿氢成本下降+加氢站规模化是前提</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 第五部分：能量密度与成本的定量关系 -->
+<section>
+  <h2>五、能量密度对成本贡献的定量分析</h2>
+
+  <h3>5.1 核心公式</h3>
+  <div class="card">
+    <p style="text-align:center; font-size:16px; padding:12px 0;">
+      <strong>单位容量成本（$/kWh）= 材料成本 ÷ 能量密度 × 转化效率系数</strong>
+    </p>
+    <p>能量密度提升通过三条路径降低成本：</p>
+    <ul class="clean">
+      <li><strong>直接路径：</strong>同等容量所需活性材料（正极/负极/电解液）减少 → BOM下降</li>
+      <li><strong>间接路径：</strong>电芯数量减少 → 结构件、连接件、BMS通道数减少 → 系统成本下降</li>
+      <li><strong>规模路径：</strong>能量密度提升使单位产线产出增加 → 固定成本摊薄 → 制造成本下降</li>
+    </ul>
+  </div>
+
+  <h3>5.2 历史贡献分解</h3>
+  <table>
+    <thead>
+      <tr><th>降本来源</th><th>2010-2025累计贡献</th><th>占比</th><th>说明</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>规模制造效应</td><td class="num">~78%</td><td class="num">~60%</td><td>产量从GWh级到TWh级，学习曲线主导</td></tr>
+      <tr><td>能量密度提升</td><td class="num">~12%</td><td class="num">~24%</td><td>电芯从160→300 Wh/kg，材料用量减少</td></tr>
+      <tr><td>材料体系创新</td><td class="num">~3%</td><td class="num">~10%</td><td>LFP替代NMC去钴去镍、钠电降本</td></tr>
+      <tr><td>工艺/结构创新</td><td class="num">~2%</td><td class="num">~6%</td><td>CTP/CTC减少模组、大容量电芯</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <strong>前瞻判断：</strong>BNEF预测2026年包均价仅降3%至$105/kWh——降幅显著放缓。这意味着"中国过度产能"带来的easy gains正在耗尽。<strong>下一轮成本突破必须依赖固态电解质、硅碳负极、锂金属负极等底层材料创新</strong>，而这些技术距离大规模量产仍有3-5年窗口期。2030年<$70/kWh的目标能否实现，取决于固态电池产业化进度。
+  </div>
+
+  <h3>5.3 各技术路线的"能量密度-成本"象限</h3>
+  <div class="chart-container">
+    <div class="chart-title">图6：各储能技术能量密度 vs 成本象限图（2025年现状）</div>
+    <div class="chart-desc">气泡大小代表循环寿命（对数轴）。右上角为"高能量密度+低成本"理想区间，目前由LFP占据。</div>
+    <div class="chart-wrap">
+      <canvas id="chartQuadrant"></canvas>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>技术</th><th>能量密度</th><th>成本</th><th>循环寿命</th><th>最佳场景</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>LFP液态</td><td class="num">★★★★</td><td class="num">★☆☆☆（低）</td><td class="num">★★★☆</td><td>储能/城市EV</td></tr>
+      <tr><td>三元液态</td><td class="num">★★★★★</td><td class="num">★★★☆</td><td class="num">★★☆☆</td><td>长续航EV</td></tr>
+      <tr><td>半固态</td><td class="num">★★★★★</td><td class="num">★★★★（高）</td><td class="num">★★☆☆</td><td>电动航空（溢价市场）</td></tr>
+      <tr><td>钠离子</td><td class="num">★★★☆</td><td class="num">★☆☆☆（低）</td><td class="num">★★★☆</td><td>储能/低速车/低温</td></tr>
+      <tr><td>全钒液流</td><td class="num">★☆☆☆</td><td class="num">★★★★（高）</td><td class="num">★★★★★</td><td>长时储能/高安全</td></tr>
+      <tr><td>氢燃料电池</td><td class="num">★★★★★（系统）</td><td class="num">★★★★★（高）</td><td class="num">★★★☆</td><td>重卡/船舶/航空</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 第六部分：投资启示 -->
+<section>
+  <h2>六、投资启示与产业判断</h2>
+
+  <div class="card">
+    <h3>1. 液态锂电池进入"存量优化"阶段</h3>
+    <p>LFP和三元液态电池的能量密度已逼近理论天花板，未来5年提升空间有限（LFP 190→230，三元300→400）。竞争焦点从"能量密度比拼"转向"成本效率+循环寿命"。储能系统目标500元/kWh、单循环0.1元/kWh是核心战场。<strong>投资机会在系统集成、大容量电芯、BMS算法，而非材料端突破。</strong></p>
+  </div>
+
+  <div class="card">
+    <h3>2. 固态电池是未来5-10年最大变量</h3>
+    <p>400 Wh/kg已实现（欣旺达聚合物固态），520 Wh/kg试制成功（锂金属），2030年500-600 Wh/kg规模化是行业共识。但截至2026年6月零款全固态装车，量产工艺（固固界面、干法电极、等静压）仍是核心瓶颈。<strong>投资窗口：半固态过渡期（2025-2030）的先行者+固态电解质材料（硫化物/氧化物）供应商。</strong></p>
+  </div>
+
+  <div class="card">
+    <h3>3. 钠电的"成本替代"逻辑正在兑现</h3>
+    <p>1-2年内追平LFP能量密度（180→200+ Wh/kg），规模化后0.3元/Wh（比当前LFP低30%+）。2025年出货预计7 GWh，3-5年内有望突破百GWh。<strong>但钠电长期唯一机会在于降本——能量密度追平后，竞争回归成本效率。</strong></p>
+  </div>
+
+  <div class="card">
+    <h3>4. 长时储能（≥4h）是液流电池的政策红利窗口</h3>
+    <p>"十五五"规划要求2027年长时储能占比≥30%，液流电池全生命周期度电成本已在长时场景低于锂电。系统中标价从2.6→1.96元/Wh，2026年有望破2元。<strong>非氟膜量产和电解液租赁模式是关键降本变量。</strong></p>
+  </div>
+
+  <div class="card">
+    <h3>5. 氢能的"成本临界点"在2030年前后</h3>
+    <p>燃料电池系统成本2025年3500元/kW，2030年目标1500元/kW（-57%）。绿氢成本需从当前30-40元/kg降至15元/kg以下才能实现与柴油的平价。<strong>重卡、船舶、航空是氢能不可替代的场景——这些领域电池能量密度不足以胜任。</strong></p>
+  </div>
+
+  <div class="card">
+    <h3>6. 能量密度提升的"边际收益递减"规律</h3>
+    <p>从160→300 Wh/kg用了15年，从300→500 Wh/kg可能只需5-8年（固态驱动），但从500→700 Wh/kg将面临锂硫/锂空气的fundamental挑战。技术迭代周期延长（1.8→3.2年）、年增速放缓（15%→7%）是客观规律。<strong>未来5-10年的投资逻辑应从"追密度"转向"追成本+追场景适配"。</strong></p>
+  </div>
+</section>
+
+<div class="footer">
+  <p>本报告数据截至2026年7月 | 数据来源：BloombergNEF / US DOE / 清华大学欧阳明高团队 / 中国化学与物理电源行业协会 / 伊维经济研究院 / 企业公告 / 学术文献</p>
+  <p>报告仅供研究参考，不构成投资建议 | 编制：laodinglab.com</p>
+</div>
+
+</div>
+
+<script>
+// 配色方案（莫兰迪商务风）
+const colors = {
+  lfp: '#7b9a6e',
+  nmc: '#b08d6e',
+  ssb: '#6e8390',
+  na: '#c47b6e',
+  vrfb: '#6e9a9a',
+  h2: '#9a7b8a',
+  fossil: '#a09080',
+  nuclear: '#8a7b9a',
+  text: '#3a3631',
+  grid: '#e2ddd6',
+  accent: '#7b8a6e',
+  accent2: '#b08d6e'
+};
+
+Chart.defaults.font.family = '-apple-system, "PingFang SC", "Helvetica Neue", Arial, sans-serif';
+Chart.defaults.color = colors.text;
+Chart.defaults.font.size = 12;
+
+// ===== 图1：全谱系能量密度对比（对数柱状图）=====
+new Chart(document.getElementById('chartAllEnergy'), {
+  type: 'bar',
+  data: {
+    labels: ['抽水蓄能', '铅酸电池', '全钒液流', 'LFP电芯', '钠离子电芯', '三元电芯', '固态电芯', '木柴', '煤炭', '原油', '汽油', '天然气', '氢气', '核裂变(商业)', '核裂变(纯U235)', '核聚变'],
+    datasets: [{
+      label: '能量密度 (MJ/kg)',
+      data: [0.001, 0.14, 0.1, 0.68, 0.65, 1.08, 1.44, 16, 28, 42, 46, 55, 143, 3900000, 77000000, 300000000],
+      backgroundColor: [
+        colors.vrfb, '#999', colors.vrfb, colors.lfp, colors.na, colors.nmc, colors.ssb,
+        colors.fossil, colors.fossil, colors.fossil, colors.fossil, colors.fossil,
+        colors.h2, colors.nuclear, colors.nuclear, colors.nuclear
+      ],
+      borderRadius: 4
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: function(ctx) {
+            return ctx.parsed.x.toLocaleString() + ' MJ/kg';
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        type: 'logarithmic',
+        title: { display: true, text: '能量密度 (MJ/kg，对数轴)' },
+        grid: { color: colors.grid }
+      },
+      y: {
+        grid: { display: false },
+        ticks: { font: { size: 11 } }
+      }
+    }
+  }
+});
+
+// ===== 图2：锂电池能量密度演进 =====
+new Chart(document.getElementById('chartBatteryHistory'), {
+  type: 'line',
+  data: {
+    labels: ['2010', '2012', '2015', '2018', '2020', '2022', '2025'],
+    datasets: [
+      {
+        label: 'LFP（磷酸铁锂）',
+        data: [90, 105, 125, 150, 170, 180, 190],
+        borderColor: colors.lfp,
+        backgroundColor: colors.lfp + '20',
+        tension: 0.3,
+        fill: false,
+        pointRadius: 5,
+        pointBackgroundColor: colors.lfp,
+        borderWidth: 2.5
+      },
+      {
+        label: '三元（NMC/NCA）',
+        data: [160, 190, 220, 270, 280, 290, 300],
+        borderColor: colors.nmc,
+        backgroundColor: colors.nmc + '20',
+        tension: 0.3,
+        fill: false,
+        pointRadius: 5,
+        pointBackgroundColor: colors.nmc,
+        borderWidth: 2.5
+      },
+      {
+        label: '固态电池（试制/发布）',
+        data: [null, null, null, null, null, null, 400],
+        borderColor: colors.ssb,
+        backgroundColor: colors.ssb,
+        tension: 0.3,
+        fill: false,
+        pointRadius: 7,
+        pointStyle: 'star',
+        pointBackgroundColor: colors.ssb,
+        borderWidth: 2.5,
+        showLine: false
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top' }
+    },
+    scales: {
+      y: {
+        title: { display: true, text: '电芯能量密度 (Wh/kg)' },
+        min: 50,
+        max: 450,
+        grid: { color: colors.grid }
+      },
+      x: {
+        title: { display: true, text: '年份' },
+        grid: { color: colors.grid }
+      }
+    }
+  }
+});
+
+// ===== 图3：电池成本下降曲线 =====
+new Chart(document.getElementById('chartCostHistory'), {
+  type: 'line',
+  data: {
+    labels: ['2010', '2012', '2015', '2018', '2020', '2022', '2023', '2024', '2025', '2026(预)'],
+    datasets: [
+      {
+        label: '全球锂电池包均价',
+        data: [1474, 800, 384, 190, 137, 151, 139, 115, 108, 105],
+        borderColor: colors.accent,
+        backgroundColor: colors.accent + '20',
+        tension: 0.3,
+        fill: true,
+        pointRadius: 4,
+        borderWidth: 2.5
+      },
+      {
+        label: '储能包均价',
+        data: [null, null, null, null, null, null, null, 127, 70, null],
+        borderColor: colors.lfp,
+        backgroundColor: colors.lfp + '20',
+        tension: 0.3,
+        fill: false,
+        pointRadius: 5,
+        borderWidth: 2.5
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top' }
+    },
+    scales: {
+      y: {
+        title: { display: true, text: '价格 (USD/kWh)' },
+        grid: { color: colors.grid }
+      },
+      x: {
+        title: { display: true, text: '年份' },
+        grid: { color: colors.grid }
+      }
+    }
+  }
+});
+
+// ===== 图4：电池能量密度路线图（含预测）=====
+new Chart(document.getElementById('chartBatteryFuture'), {
+  type: 'line',
+  data: {
+    labels: ['2025', '2027', '2030', '2033', '2035'],
+    datasets: [
+      {
+        label: 'LFP液态',
+        data: [190, 200, 220, 235, 250],
+        borderColor: colors.lfp,
+        borderDash: [5, 3],
+        tension: 0.3,
+        fill: false,
+        pointRadius: 4,
+        borderWidth: 2
+      },
+      {
+        label: '三元液态',
+        data: [300, 330, 370, 390, 400],
+        borderColor: colors.nmc,
+        borderDash: [5, 3],
+        tension: 0.3,
+        fill: false,
+        pointRadius: 4,
+        borderWidth: 2
+      },
+      {
+        label: '半固态',
+        data: [400, 420, 450, null, null],
+        borderColor: colors.ssb,
+        borderDash: [5, 3],
+        tension: 0.3,
+        fill: false,
+        pointRadius: 4,
+        borderWidth: 2
+      },
+      {
+        label: '全固态',
+        data: [null, null, 550, 620, 680],
+        borderColor: colors.ssb,
+        backgroundColor: colors.ssb + '30',
+        tension: 0.3,
+        fill: false,
+        pointRadius: 5,
+        borderWidth: 3
+      },
+      {
+        label: '钠离子',
+        data: [180, 195, 210, 220, 230],
+        borderColor: colors.na,
+        borderDash: [5, 3],
+        tension: 0.3,
+        fill: false,
+        pointRadius: 4,
+        borderWidth: 2
+      },
+      {
+        label: '全钒液流',
+        data: [40, 45, 55, 62, 70],
+        borderColor: colors.vrfb,
+        borderDash: [5, 3],
+        tension: 0.3,
+        fill: false,
+        pointRadius: 4,
+        borderWidth: 2
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 11 } } }
+    },
+    scales: {
+      y: {
+        title: { display: true, text: '电芯能量密度 (Wh/kg)' },
+        grid: { color: colors.grid }
+      },
+      x: {
+        title: { display: true, text: '年份（虚线为预测）' },
+        grid: { color: colors.grid }
+      }
+    }
+  }
+});
+
+// ===== 图5：成本下行预测 =====
+new Chart(document.getElementById('chartCostFuture'), {
+  type: 'bar',
+  data: {
+    labels: ['LFP电池包', '储能系统EPC', '钠离子电池', '全钒液流系统', '氢燃料电池系统*'],
+    datasets: [
+      {
+        label: '2025年',
+        data: [0.6, 0.8, 0.5, 2.0, 2.33],
+        backgroundColor: colors.accent,
+        borderRadius: 4
+      },
+      {
+        label: '2030年（预测）',
+        data: [0.4, 0.5, 0.3, 1.5, 1.0],
+        backgroundColor: colors.accent2,
+        borderRadius: 4
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top' },
+      tooltip: {
+        callbacks: {
+          label: function(ctx) {
+            return ctx.dataset.label + ': ' + ctx.parsed.y + ' 元/Wh';
+          }
+        }
+      }
+    },
+    scales: {
+      y: {
+        title: { display: true, text: '成本 (元/Wh)' },
+        grid: { color: colors.grid }
+      },
+      x: {
+        grid: { display: false },
+        ticks: { font: { size: 11 } }
+      }
+    }
+  }
+});
+
+// ===== 图6：能量密度 vs 成本象限图 =====
+new Chart(document.getElementById('chartQuadrant'), {
+  type: 'bubble',
+  data: {
+    datasets: [
+      {
+        label: 'LFP液态',
+        data: [{x: 190, y: 0.6, r: 20}],
+        backgroundColor: colors.lfp + '80',
+        borderColor: colors.lfp
+      },
+      {
+        label: '三元液态',
+        data: [{x: 300, y: 0.9, r: 12}],
+        backgroundColor: colors.nmc + '80',
+        borderColor: colors.nmc
+      },
+      {
+        label: '半固态',
+        data: [{x: 400, y: 2.5, r: 10}],
+        backgroundColor: colors.ssb + '80',
+        borderColor: colors.ssb
+      },
+      {
+        label: '钠离子',
+        data: [{x: 180, y: 0.5, r: 18}],
+        backgroundColor: colors.na + '80',
+        borderColor: colors.na
+      },
+      {
+        label: '全钒液流',
+        data: [{x: 40, y: 2.0, r: 30}],
+        backgroundColor: colors.vrfb + '80',
+        borderColor: colors.vrfb
+      },
+      {
+        label: '氢燃料电池*',
+        data: [{x: 6800, y: 2.33, r: 15}],
+        backgroundColor: colors.h2 + '80',
+        borderColor: colors.h2
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 11 } } },
+      tooltip: {
+        callbacks: {
+          label: function(ctx) {
+            const d = ctx.raw;
+            return ctx.dataset.label + ' | 能量密度: ' + d.x + ' | 成本: ' + d.y + '元/Wh';
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        type: 'logarithmic',
+        title: { display: true, text: '能量密度 (Wh/kg，对数轴)' },
+        grid: { color: colors.grid }
+      },
+      y: {
+        title: { display: true, text: '成本 (元/Wh)' },
+        grid: { color: colors.grid }
+      }
+    }
+  }
+});
+</script>
+
+<footer class="ll-footer">
+  <div class="ll-footer-inner">
+    <span class="ll-footer-brand">老丁实验室 · Laodinglab</span>
+    <span class="ll-footer-note">laodinglab.com · 独立研究 · 持续更新</span>
+    <span class="ll-footer-links">
+      <a href="/trinasolarnews" style="opacity:.5;color:#B69C91;font-size:18px;" onmouseover="this.style.opacity='.95'" onmouseout="this.style.opacity='.5'">●</a>
+      <a href="/stockmarketanalysis" style="opacity:.4;color:#B69C91;font-size:15px;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='.4'">📈</a>
+    </span>
+  </div>
+</footer>
+
+</body>
+</html>
