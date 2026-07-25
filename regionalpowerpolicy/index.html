@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>各省风光机制电价数据看板</title>
+<style>
+  :root {
+    --bg: #f5f7fa;
+    --card-bg: #ffffff;
+    --border: #e4e7ed;
+    --text-primary: #303133;
+    --text-secondary: #606266;
+    --text-tertiary: #909399;
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --green: #16a34a;
+    --green-light: #dcfce7;
+    --orange: #ea580c;
+    --orange-light: #fed7aa;
+    --red: #dc2626;
+    --red-light: #fecaca;
+    --purple: #7c3aed;
+    --purple-light: #ede9fe;
+    --header-bg: linear-gradient(135deg, #0d4f3c 0%, #15803d 100%);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+    padding: 20px;
+  }
+  .header {
+    background: var(--header-bg);
+    color: #fff;
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(13,79,60,0.2);
+  }
+  .header h1 { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
+  .header .subtitle { font-size: 14px; opacity: 0.9; }
+  .header .meta { font-size: 12px; opacity: 0.7; margin-top: 10px; }
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 16px 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .control-group { display: flex; align-items: center; gap: 10px; }
+  .control-label { font-size: 14px; font-weight: 600; color: var(--text-secondary); white-space: nowrap; }
+  select {
+    padding: 8px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    color: var(--text-primary);
+    background: #fff;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s;
+    min-width: 140px;
+  }
+  select:hover { border-color: var(--accent); }
+  select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-light); }
+  .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .badge-period { background: var(--accent-light); color: var(--accent); }
+  .badge-updated { background: var(--green-light); color: var(--green); }
+  .summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .summary-card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    border-left: 4px solid var(--accent);
+  }
+  .summary-card .label { font-size: 13px; color: var(--text-tertiary); margin-bottom: 8px; }
+  .summary-card .value { font-size: 28px; font-weight: 700; color: var(--text-primary); }
+  .summary-card .unit { font-size: 14px; color: var(--text-tertiary); font-weight: 400; margin-left: 4px; }
+  .summary-card .trend { font-size: 12px; margin-top: 6px; }
+  .trend-up { color: var(--red); }
+  .trend-down { color: var(--green); }
+  .trend-neutral { color: var(--text-tertiary); }
+  .table-container {
+    background: var(--card-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+  }
+  .table-header {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .table-header h2 { font-size: 18px; font-weight: 700; }
+  .legend { display: flex; gap: 12px; flex-wrap: wrap; font-size: 12px; color: var(--text-tertiary); }
+  .legend-item { display: flex; align-items: center; gap: 4px; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .table-scroll { overflow-x: auto; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  th {
+    background: #f0fdf4;
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-align: left;
+    padding: 14px 16px;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  th:first-child { min-width: 80px; }
+  td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    color: var(--text-primary);
+  }
+  tr:hover { background: #f9fafb; }
+  tr:last-child td { border-bottom: none; }
+  .province-name { font-weight: 600; color: var(--text-primary); }
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    margin: 2px 0;
+    white-space: nowrap;
+  }
+  .tag-high { background: var(--green-light); color: var(--green); }
+  .tag-mid { background: var(--accent-light); color: var(--accent); }
+  .tag-low { background: #fef3c7; color: #b45309; }
+  .tag-none { background: #f3f4f6; color: var(--text-tertiary); }
+  .tag-new { background: var(--red-light); color: var(--red); }
+  .tag-draft { background: var(--orange-light); color: var(--orange); }
+  .cell-price { font-weight: 600; color: var(--text-primary); }
+  .cell-note { font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
+  .price-wind { color: #2563eb; font-weight: 600; }
+  .price-pv { color: #ea580c; font-weight: 600; }
+  .new-indicator {
+    display: inline-block;
+    width: 8px; height: 8px;
+    background: var(--red);
+    border-radius: 50%;
+    margin-left: 6px;
+    vertical-align: middle;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  .notes-section {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    margin-bottom: 20px;
+  }
+  .notes-section h2 { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+  .note-item {
+    padding: 12px 16px;
+    background: #fffbeb;
+    border-left: 3px solid #f59e0b;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    font-size: 13px;
+  }
+  .note-item .note-date { font-weight: 600; color: #b45309; margin-right: 8px; }
+  .footer {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-tertiary);
+    padding: 16px;
+  }
+  .empty-row td { text-align: center; color: var(--text-tertiary); padding: 40px; }
+  .diff-highlight { background: #fffbeb; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>各省风光机制电价数据看板</h1>
+  <div class="subtitle">机制比例 · 机制电价（风电/光伏）· 机制期限 · 现货单价 · 市场化交易电量 — 按月横向对比</div>
+  <div class="meta">数据来源：国家发改委136号文、各省发改委实施方案、电力交易中心公开信息 ｜ 由自动化任务定期采集更新</div>
+</div>
+
+<div class="controls">
+  <div class="control-group">
+    <span class="control-label">数据期间：</span>
+    <select id="periodSelect" onchange="switchPeriod()">
+      <option value="2026-07">2026年7月</option>
+      <option value="2026-06">2026年6月</option>
+    </select>
+  </div>
+  <div class="control-group">
+    <span class="control-label">当前状态：</span>
+    <span class="badge badge-updated" id="statusBadge">已更新</span>
+  </div>
+  <div class="control-group" style="margin-left:auto;">
+    <span class="badge badge-period" id="provinceCount">覆盖 28 省</span>
+    <span class="badge badge-updated" id="lastUpdate">最近更新：2026-07-25</span>
+  </div>
+</div>
+
+<div class="summary-cards" id="summaryCards"></div>
+
+<div class="table-container">
+  <div class="table-header">
+    <h2>各省风光机制电价横向对比</h2>
+    <div class="legend">
+      <div class="legend-item"><span class="legend-dot" style="background:#16a34a"></span>已竞价出清</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#ea580c"></span>光伏</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#2563eb"></span>风电</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#dc2626"></span>本期新增/变化</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#d1d5db"></span>暂未竞价</div>
+    </div>
+  </div>
+  <div class="table-scroll">
+    <table id="dataTable">
+      <thead>
+        <tr>
+          <th>省份</th>
+          <th>机制比例<br><span style="font-weight:400;font-size:11px;">存量/增量机制电量占上网电量比例</span></th>
+          <th>机制电价<br><span style="font-weight:400;font-size:11px;">风电 / 光伏 (元/千瓦时)</span></th>
+          <th>机制期限<br><span style="font-weight:400;font-size:11px;">执行年限</span></th>
+          <th>现货单价<br><span style="font-weight:400;font-size:11px;">现货市场均价区间 (元/兆瓦时)</span></th>
+          <th>市场化交易电量<br><span style="font-weight:400;font-size:11px;">2026年累计 (亿千瓦时)</span></th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="notes-section">
+  <h2>本期政策动态</h2>
+  <div id="notesContainer"></div>
+</div>
+
+<div class="footer">
+  <p>本看板由自动化任务定期采集更新，数据按月存放。选择不同期间可查看历史数据。</p>
+  <p>数据仅供研究参考，具体政策以官方文件为准。机制电价为增量项目竞价出清价，存量项目按煤电基准价执行。</p>
+</div>
+
+<script>
+// ===== 数据存储（按月存放，后续运行新增期间追加到此处）=====
+const policyData = {
+
+  "2026-07": {
+    lastUpdated: "2026-07-25",
+    spotPriceNote: "现货单价为2026年6月29日-7月5日周均价区间",
+    provinces: [
+      {
+        name: "上海", region: "华东",
+        mechanismRatio: "存量100% / 增量上限90%", ratioTag: "high",
+        windPrice: "0.4155", pvPrice: "0.4155", priceNote: "风光同价，等于煤电基准价（竞价上限0.42）",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "尚未正式运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "海南", region: "南方",
+        mechanismRatio: "存量80-90% / 增量上限90%", ratioTag: "high",
+        windPrice: "0.3998", pvPrice: "0.3998", priceNote: "接近煤电基准价0.4298",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "南方区域试运行",
+        marketTrade: "—", tradeNote: "南方电网区域",
+        isNew: false
+      },
+      {
+        name: "重庆", region: "西南",
+        mechanismRatio: "存量100% / 增量上限90%", ratioTag: "high",
+        windPrice: "0.3963", pvPrice: "0.3963", priceNote: "竞价上限0.3964",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "尚未正式运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "浙江", region: "华东",
+        mechanismRatio: "存量≥90% / 增量上限90%（系数75%）", ratioTag: "high",
+        windPrice: "0.3929", pvPrice: "0.3929", priceNote: "竞价上限0.393（煤电基准价），下限0.242",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "正式运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "安徽", region: "华东",
+        mechanismRatio: "存量分布式100% / 增量上限90%", ratioTag: "high",
+        windPrice: "0.3837", pvPrice: "0.3837", priceNote: "竞价上限为煤电基准价",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "日前 180–388", spotStatus: "试运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "江西", region: "华中",
+        mechanismRatio: "存量分布式100% / 增量上限70%", ratioTag: "mid",
+        windPrice: "0.375", pvPrice: "0.33", priceNote: "2026年竞价；风光价差0.045",
+        mechanismTerm: "存量20年 / 增量10年",
+        spotPrice: "—", spotStatus: "试运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "湖南", region: "华中",
+        mechanismRatio: "存量扶贫/分布式100%·集中式60% / 增量30%", ratioTag: "mid",
+        windPrice: "0.45", pvPrice: "0.45", priceNote: "存量机制电价最高（煤电基准价0.45）",
+        mechanismTerm: "存量扶贫/分布式20年·集中式5年 / 增量10年",
+        spotPrice: "—", spotStatus: "试运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "四川", region: "西南",
+        mechanismRatio: "存量按类型55-100% / 增量上限90%", ratioTag: "high",
+        windPrice: "0.373", pvPrice: "0.373", priceNote: "竞价上限为煤电基准价0.4012",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "试运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "广东", region: "南方",
+        mechanismRatio: "存量110kV以下100%·以上50-70% / 增量上限90%", ratioTag: "mid",
+        windPrice: "≈0.453", pvPrice: "0.36", priceNote: "存量按煤电基准价0.453；增量光伏竞价0.36",
+        mechanismTerm: "存量20年 / 增量12年（海上风电14年）",
+        spotPrice: "日前 296–406 / 实时 290–574", spotStatus: "正式运行",
+        marketTrade: "—", tradeNote: "南方电网区域",
+        isNew: false
+      },
+      {
+        name: "江苏", region: "华东",
+        mechanismRatio: "存量≥90% / 增量上限90%", ratioTag: "high",
+        windPrice: "0.36", pvPrice: "0.36", priceNote: "竞价上限为煤电基准价0.391",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "日前 289–339 / 实时 251–346", spotStatus: "试运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "北京", region: "华北",
+        mechanismRatio: "存量100% / 增量上限100%", ratioTag: "high",
+        windPrice: "0.3598", pvPrice: "0.3598", priceNote: "等于煤电基准价，未设竞价下限",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "尚未正式运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "冀北", region: "华北",
+        mechanismRatio: "存量100% / 增量上限≤煤电基准价", ratioTag: "high",
+        windPrice: "0.352", pvPrice: "0.352", priceNote: "竞价上限不高于煤电基准价",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "试运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "贵州", region: "南方",
+        mechanismRatio: "存量110kV以下100%·以上80% / 增量上限90%", ratioTag: "high",
+        windPrice: "0.3515", pvPrice: "0.3515", priceNote: "竞价上限风电0.335·光伏0.345",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "南方区域试运行",
+        marketTrade: "—", tradeNote: "南方电网区域",
+        isNew: false
+      },
+      {
+        name: "福建", region: "华东",
+        mechanismRatio: "存量100% / 增量上限90%", ratioTag: "high",
+        windPrice: "0.35", pvPrice: "0.35", priceNote: "竞价上限为煤电基准价0.3932",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "试运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "陕西", region: "西北",
+        mechanismRatio: "存量≥90% / 增量上限90%", ratioTag: "high",
+        windPrice: "0.35", pvPrice: "0.35", priceNote: "竞价上限为煤电基准价",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "日前 158–258 / 实时 134–292", spotStatus: "连续结算试运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "河北南网", region: "华北",
+        mechanismRatio: "存量100% / 增量上限≤煤电基准价", ratioTag: "high",
+        windPrice: "0.3344", pvPrice: "0.3344", priceNote: "竞价上限不高于煤电基准价",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "试运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "吉林", region: "东北",
+        mechanismRatio: "存量按类型 / 增量上限90%", ratioTag: "mid",
+        windPrice: "0.334", pvPrice: "0.334", priceNote: "竞价上限为煤电基准价",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "试运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "湖北", region: "华中",
+        mechanismRatio: "存量集中式12.5% / 增量上限50%", ratioTag: "low",
+        windPrice: "0.333", pvPrice: "0.333", priceNote: "竞价上限为煤电基准价",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "正式运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "云南", region: "南方",
+        mechanismRatio: "存量55-100% / 增量上限90%", ratioTag: "mid",
+        windPrice: "0.332", pvPrice: "0.33", priceNote: "2026年竞价；存量按并网时间55-100%",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "南方区域试运行",
+        marketTrade: "—", tradeNote: "南方电网区域",
+        isNew: false
+      },
+      {
+        name: "辽宁", region: "东北",
+        mechanismRatio: "存量集中式0%·分布式100% / 增量上限55%", ratioTag: "low",
+        windPrice: "0.33", pvPrice: "0.33", priceNote: "竞价上限为煤电基准价",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "日前 126–353 / 实时 -12–385", spotStatus: "连续结算试运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "天津", region: "华北",
+        mechanismRatio: "存量100% / 增量上限90%", ratioTag: "high",
+        windPrice: "0.32", pvPrice: "0.32", priceNote: "未设竞价下限",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "尚未正式运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "山西", region: "华北",
+        mechanismRatio: "存量≥90% / 增量上限90%", ratioTag: "high",
+        windPrice: "0.3168", pvPrice: "0.3168", priceNote: "2026年竞价；竞价区间0.2-0.332（煤电基准价）",
+        mechanismTerm: "存量20年 / 增量10年",
+        spotPrice: "日前 236–319 / 实时 260–337", spotStatus: "正式运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "广西", region: "南方",
+        mechanismRatio: "存量100% / 增量上限90%", ratioTag: "high",
+        windPrice: "0.31", pvPrice: "0.31", priceNote: "竞价上限为煤电基准价0.4207",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "南方区域试运行",
+        marketTrade: "—", tradeNote: "南方电网区域",
+        isNew: false
+      },
+      {
+        name: "山东", region: "华东",
+        mechanismRatio: "存量按类型 / 增量上限按类", ratioTag: "mid",
+        windPrice: "0.31", pvPrice: "0.261", priceNote: "2026年竞价；风光价差0.049；2025年光伏0.225",
+        mechanismTerm: "存量20年 / 增量10年（深远海风电14年）",
+        spotPrice: "日前 266–460 / 实时 166–423", spotStatus: "正式运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "黑龙江", region: "东北",
+        mechanismRatio: "存量按类型 / 增量上限70%", ratioTag: "mid",
+        windPrice: "0.2281", pvPrice: "0.2281", priceNote: "竞价下限偏低",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "试运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "宁夏", region: "西北",
+        mechanismRatio: "存量集中式10-30% / 增量上限70%", ratioTag: "low",
+        windPrice: "0.2595", pvPrice: "0.2595", priceNote: "等于煤电基准价0.2595",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "试运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "青海", region: "西北",
+        mechanismRatio: "存量按类型 / 增量上限40%", ratioTag: "low",
+        windPrice: "0.24", pvPrice: "0.2277", priceNote: "光伏竞价上限0.2277·下限0.15；风电上限0.24·下限0.205",
+        mechanismTerm: "存量平价12年·保障20年 / 增量12年",
+        spotPrice: "—", spotStatus: "试运行",
+        marketTrade: "—", tradeNote: "国家电网区域（青海市场化交易规模1454亿千瓦时）",
+        isNew: false
+      },
+      {
+        name: "甘肃", region: "西北",
+        mechanismRatio: "存量全额保障154亿千瓦时 / 增量上限70%", ratioTag: "mid",
+        windPrice: "0.1954", pvPrice: "0.1954", priceNote: "风光同场同价，全国最低",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "发电侧实时 177–387", spotStatus: "正式运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "新疆", region: "西北",
+        mechanismRatio: "存量补贴30%·平价50% / 增量50%", ratioTag: "low",
+        windPrice: "0.21", pvPrice: "0.15", priceNote: "光伏全国最低0.15；风光价差0.06",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "试运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "蒙西", region: "华北",
+        mechanismRatio: "存量按利用小时数核定 / 增量暂不安排", ratioTag: "none",
+        windPrice: "—", pvPrice: "—", priceNote: "增量暂不安排新增机制电量，电价通过市场交易形成",
+        mechanismTerm: "存量按核定小时数 / 增量暂无",
+        spotPrice: "发电侧实时 177–387 / 用户侧 198–444", spotStatus: "正式运行",
+        marketTrade: "1188", tradeNote: "2026年1-4月蒙西市场化交易电量",
+        isNew: false
+      }
+    ],
+    notes: [
+      { date: "2026-07-25", text: "全国29省市（除西藏外）已完成136号文增量项目机制电价竞价。风光机制电价分化显著：上海最高0.4155元/度，新疆光伏最低0.15元/度，差距达2.77倍。" },
+      { date: "2026-07-07", text: "青海、陕西同日出台储能容量电价政策（与本看板风光机制电价关联：青海增量项目机制电量上限仅40%，为全国最低之一）。" },
+      { date: "2026-06-29", text: "现货市场周报（6.29-7.5）：山西、广东、山东、蒙西等8省现货价格区间出炉。辽宁出现负电价（实时最低-11.58元/兆瓦时）。" },
+      { date: "2026-05-01", text: "国家能源局数据：2026年1-5月全国电力市场交易电量30573亿千瓦时，同比增长24.8%。其中绿电交易1364亿千瓦时。" }
+    ]
+  },
+
+  "2026-06": {
+    lastUpdated: "2026-06-30",
+    spotPriceNote: "6月现货数据部分暂缺，7月起系统化采集",
+    provinces: [
+      {
+        name: "上海", region: "华东",
+        mechanismRatio: "存量100% / 增量上限90%", ratioTag: "high",
+        windPrice: "0.4155", pvPrice: "0.4155", priceNote: "风光同价，等于煤电基准价",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "尚未正式运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "海南", region: "南方",
+        mechanismRatio: "存量80-90% / 增量上限90%", ratioTag: "high",
+        windPrice: "0.3998", pvPrice: "0.3998", priceNote: "接近煤电基准价",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "南方区域试运行",
+        marketTrade: "—", tradeNote: "南方电网区域",
+        isNew: false
+      },
+      {
+        name: "重庆", region: "西南",
+        mechanismRatio: "存量100% / 增量上限90%", ratioTag: "high",
+        windPrice: "0.3963", pvPrice: "0.3963", priceNote: "竞价上限0.3964",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "尚未正式运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "浙江", region: "华东",
+        mechanismRatio: "存量≥90% / 增量上限90%（系数75%）", ratioTag: "high",
+        windPrice: "0.3929", pvPrice: "0.3929", priceNote: "竞价上限0.393，下限0.242",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "正式运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "安徽", region: "华东",
+        mechanismRatio: "存量分布式100% / 增量上限90%", ratioTag: "high",
+        windPrice: "0.3837", pvPrice: "0.3837", priceNote: "竞价上限为煤电基准价",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "试运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "江西", region: "华中",
+        mechanismRatio: "存量分布式100% / 增量上限70%", ratioTag: "mid",
+        windPrice: "0.375", pvPrice: "0.33", priceNote: "2026年竞价",
+        mechanismTerm: "存量20年 / 增量10年",
+        spotPrice: "—", spotStatus: "试运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "湖南", region: "华中",
+        mechanismRatio: "存量扶贫/分布式100%·集中式60% / 增量30%", ratioTag: "mid",
+        windPrice: "0.45", pvPrice: "0.45", priceNote: "存量机制电价最高",
+        mechanismTerm: "存量扶贫/分布式20年·集中式5年 / 增量10年",
+        spotPrice: "—", spotStatus: "试运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "四川", region: "西南",
+        mechanismRatio: "存量55-100% / 增量上限90%", ratioTag: "high",
+        windPrice: "0.373", pvPrice: "0.373", priceNote: "竞价上限0.4012",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "试运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "广东", region: "南方",
+        mechanismRatio: "存量110kV以下100%·以上50-70% / 增量上限90%", ratioTag: "mid",
+        windPrice: "≈0.453", pvPrice: "0.36", priceNote: "存量按煤电基准价；增量光伏竞价0.36",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "正式运行",
+        marketTrade: "—", tradeNote: "南方电网区域",
+        isNew: false
+      },
+      {
+        name: "江苏", region: "华东",
+        mechanismRatio: "存量≥90% / 增量上限90%", ratioTag: "high",
+        windPrice: "0.36", pvPrice: "0.36", priceNote: "竞价上限0.391",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "试运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "北京", region: "华北",
+        mechanismRatio: "存量100% / 增量上限100%", ratioTag: "high",
+        windPrice: "0.3598", pvPrice: "0.3598", priceNote: "等于煤电基准价",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "尚未正式运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "冀北", region: "华北",
+        mechanismRatio: "存量100% / 增量上限≤煤电基准价", ratioTag: "high",
+        windPrice: "0.352", pvPrice: "0.352", priceNote: "竞价上限不高于煤电基准价",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "试运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "贵州", region: "南方",
+        mechanismRatio: "存量110kV以下100%·以上80% / 增量上限90%", ratioTag: "high",
+        windPrice: "0.3515", pvPrice: "0.3515", priceNote: "竞价上限风电0.335·光伏0.345",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "南方区域试运行",
+        marketTrade: "—", tradeNote: "南方电网区域",
+        isNew: false
+      },
+      {
+        name: "福建", region: "华东",
+        mechanismRatio: "存量100% / 增量上限90%", ratioTag: "high",
+        windPrice: "0.35", pvPrice: "0.35", priceNote: "竞价上限0.3932",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "试运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "陕西", region: "西北",
+        mechanismRatio: "存量≥90% / 增量上限90%", ratioTag: "high",
+        windPrice: "0.35", pvPrice: "0.35", priceNote: "竞价上限为煤电基准价",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "连续结算试运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "河北南网", region: "华北",
+        mechanismRatio: "存量100% / 增量上限≤煤电基准价", ratioTag: "high",
+        windPrice: "0.3344", pvPrice: "0.3344", priceNote: "竞价上限不高于煤电基准价",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "试运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "吉林", region: "东北",
+        mechanismRatio: "存量按类型 / 增量上限90%", ratioTag: "mid",
+        windPrice: "0.334", pvPrice: "0.334", priceNote: "竞价上限为煤电基准价",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "试运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "湖北", region: "华中",
+        mechanismRatio: "存量集中式12.5% / 增量上限50%", ratioTag: "low",
+        windPrice: "0.333", pvPrice: "0.333", priceNote: "竞价上限为煤电基准价",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "正式运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "云南", region: "南方",
+        mechanismRatio: "存量55-100% / 增量上限90%", ratioTag: "mid",
+        windPrice: "0.332", pvPrice: "0.33", priceNote: "2026年竞价",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "南方区域试运行",
+        marketTrade: "—", tradeNote: "南方电网区域",
+        isNew: false
+      },
+      {
+        name: "辽宁", region: "东北",
+        mechanismRatio: "存量集中式0%·分布式100% / 增量上限55%", ratioTag: "low",
+        windPrice: "0.33", pvPrice: "0.33", priceNote: "竞价上限为煤电基准价",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "连续结算试运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "天津", region: "华北",
+        mechanismRatio: "存量100% / 增量上限90%", ratioTag: "high",
+        windPrice: "0.32", pvPrice: "0.32", priceNote: "未设竞价下限",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "尚未正式运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "山西", region: "华北",
+        mechanismRatio: "存量≥90% / 增量上限90%", ratioTag: "high",
+        windPrice: "0.3168", pvPrice: "0.3168", priceNote: "2026年竞价；区间0.2-0.332",
+        mechanismTerm: "存量20年 / 增量10年",
+        spotPrice: "—", spotStatus: "正式运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "广西", region: "南方",
+        mechanismRatio: "存量100% / 增量上限90%", ratioTag: "high",
+        windPrice: "0.31", pvPrice: "0.31", priceNote: "竞价上限0.4207",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "南方区域试运行",
+        marketTrade: "—", tradeNote: "南方电网区域",
+        isNew: false
+      },
+      {
+        name: "山东", region: "华东",
+        mechanismRatio: "存量按类型 / 增量上限按类", ratioTag: "mid",
+        windPrice: "0.319", pvPrice: "0.225", priceNote: "2025年首次竞价；风光价差0.094",
+        mechanismTerm: "存量20年 / 增量10年",
+        spotPrice: "—", spotStatus: "正式运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "黑龙江", region: "东北",
+        mechanismRatio: "存量按类型 / 增量上限70%", ratioTag: "mid",
+        windPrice: "0.2281", pvPrice: "0.2281", priceNote: "竞价下限偏低",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "试运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "宁夏", region: "西北",
+        mechanismRatio: "存量集中式10-30% / 增量上限70%", ratioTag: "low",
+        windPrice: "0.2595", pvPrice: "0.2595", priceNote: "等于煤电基准价0.2595",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "试运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "青海", region: "西北",
+        mechanismRatio: "存量按类型 / 增量上限40%", ratioTag: "low",
+        windPrice: "0.24", pvPrice: "0.2277", priceNote: "光伏竞价上限0.2277·下限0.15",
+        mechanismTerm: "存量平价12年·保障20年 / 增量12年",
+        spotPrice: "—", spotStatus: "试运行",
+        marketTrade: "—", tradeNote: "青海市场化交易规模1454亿千瓦时",
+        isNew: false
+      },
+      {
+        name: "甘肃", region: "西北",
+        mechanismRatio: "存量全额保障154亿千瓦时 / 增量上限70%", ratioTag: "mid",
+        windPrice: "0.1954", pvPrice: "0.1954", priceNote: "风光同场同价，全国最低",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "正式运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "新疆", region: "西北",
+        mechanismRatio: "存量补贴30%·平价50% / 增量50%", ratioTag: "low",
+        windPrice: "0.21", pvPrice: "0.15", priceNote: "光伏全国最低0.15",
+        mechanismTerm: "存量20年 / 增量12年",
+        spotPrice: "—", spotStatus: "试运行",
+        marketTrade: "—", tradeNote: "国家电网区域",
+        isNew: false
+      },
+      {
+        name: "蒙西", region: "华北",
+        mechanismRatio: "存量按利用小时数核定 / 增量暂不安排", ratioTag: "none",
+        windPrice: "—", pvPrice: "—", priceNote: "增量暂不安排新增机制电量",
+        mechanismTerm: "存量按核定小时数 / 增量暂无",
+        spotPrice: "—", spotStatus: "正式运行",
+        marketTrade: "—", tradeNote: "蒙西市场化交易",
+        isNew: false
+      }
+    ],
+    notes: [
+      { date: "2026-06-08", text: "136号文全面实施半年：全国30省市（除西藏）已出台实施细则，29省市完成增量项目机制电价竞价。各省机制电价分化显著，最高上海0.4155元/度，最低新疆光伏0.15元/度。" },
+      { date: "2026-05-01", text: "国家能源局：2026年1-4月全国电力市场交易电量24307亿千瓦时，同比增长25.6%。现货交易电量占比约12%。" },
+      { date: "2026-02-02", text: "山东2026年度机制电价竞价出清：风电0.31元/度、光伏0.261元/度，机制电量总规模152.37亿千瓦时，较2025年增长111%。" }
+    ]
+  }
+
+};
+
+// ===== 渲染逻辑 =====
+function getRatioLabel(tag) {
+  const map = {
+    "high": "tag-high",
+    "mid": "tag-mid",
+    "low": "tag-low",
+    "none": "tag-none"
+  };
+  return map[tag] || "tag-none";
+}
+
+function renderTable(period) {
+  const data = policyData[period];
+  const tbody = document.getElementById("tableBody");
+  tbody.innerHTML = "";
+
+  if (!data || !data.provinces.length) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="6">该期间暂无数据</td></tr>';
+    return;
+  }
+
+  data.provinces.forEach(p => {
+    const tr = document.createElement("tr");
+    if (p.isNew) tr.classList.add("diff-highlight");
+
+    const ratioClass = getRatioLabel(p.ratioTag);
+    const newDot = p.isNew ? '<span class="new-indicator"></span>' : '';
+
+    const priceCell = (p.windPrice === "—" && p.pvPrice === "—")
+      ? '<span style="color:var(--text-tertiary);">—</span>'
+      : `<span class="price-wind">风电 ${p.windPrice}</span><br><span class="price-pv">光伏 ${p.pvPrice}</span>`;
+
+    tr.innerHTML = `
+      <td>
+        <div class="province-name">${p.name}${newDot}</div>
+        <div class="cell-note">${p.region}</div>
+      </td>
+      <td>
+        <span class="tag ${ratioClass}">${p.mechanismRatio}</span>
+      </td>
+      <td>
+        ${priceCell}
+        <div class="cell-note">${p.priceNote || ''}</div>
+      </td>
+      <td>${p.mechanismTerm}</td>
+      <td>
+        <div>${p.spotPrice}</div>
+        <div class="cell-note">${p.spotStatus}</div>
+      </td>
+      <td>
+        <span class="cell-price">${p.marketTrade}</span>
+        <div class="cell-note">${p.tradeNote || ''}</div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  document.getElementById("provinceCount").textContent = `覆盖 ${data.provinces.length} 省`;
+  document.getElementById("lastUpdate").textContent = `最近更新：${data.lastUpdated}`;
+  document.getElementById("statusBadge").textContent = "已更新";
+
+  renderSummary(data);
+  renderNotes(data);
+}
+
+function renderSummary(data) {
+  const container = document.getElementById("summaryCards");
+  const provinces = data.provinces;
+
+  const hasPrice = provinces.filter(p => p.windPrice !== "—" || p.pvPrice !== "—");
+  const windPrices = hasPrice.map(p => parseFloat(p.windPrice)).filter(v => !isNaN(v));
+  const pvPrices = hasPrice.map(p => parseFloat(p.pvPrice)).filter(v => !isNaN(v));
+
+  const maxWind = windPrices.length ? Math.max(...windPrices) : 0;
+  const minWind = windPrices.length ? Math.min(...windPrices) : 0;
+  const maxPV = pvPrices.length ? Math.max(...pvPrices) : 0;
+  const minPV = pvPrices.length ? Math.min(...pvPrices) : 0;
+
+  const avgWind = windPrices.length ? (windPrices.reduce((a,b)=>a+b,0)/windPrices.length).toFixed(4) : 0;
+  const avgPV = pvPrices.length ? (pvPrices.reduce((a,b)=>a+b,0)/pvPrices.length).toFixed(4) : 0;
+
+  const spotProvinces = provinces.filter(p => p.spotPrice && p.spotPrice !== "—").length;
+  const newCount = provinces.filter(p => p.isNew).length;
+
+  container.innerHTML = `
+    <div class="summary-card" style="border-left-color: var(--accent);">
+      <div class="label">覆盖省份数</div>
+      <div class="value">${provinces.length}<span class="unit">个</span></div>
+      <div class="trend trend-neutral">已发布136号文实施方案</div>
+    </div>
+    <div class="summary-card" style="border-left-color: #2563eb;">
+      <div class="label">风电机制电价区间</div>
+      <div class="value">${minWind}<span class="unit">–</span>${maxWind}</div>
+      <div class="trend trend-neutral">均值 ${avgWind} 元/千瓦时</div>
+    </div>
+    <div class="summary-card" style="border-left-color: #ea580c;">
+      <div class="label">光伏机制电价区间</div>
+      <div class="value">${minPV}<span class="unit">–</span>${maxPV}</div>
+      <div class="trend trend-neutral">均值 ${avgPV} 元/千瓦时</div>
+    </div>
+    <div class="summary-card" style="border-left-color: var(--red);">
+      <div class="label">本期新增/变化</div>
+      <div class="value">${newCount}<span class="unit">项</span></div>
+      <div class="trend trend-up">较上期变化</div>
+    </div>
+  `;
+}
+
+function renderNotes(data) {
+  const container = document.getElementById("notesContainer");
+  if (!data.notes || !data.notes.length) {
+    container.innerHTML = '<div style="color:var(--text-tertiary);padding:12px;">本期暂无政策动态记录</div>';
+    return;
+  }
+  container.innerHTML = data.notes.map(n => `
+    <div class="note-item">
+      <span class="note-date">${n.date}</span>${n.text}
+    </div>
+  `).join("");
+}
+
+function switchPeriod() {
+  const period = document.getElementById("periodSelect").value;
+  renderTable(period);
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  const select = document.getElementById("periodSelect");
+  const periods = Object.keys(policyData).sort().reverse();
+  if (periods.length) {
+    select.value = periods[0];
+    renderTable(periods[0]);
+  }
+});
+</script>
+
+</body>
+</html>
