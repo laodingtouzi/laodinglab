@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>天合光能舆情监控 · 第第8期期 (2026-07-27)</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2c5f7c;
+  --primary-light: #e8f0f5;
+  --accent: #c9a227;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #1a1a2e;
+  --text-secondary: #4a5568;
+  --text-muted: #718096;
+  --border: #e2e8f0;
+  --shadow: 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-hover: 0 4px 16px rgba(0,0,0,0.1);
+  --radius: 12px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  font-size: 15px;
+}
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Header */
+header {
+  background: linear-gradient(135deg, var(--primary) 0%, #1a3a4f 100%);
+  color: white;
+  padding: 40px 30px;
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-hover);
+}
+header h1 {
+  font-family: 'Noto Serif SC', Georgia, serif;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+header .subtitle {
+  font-size: 14px;
+  opacity: 0.85;
+  margin-bottom: 16px;
+}
+header .meta-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 13px;
+  opacity: 0.8;
+}
+header .meta-bar span {
+  background: rgba(255,255,255,0.12);
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+/* Navigation */
+nav {
+  background: var(--card-bg);
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 10px;
+  z-index: 100;
+}
+nav .nav-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+nav .nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+nav a {
+  font-size: 13px;
+  color: var(--primary);
+  text-decoration: none;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: var(--primary-light);
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+nav a:hover {
+  background: var(--primary);
+  color: white;
+}
+
+/* Section */
+.section {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.section-title {
+  font-family: 'Noto Serif SC', Georgia, serif;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 18px 24px;
+  background: linear-gradient(90deg, var(--primary-light) 0%, transparent 100%);
+  border-left: 4px solid var(--primary);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-title .count {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-left: auto;
+}
+.section-content {
+  padding: 0 24px 24px;
+}
+
+/* News Item — Compact */
+.news-item {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.news-item:last-child {
+  border-bottom: none;
+}
+.news-title-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+.news-title-link {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--primary);
+  text-decoration: none;
+  line-height: 1.4;
+  flex: 1;
+}
+.news-title-link:hover {
+  text-decoration: underline;
+  color: #1a3a4f;
+}
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.news-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.meta-date { font-weight: 500; }
+.meta-source { font-style: italic; }
+.meta-link {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+.meta-link:hover { text-decoration: underline; }
+.news-summary {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.news-summary p {
+  text-align: justify;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Sentiment */
+.sentiment-card {
+  text-align: center;
+  padding: 24px;
+  border-radius: var(--radius);
+  margin-bottom: 20px;
+}
+.sentiment-card.sentiment-negative {
+  background: linear-gradient(135deg, #fee2e2 0%, #fef2f2 100%);
+  border: 1px solid #fca5a5;
+}
+.sentiment-card.sentiment-neutral {
+  background: linear-gradient(135deg, #fef3c7 0%, #fffbeb 100%);
+  border: 1px solid #fcd34d;
+}
+.sentiment-card.sentiment-positive {
+  background: linear-gradient(135deg, #d1fae5 0%, #ecfdf5 100%);
+  border: 1px solid #6ee7b7;
+}
+.sentiment-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+.sentiment-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+}
+.sentiment-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+.sentiment-col {
+  background: var(--bg);
+  padding: 16px;
+  border-radius: 8px;
+}
+.sentiment-col h4 {
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+.sentiment-col ul {
+  list-style: none;
+  font-size: 13px;
+}
+.sentiment-col li {
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--border);
+  line-height: 1.6;
+}
+.sentiment-col li:last-child { border-bottom: none; }
+.sentiment-col li.pos { color: #065f46; }
+.sentiment-col li.neg { color: #991b1b; }
+.sentiment-col li.watch { color: #5b21b6; }
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 30px 20px;
+  color: var(--text-muted);
+  font-size: 13px;
+  border-top: 1px solid var(--border);
+  margin-top: 20px;
+}
+footer .sources {
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+footer .disclaimer {
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  header h1 { font-size: 22px; }
+  header { padding: 24px 20px; }
+  .section-content { padding: 0 16px 16px; }
+  .news-title-link { font-size: 14px; }
+  nav { position: static; }
+}
+
+/* Smooth scroll */
+html { scroll-behavior: smooth; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>🔍 天合光能舆情监控报告</h1>
+  <div class="subtitle">监控对象：天合光能股份有限公司 &nbsp;|&nbsp; 共聚合 0 条资讯</div>
+  <div class="meta-bar">
+    <span>📅 报告日期：2026-07-27</span>
+    <span>📋 第 第8期 期</span>
+  </div>
+</header>
+
+<nav>
+  <div class="nav-title">📑 快速导航</div>
+  <div class="nav-links">
+    <a href="#sentiment">📊 舆情综合研判</a>
+  </div>
+</nav>
+
+
+
+
+    <section class="section sentiment-section" id="sentiment">
+      <h2 class="section-title">📊 舆情综合研判</h2>
+      <div class="section-content">
+        <div class="sentiment-card sentiment-neutral">
+          <div class="sentiment-label">总体判断</div>
+          <div class="sentiment-value">业绩触底回升，储能业务成亮点，股价仍承压</div>
+        </div>
+        <div class="sentiment-grid">
+          <div class="sentiment-col">
+            <h4>🟢 利好因素</h4>
+            <ul><li class="pos">✅ 储能业务海外订单持续突破，欧洲签约超6GWh</li><li class="pos">✅ 分布式业务市场化交易先发优势明显</li><li class="pos">✅ 组件报价企稳回升，盈利能力有望改善</li><li class="pos">✅ 光储智慧能源解决方案转型持续推进</li></ul>
+          </div>
+          <div class="sentiment-col">
+            <h4>🔴 风险因素</h4>
+            <ul><li class="neg">⚠️ 上半年仍预计净亏损1.8-3.6亿元</li><li class="neg">⚠️ 股价近期承压，7月24日跌4.79%</li><li class="neg">⚠️ 2023年股权激励计划业绩未达标作废</li><li class="neg">⚠️ 天23转债转股价格面临修正压力</li><li class="neg">⚠️ 美国贸易壁垒政策风险持续存在</li></ul>
+          </div>
+          <div class="sentiment-col">
+            <h4>👁️ 关键观察点</h4>
+            <ul><li class="watch">👁️ 8月27日将披露2026年中报，关注减亏持续性</li><li class="watch">👁️ 储能业务出货目标15-16GWh能否达成</li><li class="watch">👁️ 组件价格回升趋势能否延续</li><li class="watch">👁️ 股价底部支撑及资金流向变化</li></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+
+<footer>
+  <div class="sources">📰 信息来源：东方财富个股新闻 (AkShare)、kimi_search_v2、微博</div>
+  <div>老丁实验室 · laodinglab.com/trinasolarnews</div>
+  <div class="disclaimer">⚠️ 免责声明：本报告由自动化系统聚合公开信息生成，仅提供标题与链接，内容需阅读原文了解。不构成投资建议。</div>
+</footer>
+
+</div>
+</body>
+</html>
