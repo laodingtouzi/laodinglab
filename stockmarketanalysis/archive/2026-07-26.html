@@ -32891,6 +32891,85 @@ function sendRequest(endpoint, payload, actionType) {
         if (data.success) {
             showToast(data.message || "操作成功", "success");
             closeActionModal();
+            // 立即更新前端显示（不依赖reload，因为静态HTMLreload后数据不会变）
+            updateTableRow(actionType, payload);
+            if (actionType === "sell") {
+                document.querySelectorAll("table tbody tr").forEach(function(r){
+                    if (r.textContent.indexOf(currentCode) >= 0) r.style.display = "none";
+                });
+            }
+        } else {
+            showError(data.error || "操作失败");
+        }
+    }).catch(function(e){
+        showError("网络错误: " + e.message);
+    }).finally(function(){
+        btn.textContent = oldText; btn.disabled = false;
+    });
+}
+
+// 前端即时更新表格行数据
+function updateTableRow(actionType, payload) {
+    var rows = document.querySelectorAll("table tbody tr");
+    for (var i = 0; i < rows.length; i++) {
+        var row = rows[i];
+        if (row.textContent.indexOf(currentCode) < 0) continue;
+        var cells = row.querySelectorAll("td");
+        // 找到股数、市值、盈亏列（基于当前表头顺序）
+        // 持有清单表头: 代码 名称 市场 状态 评分 入选日期 初始价 当前价 股数 市值 盈亏 天数 ...
+        // 股数=index 8, 市值(万)=index 9, 盈亏=index 10
+        if (cells.length < 11) continue;
+        var sharesCell = cells[8];
+        var mvCell = cells[9];
+        var pnlCell = cells[10];
+        var currentPrice = parseFloat(cells[7].textContent) || 0;
+        var oldShares = parseInt(sharesCell.textContent.replace(/,/g, "")) || 0;
+        var entryPrice = parseFloat(cells[6].textContent) || 0;
+        
+        if (actionType === "add") {
+            var addShares = parseInt(payload.add_shares) || 0;
+            var addPrice = parseFloat(payload.add_price) || currentPrice;
+            var newShares = oldShares + addShares;
+            // 加权平均成本
+            var oldCost = oldShares * entryPrice;
+            var newCost = addShares * addPrice;
+            var avgPrice = newShares > 0 ? (oldCost + newCost) / newShares : 0;
+            var newMV = newShares * currentPrice;
+            var newPnl = ((currentPrice - avgPrice) / avgPrice * 100);
+            
+            sharesCell.textContent = newShares.toLocaleString();
+            mvCell.textContent = (newMV / 10000).toFixed(2);
+            pnlCell.textContent = (newPnl >= 0 ? "+" : "") + newPnl.toFixed(1) + "%";
+            pnlCell.className = "num " + (newPnl >= 0 ? "up" : "down");
+            // 更新初始价显示为新的加权成本
+            cells[6].textContent = avgPrice.toFixed(2);
+        } else if (actionType === "reduce") {
+            var reduceShares = parseInt(payload.reduce_shares) || 0;
+            var newShares = Math.max(0, oldShares - reduceShares);
+            if (newShares === 0) {
+                row.style.display = "none";
+            } else {
+                var newMV = newShares * currentPrice;
+                var newPnl = ((currentPrice - entryPrice) / entryPrice * 100);
+                sharesCell.textContent = newShares.toLocaleString();
+                mvCell.textContent = (newMV / 10000).toFixed(2);
+                pnlCell.textContent = (newPnl >= 0 ? "+" : "") + newPnl.toFixed(1) + "%";
+            }
+        }
+        break;
+    }
+}
+    if (!WORKER_URL) { showError("Worker URL 未配置"); return; }
+    var btn = document.getElementById("action-confirm-btn");
+    var oldText = btn.textContent;
+    btn.textContent = "处理中..."; btn.disabled = true;
+    fetch(WORKER_URL.replace(/\/?$/, "") + endpoint, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+    }).then(function(resp){ return resp.json(); }).then(function(data){
+        if (data.success) {
+            showToast(data.message || "操作成功", "success");
+            closeActionModal();
             if (actionType === "sell") {
                 document.querySelectorAll("table tbody tr").forEach(function(r){
                     if (r.textContent.indexOf(currentCode) >= 0) r.style.display = "none";
