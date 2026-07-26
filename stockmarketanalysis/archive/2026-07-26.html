@@ -383,8 +383,20 @@ tr:hover { background: #f1f5f9; }
     </div>
   </div>
 </section>
+<div class="nav-fixed">
+  <div class="nav-inner">
+    <a href="#strategy">⚙️ 策略</a>
+    <a href="#risk">🛡️ 风控</a>
+    <a href="#holdings">📈 持有</a>
+    <a href="#rotation">📊 调仓</a>
+    <a href="#buy">✅ 买入</a>
+    <a href="#sell">⚠️ 卖出</a>
+    <a href="#post-sell">👁️ 沽后</a>
+    <a href="#factors">📋 因子</a>
+  </div>
+</div>
 <main class="main"><div class="container">
-<div class="section">
+<div class="section" id="strategy">
     <h2>⚙️ 策略参数</h2>
     <div class="params-grid">
         <div class="param-item"><span class="label">买入阈值</span><span class="value">CN/HK ≥ 60 / US ≥ 70</span></div>
@@ -405,7 +417,7 @@ tr:hover { background: #f1f5f9; }
         <div class="param-item"><span class="label">三池资金</span><span class="value">各1000万等值本币</span></div>
     </div>
 </div>
-<div class="section">
+<div class="section" id="risk">
     <h2>🛡️ 风控状态及情绪信息</h2>
     <div class='alert alert-success'>✅ 组合风控正常</div>
     <div class="sentiment-summary" style="margin-top: 12px; padding: 10px 12px; background: var(--bg); border-radius: 6px; font-size: 0.85rem; line-height: 1.6;">
@@ -419,7 +431,7 @@ tr:hover { background: #f1f5f9; }
         <div style="margin-top: 8px;"><a href="/stockmarketanalysis/macro/" style="color: var(--primary, #2563eb); text-decoration: none;">📊 查阅详细宏观事件驱动报告 →</a></div>
     </div>
 </div>
-<div class="section">
+<div class="section" id="holdings">
     <h2>📈 持有清单</h2>
     <p class="section-desc">图例: <strong>H</strong>=高分持有 | <strong>M</strong>=中等持有 | <strong>M↓</strong>=从高分滑落</p>
     <div class="summary-table-wrap">
@@ -7509,7 +7521,7 @@ tr:hover { background: #f1f5f9; }
         </table>
     </div>
 </div>
-<div class="section">
+<div class="section" id="rotation">
     <h2>📊 调仓建议观察</h2>
     <p class="section-desc">基于宏观周报板块轮动建议，跟踪持有池中相关股票从建议日起的真实市场表现。观察差异 = 观察期盈利 - 持有期盈利（正值表示轮动后表现优于整体持有期）</p>
     <div style="display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap;">
@@ -11075,7 +11087,7 @@ tr:hover { background: #f1f5f9; }
 </div>
 </details>
 </div>
-<div class="section">
+<div class="section" id="buy">
     <h2>✅ 买入建议（今日新增）</h2>
     <h3 class="market-subheader">🇨🇳 A股 (71只)</h3>
 <div style="overflow-x: auto;">
@@ -13235,11 +13247,11 @@ tr:hover { background: #f1f5f9; }
 </table>
 </div>
 </div>
-<div class="section">
+<div class="section" id="sell">
     <h2>⚠️ 卖出建议</h2>
     <p class="text-muted text-center">今日无满足条件的股票</p>
 </div>
-<div class="section">
+<div class="section" id="post-sell">
     <h2>👁️ 沽后观察清单</h2>
     <div style="overflow-x: auto;">
         <table id="postSellTable">
