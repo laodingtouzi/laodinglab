@@ -340,7 +340,6 @@ tr:hover { background: #f1f5f9; }
 }
 </style>
 <title>全球选股模型 v5 · 2026-07-26 盘后报告</title>
-<script>window.DELIST_WORKER_URL = "https://delist-sync.johzding.workers.dev";</script>
 </head>
 <body>
 <header class="site-header">
@@ -359,18 +358,6 @@ tr:hover { background: #f1f5f9; }
     </nav>
   </div>
 </header>
-<nav class="nav-fixed">
-  <div class="nav-inner">
-    <a href="#strategy">策略参数</a>
-    <a href="#risk">风控状态</a>
-    <a href="#holdings">持有清单</a>
-    <a href="#rotation">调仓建议</a>
-    <a href="#buy">买入建议</a>
-    <a href="#sell">卖出建议</a>
-    <a href="#postsell">沽后观察</a>
-    <a href="#factors">全量因子</a>
-  </div>
-</nav>
 <section class="hero">
   <div class="hero-inner">
     <div class="hero-eyebrow">Post-Market Report · 2026-07-26</div>
@@ -378,7 +365,7 @@ tr:hover { background: #f1f5f9; }
     <p class="hero-desc">多因子量化选股模型盘后报告，基于质量、估值、事件、技术、动量五维因子评分。</p>
     <div class="hero-stats">
         <div class="hero-stat stat-buy">
-            <div class="number">83</div>
+            <div class="number">164</div>
             <div class="label">买入建议</div>
         </div>
         <div class="hero-stat stat-sell">
@@ -397,7 +384,7 @@ tr:hover { background: #f1f5f9; }
   </div>
 </section>
 <main class="main"><div class="container">
-<div id="strategy"><div class="section">
+<div class="section">
     <h2>⚙️ 策略参数</h2>
     <div class="params-grid">
         <div class="param-item"><span class="label">买入阈值</span><span class="value">CN/HK ≥ 60 / US ≥ 70</span></div>
@@ -417,8 +404,8 @@ tr:hover { background: #f1f5f9; }
         <div class="param-item"><span class="label">股票池</span><span class="value">A股Top500 | 港股S&P/纳指成分 | 美股S&P/纳指成分</span></div>
         <div class="param-item"><span class="label">三池资金</span><span class="value">各1000万等值本币</span></div>
     </div>
-</div></div>
-<div id="risk"><div class="section">
+</div>
+<div class="section">
     <h2>🛡️ 风控状态及情绪信息</h2>
     <div class='alert alert-success'>✅ 组合风控正常</div>
     <div class="sentiment-summary" style="margin-top: 12px; padding: 10px 12px; background: var(--bg); border-radius: 6px; font-size: 0.85rem; line-height: 1.6;">
@@ -431,9 +418,8 @@ tr:hover { background: #f1f5f9; }
         <div style="margin-bottom: 8px; padding: 8px 10px; background: #f0f9ff; border-radius: 4px; border-left: 3px solid var(--accent); font-size: 0.85rem;"><span style="color: var(--text-secondary); font-weight: 600;">情绪中性</span> · 近期主要事件：1. 德国股市收跌超1 | 2. 亚市早盘金价下跌，受美元走强和美联储加息前景影响亚洲交易时段… | 3. 昨日行情回顾 | 4. 英伟达与Amkor签署价值15亿美元的芯片封装协议 | 5. 奥地利奥合国际银行：该行与俄罗斯AO Raiffeisenb…</div>
         <div style="margin-top: 8px;"><a href="/stockmarketanalysis/macro/" style="color: var(--primary, #2563eb); text-decoration: none;">📊 查阅详细宏观事件驱动报告 →</a></div>
     </div>
-</div></div>
-
-<div id="holdings"><div class="section">
+</div>
+<div class="section">
     <h2>📈 持有清单</h2>
     <p class="section-desc">图例: <strong>H</strong>=高分持有 | <strong>M</strong>=中等持有 | <strong>M↓</strong>=从高分滑落</p>
     <div class="summary-table-wrap">
@@ -7522,8 +7508,8 @@ tr:hover { background: #f1f5f9; }
             </tbody>
         </table>
     </div>
-</div></div>
-<div id="rotation"><div class="section">
+</div>
+<div class="section">
     <h2>📊 调仓建议观察</h2>
     <p class="section-desc">基于宏观周报板块轮动建议，跟踪持有池中相关股票从建议日起的真实市场表现。观察差异 = 观察期盈利 - 持有期盈利（正值表示轮动后表现优于整体持有期）</p>
     <div style="display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap;">
@@ -11088,11 +11074,10 @@ tr:hover { background: #f1f5f9; }
 </div>
 </div>
 </details>
-</div></div>
-
-<div id="buy"><div class="section">
+</div>
+<div class="section">
     <h2>✅ 买入建议（今日新增）</h2>
-    <h3 class="market-subheader">🇨🇳 A股 (36只)</h3>
+    <h3 class="market-subheader">🇨🇳 A股 (71只)</h3>
 <div style="overflow-x: auto;">
 <table>
 <thead>
@@ -11566,9 +11551,464 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-4.1%</td>
                 <td class="change-reason">核心驱动因子: 估值85.0/技术60.0；综合评分60.8分</td>
             </tr>
+<tr>
+                <td class="rank">37</td>
+                <td><strong>农业银行</strong><br><small class="code">601288.SH</small></td>
+                <td class="score score-buy">65.4</td>
+                <td>62.0</td>
+                <td>80.0</td>
+                <td>58.0</td>
+                <td>70.0</td>
+                <td>50.0</td>
+                <td class="num">6.66</td>
+                <td class="num up">+1.1%</td>
+                <td class="change-reason">核心驱动因子: 估值80.0/技术70.0；宏观: 板块加配；综合评分65.4分</td>
+            </tr>
+<tr>
+                <td class="rank">38</td>
+                <td><strong>中国石油</strong><br><small class="code">601857.SH</small></td>
+                <td class="score score-buy">60.8</td>
+                <td>63.2</td>
+                <td>70.0</td>
+                <td>58.0</td>
+                <td>60.0</td>
+                <td>40.0</td>
+                <td class="num">11.03</td>
+                <td class="num up">+1.4%</td>
+                <td class="change-reason">核心驱动因子: 估值70.0/质量63.2；宏观: 板块加配；综合评分60.8分</td>
+            </tr>
+<tr>
+                <td class="rank">39</td>
+                <td><strong>中国平安</strong><br><small class="code">601318.SH</small></td>
+                <td class="score score-buy">63.8</td>
+                <td>60.5</td>
+                <td>80.0</td>
+                <td>58.0</td>
+                <td>70.0</td>
+                <td>40.0</td>
+                <td class="num">54.02</td>
+                <td class="num down">-0.5%</td>
+                <td class="change-reason">核心驱动因子: 估值80.0/技术70.0；综合评分63.8分</td>
+            </tr>
+<tr>
+                <td class="rank">40</td>
+                <td><strong>沐曦股份-U</strong><br><small class="code">688802.SH</small></td>
+                <td class="score score-buy">66.6</td>
+                <td>58.2</td>
+                <td>85.0</td>
+                <td>50.0</td>
+                <td>70.0</td>
+                <td>75.0</td>
+                <td class="num">821.61</td>
+                <td class="num up">+1.0%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/动量75.0；综合评分66.6分</td>
+            </tr>
+<tr>
+                <td class="rank">41</td>
+                <td><strong>摩尔线程-U</strong><br><small class="code">688795.SH</small></td>
+                <td class="score score-buy">60.7</td>
+                <td>50.8</td>
+                <td>85.0</td>
+                <td>50.0</td>
+                <td>55.0</td>
+                <td>60.0</td>
+                <td class="num">600.01</td>
+                <td class="num down">-1.7%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/动量60.0；综合评分60.7分</td>
+            </tr>
+<tr>
+                <td class="rank">42</td>
+                <td><strong>陕西煤业</strong><br><small class="code">601225.SH</small></td>
+                <td class="score score-buy">62.1</td>
+                <td>59.5</td>
+                <td>70.0</td>
+                <td>58.0</td>
+                <td>70.0</td>
+                <td>50.0</td>
+                <td class="num">24.70</td>
+                <td class="num down">-2.2%</td>
+                <td class="change-reason">核心驱动因子: 估值70.0/技术70.0；综合评分62.1分</td>
+            </tr>
+<tr>
+                <td class="rank">43</td>
+                <td><strong>西安奕材-U</strong><br><small class="code">688783.SH</small></td>
+                <td class="score score-buy">61.2</td>
+                <td>50.8</td>
+                <td>85.0</td>
+                <td>50.0</td>
+                <td>50.0</td>
+                <td>70.0</td>
+                <td class="num">34.42</td>
+                <td class="num down">-2.4%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/动量70.0；综合评分61.2分</td>
+            </tr>
+<tr>
+                <td class="rank">44</td>
+                <td><strong>华泰证券</strong><br><small class="code">601688.SH</small></td>
+                <td class="score score-buy">62.2</td>
+                <td>56.0</td>
+                <td>70.0</td>
+                <td>58.0</td>
+                <td>70.0</td>
+                <td>60.0</td>
+                <td class="num">20.40</td>
+                <td class="num down">-2.2%</td>
+                <td class="change-reason">核心驱动因子: 估值70.0/技术70.0；宏观: 板块加配；综合评分62.2分</td>
+            </tr>
+<tr>
+                <td class="rank">45</td>
+                <td><strong>盛科通信-U</strong><br><small class="code">688702.SH</small></td>
+                <td class="score score-buy">67.0</td>
+                <td>59.5</td>
+                <td>85.0</td>
+                <td>50.0</td>
+                <td>70.0</td>
+                <td>75.0</td>
+                <td class="num">390.78</td>
+                <td class="num down">-0.6%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/动量75.0；综合评分67.0分</td>
+            </tr>
+<tr>
+                <td class="rank">46</td>
+                <td><strong>芯原股份</strong><br><small class="code">688521.SH</small></td>
+                <td class="score score-buy">60.7</td>
+                <td>50.8</td>
+                <td>85.0</td>
+                <td>50.0</td>
+                <td>55.0</td>
+                <td>60.0</td>
+                <td class="num">221.80</td>
+                <td class="num down">-0.5%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/动量60.0；综合评分60.7分</td>
+            </tr>
+<tr>
+                <td class="rank">47</td>
+                <td><strong>中科飞测</strong><br><small class="code">688361.SH</small></td>
+                <td class="score score-buy">67.0</td>
+                <td>59.5</td>
+                <td>85.0</td>
+                <td>50.0</td>
+                <td>70.0</td>
+                <td>75.0</td>
+                <td class="num">357.42</td>
+                <td class="num up">+6.9%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/动量75.0；综合评分67.0分</td>
+            </tr>
+<tr>
+                <td class="rank">48</td>
+                <td><strong>沪硅产业</strong><br><small class="code">688126.SH</small></td>
+                <td class="score score-buy">61.7</td>
+                <td>50.8</td>
+                <td>85.0</td>
+                <td>50.0</td>
+                <td>50.0</td>
+                <td>75.0</td>
+                <td class="num">25.82</td>
+                <td class="num down">-0.1%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/动量75.0；综合评分61.7分</td>
+            </tr>
+<tr>
+                <td class="rank">49</td>
+                <td><strong>燕东微</strong><br><small class="code">688172.SH</small></td>
+                <td class="score score-buy">62.5</td>
+                <td>50.8</td>
+                <td>85.0</td>
+                <td>50.0</td>
+                <td>60.0</td>
+                <td>70.0</td>
+                <td class="num">56.33</td>
+                <td class="num down">-1.0%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/动量70.0；综合评分62.5分</td>
+            </tr>
+<tr>
+                <td class="rank">50</td>
+                <td><strong>中国交建</strong><br><small class="code">601800.SH</small></td>
+                <td class="score score-buy">60.8</td>
+                <td>58.2</td>
+                <td>80.0</td>
+                <td>53.0</td>
+                <td>65.0</td>
+                <td>35.0</td>
+                <td class="num">6.10</td>
+                <td class="num down">-1.9%</td>
+                <td class="change-reason">核心驱动因子: 估值80.0/技术65.0；综合评分60.8分</td>
+            </tr>
+<tr>
+                <td class="rank">51</td>
+                <td><strong>浙商银行</strong><br><small class="code">601916.SH</small></td>
+                <td class="score score-buy">65.4</td>
+                <td>58.0</td>
+                <td>85.0</td>
+                <td>58.0</td>
+                <td>70.0</td>
+                <td>50.0</td>
+                <td class="num">2.87</td>
+                <td class="num down">-0.3%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/技术70.0；宏观: 板块加配；综合评分65.4分</td>
+            </tr>
+<tr>
+                <td class="rank">52</td>
+                <td><strong>沪农商行</strong><br><small class="code">601825.SH</small></td>
+                <td class="score score-buy">63.1</td>
+                <td>58.0</td>
+                <td>80.0</td>
+                <td>58.0</td>
+                <td>70.0</td>
+                <td>40.0</td>
+                <td class="num">8.18</td>
+                <td class="num down">-0.4%</td>
+                <td class="change-reason">核心驱动因子: 估值80.0/技术70.0；综合评分63.1分</td>
+            </tr>
+<tr>
+                <td class="rank">53</td>
+                <td><strong>三安光电</strong><br><small class="code">600703.SH</small></td>
+                <td class="score score-buy">61.3</td>
+                <td>50.8</td>
+                <td>80.0</td>
+                <td>50.0</td>
+                <td>60.0</td>
+                <td>70.0</td>
+                <td class="num">11.77</td>
+                <td class="num down">-3.0%</td>
+                <td class="change-reason">核心驱动因子: 估值80.0/动量70.0；综合评分61.3分</td>
+            </tr>
+<tr>
+                <td class="rank">54</td>
+                <td><strong>浙能电力</strong><br><small class="code">600023.SH</small></td>
+                <td class="score score-buy">60.9</td>
+                <td>55.8</td>
+                <td>80.0</td>
+                <td>58.0</td>
+                <td>55.0</td>
+                <td>45.0</td>
+                <td class="num">5.36</td>
+                <td class="num down">-1.6%</td>
+                <td class="change-reason">核心驱动因子: 估值80.0/事件58.0；综合评分60.9分</td>
+            </tr>
+<tr>
+                <td class="rank">55</td>
+                <td><strong>四川路桥</strong><br><small class="code">600039.SH</small></td>
+                <td class="score score-buy">60.7</td>
+                <td>62.0</td>
+                <td>70.0</td>
+                <td>53.0</td>
+                <td>70.0</td>
+                <td>40.0</td>
+                <td class="num">8.81</td>
+                <td class="num down">-2.8%</td>
+                <td class="change-reason">核心驱动因子: 估值70.0/技术70.0；综合评分60.7分</td>
+            </tr>
+<tr>
+                <td class="rank">56</td>
+                <td><strong>芯联集成-U</strong><br><small class="code">688469.SH</small></td>
+                <td class="score score-buy">62.4</td>
+                <td>50.8</td>
+                <td>85.0</td>
+                <td>50.0</td>
+                <td>55.0</td>
+                <td>75.0</td>
+                <td class="num">7.44</td>
+                <td class="num down">-2.8%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/动量75.0；综合评分62.4分</td>
+            </tr>
+<tr>
+                <td class="rank">57</td>
+                <td><strong>东芯股份</strong><br><small class="code">688110.SH</small></td>
+                <td class="score score-buy">61.2</td>
+                <td>50.8</td>
+                <td>80.0</td>
+                <td>50.0</td>
+                <td>55.0</td>
+                <td>75.0</td>
+                <td class="num">110.15</td>
+                <td class="num down">-3.3%</td>
+                <td class="change-reason">核心驱动因子: 估值80.0/动量75.0；综合评分61.2分</td>
+            </tr>
+<tr>
+                <td class="rank">58</td>
+                <td><strong>杰华特</strong><br><small class="code">688141.SH</small></td>
+                <td class="score score-buy">64.0</td>
+                <td>55.8</td>
+                <td>85.0</td>
+                <td>50.0</td>
+                <td>60.0</td>
+                <td>70.0</td>
+                <td class="num">134.03</td>
+                <td class="num down">-1.0%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/动量70.0；综合评分64.0分</td>
+            </tr>
+<tr>
+                <td class="rank">59</td>
+                <td><strong>天岳先进</strong><br><small class="code">688234.SH</small></td>
+                <td class="score score-buy">63.2</td>
+                <td>50.8</td>
+                <td>85.0</td>
+                <td>50.0</td>
+                <td>65.0</td>
+                <td>70.0</td>
+                <td class="num">95.81</td>
+                <td class="num down">-1.6%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/动量70.0；综合评分63.2分</td>
+            </tr>
+<tr>
+                <td class="rank">60</td>
+                <td><strong>华大九天</strong><br><small class="code">301269.SZ</small></td>
+                <td class="score score-buy">62.1</td>
+                <td>52.0</td>
+                <td>85.0</td>
+                <td>50.0</td>
+                <td>50.0</td>
+                <td>75.0</td>
+                <td class="num">91.45</td>
+                <td class="num down">-1.7%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/动量75.0；综合评分62.1分</td>
+            </tr>
+<tr>
+                <td class="rank">61</td>
+                <td><strong>宁沪高速</strong><br><small class="code">600377.SH</small></td>
+                <td class="score score-buy">60.3</td>
+                <td>59.5</td>
+                <td>70.0</td>
+                <td>50.0</td>
+                <td>60.0</td>
+                <td>60.0</td>
+                <td class="num">12.21</td>
+                <td class="num up">+0.1%</td>
+                <td class="change-reason">核心驱动因子: 估值70.0/技术60.0；综合评分60.3分</td>
+            </tr>
+<tr>
+                <td class="rank">62</td>
+                <td><strong>方正证券</strong><br><small class="code">601901.SH</small></td>
+                <td class="score score-buy">62.4</td>
+                <td>60.5</td>
+                <td>70.0</td>
+                <td>58.0</td>
+                <td>70.0</td>
+                <td>50.0</td>
+                <td class="num">7.14</td>
+                <td class="num up">+1.0%</td>
+                <td class="change-reason">核心驱动因子: 估值70.0/技术70.0；宏观: 板块加配；综合评分62.4分</td>
+            </tr>
+<tr>
+                <td class="rank">63</td>
+                <td><strong>信科移动-U</strong><br><small class="code">688387.SH</small></td>
+                <td class="score score-buy">60.7</td>
+                <td>49.2</td>
+                <td>85.0</td>
+                <td>50.0</td>
+                <td>50.0</td>
+                <td>70.0</td>
+                <td class="num">12.33</td>
+                <td class="num down">-6.0%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/动量70.0；综合评分60.7分</td>
+            </tr>
+<tr>
+                <td class="rank">64</td>
+                <td><strong>上纬新材</strong><br><small class="code">688585.SH</small></td>
+                <td class="score score-buy">60.4</td>
+                <td>49.2</td>
+                <td>85.0</td>
+                <td>50.0</td>
+                <td>60.0</td>
+                <td>55.0</td>
+                <td class="num">113.40</td>
+                <td class="num down">-6.7%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/技术60.0；综合评分60.4分</td>
+            </tr>
+<tr>
+                <td class="rank">65</td>
+                <td><strong>华域汽车</strong><br><small class="code">600741.SH</small></td>
+                <td class="score score-buy">60.9</td>
+                <td>58.2</td>
+                <td>80.0</td>
+                <td>50.0</td>
+                <td>70.0</td>
+                <td>35.0</td>
+                <td class="num">17.35</td>
+                <td class="num up">+0.9%</td>
+                <td class="change-reason">核心驱动因子: 估值80.0/技术70.0；综合评分60.9分</td>
+            </tr>
+<tr>
+                <td class="rank">66</td>
+                <td><strong>翱捷科技-U</strong><br><small class="code">688220.SH</small></td>
+                <td class="score score-buy">67.0</td>
+                <td>59.5</td>
+                <td>85.0</td>
+                <td>50.0</td>
+                <td>70.0</td>
+                <td>75.0</td>
+                <td class="num">111.77</td>
+                <td class="num up">+8.2%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/动量75.0；综合评分67.0分</td>
+            </tr>
+<tr>
+                <td class="rank">67</td>
+                <td><strong>国科微</strong><br><small class="code">300672.SZ</small></td>
+                <td class="score score-buy">60.9</td>
+                <td>49.2</td>
+                <td>80.0</td>
+                <td>50.0</td>
+                <td>65.0</td>
+                <td>65.0</td>
+                <td class="num">145.24</td>
+                <td class="num down">-3.3%</td>
+                <td class="change-reason">核心驱动因子: 估值80.0/技术65.0；综合评分60.9分</td>
+            </tr>
+<tr>
+                <td class="rank">68</td>
+                <td><strong>立昂微</strong><br><small class="code">605358.SH</small></td>
+                <td class="score score-buy">60.0</td>
+                <td>50.8</td>
+                <td>80.0</td>
+                <td>50.0</td>
+                <td>55.0</td>
+                <td>65.0</td>
+                <td class="num">41.75</td>
+                <td class="num down">-2.7%</td>
+                <td class="change-reason">核心驱动因子: 估值80.0/动量65.0；综合评分60.0分</td>
+            </tr>
+<tr>
+                <td class="rank">69</td>
+                <td><strong>赛轮轮胎</strong><br><small class="code">601058.SH</small></td>
+                <td class="score score-buy">60.6</td>
+                <td>58.2</td>
+                <td>70.0</td>
+                <td>50.0</td>
+                <td>70.0</td>
+                <td>55.0</td>
+                <td class="num">13.21</td>
+                <td class="num down">-3.6%</td>
+                <td class="change-reason">核心驱动因子: 估值70.0/技术70.0；综合评分60.6分</td>
+            </tr>
+<tr>
+                <td class="rank">70</td>
+                <td><strong>中策橡胶</strong><br><small class="code">603049.SH</small></td>
+                <td class="score score-buy">63.7</td>
+                <td>62.0</td>
+                <td>80.0</td>
+                <td>50.0</td>
+                <td>70.0</td>
+                <td>50.0</td>
+                <td class="num">47.49</td>
+                <td class="num down">-3.3%</td>
+                <td class="change-reason">核心驱动因子: 估值80.0/技术70.0；综合评分63.7分</td>
+            </tr>
+<tr>
+                <td class="rank">71</td>
+                <td><strong>TCL中环</strong><br><small class="code">002129.SZ</small></td>
+                <td class="score score-buy">60.8</td>
+                <td>50.8</td>
+                <td>85.0</td>
+                <td>50.0</td>
+                <td>60.0</td>
+                <td>55.0</td>
+                <td class="num">8.50</td>
+                <td class="num down">-4.1%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/技术60.0；综合评分60.8分</td>
+            </tr>
 </tbody>
 </table>
-</div><h3 class="market-subheader">🇭🇰 港股 (46只)</h3>
+</div><h3 class="market-subheader">🇭🇰 港股 (91只)</h3>
 <div style="overflow-x: auto;">
 <table>
 <thead>
@@ -12172,9 +12612,594 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.8%</td>
                 <td class="change-reason">核心驱动因子: 估值75.0/质量63.2；宏观: 板块加配；综合评分63.1分</td>
             </tr>
+<tr>
+                <td class="rank">47</td>
+                <td><strong>汇丰控股</strong><br><small class="code">00005.HK</small></td>
+                <td class="score score-buy">63.2</td>
+                <td>66.2</td>
+                <td>65.0</td>
+                <td>58.0</td>
+                <td>60.0</td>
+                <td>65.0</td>
+                <td class="num">161.40</td>
+                <td class="num down">-0.1%</td>
+                <td class="change-reason">核心驱动因子: 质量66.2/估值65.0；综合评分63.2分</td>
+            </tr>
+<tr>
+                <td class="rank">48</td>
+                <td><strong>中银香港</strong><br><small class="code">02388.HK</small></td>
+                <td class="score score-buy">60.8</td>
+                <td>61.8</td>
+                <td>65.0</td>
+                <td>50.0</td>
+                <td>60.0</td>
+                <td>70.0</td>
+                <td class="num">51.25</td>
+                <td class="num up">+6.0%</td>
+                <td class="change-reason">核心驱动因子: 动量70.0/估值65.0；综合评分60.8分</td>
+            </tr>
+<tr>
+                <td class="rank">49</td>
+                <td><strong>中信股份</strong><br><small class="code">00267.HK</small></td>
+                <td class="score score-buy">61.1</td>
+                <td>58.0</td>
+                <td>85.0</td>
+                <td>50.0</td>
+                <td>50.0</td>
+                <td>50.0</td>
+                <td class="num">12.00</td>
+                <td class="num down">-0.5%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/质量58.0；综合评分61.1分</td>
+            </tr>
+<tr>
+                <td class="rank">50</td>
+                <td><strong>交通银行</strong><br><small class="code">03328.HK</small></td>
+                <td class="score score-buy">65.6</td>
+                <td>63.2</td>
+                <td>85.0</td>
+                <td>58.0</td>
+                <td>60.0</td>
+                <td>50.0</td>
+                <td class="num">7.34</td>
+                <td class="num up">+0.8%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/质量63.2；宏观: 板块加配；综合评分65.6分</td>
+            </tr>
+<tr>
+                <td class="rank">51</td>
+                <td><strong>中国人寿</strong><br><small class="code">02628.HK</small></td>
+                <td class="score score-buy">63.5</td>
+                <td>55.8</td>
+                <td>85.0</td>
+                <td>50.0</td>
+                <td>65.0</td>
+                <td>60.0</td>
+                <td class="num">28.44</td>
+                <td class="num down">-0.6%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/技术65.0；综合评分63.5分</td>
+            </tr>
+<tr>
+                <td class="rank">52</td>
+                <td><strong>携程集团-S</strong><br><small class="code">09961.HK</small></td>
+                <td class="score score-buy">61.8</td>
+                <td>58.0</td>
+                <td>85.0</td>
+                <td>50.0</td>
+                <td>60.0</td>
+                <td>45.0</td>
+                <td class="num">342.60</td>
+                <td class="num down">-0.8%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/技术60.0；综合评分61.8分</td>
+            </tr>
+<tr>
+                <td class="rank">53</td>
+                <td><strong>中国石油股份</strong><br><small class="code">00857.HK</small></td>
+                <td class="score score-buy">62.6</td>
+                <td>63.2</td>
+                <td>75.0</td>
+                <td>58.0</td>
+                <td>60.0</td>
+                <td>45.0</td>
+                <td class="num">10.21</td>
+                <td class="num up">+1.0%</td>
+                <td class="change-reason">核心驱动因子: 估值75.0/质量63.2；宏观: 板块加配；综合评分62.6分</td>
+            </tr>
+<tr>
+                <td class="rank">54</td>
+                <td><strong>中国海外发展</strong><br><small class="code">00688.HK</small></td>
+                <td class="score score-buy">60.7</td>
+                <td>56.8</td>
+                <td>75.0</td>
+                <td>50.0</td>
+                <td>60.0</td>
+                <td>60.0</td>
+                <td class="num">13.28</td>
+                <td class="num down">-2.1%</td>
+                <td class="change-reason">核心驱动因子: 估值75.0/技术60.0；综合评分60.7分</td>
+            </tr>
+<tr>
+                <td class="rank">55</td>
+                <td><strong>中通快递-W</strong><br><small class="code">02057.HK</small></td>
+                <td class="score score-buy">60.5</td>
+                <td>62.0</td>
+                <td>65.0</td>
+                <td>50.0</td>
+                <td>70.0</td>
+                <td>55.0</td>
+                <td class="num">188.50</td>
+                <td class="num down">-1.0%</td>
+                <td class="change-reason">核心驱动因子: 技术70.0/估值65.0；综合评分60.5分</td>
+            </tr>
+<tr>
+                <td class="rank">56</td>
+                <td><strong>邮储银行</strong><br><small class="code">01658.HK</small></td>
+                <td class="score score-buy">63.2</td>
+                <td>59.5</td>
+                <td>85.0</td>
+                <td>58.0</td>
+                <td>50.0</td>
+                <td>50.0</td>
+                <td class="num">4.91</td>
+                <td class="num ">+0.0%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/质量59.5；宏观: 板块加配；综合评分63.2分</td>
+            </tr>
+<tr>
+                <td class="rank">57</td>
+                <td><strong>中信证券</strong><br><small class="code">06030.HK</small></td>
+                <td class="score score-buy">63.0</td>
+                <td>60.5</td>
+                <td>65.0</td>
+                <td>58.0</td>
+                <td>75.0</td>
+                <td>60.0</td>
+                <td class="num">27.76</td>
+                <td class="num down">-2.8%</td>
+                <td class="change-reason">核心驱动因子: 技术75.0/估值65.0；宏观: 板块加配；综合评分63.0分</td>
+            </tr>
+<tr>
+                <td class="rank">58</td>
+                <td><strong>中国太平</strong><br><small class="code">00966.HK</small></td>
+                <td class="score score-buy">65.9</td>
+                <td>59.5</td>
+                <td>85.0</td>
+                <td>50.0</td>
+                <td>70.0</td>
+                <td>65.0</td>
+                <td class="num">22.14</td>
+                <td class="num down">-1.2%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/技术70.0；综合评分65.9分</td>
+            </tr>
+<tr>
+                <td class="rank">59</td>
+                <td><strong>中国电信</strong><br><small class="code">00728.HK</small></td>
+                <td class="score score-buy">60.4</td>
+                <td>59.5</td>
+                <td>75.0</td>
+                <td>50.0</td>
+                <td>60.0</td>
+                <td>50.0</td>
+                <td class="num">4.62</td>
+                <td class="num down">-0.4%</td>
+                <td class="change-reason">核心驱动因子: 估值75.0/技术60.0；综合评分60.4分</td>
+            </tr>
+<tr>
+                <td class="rank">60</td>
+                <td><strong>昆仑能源</strong><br><small class="code">00135.HK</small></td>
+                <td class="score score-buy">61.9</td>
+                <td>64.8</td>
+                <td>75.0</td>
+                <td>50.0</td>
+                <td>60.0</td>
+                <td>50.0</td>
+                <td class="num">7.07</td>
+                <td class="num down">-0.3%</td>
+                <td class="change-reason">核心驱动因子: 估值75.0/质量64.8；宏观: 板块加配；综合评分61.9分</td>
+            </tr>
+<tr>
+                <td class="rank">61</td>
+                <td><strong>中国有色矿业</strong><br><small class="code">01258.HK</small></td>
+                <td class="score score-buy">60.5</td>
+                <td>58.2</td>
+                <td>65.0</td>
+                <td>50.0</td>
+                <td>70.0</td>
+                <td>65.0</td>
+                <td class="num">14.44</td>
+                <td class="num down">-2.5%</td>
+                <td class="change-reason">核心驱动因子: 技术70.0/估值65.0；综合评分60.5分</td>
+            </tr>
+<tr>
+                <td class="rank">62</td>
+                <td><strong>新华保险</strong><br><small class="code">01336.HK</small></td>
+                <td class="score score-buy">63.7</td>
+                <td>54.5</td>
+                <td>85.0</td>
+                <td>58.0</td>
+                <td>65.0</td>
+                <td>50.0</td>
+                <td class="num">48.38</td>
+                <td class="num down">-1.8%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/技术65.0；宏观: 板块加配；综合评分63.7分</td>
+            </tr>
+<tr>
+                <td class="rank">63</td>
+                <td><strong>TCL电子</strong><br><small class="code">01070.HK</small></td>
+                <td class="score score-buy">61.5</td>
+                <td>59.5</td>
+                <td>65.0</td>
+                <td>50.0</td>
+                <td>70.0</td>
+                <td>70.0</td>
+                <td class="num">16.26</td>
+                <td class="num up">+1.6%</td>
+                <td class="change-reason">核心驱动因子: 技术70.0/动量70.0；综合评分61.5分</td>
+            </tr>
+<tr>
+                <td class="rank">64</td>
+                <td><strong>东亚银行</strong><br><small class="code">00023.HK</small></td>
+                <td class="score score-buy">64.4</td>
+                <td>61.8</td>
+                <td>75.0</td>
+                <td>58.0</td>
+                <td>60.0</td>
+                <td>65.0</td>
+                <td class="num">14.94</td>
+                <td class="num up">+6.0%</td>
+                <td class="change-reason">核心驱动因子: 估值75.0/动量65.0；宏观: 板块加配；综合评分64.4分</td>
+            </tr>
+<tr>
+                <td class="rank">65</td>
+                <td><strong>中国电力</strong><br><small class="code">02380.HK</small></td>
+                <td class="score score-buy">60.1</td>
+                <td>56.8</td>
+                <td>75.0</td>
+                <td>58.0</td>
+                <td>60.0</td>
+                <td>40.0</td>
+                <td class="num">2.83</td>
+                <td class="num down">-2.1%</td>
+                <td class="change-reason">核心驱动因子: 估值75.0/技术60.0；综合评分60.1分</td>
+            </tr>
+<tr>
+                <td class="rank">66</td>
+                <td><strong>远东宏信</strong><br><small class="code">03360.HK</small></td>
+                <td class="score score-buy">60.1</td>
+                <td>56.5</td>
+                <td>85.0</td>
+                <td>50.0</td>
+                <td>50.0</td>
+                <td>45.0</td>
+                <td class="num">6.64</td>
+                <td class="num down">-0.3%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/质量56.5；综合评分60.1分</td>
+            </tr>
+<tr>
+                <td class="rank">67</td>
+                <td><strong>光大环境</strong><br><small class="code">00257.HK</small></td>
+                <td class="score score-buy">62.5</td>
+                <td>58.2</td>
+                <td>85.0</td>
+                <td>50.0</td>
+                <td>60.0</td>
+                <td>50.0</td>
+                <td class="num">4.97</td>
+                <td class="num down">-1.6%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/技术60.0；综合评分62.5分</td>
+            </tr>
+<tr>
+                <td class="rank">68</td>
+                <td><strong>HTSC</strong><br><small class="code">06886.HK</small></td>
+                <td class="score score-buy">64.0</td>
+                <td>63.5</td>
+                <td>75.0</td>
+                <td>50.0</td>
+                <td>70.0</td>
+                <td>60.0</td>
+                <td class="num">17.06</td>
+                <td class="num down">-1.4%</td>
+                <td class="change-reason">核心驱动因子: 估值75.0/技术70.0；综合评分64.0分</td>
+            </tr>
+<tr>
+                <td class="rank">69</td>
+                <td><strong>中国飞鹤</strong><br><small class="code">06186.HK</small></td>
+                <td class="score score-buy">60.1</td>
+                <td>60.5</td>
+                <td>65.0</td>
+                <td>50.0</td>
+                <td>70.0</td>
+                <td>55.0</td>
+                <td class="num">3.17</td>
+                <td class="num up">+1.0%</td>
+                <td class="change-reason">核心驱动因子: 技术70.0/估值65.0；综合评分60.1分</td>
+            </tr>
+<tr>
+                <td class="rank">70</td>
+                <td><strong>网易云音乐</strong><br><small class="code">09899.HK</small></td>
+                <td class="score score-buy">62.3</td>
+                <td>55.8</td>
+                <td>85.0</td>
+                <td>50.0</td>
+                <td>60.0</td>
+                <td>55.0</td>
+                <td class="num">114.40</td>
+                <td class="num down">-1.6%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/技术60.0；宏观: 板块减配；综合评分62.3分</td>
+            </tr>
+<tr>
+                <td class="rank">71</td>
+                <td><strong>裕元集团</strong><br><small class="code">00551.HK</small></td>
+                <td class="score score-buy">61.5</td>
+                <td>59.5</td>
+                <td>85.0</td>
+                <td>50.0</td>
+                <td>50.0</td>
+                <td>50.0</td>
+                <td class="num">13.69</td>
+                <td class="num up">+0.3%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/质量59.5；综合评分61.5分</td>
+            </tr>
+<tr>
+                <td class="rank">72</td>
+                <td><strong>招商证券</strong><br><small class="code">06099.HK</small></td>
+                <td class="score score-buy">61.1</td>
+                <td>50.8</td>
+                <td>75.0</td>
+                <td>58.0</td>
+                <td>60.0</td>
+                <td>65.0</td>
+                <td class="num">15.36</td>
+                <td class="num down">-2.5%</td>
+                <td class="change-reason">核心驱动因子: 估值75.0/动量65.0；宏观: 板块加配；综合评分61.1分</td>
+            </tr>
+<tr>
+                <td class="rank">73</td>
+                <td><strong>新秀丽</strong><br><small class="code">01910.HK</small></td>
+                <td class="score score-buy">61.0</td>
+                <td>59.5</td>
+                <td>75.0</td>
+                <td>50.0</td>
+                <td>65.0</td>
+                <td>50.0</td>
+                <td class="num">13.69</td>
+                <td class="num down">-0.6%</td>
+                <td class="change-reason">核心驱动因子: 估值75.0/技术65.0；综合评分61.0分</td>
+            </tr>
+<tr>
+                <td class="rank">74</td>
+                <td><strong>汽车之家-S</strong><br><small class="code">02518.HK</small></td>
+                <td class="score score-buy">60.1</td>
+                <td>59.5</td>
+                <td>65.0</td>
+                <td>50.0</td>
+                <td>60.0</td>
+                <td>70.0</td>
+                <td class="num">41.70</td>
+                <td class="num ">+0.0%</td>
+                <td class="change-reason">核心驱动因子: 动量70.0/估值65.0；综合评分60.1分</td>
+            </tr>
+<tr>
+                <td class="rank">75</td>
+                <td><strong>联邦制药</strong><br><small class="code">03933.HK</small></td>
+                <td class="score score-buy">61.6</td>
+                <td>54.5</td>
+                <td>85.0</td>
+                <td>42.0</td>
+                <td>70.0</td>
+                <td>55.0</td>
+                <td class="num">9.09</td>
+                <td class="num down">-0.4%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/技术70.0；综合评分61.6分</td>
+            </tr>
+<tr>
+                <td class="rank">76</td>
+                <td><strong>中国交通建设</strong><br><small class="code">01800.HK</small></td>
+                <td class="score score-buy">61.7</td>
+                <td>59.5</td>
+                <td>85.0</td>
+                <td>50.0</td>
+                <td>60.0</td>
+                <td>40.0</td>
+                <td class="num">3.81</td>
+                <td class="num down">-1.0%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/技术60.0；宏观: 板块加配；综合评分61.7分</td>
+            </tr>
+<tr>
+                <td class="rank">77</td>
+                <td><strong>重庆农村商业银行</strong><br><small class="code">03618.HK</small></td>
+                <td class="score score-buy">63.0</td>
+                <td>58.0</td>
+                <td>85.0</td>
+                <td>58.0</td>
+                <td>60.0</td>
+                <td>40.0</td>
+                <td class="num">6.40</td>
+                <td class="num down">-0.5%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/技术60.0；宏观: 板块加配；综合评分63.0分</td>
+            </tr>
+<tr>
+                <td class="rank">78</td>
+                <td><strong>颐海国际</strong><br><small class="code">01579.HK</small></td>
+                <td class="score score-buy">60.1</td>
+                <td>60.5</td>
+                <td>65.0</td>
+                <td>50.0</td>
+                <td>70.0</td>
+                <td>55.0</td>
+                <td class="num">14.87</td>
+                <td class="num down">-1.4%</td>
+                <td class="change-reason">核心驱动因子: 技术70.0/估值65.0；综合评分60.1分</td>
+            </tr>
+<tr>
+                <td class="rank">79</td>
+                <td><strong>理文造纸</strong><br><small class="code">02314.HK</small></td>
+                <td class="score score-buy">62.6</td>
+                <td>59.5</td>
+                <td>75.0</td>
+                <td>50.0</td>
+                <td>60.0</td>
+                <td>70.0</td>
+                <td class="num">4.03</td>
+                <td class="num down">-1.7%</td>
+                <td class="change-reason">核心驱动因子: 估值75.0/动量70.0；综合评分62.6分</td>
+            </tr>
+<tr>
+                <td class="rank">80</td>
+                <td><strong>浙商银行</strong><br><small class="code">02016.HK</small></td>
+                <td class="score score-buy">64.5</td>
+                <td>59.5</td>
+                <td>85.0</td>
+                <td>58.0</td>
+                <td>60.0</td>
+                <td>50.0</td>
+                <td class="num">2.34</td>
+                <td class="num up">+0.4%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/技术60.0；宏观: 板块加配；综合评分64.5分</td>
+            </tr>
+<tr>
+                <td class="rank">81</td>
+                <td><strong>西锐</strong><br><small class="code">02507.HK</small></td>
+                <td class="score score-buy">60.1</td>
+                <td>58.2</td>
+                <td>65.0</td>
+                <td>50.0</td>
+                <td>75.0</td>
+                <td>55.0</td>
+                <td class="num">39.10</td>
+                <td class="num down">-2.2%</td>
+                <td class="change-reason">核心驱动因子: 技术75.0/估值65.0；综合评分60.1分</td>
+            </tr>
+<tr>
+                <td class="rank">82</td>
+                <td><strong>中海油田服务</strong><br><small class="code">02883.HK</small></td>
+                <td class="score score-buy">62.1</td>
+                <td>55.2</td>
+                <td>85.0</td>
+                <td>58.0</td>
+                <td>60.0</td>
+                <td>40.0</td>
+                <td class="num">7.05</td>
+                <td class="num down">-1.9%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/技术60.0；宏观: 板块加配；综合评分62.1分</td>
+            </tr>
+<tr>
+                <td class="rank">83</td>
+                <td><strong>奇富科技-S</strong><br><small class="code">03660.HK</small></td>
+                <td class="score score-buy">60.4</td>
+                <td>50.8</td>
+                <td>85.0</td>
+                <td>50.0</td>
+                <td>65.0</td>
+                <td>45.0</td>
+                <td class="num">51.45</td>
+                <td class="num down">-0.5%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/技术65.0；综合评分60.4分</td>
+            </tr>
+<tr>
+                <td class="rank">84</td>
+                <td><strong>阜丰集团</strong><br><small class="code">00546.HK</small></td>
+                <td class="score score-buy">60.4</td>
+                <td>56.8</td>
+                <td>85.0</td>
+                <td>50.0</td>
+                <td>60.0</td>
+                <td>35.0</td>
+                <td class="num">5.04</td>
+                <td class="num down">-1.4%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/技术60.0；综合评分60.4分</td>
+            </tr>
+<tr>
+                <td class="rank">85</td>
+                <td><strong>中国龙工</strong><br><small class="code">03339.HK</small></td>
+                <td class="score score-buy">61.6</td>
+                <td>61.8</td>
+                <td>75.0</td>
+                <td>50.0</td>
+                <td>60.0</td>
+                <td>55.0</td>
+                <td class="num">3.10</td>
+                <td class="num down">-1.6%</td>
+                <td class="change-reason">核心驱动因子: 估值75.0/质量61.8；综合评分61.6分</td>
+            </tr>
+<tr>
+                <td class="rank">86</td>
+                <td><strong>江苏宁沪高速公路</strong><br><small class="code">00177.HK</small></td>
+                <td class="score score-buy">60.0</td>
+                <td>58.2</td>
+                <td>75.0</td>
+                <td>50.0</td>
+                <td>60.0</td>
+                <td>50.0</td>
+                <td class="num">9.91</td>
+                <td class="num down">-1.4%</td>
+                <td class="change-reason">核心驱动因子: 估值75.0/技术60.0；综合评分60.0分</td>
+            </tr>
+<tr>
+                <td class="rank">87</td>
+                <td><strong>九兴控股</strong><br><small class="code">01836.HK</small></td>
+                <td class="score score-buy">61.2</td>
+                <td>60.5</td>
+                <td>75.0</td>
+                <td>50.0</td>
+                <td>60.0</td>
+                <td>55.0</td>
+                <td class="num">13.98</td>
+                <td class="num down">-0.4%</td>
+                <td class="change-reason">核心驱动因子: 估值75.0/质量60.5；综合评分61.2分</td>
+            </tr>
+<tr>
+                <td class="rank">88</td>
+                <td><strong>KLN</strong><br><small class="code">00636.HK</small></td>
+                <td class="score score-buy">61.8</td>
+                <td>59.8</td>
+                <td>85.0</td>
+                <td>50.0</td>
+                <td>60.0</td>
+                <td>40.0</td>
+                <td class="num">5.97</td>
+                <td class="num down">-0.3%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/技术60.0；综合评分61.8分</td>
+            </tr>
+<tr>
+                <td class="rank">89</td>
+                <td><strong>BRILLIANCE CHI</strong><br><small class="code">01114.HK</small></td>
+                <td class="score score-buy">61.0</td>
+                <td>56.5</td>
+                <td>85.0</td>
+                <td>50.0</td>
+                <td>65.0</td>
+                <td>35.0</td>
+                <td class="num">2.02</td>
+                <td class="num down">-1.9%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/技术65.0；综合评分61.0分</td>
+            </tr>
+<tr>
+                <td class="rank">90</td>
+                <td><strong>泉峰控股</strong><br><small class="code">02285.HK</small></td>
+                <td class="score score-buy">62.8</td>
+                <td>59.5</td>
+                <td>65.0</td>
+                <td>50.0</td>
+                <td>80.0</td>
+                <td>70.0</td>
+                <td class="num">19.06</td>
+                <td class="num down">-1.9%</td>
+                <td class="change-reason">核心驱动因子: 技术80.0/动量70.0；综合评分62.8分</td>
+            </tr>
+<tr>
+                <td class="rank">91</td>
+                <td><strong>中石化冠德</strong><br><small class="code">00934.HK</small></td>
+                <td class="score score-buy">63.1</td>
+                <td>63.2</td>
+                <td>75.0</td>
+                <td>58.0</td>
+                <td>60.0</td>
+                <td>50.0</td>
+                <td class="num">3.79</td>
+                <td class="num down">-0.8%</td>
+                <td class="change-reason">核心驱动因子: 估值75.0/质量63.2；宏观: 板块加配；综合评分63.1分</td>
+            </tr>
 </tbody>
 </table>
-</div><h3 class="market-subheader">🇺🇸 美股 (1只)</h3>
+</div><h3 class="market-subheader">🇺🇸 美股 (2只)</h3>
 <div style="overflow-x: auto;">
 <table>
 <thead>
@@ -12193,15 +13218,28 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">+0.7%</td>
                 <td class="change-reason">核心驱动因子: 估值85.0/技术65.0；综合评分61.6分</td>
             </tr>
+<tr>
+                <td class="rank">2</td>
+                <td><strong>谷歌</strong><br><small class="code">GOOGL.O</small></td>
+                <td class="score score-buy">61.6</td>
+                <td>53.0</td>
+                <td>85.0</td>
+                <td>50.0</td>
+                <td>65.0</td>
+                <td>50.0</td>
+                <td class="num">319.74</td>
+                <td class="num up">+0.7%</td>
+                <td class="change-reason">核心驱动因子: 估值85.0/技术65.0；综合评分61.6分</td>
+            </tr>
 </tbody>
 </table>
 </div>
-</div></div>
-<div id="sell"><div class="section">
+</div>
+<div class="section">
     <h2>⚠️ 卖出建议</h2>
     <p class="text-muted text-center">今日无满足条件的股票</p>
-</div></div>
-<div id="postsell"><div class="section">
+</div>
+<div class="section">
     <h2>👁️ 沽后观察清单</h2>
     <div style="overflow-x: auto;">
         <table id="postSellTable">
@@ -14212,8 +15250,8 @@ document.addEventListener('keydown', function(e) {
   100% { opacity: 0; background: #fee2e2; }
 }
 .row-flash-out { animation: rowFlashOut 0.35s ease-in forwards; }
-</style></div>
-<div id="factors"><div class="section">
+</style>
+<div class="section">
     <h2>📋 全量因子明细</h2>
     <details class="detail-fold">
         <summary>点击展开查看全部 989 只股票因子明细</summary>
@@ -33036,7 +34074,7 @@ document.addEventListener('keydown', function(e) {
 </div>
         </div>
     </details>
-</div></div>
+</div>
 </div></main>
 <footer class="site-footer">
   <div class="footer-inner">
@@ -33053,8 +34091,6 @@ document.addEventListener('keydown', function(e) {
   </div>
 </footer>
 
-</body>
-</html>
 <!-- 手工操作 Modal -->
 <div id="actionModal" style="display:none; position:fixed; z-index:2000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.4); align-items:center; justify-content:center;">
   <div style="background:#fff; border-radius:12px; padding:24px; width:360px; max-width:90%; box-shadow:0 8px 32px rgba(0,0,0,0.2); position:relative;">
@@ -33074,10 +34110,24 @@ document.addEventListener('keydown', function(e) {
     </div>
   </div>
 </div>
+<!-- Toast 通知 -->
+<div id="actionToast" style="display:none; position:fixed; top:20px; right:20px; z-index:3000; padding:12px 20px; border-radius:8px; color:#fff; font-size:0.9rem; box-shadow:0 4px 12px rgba(0,0,0,0.15); transition:opacity 0.3s; max-width:320px; word-break:break-word;"></div>
 <script>
 (function(){
   const workerUrl = window.DELIST_WORKER_URL || '';
   let currentAction = '', currentCode = '', currentName = '', currentMarket = '', currentPrice = 0;
+
+  function showToast(message, type) {
+    const toast = document.getElementById('actionToast');
+    toast.textContent = message;
+    toast.style.background = type === 'success' ? '#16a34a' : '#dc2626';
+    toast.style.display = 'block';
+    toast.style.opacity = '1';
+    setTimeout(function() {
+      toast.style.opacity = '0';
+      setTimeout(function() { toast.style.display = 'none'; }, 300);
+    }, 2500);
+  }
 
   window.openActionModal = function(action, code, name, market, price) {
     currentAction = action; currentCode = code; currentName = name; currentMarket = market; currentPrice = price;
@@ -33099,15 +34149,15 @@ document.addEventListener('keydown', function(e) {
 
   document.getElementById('modalConfirmBtn').onclick = function() {
     const shares = parseInt(document.getElementById('modalShares').value, 10);
-    if (!shares || shares <= 0) { alert('请输入有效股数'); return; }
+    if (!shares || shares <= 0) { showToast('请输入有效股数', 'error'); return; }
     if (currentAction === 'sell') { doSell(currentCode, currentName, currentMarket, currentPrice, shares); }
     else if (currentAction === 'add') { doAdd(currentCode, currentName, currentMarket, currentPrice, shares); }
     else if (currentAction === 'reduce') { doReduce(currentCode, currentName, currentMarket, currentPrice, shares); }
     closeActionModal();
   };
 
-  function sendRequest(endpoint, payload) {
-    if (!workerUrl) { alert('Worker URL 未配置，无法执行操作'); return; }
+  function sendRequest(endpoint, payload, onSuccess) {
+    if (!workerUrl) { showToast('Worker URL 未配置，无法执行操作', 'error'); return; }
     fetch(workerUrl + endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -33116,20 +34166,88 @@ document.addEventListener('keydown', function(e) {
       if (!r.ok) throw new Error('HTTP ' + r.status);
       return r.json();
     }).then(function(data) {
-      if (data.success) { alert('操作成功：' + (data.message || '')); location.reload(); }
-      else { alert('操作失败：' + (data.message || '未知错误')); }
-    }).catch(function(e) { alert('请求失败：' + e.message); });
+      if (data.success) {
+        showToast('操作成功：' + (data.message || ''), 'success');
+        if (onSuccess) onSuccess();
+      } else { showToast('操作失败：' + (data.message || '未知错误'), 'error'); }
+    }).catch(function(e) { showToast('请求失败：' + e.message, 'error'); });
+  }
+
+  function removeRow(code) {
+    const rows = document.querySelectorAll('#holdings table tbody tr');
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i];
+      const codeCell = row.querySelector('td:first-child');
+      if (codeCell && codeCell.textContent.trim() === code) {
+        row.style.transition = 'opacity 0.3s';
+        row.style.opacity = '0';
+        setTimeout(function() { row.remove(); }, 300);
+        return true;
+      }
+    }
+    return false;
   }
 
   window.doSell = function(code, name, market, price, shares) {
     const reason = document.getElementById('modalReason').value || '手工卖出';
-    sendRequest('/manual-sell', { code: code, name: name, market: market, sell_price: price, shares: shares, reason: reason, date: new Date().toISOString().slice(0,10) });
+    sendRequest('/manual-sell', { code: code, name: name, market: market, sell_price: price, shares: shares, reason: reason, date: new Date().toISOString().slice(0,10) }, function() {
+      removeRow(code);
+    });
   };
   window.doAdd = function(code, name, market, price, shares) {
-    sendRequest('/manual-add', { code: code, name: name, market: market, add_price: price, shares: shares, date: new Date().toISOString().slice(0,10) });
+    sendRequest('/manual-add', { code: code, name: name, market: market, add_price: price, shares: shares, date: new Date().toISOString().slice(0,10) }, function() {
+      const rows = document.querySelectorAll('#holdings table tbody tr');
+      for (let i = 0; i < rows.length; i++) {
+        const row = rows[i];
+        const codeCell = row.querySelector('td:first-child');
+        if (codeCell && codeCell.textContent.trim() === code) {
+          const cells = row.querySelectorAll('td');
+          const oldShares = parseInt(cells[8].textContent.replace(/,/g, ''), 10) || 0;
+          const oldEntryPrice = parseFloat(cells[6].textContent) || 0;
+          const currentPrice = parseFloat(cells[7].textContent) || price;
+          const newShares = oldShares + shares;
+          const newEntryPrice = newShares > 0 ? (oldShares * oldEntryPrice + shares * price) / newShares : 0;
+          const newMarketValue = newShares * currentPrice;
+          const newTotalReturn = newEntryPrice > 0 ? ((currentPrice - newEntryPrice) / newEntryPrice * 100) : 0;
+          cells[8].textContent = newShares.toLocaleString();
+          cells[6].textContent = newEntryPrice.toFixed(2);
+          cells[9].textContent = (newMarketValue / 10000).toFixed(2);
+          cells[10].textContent = (newTotalReturn >= 0 ? '+' : '') + newTotalReturn.toFixed(1) + '%';
+          cells[10].className = 'num ' + (newTotalReturn >= 0 ? 'up' : 'down');
+          break;
+        }
+      }
+    });
   };
   window.doReduce = function(code, name, market, price, shares) {
-    sendRequest('/manual-reduce', { code: code, name: name, market: market, reduce_price: price, shares: shares, date: new Date().toISOString().slice(0,10) });
+    sendRequest('/manual-reduce', { code: code, name: name, market: market, reduce_price: price, shares: shares, date: new Date().toISOString().slice(0,10) }, function() {
+      const rows = document.querySelectorAll('#holdings table tbody tr');
+      for (let i = 0; i < rows.length; i++) {
+        const row = rows[i];
+        const codeCell = row.querySelector('td:first-child');
+        if (codeCell && codeCell.textContent.trim() === code) {
+          const cells = row.querySelectorAll('td');
+          const oldShares = parseInt(cells[8].textContent.replace(/,/g, ''), 10) || 0;
+          const currentPrice = parseFloat(cells[7].textContent) || price;
+          const newShares = Math.max(0, oldShares - shares);
+          if (newShares === 0) {
+            removeRow(code);
+          } else {
+            const oldEntryPrice = parseFloat(cells[6].textContent) || 0;
+            const newMarketValue = newShares * currentPrice;
+            const newTotalReturn = oldEntryPrice > 0 ? ((currentPrice - oldEntryPrice) / oldEntryPrice * 100) : 0;
+            cells[8].textContent = newShares.toLocaleString();
+            cells[9].textContent = (newMarketValue / 10000).toFixed(2);
+            cells[10].textContent = (newTotalReturn >= 0 ? '+' : '') + newTotalReturn.toFixed(1) + '%';
+            cells[10].className = 'num ' + (newTotalReturn >= 0 ? 'up' : 'down');
+          }
+          break;
+        }
+      }
+    });
   };
 })();
 </script>
+
+</body>
+</html>
