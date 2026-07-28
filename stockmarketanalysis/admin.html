@@ -114,7 +114,6 @@ let currentAction, currentCode, currentName, currentMarket, currentPrice;
 
 function doLogin() {
   const pwd = document.getElementById('pwdInput').value;
-  // Simple hash comparison - password is 'laoding2026'
   if (pwd === 'laoding2026') {
     document.getElementById('loginPage').style.display = 'none';
     document.getElementById('adminPage').style.display = 'block';
@@ -146,26 +145,6 @@ async function loadData() {
     showToast('数据加载失败: ' + e.message, 'error');
   }
 }
-  try {
-    const [cn, hk, us] = await Promise.all([
-      fetch(GITHUB_RAW + '/data/portfolio/holdings_CN.json').then(r => r.json()),
-      fetch(GITHUB_RAW + '/data/portfolio/holdings_HK.json').then(r => r.json()),
-      fetch(GITHUB_RAW + '/data/portfolio/holdings_US.json').then(r => r.json())
-    ]);
-    const allHoldings = { ...cn, ...hk, ...us };
-    renderHoldings(allHoldings);
-
-    const [psCN, psHK, psUS] = await Promise.all([
-      fetch(GITHUB_RAW + '/data/portfolio/post_sell_CN.json').then(r => r.json()),
-      fetch(GITHUB_RAW + '/data/portfolio/post_sell_HK.json').then(r => r.json()),
-      fetch(GITHUB_RAW + '/data/portfolio/post_sell_US.json').then(r => r.json())
-    ]);
-    const allPostSell = { ...psCN, ...psHK, ...psUS };
-    renderPostSell(allPostSell);
-  } catch (e) {
-    showToast('数据加载失败: ' + e.message, 'error');
-  }
-}
 
 function renderHoldings(data) {
   const tbody = document.getElementById('holdingsBody');
@@ -173,14 +152,12 @@ function renderHoldings(data) {
   tbody.innerHTML = items.map(([code, h]) => `
     <tr id="hold-row-${code}">
       <td>${code}</td>
-    <tr>
-      <td>${code}</td>
       <td><strong>${h.name || ''}</strong></td>
       <td>${h.market || ''}</td>
       <td>${h.status || ''}</td>
       <td>${h.latest_score || ''}</td>
       <td>${h.current_price || ''}</td>
-      <td>${(h.shares || 0).toLocaleString()}</td>
+      <td id="hold-shares-${code}">${(h.shares || 0).toLocaleString()}</td>
       <td style="color:${(h.total_return || 0) >= 0 ? '#16a34a' : '#dc2626'}">${(h.total_return || 0).toFixed(1)}%</td>
       <td>${h.hold_days || 0}</td>
       <td>
@@ -199,8 +176,6 @@ function renderPostSell(data) {
   const items = Object.entries(data).sort((a, b) => (a[1].sell_date || '').localeCompare(b[1].sell_date || ''));
   tbody.innerHTML = items.map(([code, ps]) => `
     <tr id="post-row-${code}">
-      <td>${code}</td>
-    <tr>
       <td>${code}</td>
       <td><strong>${ps.name || ''}</strong></td>
       <td>${ps.market || ''}</td>
@@ -254,39 +229,10 @@ async function confirmAction() {
         const row = document.getElementById('hold-row-' + currentCode);
         if (row) row.remove();
       } else if ((currentAction === 'add' || currentAction === 'reduce') && data.new_shares !== undefined) {
-        const row = document.getElementById('hold-row-' + currentCode);
-        if (row) {
-          row.cells[6].textContent = data.new_shares.toLocaleString();
-        }
+        const cell = document.getElementById('hold-shares-' + currentCode);
+        if (cell) cell.textContent = data.new_shares.toLocaleString();
       }
-      setTimeout(loadData, 3000); // 3秒后重新加载完整数据（已带时间戳穿透缓存）
-    } else {
-      showToast(data.error || '操作失败', 'error');
-    }
-  } catch (e) {
-    showToast('请求失败: ' + e.message, 'error');
-  }
-}
-  const shares = parseInt(document.getElementById('modalShares').value, 10);
-  if (!shares || shares <= 0) { showToast('请输入有效股数', 'error'); return; }
-
-  const endpoints = { add: '/manual-add', reduce: '/manual-reduce', sell: '/manual-sell' };
-  const payloads = {
-    add: { code: currentCode, market: currentMarket, add_shares: shares, add_price: currentPrice },
-    reduce: { code: currentCode, market: currentMarket, reduce_shares: shares },
-    sell: { code: currentCode, market: currentMarket, sell_price: currentPrice, reason: document.getElementById('modalReason').value || '手工卖出' }
-  };
-
-  closeModal();
-  try {
-    const resp = await fetch(API_URL + endpoints[currentAction], {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payloads[currentAction])
-    });
-    const data = await resp.json();
-    if (data.success) {
-      showToast(data.message, 'success');
-      setTimeout(loadData, 2000);
+      setTimeout(loadData, 3000); // 3秒后重新加载完整数据
     } else {
       showToast(data.error || '操作失败', 'error');
     }
@@ -307,23 +253,6 @@ async function doDelist(code) {
       showToast(data.message, 'success');
       const row = document.getElementById('post-row-' + code);
       if (row) row.remove();
-    } else {
-      showToast(data.error || '剔除失败', 'error');
-    }
-  } catch (e) {
-    showToast('请求失败: ' + e.message, 'error');
-  }
-}
-  if (!confirm('确认剔除 ' + code + '？')) return;
-  try {
-    const resp = await fetch(API_URL + '/delist', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'add', code })
-    });
-    const data = await resp.json();
-    if (data.success) {
-      showToast(data.message, 'success');
-      setTimeout(loadData, 2000);
     } else {
       showToast(data.error || '剔除失败', 'error');
     }
