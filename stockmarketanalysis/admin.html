@@ -224,6 +224,49 @@ async function confirmAction() {
     });
     const data = await resp.json();
     if (data.success) {
+      showToast(data.message, 'success');
+      // 使用 API 返回的最新数据直接更新 DOM，无需等待 GitHub 同步
+      if (data.sold_out) {
+        const row = document.getElementById('hold-row-' + currentCode);
+        if (row) row.remove();
+      } else if (data.updated_stock) {
+        const s = data.updated_stock;
+        const row = document.getElementById('hold-row-' + currentCode);
+        if (row) {
+          row.cells[3].textContent = s.status || '';
+          row.cells[4].textContent = s.latest_score || '';
+          row.cells[5].textContent = s.current_price || '';
+          row.cells[6].textContent = (s.shares || 0).toLocaleString();
+          row.cells[7].textContent = (s.total_return || 0).toFixed(1) + '%';
+          row.cells[7].style.color = (s.total_return || 0) >= 0 ? '#16a34a' : '#dc2626';
+          row.cells[8].textContent = s.hold_days || 0;
+        }
+      }
+    } else {
+      showToast(data.error || '操作失败', 'error');
+    }
+  } catch (e) {
+    showToast('请求失败: ' + e.message, 'error');
+  }
+}
+  const shares = parseInt(document.getElementById('modalShares').value, 10);
+  if (!shares || shares <= 0) { showToast('请输入有效股数', 'error'); return; }
+
+  const endpoints = { add: '/manual-add', reduce: '/manual-reduce', sell: '/manual-sell' };
+  const payloads = {
+    add: { code: currentCode, market: currentMarket, add_shares: shares, add_price: currentPrice },
+    reduce: { code: currentCode, market: currentMarket, reduce_shares: shares },
+    sell: { code: currentCode, market: currentMarket, sell_price: currentPrice, reason: document.getElementById('modalReason').value || '手工卖出' }
+  };
+
+  closeModal();
+  try {
+    const resp = await fetch(API_URL + endpoints[currentAction], {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payloads[currentAction])
+    });
+    const data = await resp.json();
+    if (data.success) {
       showToast('操作成功！页面已即时更新，12秒后将自动同步后台数据...', 'success');
       if (currentAction === 'sell') {
         const row = document.getElementById('hold-row-' + currentCode);
