@@ -125,19 +125,20 @@ function doLogin() {
 
 async function loadData() {
   const t = '?t=' + Date.now();
+  const noCache = { cache: 'no-store' };
   try {
     const [cn, hk, us] = await Promise.all([
-      fetch(GITHUB_RAW + '/data/portfolio/holdings_CN.json' + t).then(r => r.json()),
-      fetch(GITHUB_RAW + '/data/portfolio/holdings_HK.json' + t).then(r => r.json()),
-      fetch(GITHUB_RAW + '/data/portfolio/holdings_US.json' + t).then(r => r.json())
+      fetch(GITHUB_RAW + '/data/portfolio/holdings_CN.json' + t, noCache).then(r => r.json()),
+      fetch(GITHUB_RAW + '/data/portfolio/holdings_HK.json' + t, noCache).then(r => r.json()),
+      fetch(GITHUB_RAW + '/data/portfolio/holdings_US.json' + t, noCache).then(r => r.json())
     ]);
     const allHoldings = { ...cn, ...hk, ...us };
     renderHoldings(allHoldings);
 
     const [psCN, psHK, psUS] = await Promise.all([
-      fetch(GITHUB_RAW + '/data/portfolio/post_sell_CN.json' + t).then(r => r.json()),
-      fetch(GITHUB_RAW + '/data/portfolio/post_sell_HK.json' + t).then(r => r.json()),
-      fetch(GITHUB_RAW + '/data/portfolio/post_sell_US.json' + t).then(r => r.json())
+      fetch(GITHUB_RAW + '/data/portfolio/post_sell_CN.json' + t, noCache).then(r => r.json()),
+      fetch(GITHUB_RAW + '/data/portfolio/post_sell_HK.json' + t, noCache).then(r => r.json()),
+      fetch(GITHUB_RAW + '/data/portfolio/post_sell_US.json' + t, noCache).then(r => r.json())
     ]);
     const allPostSell = { ...psCN, ...psHK, ...psUS };
     renderPostSell(allPostSell);
@@ -223,8 +224,7 @@ async function confirmAction() {
     });
     const data = await resp.json();
     if (data.success) {
-      showToast(data.message, 'success');
-      // 即时更新 DOM，避免等待 GitHub Raw 缓存
+      showToast('操作成功！页面已即时更新，12秒后将自动同步后台数据...', 'success');
       if (currentAction === 'sell') {
         const row = document.getElementById('hold-row-' + currentCode);
         if (row) row.remove();
@@ -232,7 +232,7 @@ async function confirmAction() {
         const cell = document.getElementById('hold-shares-' + currentCode);
         if (cell) cell.textContent = data.new_shares.toLocaleString();
       }
-      setTimeout(loadData, 3000); // 3秒后重新加载完整数据
+      setTimeout(loadData, 12000);
     } else {
       showToast(data.error || '操作失败', 'error');
     }
