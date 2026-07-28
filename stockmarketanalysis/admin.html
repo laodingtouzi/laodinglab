@@ -125,6 +125,27 @@ function doLogin() {
 }
 
 async function loadData() {
+  const t = '?t=' + Date.now();
+  try {
+    const [cn, hk, us] = await Promise.all([
+      fetch(GITHUB_RAW + '/data/portfolio/holdings_CN.json' + t).then(r => r.json()),
+      fetch(GITHUB_RAW + '/data/portfolio/holdings_HK.json' + t).then(r => r.json()),
+      fetch(GITHUB_RAW + '/data/portfolio/holdings_US.json' + t).then(r => r.json())
+    ]);
+    const allHoldings = { ...cn, ...hk, ...us };
+    renderHoldings(allHoldings);
+
+    const [psCN, psHK, psUS] = await Promise.all([
+      fetch(GITHUB_RAW + '/data/portfolio/post_sell_CN.json' + t).then(r => r.json()),
+      fetch(GITHUB_RAW + '/data/portfolio/post_sell_HK.json' + t).then(r => r.json()),
+      fetch(GITHUB_RAW + '/data/portfolio/post_sell_US.json' + t).then(r => r.json())
+    ]);
+    const allPostSell = { ...psCN, ...psHK, ...psUS };
+    renderPostSell(allPostSell);
+  } catch (e) {
+    showToast('数据加载失败: ' + e.message, 'error');
+  }
+}
   try {
     const [cn, hk, us] = await Promise.all([
       fetch(GITHUB_RAW + '/data/portfolio/holdings_CN.json').then(r => r.json()),
@@ -150,6 +171,8 @@ function renderHoldings(data) {
   const tbody = document.getElementById('holdingsBody');
   const items = Object.entries(data).sort((a, b) => (b[1].latest_score || 0) - (a[1].latest_score || 0));
   tbody.innerHTML = items.map(([code, h]) => `
+    <tr id="hold-row-${code}">
+      <td>${code}</td>
     <tr>
       <td>${code}</td>
       <td><strong>${h.name || ''}</strong></td>
@@ -175,6 +198,8 @@ function renderPostSell(data) {
   const tbody = document.getElementById('postSellBody');
   const items = Object.entries(data).sort((a, b) => (a[1].sell_date || '').localeCompare(b[1].sell_date || ''));
   tbody.innerHTML = items.map(([code, ps]) => `
+    <tr id="post-row-${code}">
+      <td>${code}</td>
     <tr>
       <td>${code}</td>
       <td><strong>${ps.name || ''}</strong></td>
@@ -224,6 +249,43 @@ async function confirmAction() {
     const data = await resp.json();
     if (data.success) {
       showToast(data.message, 'success');
+      // 即时更新 DOM，避免等待 GitHub Raw 缓存
+      if (currentAction === 'sell') {
+        const row = document.getElementById('hold-row-' + currentCode);
+        if (row) row.remove();
+      } else if ((currentAction === 'add' || currentAction === 'reduce') && data.new_shares !== undefined) {
+        const row = document.getElementById('hold-row-' + currentCode);
+        if (row) {
+          row.cells[6].textContent = data.new_shares.toLocaleString();
+        }
+      }
+      setTimeout(loadData, 3000); // 3秒后重新加载完整数据（已带时间戳穿透缓存）
+    } else {
+      showToast(data.error || '操作失败', 'error');
+    }
+  } catch (e) {
+    showToast('请求失败: ' + e.message, 'error');
+  }
+}
+  const shares = parseInt(document.getElementById('modalShares').value, 10);
+  if (!shares || shares <= 0) { showToast('请输入有效股数', 'error'); return; }
+
+  const endpoints = { add: '/manual-add', reduce: '/manual-reduce', sell: '/manual-sell' };
+  const payloads = {
+    add: { code: currentCode, market: currentMarket, add_shares: shares, add_price: currentPrice },
+    reduce: { code: currentCode, market: currentMarket, reduce_shares: shares },
+    sell: { code: currentCode, market: currentMarket, sell_price: currentPrice, reason: document.getElementById('modalReason').value || '手工卖出' }
+  };
+
+  closeModal();
+  try {
+    const resp = await fetch(API_URL + endpoints[currentAction], {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payloads[currentAction])
+    });
+    const data = await resp.json();
+    if (data.success) {
+      showToast(data.message, 'success');
       setTimeout(loadData, 2000);
     } else {
       showToast(data.error || '操作失败', 'error');
@@ -234,6 +296,24 @@ async function confirmAction() {
 }
 
 async function doDelist(code) {
+  if (!confirm('确认剔除 ' + code + '？')) return;
+  try {
+    const resp = await fetch(API_URL + '/delist', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'add', code })
+    });
+    const data = await resp.json();
+    if (data.success) {
+      showToast(data.message, 'success');
+      const row = document.getElementById('post-row-' + code);
+      if (row) row.remove();
+    } else {
+      showToast(data.error || '剔除失败', 'error');
+    }
+  } catch (e) {
+    showToast('请求失败: ' + e.message, 'error');
+  }
+}
   if (!confirm('确认剔除 ' + code + '？')) return;
   try {
     const resp = await fetch(API_URL + '/delist', {
