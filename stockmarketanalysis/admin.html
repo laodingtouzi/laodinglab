@@ -8,9 +8,9 @@
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:#f8fafc; color:#334155; line-height:1.6; }
   .container { max-width:1200px; margin:0 auto; padding:20px; }
-  header { background:#1e293b; color:#fff; padding:16px 20px; margin-bottom:24px; border-radius:8px; }
+  header { background:#1e293b; color:#fff; padding:16px 20px; margin-bottom:24px; border-radius:8px; display:flex; align-items:center; justify-content:space-between; }
   header h1 { font-size:1.2rem; margin:0; }
-  header a { color:#94a3b8; text-decoration:none; font-size:0.85rem; float:right; }
+  header a { color:#94a3b8; text-decoration:none; font-size:0.85rem; }
   .login-box { max-width:400px; margin:100px auto; background:#fff; padding:32px; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.08); }
   .login-box h2 { margin-bottom:20px; color:#1e293b; }
   .login-box input { width:100%; padding:12px; margin-bottom:12px; border:1px solid #e2e8f0; border-radius:6px; font-size:1rem; }
@@ -62,6 +62,7 @@
       <h3>📈 持有清单操作</h3>
       <div id="holdingsLoading">加载中...</div>
       <div id="holdingsTable" style="display:none;">
+        <input type="text" id="holdingsSearch" placeholder="🔍 搜索代码或名称..." style="width:100%;max-width:300px;padding:8px 12px;margin-bottom:12px;border:1px solid #e2e8f0;border-radius:6px;font-size:0.9rem;" oninput="filterHoldings()">
         <table>
           <thead>
             <tr>
@@ -97,7 +98,8 @@
     <h4 id="modalTitle">操作</h4>
     <p id="modalInfo"></p>
     <input type="number" id="modalShares" placeholder="股数" min="1">
-    <input type="text" id="modalReason" placeholder="原因（卖出时必填）" style="display:none;">
+    <p id="modalSellHint" style="display:none; color:#64748b; font-size:0.85rem; margin-bottom:12px;">⚠️ 点击确认将清仓卖出该股票</p>
+    <input type="text" id="modalReason" placeholder="原因（卖出时可选）" style="display:none;">
     <div class="actions">
       <button class="cancel" onclick="closeModal()">取消</button>
       <button class="confirm" id="modalConfirm" onclick="confirmAction()">确认</button>
@@ -111,6 +113,7 @@
 const API_URL = 'https://tri-market-api-rzer.vercel.app/api';
 const GITHUB_RAW = 'https://raw.githubusercontent.com/laodingtouzi/laodinglab/main';
 let currentAction, currentCode, currentName, currentMarket, currentPrice;
+let holdingsDataCache = {};
 
 function doLogin() {
   const pwd = document.getElementById('pwdInput').value;
@@ -133,6 +136,7 @@ async function loadData() {
       fetch(GITHUB_RAW + '/data/portfolio/holdings_US.json' + t, noCache).then(r => r.json())
     ]);
     const allHoldings = { ...cn, ...hk, ...us };
+    holdingsDataCache = allHoldings;
     renderHoldings(allHoldings);
 
     const [psCN, psHK, psUS] = await Promise.all([
@@ -149,9 +153,16 @@ async function loadData() {
 
 function renderHoldings(data) {
   const tbody = document.getElementById('holdingsBody');
-  const items = Object.entries(data).sort((a, b) => (b[1].latest_score || 0) - (a[1].latest_score || 0));
+  // 按市场排序：CN → HK → US，同市场内按评分降序
+  const marketOrder = { 'CN': 0, 'HK': 1, 'US': 2 };
+  const items = Object.entries(data).sort((a, b) => {
+    const ma = marketOrder[a[1].market] ?? 99;
+    const mb = marketOrder[b[1].market] ?? 99;
+    if (ma !== mb) return ma - mb;
+    return (b[1].latest_score || 0) - (a[1].latest_score || 0);
+  });
   tbody.innerHTML = items.map(([code, h]) => `
-    <tr id="hold-row-${code}">
+    <tr id="hold-row-${code}" data-code="${code.toLowerCase()}" data-name="${(h.name || '').toLowerCase()}">
       <td>${code}</td>
       <td><strong>${h.name || ''}</strong></td>
       <td>${h.market || ''}</td>
@@ -170,6 +181,16 @@ function renderHoldings(data) {
   `).join('');
   document.getElementById('holdingsLoading').style.display = 'none';
   document.getElementById('holdingsTable').style.display = 'block';
+}
+
+function filterHoldings() {
+  const kw = document.getElementById('holdingsSearch').value.trim().toLowerCase();
+  const rows = document.querySelectorAll('#holdingsBody tr');
+  rows.forEach(row => {
+    const code = row.getAttribute('data-code') || '';
+    const name = row.getAttribute('data-name') || '';
+    row.style.display = (!kw || code.includes(kw) || name.includes(kw)) ? '' : 'none';
+  });
 }
 
 function renderPostSell(data) {
@@ -194,20 +215,34 @@ function renderPostSell(data) {
 
 function openModal(action, code, name, market, price) {
   currentAction = action; currentCode = code; currentName = name; currentMarket = market; currentPrice = price;
-  const titles = { add: '➕ 加仓', reduce: '➖ 减仓', sell: '⤵️ 卖出' };
+  const titles = { add: '➕ 加仓', reduce: '➖ 减仓', sell: '⤵️ 卖出（清仓）' };
   document.getElementById('modalTitle').textContent = titles[action] || '操作';
   document.getElementById('modalInfo').textContent = code + ' ' + name + ' | 现价 ' + price;
-  document.getElementById('modalShares').value = '';
-  document.getElementById('modalReason').style.display = action === 'sell' ? 'block' : 'none';
-  document.getElementById('modalReason').value = '';
+  const sharesInput = document.getElementById('modalShares');
+  const sellHint = document.getElementById('modalSellHint');
+  const reasonInput = document.getElementById('modalReason');
+  if (action === 'sell') {
+    sharesInput.style.display = 'none';
+    sellHint.style.display = 'block';
+    reasonInput.style.display = 'block';
+  } else {
+    sharesInput.style.display = 'block';
+    sharesInput.value = '';
+    sellHint.style.display = 'none';
+    reasonInput.style.display = 'none';
+  }
+  reasonInput.value = '';
   document.getElementById('actionModal').style.display = 'flex';
 }
 
 function closeModal() { document.getElementById('actionModal').style.display = 'none'; }
 
 async function confirmAction() {
-  const shares = parseInt(document.getElementById('modalShares').value, 10);
-  if (!shares || shares <= 0) { showToast('请输入有效股数', 'error'); return; }
+  let shares = 0;
+  if (currentAction !== 'sell') {
+    shares = parseInt(document.getElementById('modalShares').value, 10);
+    if (!shares || shares <= 0) { showToast('请输入有效股数', 'error'); return; }
+  }
 
   const payloads = {
     add: { action: 'add', code: currentCode, market: currentMarket, add_shares: shares, add_price: currentPrice },
