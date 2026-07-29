@@ -221,18 +221,6 @@ async function confirmAction() {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payloads[currentAction])
     });
-  const payloads = {
-    add: { code: currentCode, market: currentMarket, add_shares: shares, add_price: currentPrice },
-    reduce: { code: currentCode, market: currentMarket, reduce_shares: shares },
-    sell: { code: currentCode, market: currentMarket, sell_price: currentPrice, reason: document.getElementById('modalReason').value || '手工卖出' }
-  };
-
-  closeModal();
-  try {
-    const resp = await fetch(API_URL + endpoints[currentAction], {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payloads[currentAction])
-    });
     const data = await resp.json();
     if (data.success) {
       showToast(data.message, 'success');
@@ -266,12 +254,6 @@ async function doDelist(code) {
     const resp = await fetch(API_URL, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'delist', code })
-    });
-  if (!confirm('确认剔除 ' + code + '？')) return;
-  try {
-    const resp = await fetch(API_URL + '/delist', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'add', code })
     });
     const data = await resp.json();
     if (data.success) {
