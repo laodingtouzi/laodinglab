@@ -36,17 +36,33 @@ body { background: #003818; font-family: "PingFang SC", "Microsoft YaHei", sans-
 #gameArea { position: relative; width: 1100px; height: 656px; margin: 0 auto; overflow: hidden; }
 
 /* === 卡牌 === */
-.card { position: absolute; width: 80px; height: 108px; border-radius: 6px; cursor: pointer; transition: left 0.4s ease, top 0.4s ease, transform 0.2s, box-shadow 0.2s; }
-.card.face-up { background: #fff; border: 1px solid #888; box-shadow: 1px 1px 4px rgba(0,0,0,0.3); }
-.card.face-down {
-  border: 1px solid #2a5d2a;
-  background:
-    repeating-linear-gradient(45deg, rgba(255,255,255,0.08) 0, rgba(255,255,255,0.08) 2px, transparent 2px, transparent 6px),
-    repeating-linear-gradient(-45deg, rgba(255,255,255,0.05) 0, rgba(255,255,255,0.05) 2px, transparent 2px, transparent 6px),
-    linear-gradient(135deg, #1a5c2a, #0d3d1a);
-  box-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+.card {
+  position: absolute;
+  width: 80px;
+  height: 108px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: left 0.4s ease, top 0.4s ease, transform 0.2s, box-shadow 0.2s;
+  font-family: Georgia, "Times New Roman", serif;
+  user-select: none;
+  overflow: hidden;
 }
-.card.face-down.clickable:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+.card.face-up {
+  background: #fdfbf7;
+  border: 1px solid #b0a090;
+  box-shadow: 1px 1px 5px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(0,0,0,0.04);
+}
+.card.face-down {
+  border: 1px solid #1e4a1e;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.06) 0, rgba(255,255,255,0.06) 2px, transparent 3px),
+    radial-gradient(circle at 70% 70%, rgba(255,255,255,0.06) 0, rgba(255,255,255,0.06) 2px, transparent 3px),
+    repeating-linear-gradient(60deg, rgba(255,255,255,0.04) 0, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 8px),
+    repeating-linear-gradient(-60deg, rgba(255,255,255,0.04) 0, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 8px),
+    linear-gradient(135deg, #1f5a2f, #0f3318);
+  box-shadow: 1px 1px 5px rgba(0,0,0,0.35);
+}
+.card.face-down.clickable:hover { transform: translateY(-3px); box-shadow: 0 5px 14px rgba(0,0,0,0.45); }
 .card.selected-border { box-shadow: 0 0 0 3px #ff4444, 1px 1px 8px rgba(255,0,0,0.3); z-index: 100 !important; }
 .card.hint-border { box-shadow: 0 0 0 3px #44ff44, 1px 1px 8px rgba(0,255,0,0.3); }
 .card.disabled { opacity: 0.45; cursor: default; }
@@ -64,12 +80,39 @@ body { background: #003818; font-family: "PingFang SC", "Microsoft YaHei", sans-
 .card.deal-in { animation: dealIn 0.18s ease both; }
 .card.pair-in { animation: pairIn 0.18s ease both; }
 
-.card-corner { position: absolute; font-size: 12px; font-weight: bold; line-height: 1.1; text-align: center; width: 20px; }
-.card-corner.tl { top: 4px; left: 4px; }
-.card-corner.br { bottom: 4px; right: 4px; transform: rotate(180deg); }
-.card-suit-big { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 34px; }
+/* 牌面文字 */
+.card-corner {
+  position: absolute;
+  width: 22px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  line-height: 1;
+}
+.card-corner .rank {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+.card-corner .suit {
+  font-size: 11px;
+  margin-top: 1px;
+}
+.card-corner.tl { top: 5px; left: 5px; }
+.card-corner.br { bottom: 5px; right: 5px; transform: rotate(180deg); }
+.card-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 40px;
+  line-height: 1;
+  opacity: 0.95;
+}
 .red { color: #D32F2F; }
-.black { color: #1A1A1A; }
+.black { color: #222222; }
 
 /* === 金字塔区域 === */
 #pyramidArea { position: absolute; top: 45px; left: 50%; width: 700px; margin-left: -350px; height: 320px; }
@@ -397,20 +440,20 @@ function renderCardFace(div, card) {
   div.innerHTML = "";
   let colorClass = card.color; // "red" or "black"
   let display = card.display;
-  let suit = card.suit;
+  let suit = card.suitChar; // ♠♥♦♣
 
   let tl = document.createElement("div");
   tl.className = "card-corner tl " + colorClass;
-  tl.innerHTML = display + "<br>" + suit;
+  tl.innerHTML = '<span class="rank">' + display + '</span><span class="suit">' + suit + '</span>';
   div.appendChild(tl);
 
   let br = document.createElement("div");
   br.className = "card-corner br " + colorClass;
-  br.innerHTML = display + "<br>" + suit;
+  br.innerHTML = '<span class="rank">' + display + '</span><span class="suit">' + suit + '</span>';
   div.appendChild(br);
 
   let big = document.createElement("div");
-  big.className = "card-suit-big " + colorClass;
+  big.className = "card-center " + colorClass;
   big.textContent = suit;
   div.appendChild(big);
 }
