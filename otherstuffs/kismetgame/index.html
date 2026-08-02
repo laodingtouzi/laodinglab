@@ -106,6 +106,28 @@ body { background: #003818; font-family: "PingFang SC", "Microsoft YaHei", sans-
   line-height: 1;
   opacity: 0.95;
 }
+.card-portrait {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 56px;
+  height: 56px;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.card-portrait .suit-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  font-size: 13px;
+  line-height: 1;
+  text-shadow: 0 0 3px rgba(255,255,255,0.95), 0 0 1px rgba(255,255,255,0.95);
+  pointer-events: none;
+}
 .red { color: #D32F2F; }
 .black { color: #222222; }
 
@@ -432,44 +454,19 @@ function shuffle(age) {
 }
 
 // ========== 渲染 ==========
-function getFaceCardImage(card) {
+function getCardImagePath(card) {
   let suitEn = SUIT_EN[card.suit];
   let srcIdx = card.srcIndex !== undefined ? card.srcIndex : card.index;
-  return "card_" + String(srcIdx).padStart(2, "0") + "_" + suitEn + "_" + card.display + ".png";
+  return "cards/card_" + String(srcIdx).padStart(2, "0") + "_" + suitEn + "_" + card.display + ".png";
 }
 
 function renderCardFace(div, card) {
   div.innerHTML = "";
-  div.style.backgroundImage = "";
-
-  // 花牌（J/Q/K）用 VB 原始图片
-  if (card.value >= 11) {
-    div.style.backgroundImage = "url('" + getFaceCardImage(card) + "')";
-    div.style.backgroundSize = "cover";
-    div.style.backgroundPosition = "center";
-    div.style.backgroundRepeat = "no-repeat";
-    return;
-  }
-
-  // 数字牌用 CSS/Unicode 渲染
-  let colorClass = card.color; // "red" or "black"
-  let display = card.display;
-  let suit = card.suitChar; // ♠♥♦♣
-
-  let tl = document.createElement("div");
-  tl.className = "card-corner tl " + colorClass;
-  tl.innerHTML = '<span class="rank">' + display + '</span><span class="suit">' + suit + '</span>';
-  div.appendChild(tl);
-
-  let br = document.createElement("div");
-  br.className = "card-corner br " + colorClass;
-  br.innerHTML = '<span class="rank">' + display + '</span><span class="suit">' + suit + '</span>';
-  div.appendChild(br);
-
-  let big = document.createElement("div");
-  big.className = "card-center " + colorClass;
-  big.textContent = suit;
-  div.appendChild(big);
+  // 全部牌面使用 VB6 原始图片，保证原汁原味、风格统一
+  div.style.backgroundImage = "url('" + getCardImagePath(card) + "')";
+  div.style.backgroundSize = "cover";
+  div.style.backgroundPosition = "center";
+  div.style.backgroundRepeat = "no-repeat";
 }
 
 function renderCard(card) {
