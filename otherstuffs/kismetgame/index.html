@@ -154,7 +154,7 @@ body { background: #003818; font-family: "PingFang SC", "Microsoft YaHei", sans-
 #statusBar { position: fixed; bottom: 0; left: 0; right: 0; height: 32px; background: rgba(0,0,0,0.5); color: #c0ffc0; font-size: 14px; display: flex; align-items: center; padding: 0 16px; }
 
 /* === 结果面板（浮动面板，无遮罩） === */
-#resultPanel { position: absolute; top: 42px; right: 12px; width: 350px; max-height: 410px; display: none; z-index: 200; }
+#resultPanel { position: absolute; top: calc((100% - 180px) / 2); left: 50%; transform: translate(-50%, -50%); width: 350px; max-height: min(410px, calc(100% - 220px)); display: none; z-index: 200; }
 .result-scroll { background: rgba(250, 245, 232, 0.92); backdrop-filter: blur(16px) saturate(180%); -webkit-backdrop-filter: blur(16px) saturate(180%); border: 2px solid #c0a060; border-radius: 8px; padding: 18px 22px; max-height: 410px; overflow-y: auto; box-shadow: 0 8px 40px rgba(0,0,0,0.4); position: relative; }
 .result-scroll::before { content: ""; position: absolute; inset: 4px; border: 1px solid #d0b070; border-radius: 5px; pointer-events: none; }
 .result-scroll h2 { text-align: center; color: #4a2a00; font-size: 17px; margin-bottom: 6px; }
