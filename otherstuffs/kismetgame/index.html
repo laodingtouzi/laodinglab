@@ -1037,9 +1037,9 @@ function onCardDblClick(idx) {
   renderSelectArea();
   
   setStatus("借用了最顶端的牌，准备找对牌...");
-  
+
   // 直接进入找对牌阶段（加延时增加场景切换感）
-  setTimeout(() => findMatchCard(), 800);
+  setTimeout(() => findMatchCard(), 600);
 }
 
 function onStockDeckClick() {
@@ -1277,9 +1277,10 @@ function checkUsefulCards() {
     // 顶端牌已翻开——提示借用或进入下一阶段
     if (topCard.faceUp && topCard.location === "pyramid") {
       setStatus("当前已无可配13的对牌了，可以双击顶端的牌以加入配对牌池中。");
+      showToast("无可配对牌，双击顶端牌加入配牌池");
     } else {
       setStatus("没有可用牌了，准备进入找对牌阶段...");
-      setTimeout(() => findMatchCard(), 800);
+      setTimeout(() => findMatchCard(), 600);
     }
     return;
   }
@@ -1325,9 +1326,10 @@ function checkUsefulCards() {
     setTimeout(() => checkUsefulCards(), 500);
   } else if (topCard.faceUp && topCard.location === "pyramid") {
     setStatus("当前已无可配13的对牌了，可以双击顶端的牌以加入配对牌池中。");
+    showToast("无可配对牌，双击顶端牌加入配牌池");
   } else {
     setStatus("没有可用牌了，准备进入找对牌阶段...");
-    setTimeout(() => findMatchCard(), 800);
+    setTimeout(() => findMatchCard(), 600);
   }
 }
 
@@ -1627,7 +1629,9 @@ async function findMatchCard() {
   
   setStatus("下面开始为您寻找对牌...");
   showToast("进入第二阶段：找对牌");
-  
+  // 让"进入第二阶段"浮框单独展示一会儿，避免与"开始第1轮配对"提示贴得太近
+  await delay(1100);
+
   // 提前显示 matchArea（空内容），让 movePairToMatchArea 能获取正确宽度
   document.getElementById("matchArea").style.display = "block";
   document.getElementById("matchArea").innerHTML = "";
