@@ -155,6 +155,7 @@ body { background: #003818; font-family: "PingFang SC", "Microsoft YaHei", sans-
 
 /* === 结果面板（浮动面板，无遮罩） === */
 #resultPanel { position: absolute; top: calc((100% - 180px) / 2); left: 50%; transform: translate(-50%, -50%); width: 350px; max-height: min(410px, calc(100% - 220px)); display: none; z-index: 200; }
+#resultPanel.dodge { transform: translateX(-50%); } /* 垂直方向由 JS 根据对牌位置动态置顶，不再居中 */
 .result-scroll { background: rgba(250, 245, 232, 0.92); backdrop-filter: blur(16px) saturate(180%); -webkit-backdrop-filter: blur(16px) saturate(180%); border: 2px solid #c0a060; border-radius: 8px; padding: 18px 22px; max-height: 410px; overflow-y: auto; box-shadow: 0 8px 40px rgba(0,0,0,0.4); position: relative; }
 .result-scroll::before { content: ""; position: absolute; inset: 4px; border: 1px solid #d0b070; border-radius: 5px; pointer-events: none; }
 .result-scroll h2 { text-align: center; color: #4a2a00; font-size: 17px; margin-bottom: 6px; }
@@ -904,6 +905,7 @@ function newGame() {
   document.getElementById("resultBtnRow").style.display = "none";
   document.getElementById("resultContent").innerHTML = "";
   document.getElementById("resultTrust").textContent = "";
+  positionResultPanel(); // 清除 dodge 定位，恢复默认居中
   
   // 重置状态
   STATE.selectedCards = [];
@@ -1863,6 +1865,32 @@ function onRevealCard(idx) {
   }
 }
 
+// 根据 matchArea 中对牌位置，动态调整 resultPanel 使其不遮挡未翻释命牌
+function positionResultPanel() {
+  let panel = document.getElementById("resultPanel");
+  let matchArea = document.getElementById("matchArea");
+  if (!panel || !matchArea) return;
+
+  // 仅在翻牌释命/完成阶段且对牌区有牌时启用"躲避"定位
+  if ((STATE.phase === "revealing" || STATE.phase === "done") &&
+      matchArea.style.display !== "none" &&
+      matchArea.querySelector(".card")) {
+    let cards = matchArea.querySelectorAll(".card");
+    let maxBottom = 0;
+    cards.forEach(c => {
+      let bottom = c.offsetTop + c.offsetHeight;
+      if (bottom > maxBottom) maxBottom = bottom;
+    });
+    // matchArea 本身位于 gameArea 顶部 70px 处，offsetTop 是相对 matchArea 的
+    let panelTop = 70 + maxBottom + 16; // 16px 间距
+    panel.classList.add("dodge");
+    panel.style.top = panelTop + "px";
+  } else {
+    panel.classList.remove("dodge");
+    panel.style.top = "";
+  }
+}
+
 // 增量追加结果到浮动面板
 function appendResult(title, identity, fortune, current, total, isLast) {
   let panel = document.getElementById("resultPanel");
@@ -1878,6 +1906,7 @@ function appendResult(title, identity, fortune, current, total, isLast) {
     document.getElementById("resultTrust").textContent = "";
     document.getElementById("resultBtnRow").style.display = "none";
     panel.style.display = "block";
+    positionResultPanel();
   }
   
   // 追加结果项
