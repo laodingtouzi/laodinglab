@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>管理员后台 · 老丁实验室</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:#f8fafc; color:#334155; line-height:1.6; }
+  .container { max-width:1200px; margin:0 auto; padding:20px; }
+  header { background:#1e293b; color:#fff; padding:16px 20px; margin-bottom:24px; border-radius:8px; display:flex; align-items:center; justify-content:space-between; }
+  header h1 { font-size:1.2rem; margin:0; }
+  header a { color:#94a3b8; text-decoration:none; font-size:0.85rem; }
+  .login-box { max-width:400px; margin:100px auto; background:#fff; padding:32px; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.08); }
+  .login-box h2 { margin-bottom:20px; color:#1e293b; }
+  .login-box input { width:100%; padding:12px; margin-bottom:12px; border:1px solid #e2e8f0; border-radius:6px; font-size:1rem; }
+  .login-box button { width:100%; padding:12px; background:#2563eb; color:#fff; border:none; border-radius:6px; font-size:1rem; cursor:pointer; }
+  .login-box button:hover { background:#1d4ed8; }
+  .login-box .error { color:#dc2626; margin-top:8px; font-size:0.9rem; display:none; }
+  .section { background:#fff; border-radius:8px; padding:20px; margin-bottom:20px; box-shadow:0 1px 3px rgba(0,0,0,0.05); }
+  .section h3 { margin-bottom:16px; color:#1e293b; border-bottom:2px solid #e2e8f0; padding-bottom:8px; }
+  table { width:100%; border-collapse:collapse; font-size:0.9rem; }
+  th, td { padding:10px 8px; text-align:left; border-bottom:1px solid #e2e8f0; }
+  th { background:#f1f5f9; font-weight:600; color:#475569; }
+  .btn { padding:4px 10px; border:none; border-radius:4px; cursor:pointer; font-size:0.8rem; margin:0 2px; }
+  .btn-add { background:#16a34a; color:#fff; }
+  .btn-reduce { background:#ca8a04; color:#fff; }
+  .btn-sell { background:#dc2626; color:#fff; }
+  .btn-delist { background:#64748b; color:#fff; }
+  .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center; }
+  .modal { background:#fff; padding:24px; border-radius:12px; width:400px; max-width:90%; }
+  .modal h4 { margin-bottom:16px; }
+  .modal input { width:100%; padding:10px; margin-bottom:12px; border:1px solid #e2e8f0; border-radius:6px; }
+  .modal .actions { display:flex; gap:8px; justify-content:flex-end; margin-top:16px; }
+  .modal .actions button { padding:8px 16px; border:none; border-radius:6px; cursor:pointer; }
+  .modal .actions .cancel { background:#f1f5f9; }
+  .modal .actions .confirm { background:#2563eb; color:#fff; }
+  .toast { position:fixed; top:20px; right:20px; padding:12px 20px; border-radius:8px; color:#fff; z-index:2000; display:none; }
+  .toast.success { background:#16a34a; }
+  .toast.error { background:#dc2626; }
+</style>
+</head>
+<body>
+
+<div id="loginPage">
+  <div class="login-box">
+    <h2>🔒 管理员登录</h2>
+    <input type="password" id="pwdInput" placeholder="请输入管理密码" onkeypress="if(event.key==='Enter')doLogin()">
+    <button onclick="doLogin()">登录</button>
+    <div class="error" id="loginError">密码错误</div>
+  </div>
+</div>
+
+<div id="adminPage" style="display:none;">
+  <header>
+    <h1>管理员后台</h1>
+    <a href="/stockmarketanalysis_wb">← 返回报告</a>
+  </header>
+
+  <div class="container">
+    <div class="section">
+      <h3>📈 持有清单操作</h3>
+      <div id="holdingsLoading">加载中...</div>
+      <div id="holdingsTable" style="display:none;">
+        <input type="text" id="holdingsSearch" placeholder="🔍 搜索代码或名称..." style="width:100%;max-width:300px;padding:8px 12px;margin-bottom:12px;border:1px solid #e2e8f0;border-radius:6px;font-size:0.9rem;" oninput="filterHoldings()">
+        <table>
+          <thead>
+            <tr>
+              <th>代码</th><th>名称</th><th>市场</th><th>状态</th><th>评分</th>
+              <th>当前价</th><th>股数</th><th>盈亏%</th><th>天数</th><th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="holdingsBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>📉 沽后观察池操作</h3>
+      <div id="postSellLoading">加载中...</div>
+      <div id="postSellTable" style="display:none;">
+        <table>
+          <thead>
+            <tr>
+              <th>代码</th><th>名称</th><th>市场</th><th>卖出日</th><th>卖出价</th><th>持有收益</th><th>沽后涨跌</th><th>观察天数</th><th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="postSellBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="actionModal">
+  <div class="modal">
+    <h4 id="modalTitle">操作</h4>
+    <p id="modalInfo"></p>
+    <input type="number" id="modalShares" placeholder="股数" min="1">
+    <p id="modalSellHint" style="display:none; color:#64748b; font-size:0.85rem; margin-bottom:12px;">⚠️ 点击确认将清仓卖出该股票</p>
+    <input type="text" id="modalReason" placeholder="原因（卖出时可选）" style="display:none;">
+    <div class="actions">
+      <button class="cancel" onclick="closeModal()">取消</button>
+      <button class="confirm" id="modalConfirm" onclick="confirmAction()">确认</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API_URL = 'https://tri-market-api-rzer.vercel.app/api';
+const GITHUB_RAW = 'https://raw.githubusercontent.com/laodingtouzi/laodinglab/main';
+let currentAction, currentCode, currentName, currentMarket, currentPrice;
+let holdingsDataCache = {};
+
+function doLogin() {
+  const pwd = document.getElementById('pwdInput').value;
+  if (pwd === 'laoding2026') {
+    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('adminPage').style.display = 'block';
+    loadData();
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+  }
+}
+
+async function loadData() {
+  const t = '?t=' + Date.now();
+  const noCache = { cache: 'no-store' };
+  try {
+    const [cn, hk, us] = await Promise.all([
+      fetch(GITHUB_RAW + '/data/portfolio_wb/holdings_CN.json' + t, noCache).then(r => r.json()),
+      fetch(GITHUB_RAW + '/data/portfolio_wb/holdings_HK.json' + t, noCache).then(r => r.json()),
+      fetch(GITHUB_RAW + '/data/portfolio_wb/holdings_US.json' + t, noCache).then(r => r.json())
+    ]);
+    const allHoldings = { ...cn, ...hk, ...us };
+    holdingsDataCache = allHoldings;
+    renderHoldings(allHoldings);
+
+    const [psCN, psHK, psUS] = await Promise.all([
+      fetch(GITHUB_RAW + '/data/portfolio_wb/post_sell_CN.json' + t, noCache).then(r => r.json()),
+      fetch(GITHUB_RAW + '/data/portfolio_wb/post_sell_HK.json' + t, noCache).then(r => r.json()),
+      fetch(GITHUB_RAW + '/data/portfolio_wb/post_sell_US.json' + t, noCache).then(r => r.json())
+    ]);
+    const allPostSell = { ...psCN, ...psHK, ...psUS };
+    renderPostSell(allPostSell);
+  } catch (e) {
+    showToast('数据加载失败: ' + e.message, 'error');
+  }
+}
+
+function renderHoldings(data) {
+  const tbody = document.getElementById('holdingsBody');
+  // 按市场排序：CN → HK → US，同市场内按评分降序
+  const marketOrder = { 'CN': 0, 'HK': 1, 'US': 2 };
+  const items = Object.entries(data).sort((a, b) => {
+    const ma = marketOrder[a[1].market] ?? 99;
+    const mb = marketOrder[b[1].market] ?? 99;
+    if (ma !== mb) return ma - mb;
+    return (b[1].latest_score || 0) - (a[1].latest_score || 0);
+  });
+  tbody.innerHTML = items.map(([code, h]) => `
+    <tr id="hold-row-${code}" data-code="${code.toLowerCase()}" data-name="${(h.name || '').toLowerCase()}">
+      <td>${code}</td>
+      <td><strong>${h.name || ''}</strong></td>
+      <td>${h.market || ''}</td>
+      <td>${h.status || ''}</td>
+      <td>${h.latest_score || ''}</td>
+      <td>${h.current_price || ''}</td>
+      <td id="hold-shares-${code}">${(h.shares || 0).toLocaleString()}</td>
+      <td style="color:${(h.total_return || 0) >= 0 ? '#16a34a' : '#dc2626'}">${(h.total_return || 0).toFixed(1)}%</td>
+      <td>${h.hold_days || 0}</td>
+      <td>
+        <button class="btn btn-add" onclick="openModal('add', '${code}', '${h.name || ''}', '${h.market || ''}', ${h.current_price || 0})">加仓</button>
+        <button class="btn btn-reduce" onclick="openModal('reduce', '${code}', '${h.name || ''}', '${h.market || ''}', ${h.current_price || 0})">减仓</button>
+        <button class="btn btn-sell" onclick="openModal('sell', '${code}', '${h.name || ''}', '${h.market || ''}', ${h.current_price || 0})">卖出</button>
+      </td>
+    </tr>
+  `).join('');
+  document.getElementById('holdingsLoading').style.display = 'none';
+  document.getElementById('holdingsTable').style.display = 'block';
+}
+
+function filterHoldings() {
+  const kw = document.getElementById('holdingsSearch').value.trim().toLowerCase();
+  const rows = document.querySelectorAll('#holdingsBody tr');
+  rows.forEach(row => {
+    const code = row.getAttribute('data-code') || '';
+    const name = row.getAttribute('data-name') || '';
+    row.style.display = (!kw || code.includes(kw) || name.includes(kw)) ? '' : 'none';
+  });
+}
+
+function renderPostSell(data) {
+  const tbody = document.getElementById('postSellBody');
+  const items = Object.entries(data).sort((a, b) => (a[1].sell_date || '').localeCompare(b[1].sell_date || ''));
+  tbody.innerHTML = items.map(([code, ps]) => `
+    <tr id="post-row-${code}">
+      <td>${code}</td>
+      <td><strong>${ps.name || ''}</strong></td>
+      <td>${ps.market || ''}</td>
+      <td>${ps.sell_date || ''}</td>
+      <td>${ps.sell_price || ''}</td>
+      <td>${(ps.total_return_when_sold || 0).toFixed(1)}%</td>
+      <td>${(ps.post_sell_return || 0).toFixed(1)}%</td>
+      <td>${ps.hold_days || 0}</td>
+      <td><button class="btn btn-delist" onclick="doDelist('${code}')">剔除</button></td>
+    </tr>
+  `).join('');
+  document.getElementById('postSellLoading').style.display = 'none';
+  document.getElementById('postSellTable').style.display = 'block';
+}
+
+function openModal(action, code, name, market, price) {
+  currentAction = action; currentCode = code; currentName = name; currentMarket = market; currentPrice = price;
+  const titles = { add: '➕ 加仓', reduce: '➖ 减仓', sell: '⤵️ 卖出（清仓）' };
+  document.getElementById('modalTitle').textContent = titles[action] || '操作';
+  document.getElementById('modalInfo').textContent = code + ' ' + name + ' | 现价 ' + price;
+  const sharesInput = document.getElementById('modalShares');
+  const sellHint = document.getElementById('modalSellHint');
+  const reasonInput = document.getElementById('modalReason');
+  if (action === 'sell') {
+    sharesInput.style.display = 'none';
+    sellHint.style.display = 'block';
+    reasonInput.style.display = 'block';
+  } else {
+    sharesInput.style.display = 'block';
+    sharesInput.value = '';
+    sellHint.style.display = 'none';
+    reasonInput.style.display = 'none';
+  }
+  reasonInput.value = '';
+  document.getElementById('actionModal').style.display = 'flex';
+}
+
+function closeModal() { document.getElementById('actionModal').style.display = 'none'; }
+
+async function confirmAction() {
+  let shares = 0;
+  if (currentAction !== 'sell') {
+    shares = parseInt(document.getElementById('modalShares').value, 10);
+    if (!shares || shares <= 0) { showToast('请输入有效股数', 'error'); return; }
+  }
+
+  const payloads = {
+    add: { action: 'add', code: currentCode, market: currentMarket, add_shares: shares, add_price: currentPrice },
+    reduce: { action: 'reduce', code: currentCode, market: currentMarket, reduce_shares: shares },
+    sell: { action: 'sell', code: currentCode, market: currentMarket, sell_price: currentPrice, reason: document.getElementById('modalReason').value || '手工卖出' }
+  };
+
+  closeModal();
+  try {
+    const resp = await fetch(API_URL, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payloads[currentAction])
+    });
+    const data = await resp.json();
+    if (data.success) {
+      showToast(data.message, 'success');
+      if (data.sold_out) {
+        const row = document.getElementById('hold-row-' + currentCode);
+        if (row) row.remove();
+      } else if (data.updated_stock) {
+        const s = data.updated_stock;
+        const row = document.getElementById('hold-row-' + currentCode);
+        if (row) {
+          row.cells[3].textContent = s.status || '';
+          row.cells[4].textContent = s.latest_score || '';
+          row.cells[5].textContent = s.current_price || '';
+          row.cells[6].textContent = (s.shares || 0).toLocaleString();
+          row.cells[7].textContent = (s.total_return || 0).toFixed(1) + '%';
+          row.cells[7].style.color = (s.total_return || 0) >= 0 ? '#16a34a' : '#dc2626';
+          row.cells[8].textContent = s.hold_days || 0;
+        }
+      }
+    } else {
+      showToast(data.error || '操作失败', 'error');
+    }
+  } catch (e) {
+    showToast('请求失败: ' + e.message, 'error');
+  }
+}
+
+async function doDelist(code) {
+  if (!confirm('确认剔除 ' + code + '？')) return;
+  try {
+    const resp = await fetch(API_URL, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'delist', code })
+    });
+    const data = await resp.json();
+    if (data.success) {
+      showToast(data.message, 'success');
+      const row = document.getElementById('post-row-' + code);
+      if (row) row.remove();
+    } else {
+      showToast(data.error || '剔除失败', 'error');
+    }
+  } catch (e) {
+    showToast('请求失败: ' + e.message, 'error');
+  }
+}
+
+function showToast(msg, type) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.className = 'toast ' + type;
+  toast.style.display = 'block';
+  setTimeout(() => toast.style.display = 'none', 3000);
+}
+</script>
+
+</body>
+</html>
