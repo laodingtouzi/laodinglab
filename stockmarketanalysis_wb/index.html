@@ -5775,22 +5775,57 @@ tr:hover { background: #f1f5f9; }
             if (tip) tip.textContent = entry.full || entry;
         }
     });
-    // 因子明细懒加载——展开时fetch外部HTML碎片
+    // 因子明细懒加载 + 后台预加载（prefetch）
     var fd = document.getElementById('factor-detail');
+    var files = ["factor_data_cn_0.html", "factor_data_cn_1.html", "factor_data_cn_2.html", "factor_data_cn_3.html", "factor_data_cn_4.html", "factor_data_cn_5.html", "factor_data_cn_6.html", "factor_data_cn_7.html", "factor_data_hk_0.html", "factor_data_hk_1.html", "factor_data_hk_2.html", "factor_data_us.html"];
+    var prefetchedHTML = null;
+    var prefetching = false;
+
+    function loadFiles(){
+        return Promise.all(files.map(function(fname){
+            return fetch(fname).then(function(r){ return r.text(); });
+        }));
+    }
+
+    // 后台预加载：页面渲染后2秒，趁用户浏览时偷偷拉取因子数据
+    setTimeout(function(){
+        if (prefetchedHTML || prefetching) return;
+        prefetching = true;
+        loadFiles().then(function(parts){
+            prefetchedHTML = parts.join('');
+            prefetching = false;
+            // 如果用户已经展开了，直接填入
+            if (fd && fd.open && !fd.dataset.loaded){
+                document.getElementById('factor-detail-content').innerHTML = prefetchedHTML;
+                fd.dataset.loaded = 'true';
+            }
+        }).catch(function(){ prefetching = false; });
+    }, 2000);
+
+    // 用户点击展开时
     if (fd){
         fd.addEventListener('toggle', function(){
             if (fd.open && !fd.dataset.loaded){
                 var container = document.getElementById('factor-detail-content');
-                container.innerHTML = '<p style="text-align:center; padding:20px; color:var(--text-muted);">加载中…</p>';
-                var files = ["factor_data_cn_0.html", "factor_data_cn_1.html", "factor_data_cn_2.html", "factor_data_cn_3.html", "factor_data_cn_4.html", "factor_data_cn_5.html", "factor_data_cn_6.html", "factor_data_cn_7.html", "factor_data_hk_0.html", "factor_data_hk_1.html", "factor_data_hk_2.html", "factor_data_us.html"];
-                Promise.all(files.map(function(fname){
-                    return fetch(fname).then(function(r){ return r.text(); });
-                })).then(function(parts){
-                    container.innerHTML = parts.join('');
+                if (prefetchedHTML){
+                    // 数据已预加载，瞬间显示
+                    container.innerHTML = prefetchedHTML;
                     fd.dataset.loaded = 'true';
-                }).catch(function(e){
-                    container.innerHTML = '<p style="color:var(--sell);">因子数据加载失败: ' + e.message + '</p>';
-                });
+                } else {
+                    container.innerHTML = '<p style="text-align:center; padding:20px; color:var(--text-muted);">加载中…</p>';
+                    if (!prefetching){
+                        prefetching = true;
+                        loadFiles().then(function(parts){
+                            prefetchedHTML = parts.join('');
+                            prefetching = false;
+                            container.innerHTML = prefetchedHTML;
+                            fd.dataset.loaded = 'true';
+                        }).catch(function(e){
+                            prefetching = false;
+                            container.innerHTML = '<p style="color:var(--sell);">因子数据加载失败: ' + e.message + '</p>';
+                        });
+                    }
+                }
             }
         });
     }
