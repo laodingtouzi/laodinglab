@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WB vs Kimi 选股差异对比 · 老丁实验室</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #fdf6f0; --bg-surface: #ffffff; --text: #1c1917;
+    --text-secondary: #57534e; --text-muted: #a8a29e;
+    --border: #f5e6d8; --border-hover: #e7d5c3;
+    --accent: #ea580c; --accent-light: #fed7aa;
+    --primary: #ea580c; --success: #16a34a; --danger: #dc2626; --warning: #ca8a04;
+    --kimi-color: #2563eb; --wb-color: #ea580c;
+    --sans: 'Inter', 'Noto Sans SC', 'PingFang SC', sans-serif;
+    --serif: 'Noto Serif SC', Georgia, serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.6; }
+.container { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+
+/* HEADER */
+.site-header { background: var(--bg-surface); border-bottom: 1px solid var(--border); padding: 14px 24px; }
+.header-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.logo-group { display: flex; align-items: center; gap: 8px; }
+.logo-mark { width: 28px; height: 28px; border-radius: 6px; background: linear-gradient(135deg, #ea580c, #dc2626); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #fff; flex-shrink: 0; }
+.site-name { font-size: 15px; font-weight: 600; color: var(--text); }
+.site-name-en { font-family: 'Roboto Mono', monospace; font-size: 9px; color: var(--text-muted); letter-spacing: .12em; text-transform: uppercase; }
+.site-nav { display: flex; gap: 20px; align-items: center; }
+.site-nav a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color .2s; }
+.site-nav a:hover { color: var(--accent); }
+
+/* HERO */
+.hero { background: linear-gradient(135deg, #fff7ed 0%, #fdf6f0 100%); padding: 40px 24px; border-bottom: 1px solid var(--border); }
+.hero-inner { max-width: 1200px; margin: 0 auto; }
+.hero-eyebrow { font-size: 12px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 8px; }
+.hero-title { font-family: var(--serif); font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+.hero-desc { font-size: 14px; color: var(--text-secondary); max-width: 700px; }
+
+/* STATS */
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 24px 0; }
+.stat-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; text-align: center; }
+.stat-card .stat-label { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+.stat-card .stat-value { font-size: 32px; font-weight: 700; }
+.stat-card .stat-sub { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+.stat-kimi .stat-value { color: var(--kimi-color); }
+.stat-wb .stat-value { color: var(--wb-color); }
+.stat-overlap .stat-value { color: var(--success); }
+.stat-kimi-only .stat-value { color: var(--kimi-color); }
+.stat-wb-only .stat-value { color: var(--wb-color); }
+
+/* SECTION */
+.section { margin: 32px 0; }
+.section-title { font-family: var(--serif); font-size: 20px; font-weight: 600; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid var(--accent); display: flex; align-items: center; gap: 8px; }
+.section-title .badge { font-size: 12px; font-weight: 500; padding: 2px 10px; border-radius: 12px; background: var(--accent-light); color: var(--accent); }
+
+/* TABLE */
+.table-wrap { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { background: #fff7ed; padding: 10px 14px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 1px solid var(--border); white-space: nowrap; }
+td { padding: 8px 14px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #fffaf5; }
+.market-cn { background: #fef3c7; color: #a16207; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.market-hk { background: #dcfce7; color: #15803d; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.market-us { background: #e0e7ff; color: #4338ca; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.up { color: var(--danger); font-weight: 600; }
+.down { color: var(--success); font-weight: 600; }
+.tag-kimi { background: #dbeafe; color: #2563eb; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.tag-wb { background: #fed7aa; color: #ea580c; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.tag-both { background: #dcfce7; color: #16a34a; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+
+/* LOADING / ERROR */
+.loading { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+.loading .spinner { display: inline-block; width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 12px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.error-box { background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px; padding: 20px; margin: 20px 0; color: #991b1b; }
+.info-box { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 10px; padding: 16px 20px; margin: 20px 0; font-size: 13px; color: var(--text-secondary); }
+
+/* FOOTER */
+.site-footer { background: var(--bg-surface); border-top: 1px solid var(--border); padding: 20px 24px; margin-top: 40px; }
+.footer-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+.footer-brand { font-size: 13px; font-weight: 600; }
+.footer-note { font-size: 11px; color: var(--text-muted); }
+.footer-disclaimer { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo-group">
+      <div class="logo-mark">L</div>
+      <div>
+        <div class="site-name">老丁实验室</div>
+        <div class="site-name-en">Laodinglab</div>
+      </div>
+    </div>
+    <nav class="site-nav">
+      <a href="/">首页</a>
+      <a href="/stockmarketanalysis_wb">选股模型(WB)</a>
+      <a href="/stockmarketanalysis">选股模型(Kimi)</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">WB vs Kimi · Daily Comparison</div>
+    <h1 class="hero-title">选股结果差异对比</h1>
+    <p class="hero-desc">对比当天 WB版 与 Kimi版 选股模型的持仓差异，包括重叠持仓、各自独有持仓及评分对比。数据来源于两版独立的 portfolio_v5.json。</p>
+  </div>
+</section>
+
+<div class="container">
+  <div id="loading" class="loading">
+    <div class="spinner"></div>
+    <p>正在加载两版选股数据...</p>
+  </div>
+  <div id="content" style="display:none;">
+
+    <div class="info-box" id="dataStatus"></div>
+
+    <div class="stats-grid">
+      <div class="stat-card stat-kimi">
+        <div class="stat-label">Kimi版 持仓数</div>
+        <div class="stat-value" id="kimiCount">-</div>
+        <div class="stat-sub">蓝色系 · laodinglab.com/stockmarketanalysis</div>
+      </div>
+      <div class="stat-card stat-wb">
+        <div class="stat-label">WB版 持仓数</div>
+        <div class="stat-value" id="wbCount">-</div>
+        <div class="stat-sub">橙色系 · laodinglab.com/stockmarketanalysis_wb</div>
+      </div>
+      <div class="stat-card stat-overlap">
+        <div class="stat-label">重叠持仓</div>
+        <div class="stat-value" id="overlapCount">-</div>
+        <div class="stat-sub">两版共同持有</div>
+      </div>
+      <div class="stat-card stat-kimi-only">
+        <div class="stat-label">Kimi独有</div>
+        <div class="stat-value" id="kimiOnlyCount">-</div>
+        <div class="stat-sub">Kimi持有 / WB未持有</div>
+      </div>
+      <div class="stat-card stat-wb-only">
+        <div class="stat-label">WB独有</div>
+        <div class="stat-value" id="wbOnlyCount">-</div>
+        <div class="stat-sub">WB持有 / Kimi未持有</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">重叠持仓对比 <span class="badge" id="overlapBadge">0只</span></h2>
+      <div class="table-wrap">
+        <table id="overlapTable">
+          <thead>
+            <tr>
+              <th>代码</th><th>名称</th><th>市场</th>
+              <th>Kimi评分</th><th>WB评分</th><th>评分差异</th>
+              <th>Kimi状态</th><th>WB状态</th>
+              <th>Kimi盈亏</th><th>WB盈亏</th>
+            </tr>
+          </thead>
+          <tbody id="overlapBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Kimi独有持仓 <span class="badge" id="kimiOnlyBadge">0只</span></h2>
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom:12px;">Kimi版持有但WB版未持有的股票——可能是WB版已卖出或未买入的标的。</p>
+      <div class="table-wrap">
+        <table id="kimiOnlyTable">
+          <thead>
+            <tr>
+              <th>代码</th><th>名称</th><th>市场</th><th>评分</th><th>状态</th><th>盈亏</th><th>持有天数</th>
+            </tr>
+          </thead>
+          <tbody id="kimiOnlyBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">WB独有持仓 <span class="badge" id="wbOnlyBadge">0只</span></h2>
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom:12px;">WB版持有但Kimi版未持有的股票——可能是WB版新买入或Kimi版已卖出的标的。</p>
+      <div class="table-wrap">
+        <table id="wbOnlyTable">
+          <thead>
+            <tr>
+              <th>代码</th><th>名称</th><th>市场</th><th>评分</th><th>状态</th><th>盈亏</th><th>持有天数</th>
+            </tr>
+          </thead>
+          <tbody id="wbOnlyBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">沽后观察对比 <span class="badge" id="postSellBadge">0只</span></h2>
+      <div class="table-wrap">
+        <table id="postSellTable">
+          <thead>
+            <tr>
+              <th>代码</th><th>名称</th><th>市场</th><th>来源</th><th>卖出日期</th><th>卖出价</th><th>当前价</th><th>卖后涨跌</th>
+            </tr>
+          </thead>
+          <tbody id="postSellBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">老丁实验室 Laodinglab</div>
+      <div class="footer-disclaimer">⚠️ 免责声明：本对比页面仅供研究参考，不构成投资建议。</div>
+    </div>
+    <div class="footer-note">WB vs Kimi Diff · AUTOMATED</div>
+  </div>
+</footer>
+
+<script>
+const KIMI_URL = '/stockmarketanalysis/data/portfolio_v5.json';
+const WB_URL = '/stockmarketanalysis_wb/data/portfolio_v5.json';
+
+function getMarket(code) {
+    if (!code) return 'CN';
+    const c = String(code);
+    if (c.startsWith('HK') || c.endsWith('.HK') || c.startsWith('0') && c.length === 5) return 'HK';
+    if (c.includes('.') && /[A-Z]/.test(c.split('.')[1])) return 'US';
+    return 'CN';
+}
+
+function marketBadge(code) {
+    const m = getMarket(code);
+    return `<span class="market-${m.toLowerCase()}">${m}</span>`;
+}
+
+function safeNum(v) {
+    const n = parseFloat(v);
+    return isNaN(n) ? null : n;
+}
+
+function pctClass(v) {
+    const n = safeNum(v);
+    if (n === null) return '';
+    return n > 0 ? 'up' : (n < 0 ? 'down' : '');
+}
+
+function fmtPct(v) {
+    const n = safeNum(v);
+    if (n === null) return '—';
+    return (n > 0 ? '+' : '') + n.toFixed(1) + '%';
+}
+
+function fmtScore(v) {
+    const n = safeNum(v);
+    if (n === null) return '—';
+    return n.toFixed(1);
+}
+
+async function loadJSON(url) {
+    try {
+        const resp = await fetch(url + '?t=' + Date.now());
+        if (!resp.ok) return null;
+        return await resp.json();
+    } catch(e) {
+        return null;
+    }
+}
+
+async function main() {
+    const [kimiData, wbData] = await Promise.all([loadJSON(KIMI_URL), loadJSON(WB_URL)]);
+
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('content').style.display = 'block';
+
+    const statusEl = document.getElementById('dataStatus');
+    let statusParts = [];
+    if (kimiData) {
+        statusParts.push('<span class="tag-kimi">Kimi版 ✅ 已加载</span>');
+    } else {
+        statusParts.push('<span class="tag-kimi">Kimi版 ❌ 加载失败</span>（Kimi版可能尚未运行或未部署）');
+    }
+    if (wbData) {
+        statusParts.push('<span class="tag-wb">WB版 ✅ 已加载</span>');
+    } else {
+        statusParts.push('<span class="tag-wb">WB版 ❌ 加载失败</span>（WB版可能尚未运行或未部署）');
+    }
+    statusEl.innerHTML = statusParts.join(' · ');
+
+    if (!kimiData && !wbData) {
+        statusEl.innerHTML = '<div class="error-box">⚠️ 两版数据均加载失败。请确认两版选股模型都已运行并部署到 GitHub Pages。</div>';
+        return;
+    }
+
+    const kimiHoldings = (kimiData && kimiData.holdings) || {};
+    const wbHoldings = (wbData && wbData.holdings) || {};
+    const kimiPostSell = (kimiData && kimiData.post_sell) || {};
+    const wbPostSell = (wbData && wbData.post_sell) || {};
+
+    const kimiKeys = new Set(Object.keys(kimiHoldings));
+    const wbKeys = new Set(Object.keys(wbHoldings));
+    const overlapKeys = [...kimiKeys].filter(k => wbKeys.has(k));
+    const kimiOnlyKeys = [...kimiKeys].filter(k => !wbKeys.has(k));
+    const wbOnlyKeys = [...wbKeys].filter(k => !kimiKeys.has(k));
+
+    // Stats
+    document.getElementById('kimiCount').textContent = kimiKeys.size;
+    document.getElementById('wbCount').textContent = wbKeys.size;
+    document.getElementById('overlapCount').textContent = overlapKeys.length;
+    document.getElementById('kimiOnlyCount').textContent = kimiOnlyKeys.length;
+    document.getElementById('wbOnlyCount').textContent = wbOnlyKeys.length;
+    document.getElementById('overlapBadge').textContent = overlapKeys.length + '只';
+    document.getElementById('kimiOnlyBadge').textContent = kimiOnlyKeys.length + '只';
+    document.getElementById('wbOnlyBadge').textContent = wbOnlyKeys.length + '只';
+
+    // Overlap table
+    const overlapBody = document.getElementById('overlapBody');
+    overlapKeys.sort((a, b) => {
+        const ks = safeNum(kimiHoldings[a]?.final_score || kimiHoldings[a]?.score) || 0;
+        return (safeNum(wbHoldings[b]?.final_score || wbHoldings[b]?.score) || 0) - (safeNum(wbHoldings[a]?.final_score || wbHoldings[a]?.score) || 0);
+    });
+    overlapKeys.forEach(code => {
+        const k = kimiHoldings[code] || {};
+        const w = wbHoldings[code] || {};
+        const ks = safeNum(k.final_score || k.score);
+        const ws = safeNum(w.final_score || w.score);
+        let diffStr = '—', diffCls = '';
+        if (ks !== null && ws !== null) {
+            const diff = ws - ks;
+            diffStr = (diff > 0 ? '+' : '') + diff.toFixed(1);
+            diffCls = diff > 0 ? 'up' : (diff < 0 ? 'down' : '');
+        }
+        const name = k.name || w.name || code;
+        overlapBody.innerHTML += `<tr>
+            <td>${code}</td><td>${name}</td><td>${marketBadge(code)}</td>
+            <td>${fmtScore(ks)}</td><td>${fmtScore(ws)}</td><td class="${diffCls}">${diffStr}</td>
+            <td>${k.status || '—'}</td><td>${w.status || '—'}</td>
+            <td class="${pctClass(k.total_return)}">${fmtPct(k.total_return)}</td>
+            <td class="${pctClass(w.total_return)}">${fmtPct(w.total_return)}</td>
+        </tr>`;
+    });
+
+    // Kimi only table
+    const kimiOnlyBody = document.getElementById('kimiOnlyBody');
+    kimiOnlyKeys.sort((a, b) => (safeNum(kimiHoldings[b]?.final_score || kimiHoldings[b]?.score) || 0) - (safeNum(kimiHoldings[a]?.final_score || kimiHoldings[a]?.score) || 0));
+    kimiOnlyKeys.forEach(code => {
+        const k = kimiHoldings[code] || {};
+        const name = k.name || code;
+        kimiOnlyBody.innerHTML += `<tr>
+            <td>${code}</td><td>${name}</td><td>${marketBadge(code)}</td>
+            <td>${fmtScore(k.final_score || k.score)}</td><td>${k.status || '—'}</td>
+            <td class="${pctClass(k.total_return)}">${fmtPct(k.total_return)}</td><td>${k.hold_days ?? '—'}</td>
+        </tr>`;
+    });
+
+    // WB only table
+    const wbOnlyBody = document.getElementById('wbOnlyBody');
+    wbOnlyKeys.sort((a, b) => (safeNum(wbHoldings[b]?.final_score || wbHoldings[b]?.score) || 0) - (safeNum(wbHoldings[a]?.final_score || wbHoldings[a]?.score) || 0));
+    wbOnlyKeys.forEach(code => {
+        const w = wbHoldings[code] || {};
+        const name = w.name || code;
+        wbOnlyBody.innerHTML += `<tr>
+            <td>${code}</td><td>${name}</td><td>${marketBadge(code)}</td>
+            <td>${fmtScore(w.final_score || w.score)}</td><td>${w.status || '—'}</td>
+            <td class="${pctClass(w.total_return)}">${fmtPct(w.total_return)}</td><td>${w.hold_days ?? '—'}</td>
+        </tr>`;
+    });
+
+    // Post-sell comparison
+    const allPostSellKeys = new Set([...Object.keys(kimiPostSell), ...Object.keys(wbPostSell)]);
+    document.getElementById('postSellBadge').textContent = allPostSellKeys.size + '只';
+    const postSellBody = document.getElementById('postSellBody');
+    [...allPostSellKeys].forEach(code => {
+        const inKimi = kimiPostSell[code];
+        const inWB = wbPostSell[code];
+        const src = inKimi && inWB ? '<span class="tag-both">两版</span>' : (inKimi ? '<span class="tag-kimi">Kimi</span>' : '<span class="tag-wb">WB</span>');
+        const ps = inKimi || inWB;
+        const name = ps?.name || code;
+        const sellDate = ps?.sell_date || '—';
+        const sellPrice = ps?.sell_price || ps?.entry_price || '—';
+        const currentPrice = ps?.current_price || '—';
+        const postReturn = ps?.total_return_when_sold || ps?.post_sell_return;
+        postSellBody.innerHTML += `<tr>
+            <td>${code}</td><td>${name}</td><td>${marketBadge(code)}</td><td>${src}</td>
+            <td>${sellDate}</td><td>${sellPrice}</td><td>${currentPrice}</td>
+            <td class="${pctClass(postReturn)}">${fmtPct(postReturn)}</td>
+        </tr>`;
+    });
+}
+
+main();
+</script>
+
+</body>
+</html>
