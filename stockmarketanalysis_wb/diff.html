@@ -323,14 +323,14 @@ async function main() {
     // Overlap table
     const overlapBody = document.getElementById('overlapBody');
     overlapKeys.sort((a, b) => {
-        const ks = safeNum(kimiHoldings[a]?.final_score || kimiHoldings[a]?.score) || 0;
-        return (safeNum(wbHoldings[b]?.final_score || wbHoldings[b]?.score) || 0) - (safeNum(wbHoldings[a]?.final_score || wbHoldings[a]?.score) || 0);
+        const ks = safeNum(kimiHoldings[a]?.latest_score || kimiHoldings[a]?.score) || 0;
+        return (safeNum(wbHoldings[b]?.latest_score || wbHoldings[b]?.score) || 0) - (safeNum(wbHoldings[a]?.latest_score || wbHoldings[a]?.score) || 0);
     });
     overlapKeys.forEach(code => {
         const k = kimiHoldings[code] || {};
         const w = wbHoldings[code] || {};
-        const ks = safeNum(k.final_score || k.score);
-        const ws = safeNum(w.final_score || w.score);
+        const ks = safeNum(k.latest_score || k.score);
+        const ws = safeNum(w.latest_score || w.score);
         let diffStr = '—', diffCls = '';
         if (ks !== null && ws !== null) {
             const diff = ws - ks;
@@ -349,26 +349,26 @@ async function main() {
 
     // Kimi only table
     const kimiOnlyBody = document.getElementById('kimiOnlyBody');
-    kimiOnlyKeys.sort((a, b) => (safeNum(kimiHoldings[b]?.final_score || kimiHoldings[b]?.score) || 0) - (safeNum(kimiHoldings[a]?.final_score || kimiHoldings[a]?.score) || 0));
+    kimiOnlyKeys.sort((a, b) => (safeNum(kimiHoldings[b]?.latest_score || kimiHoldings[b]?.score) || 0) - (safeNum(kimiHoldings[a]?.latest_score || kimiHoldings[a]?.score) || 0));
     kimiOnlyKeys.forEach(code => {
         const k = kimiHoldings[code] || {};
         const name = k.name || code;
         kimiOnlyBody.innerHTML += `<tr>
             <td>${code}</td><td>${name}</td><td>${marketBadge(code)}</td>
-            <td>${fmtScore(k.final_score || k.score)}</td><td>${k.status || '—'}</td>
+            <td>${fmtScore(k.latest_score || k.score)}</td><td>${k.status || '—'}</td>
             <td class="${pctClass(k.total_return)}">${fmtPct(k.total_return)}</td><td>${k.hold_days ?? '—'}</td>
         </tr>`;
     });
 
     // WB only table
     const wbOnlyBody = document.getElementById('wbOnlyBody');
-    wbOnlyKeys.sort((a, b) => (safeNum(wbHoldings[b]?.final_score || wbHoldings[b]?.score) || 0) - (safeNum(wbHoldings[a]?.final_score || wbHoldings[a]?.score) || 0));
+    wbOnlyKeys.sort((a, b) => (safeNum(wbHoldings[b]?.latest_score || wbHoldings[b]?.score) || 0) - (safeNum(wbHoldings[a]?.latest_score || wbHoldings[a]?.score) || 0));
     wbOnlyKeys.forEach(code => {
         const w = wbHoldings[code] || {};
         const name = w.name || code;
         wbOnlyBody.innerHTML += `<tr>
             <td>${code}</td><td>${name}</td><td>${marketBadge(code)}</td>
-            <td>${fmtScore(w.final_score || w.score)}</td><td>${w.status || '—'}</td>
+            <td>${fmtScore(w.latest_score || w.score)}</td><td>${w.status || '—'}</td>
             <td class="${pctClass(w.total_return)}">${fmtPct(w.total_return)}</td><td>${w.hold_days ?? '—'}</td>
         </tr>`;
     });
