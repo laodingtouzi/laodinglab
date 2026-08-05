@@ -3,18 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,400;1,600&family=Georgia&display=swap" rel="stylesheet">
 <style>
 :root {
-    --bg: #fdf6f0; --bg-surface: #ffffff; --text: #1c1917;
-    --text-secondary: #57534e; --text-muted: #a8a29e;
-    --border: #f5e6d8; --border-hover: #e7d5c3;
-    --accent: #b45309; --accent-light: #fde68a;
-    --shadow: rgba(28, 25, 23, 0.04); --shadow-hover: rgba(28, 25, 23, 0.08);
+    /* Yahoo Finance 紫色风格主题 */
+    --bg: #f5f0ff; --bg-surface: #ffffff; --text: #1a0a3d;
+    --text-secondary: #4c2b8f; --text-muted: #8b7ab8;
+    --border: #e5dafa; --border-hover: #c9b5ee;
+    /* Yahoo Finance 主色 #6001d1，深紫 #3c0d99 */
+    --accent: #5f01d1; --accent-deep: #3c0d99; --accent-light: #ede0ff;
+    --shadow: rgba(95, 1, 209, 0.06); --shadow-hover: rgba(95, 1, 209, 0.12);
     --sans: 'Inter', 'Noto Sans SC', 'PingFang SC', sans-serif;
-    --serif: 'Noto Serif SC', Georgia, serif;
-    --primary: #b45309; --success: #16a34a; --danger: #dc2626; --warning: #ca8a04;
+    --serif: 'Noto Serif SC', 'Georgia', serif;
+    --artistic: 'Playfair Display', 'Georgia', 'Noto Serif SC', serif;
+    --primary: #5f01d1; --success: #16a34a; --danger: #dc2626; --warning: #ca8a04;
     --buy: #16a34a; --sell: #dc2626; --hold: #ca8a04; --card: #ffffff;
+    /* 市场标识三国色 */
+    --market-cn-bg: #c8102e;     /* 中国红 */
+    --market-hk-bg: #5f01d1;     /* 雅虎紫 */
+    --market-us-bg: #001f54;     /* 海军蓝 */
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
@@ -37,7 +44,7 @@ body {
 .logo-group { display: flex; align-items: center; gap: 8px; }
 .logo-mark {
     width: 28px; height: 28px; border-radius: 6px;
-    background: linear-gradient(135deg, #b45309, #92400e);
+    background: linear-gradient(135deg, #5f01d1, #3c0d99);
     display: flex; align-items: center; justify-content: center;
     font-size: 13px; font-weight: 700; color: #fff; flex-shrink: 0;
 }
@@ -59,43 +66,54 @@ body {
 .site-nav a::after {
     content: ''; position: absolute; bottom: 0; left: 0;
     width: 0; height: 2px;
-    background: linear-gradient(90deg, #b45309, #92400e);
+    background: linear-gradient(90deg, #5f01d1, #3c0d99);
     transition: width .2s; border-radius: 1px;
 }
 .site-nav a:hover { color: var(--accent); }
 .site-nav a:hover::after { width: 100%; }
 
-/* HERO */
+/* HERO - Yahoo紫浓郁风格 */
 .hero {
-    background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 50%, #f0f9ff 100%);
+    background: linear-gradient(135deg, #5f01d1 0%, #4a01a8 50%, #3c0d99 100%);
     padding: 24px 24px 20px; text-align: center;
     border-bottom: 1px solid var(--border); position: relative; overflow: hidden;
 }
 .hero::before {
     content: ''; position: absolute; top: 50%; right: 10%;
     width: 200px; height: 200px;
-    background: radial-gradient(circle, rgba(37, 99, 235, 0.06) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.10) 0%, transparent 70%);
     transform: translateY(-50%); pointer-events: none;
 }
 .hero::after {
     content: ''; position: absolute; top: 20%; left: 8%;
     width: 160px; height: 160px;
-    background: radial-gradient(circle, rgba(124, 58, 237, 0.04) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.06) 0%, transparent 70%);
     pointer-events: none;
 }
 .hero-inner { max-width: 600px; margin: 0 auto; position: relative; z-index: 1; }
 .hero-eyebrow {
     font-family: 'Roboto Mono', monospace; font-size: 10px;
     letter-spacing: .2em; text-transform: uppercase;
-    color: var(--text-muted); margin-bottom: 6px;
+    color: rgba(255, 255, 255, 0.7); margin-bottom: 6px;
 }
 .hero-title {
     font-size: 40px; font-weight: 700; letter-spacing: -.01em;
-    line-height: 1.2; margin-bottom: 6px; color: var(--text);
+    line-height: 1.2; margin-bottom: 6px; color: #ffffff;
     font-family: var(--serif);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+.hero-title .wb-artistic {
+    font-family: var(--artistic);
+    font-style: italic;
+    font-weight: 600;
+    color: #fff;
+    font-size: 0.55em;
+    letter-spacing: 0.04em;
+    margin-left: 6px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 .hero-desc {
-    font-size: 13px; color: var(--text-secondary); line-height: 1.6;
+    font-size: 13px; color: rgba(255, 255, 255, 0.85); line-height: 1.6;
     font-weight: 300; max-width: 480px; margin: 0 auto;
 }
 .hero-stats {
@@ -148,7 +166,7 @@ body {
 table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
 th, td { padding: 10px 8px; text-align: left; border-bottom: 1px solid var(--border); }
 th { background: var(--bg); font-weight: 600; color: var(--text-muted); font-size: 0.85rem; position: sticky; top: 0; }
-tr:hover { background: #f1f5f9; }
+tr:hover { background: #f1ebff; }
 .rank { font-weight: 700; color: var(--text-muted); width: 40px; text-align: center; }
 .score { font-weight: 700; font-size: 1rem; }
 .score-buy { color: var(--buy); }
@@ -159,10 +177,11 @@ tr:hover { background: #f1f5f9; }
 .market-badge {
     display: inline-block; padding: 2px 8px; border-radius: 4px;
     font-size: 0.75rem; font-weight: 600;
+    color: #ffffff;
 }
-.market-cn { background: #fde68a; color: #92400e; }
-.market-hk { background: #dcfce7; color: #15803d; }
-.market-us { background: #fef3c7; color: #a16207; }
+.market-cn { background: var(--market-cn-bg); }   /* 中国红，字符反白 */
+.market-hk { background: var(--market-hk-bg); }   /* 雅虎紫，字符反白 */
+.market-us { background: var(--market-us-bg); }   /* 海军蓝，字符反白 */
 .up { color: var(--buy); }
 .down { color: var(--sell); }
 .code { color: var(--text-muted); font-size: 0.8rem; }
@@ -188,8 +207,8 @@ tr:hover { background: #f1f5f9; }
     .change-reason { min-width: 160px; max-width: 220px; font-size: 0.85rem; line-height: 1.3; color: #6b7d8f; }
     .entry-date-gray { color: #94a3b8; font-size: 0.85rem; }
     .price-bold { font-weight: 700; }
-    .pinned-row { background-color: #fff3cd !important; }
-    .pinned-row:hover { background-color: #ffe8a1 !important; }
+    .pinned-row { background-color: #ede0ff !important; }
+    .pinned-row:hover { background-color: #d9c4ff !important; }
     @media (max-width: 768px) {
         .name-cell { max-width: 80px; font-size: 0.75rem; }
         .change-reason { min-width: 100px; max-width: 140px; }
@@ -376,15 +395,15 @@ tr:hover { background: #f1f5f9; }
 <section class="hero">
   <div class="hero-inner">
     <div class="hero-eyebrow">Post-Market Report · 2026-08-05</div>
-    <h1 class="hero-title">全球选股模型 v5 <span style="font-size:0.55em; color:var(--accent); font-weight:500;">WB版</span></h1>
+    <h1 class="hero-title">全球选股模型 v5 <span class="wb-artistic">WB版</span></h1>
     <p class="hero-desc">多因子量化选股模型盘后报告，基于质量、估值、事件、技术、动量五维因子评分。</p>
     <div class="hero-stats">
         <div class="hero-stat stat-buy">
-            <div class="number">12</div>
+            <div class="number">0</div>
             <div class="label">买入建议</div>
         </div>
         <div class="hero-stat stat-sell">
-            <div class="number">13</div>
+            <div class="number">0</div>
             <div class="label">卖出建议</div>
         </div>
         <div class="hero-stat stat-hold">
@@ -428,7 +447,7 @@ tr:hover { background: #f1f5f9; }
             <div>📉 单股最大浮亏：<b>Edison International(EIX.N) -8.9%</b></div>
             <div>💰 组合总盈亏：<b style="color: var(--success);">+1.3%</b>（259,617元）</div>
             <div>🔻 M↓ 降分持仓：<b>0</b> 只</div>
-            <div>🛑 今日硬止损触发：<b>1</b> 只</div>
+            <div>🛑 今日硬止损触发：<b>0</b> 只</div>
         </div>
         <div style="margin-bottom: 8px; padding: 8px 10px; background: #f0f9ff; border-radius: 4px; border-left: 3px solid var(--accent); font-size: 0.85rem;"><span style="color: var(--text-secondary); font-weight: 600;">情绪中性</span> · 近期主要事件：暂无显著事件</div>
         <div style="margin-top: 8px;"><a href="/stockmarketanalysis_wb/macro/" style="color: var(--primary, #b45309); text-decoration: none;">📊 查阅详细宏观事件驱动报告 →</a></div>
@@ -5561,7 +5580,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.37</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">000776.SZ</td>
@@ -5591,7 +5610,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.31</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">600027.SH</td>
@@ -5606,7 +5625,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.23</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">油气/煤加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">油气/煤加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">600036.SH</td>
@@ -5621,7 +5640,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.58</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">601328.SH</td>
@@ -5636,7 +5655,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.38</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">601398.SH</td>
@@ -5651,7 +5670,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.53</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">601939.SH</td>
@@ -5666,7 +5685,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.25</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">601995.SH</td>
@@ -5696,7 +5715,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.32</td>
                 <td class="nowrap entry-date-gray">26-07-27</td>
                 <td class="num">2</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">002966.SZ</td>
@@ -5711,7 +5730,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.43</td>
                 <td class="nowrap entry-date-gray">26-07-27</td>
                 <td class="num">2</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">600123.SH</td>
@@ -5726,7 +5745,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.66</td>
                 <td class="nowrap entry-date-gray">26-07-27</td>
                 <td class="num">2</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">油气/煤加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">油气/煤加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">600403.SH</td>
@@ -5741,7 +5760,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.46</td>
                 <td class="nowrap entry-date-gray">26-07-27</td>
                 <td class="num">2</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">油气/煤加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">油气/煤加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">00836.HK</td>
@@ -5756,7 +5775,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.59</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">油气/煤加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">油气/煤加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">01339.HK</td>
@@ -5771,7 +5790,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.48</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">00939.HK</td>
@@ -5786,7 +5805,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.14</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">03988.HK</td>
@@ -5801,7 +5820,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.13</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">01288.HK</td>
@@ -5831,7 +5850,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.14</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">01398.HK</td>
@@ -5846,7 +5865,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.08</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">01083.HK</td>
@@ -5861,7 +5880,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.12</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">油气/煤加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">油气/煤加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">02318.HK</td>
@@ -5876,7 +5895,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.18</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">02328.HK</td>
@@ -5891,7 +5910,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.18</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">01963.HK</td>
@@ -5906,7 +5925,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.27</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">03968.HK</td>
@@ -5921,7 +5940,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.04</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">00440.HK</td>
@@ -5936,7 +5955,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.55</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">00998.HK</td>
@@ -5951,7 +5970,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.03</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">JPM.N</td>
@@ -5966,7 +5985,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.06</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">GL.N</td>
@@ -5996,7 +6015,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.06</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">油气/煤加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">油气/煤加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">APA.O</td>
@@ -6011,7 +6030,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.05</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">油气/煤加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">油气/煤加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">AXP.N</td>
@@ -6085,7 +6104,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.15</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">000783.SZ</td>
@@ -6115,7 +6134,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.03</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">600015.SH</td>
@@ -6130,7 +6149,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.11</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">600919.SH</td>
@@ -6145,7 +6164,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.21</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">601077.SH</td>
@@ -6190,7 +6209,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.43</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">601658.SH</td>
@@ -6205,7 +6224,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.20</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">601818.SH</td>
@@ -6220,7 +6239,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.09</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">601988.SH</td>
@@ -6235,7 +6254,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.28</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">601688.SH</td>
@@ -6295,7 +6314,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.29</td>
                 <td class="nowrap entry-date-gray">26-07-27</td>
                 <td class="num">2</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">600098.SH</td>
@@ -6310,7 +6329,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.19</td>
                 <td class="nowrap entry-date-gray">26-07-27</td>
                 <td class="num">2</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">油气/煤加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">油气/煤加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">600901.SH</td>
@@ -6340,7 +6359,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.25</td>
                 <td class="nowrap entry-date-gray">26-07-27</td>
                 <td class="num">2</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">601577.SH</td>
@@ -6355,7 +6374,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.19</td>
                 <td class="nowrap entry-date-gray">26-07-27</td>
                 <td class="num">2</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">601860.SH</td>
@@ -6370,7 +6389,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.11</td>
                 <td class="nowrap entry-date-gray">26-07-27</td>
                 <td class="num">2</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">601997.SH</td>
@@ -6385,7 +6404,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.12</td>
                 <td class="nowrap entry-date-gray">26-07-27</td>
                 <td class="num">2</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">603323.SH</td>
@@ -6400,7 +6419,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.23</td>
                 <td class="nowrap entry-date-gray">26-07-27</td>
                 <td class="num">2</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">601998.SH</td>
@@ -6430,7 +6449,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.27</td>
                 <td class="nowrap entry-date-gray">26-07-27</td>
                 <td class="num">2</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">000059.SZ</td>
@@ -6445,7 +6464,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.15</td>
                 <td class="nowrap entry-date-gray">26-07-27</td>
                 <td class="num">2</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">油气/煤加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">油气/煤加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">600030.SH</td>
@@ -6565,7 +6584,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.11</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">03908.HK</td>
@@ -6580,7 +6599,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.04</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">00945.HK</td>
@@ -6610,7 +6629,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.18</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">00991.HK</td>
@@ -6625,7 +6644,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.04</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">油气/煤加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">油气/煤加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">02378.HK</td>
@@ -6640,7 +6659,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.36</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">06818.HK</td>
@@ -6655,7 +6674,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.19</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">06066.HK</td>
@@ -6670,7 +6689,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.34</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">02888.HK</td>
@@ -6700,7 +6719,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.08</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">00902.HK</td>
@@ -6790,7 +6809,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.23</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">02588.HK</td>
@@ -6820,7 +6839,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.01</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">油气/煤加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">油气/煤加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">AFL.N</td>
@@ -6865,7 +6884,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.03</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">AMP.N</td>
@@ -6910,7 +6929,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.04</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">油气/煤加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">油气/煤加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">GS.N</td>
@@ -6925,7 +6944,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.01</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">HIG.N</td>
@@ -6940,7 +6959,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.02</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">PCG.N</td>
@@ -6955,7 +6974,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.01</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">油气/煤加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">油气/煤加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">TRV.N</td>
@@ -6970,7 +6989,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.03</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">CINF.O</td>
@@ -7075,7 +7094,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.00</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">WRB.N</td>
@@ -7090,7 +7109,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num down">-0.04</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️未达预期</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#dcfce7;color:#166534;">银行/非加配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️未达预期</span></td>
             </tr>
 </tbody>
 </table>
@@ -7151,7 +7170,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.71</td>
                 <td class="nowrap entry-date-gray">26-07-27</td>
                 <td class="num">2</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">医药/生减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">医药/生减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">00293.HK</td>
@@ -7196,7 +7215,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.23</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">06690.HK</td>
@@ -7211,7 +7230,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.14</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">JNJ.N</td>
@@ -7256,7 +7275,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.06</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">软件/互减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">软件/互减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">EXPE.O</td>
@@ -7271,7 +7290,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.03</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">GIS.N</td>
@@ -7286,7 +7305,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.05</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">WSM.N</td>
@@ -7301,7 +7320,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.03</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">ADP.O</td>
@@ -7316,7 +7335,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.04</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">软件/互减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">软件/互减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">CCL.N</td>
@@ -7331,7 +7350,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.03</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">FOX.O</td>
@@ -7346,7 +7365,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.04</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">软件/互减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">软件/互减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">FOXA.O</td>
@@ -7361,7 +7380,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.03</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">软件/互减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">软件/互减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 </tbody>
 </table>
@@ -7390,7 +7409,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.14</td>
                 <td class="nowrap entry-date-gray">26-07-27</td>
                 <td class="num">2</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">600177.SH</td>
@@ -7435,7 +7454,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.23</td>
                 <td class="nowrap entry-date-gray">26-07-27</td>
                 <td class="num">2</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">600718.SH</td>
@@ -7555,7 +7574,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.18</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">医药/生减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">医药/生减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">00552.HK</td>
@@ -7585,7 +7604,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.22</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">软件/互减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">软件/互减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">03320.HK</td>
@@ -7600,7 +7619,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.02</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">医药/生减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">医药/生减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">09636.HK</td>
@@ -7630,7 +7649,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.27</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">09992.HK</td>
@@ -7645,7 +7664,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.07</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">01883.HK</td>
@@ -7660,7 +7679,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.07</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">软件/互减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">软件/互减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">01368.HK</td>
@@ -7675,7 +7694,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.18</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">09999.HK</td>
@@ -7690,7 +7709,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.83</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">软件/互减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">软件/互减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">02282.HK</td>
@@ -7705,7 +7724,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.51</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">00220.HK</td>
@@ -7720,7 +7739,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.60</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">01099.HK</td>
@@ -7735,7 +7754,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.52</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">医药/生减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">医药/生减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">AAPL.O</td>
@@ -7750,7 +7769,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.01</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">软件/互减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">软件/互减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">MSFT.O</td>
@@ -7765,7 +7784,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.01</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">软件/互减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">软件/互减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">DAL.N</td>
@@ -7780,7 +7799,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.04</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">LYV.N</td>
@@ -7795,7 +7814,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.02</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">INCY.O</td>
@@ -7810,7 +7829,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.01</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">医药/生减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">医药/生减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">UAL.O</td>
@@ -7825,7 +7844,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.00</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">COR.N</td>
@@ -7840,7 +7859,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.01</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">医药/生减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">医药/生减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">KMB.O</td>
@@ -7855,7 +7874,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.01</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">NTAP.O</td>
@@ -7885,7 +7904,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.01</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">消费/零减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 <tr>
                 <td class="code nowrap">ACN.N</td>
@@ -7900,7 +7919,7 @@ tr:hover { background: #f1f5f9; }
                 <td class="num up">0.03</td>
                 <td class="nowrap entry-date-gray">26-07-26</td>
                 <td class="num">3</td>
-                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">软件/互减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">⚠️反向走强</span></td>
+                <td class="nowrap"><span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;background:#fee2e2;color:#991b1b;">软件/互减配</span> <span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:600;margin-left:2px;background:#ede0ff;color:#3c0d99;border:1px solid #c9b5ee;">⚠️反向走强</span></td>
             </tr>
 </tbody>
 </table>
@@ -7910,333 +7929,11 @@ tr:hover { background: #f1f5f9; }
 </div>
 <div class="section" id="buy">
     <h2>✅ 买入建议（今日新增）</h2>
-    <h3 class="market-subheader">🇨🇳 A股 (8只)</h3>
-<div style="overflow-x: auto;">
-<table>
-<thead>
-<tr><th>排名</th><th>名称/代码</th><th>评分</th><th>质量</th><th>估值</th><th>事件</th><th>技术</th><th>动量</th><th>现价</th><th>涨跌幅</th><th class="change-reason">分析</th></tr>
-</thead>
-<tbody><tr>
-                <td class="rank">1</td>
-                <td><strong>焦作万方</strong><br><small class="code">000612.SZ</small></td>
-                <td class="score score-buy">63.3</td>
-                <td>60.5</td>
-                <td>80.0</td>
-                <td>58.0</td>
-                <td>75.0</td>
-                <td>40.0</td>
-                <td class="num">11.50</td>
-                <td class="num up">+1.1%</td>
-                <td class="change-reason"><span class="tooltip-wrap" data-akey="buy:000612.SZ">估值因子显著占优，业绩预告催化，技术面配合<span class="tooltip-text"></span></span></td>
-            </tr>
-<tr>
-                <td class="rank">2</td>
-                <td><strong>宁波银行</strong><br><small class="code">002142.SZ</small></td>
-                <td class="score score-buy">64.4</td>
-                <td>61.8</td>
-                <td>80.0</td>
-                <td>58.0</td>
-                <td>70.0</td>
-                <td>50.0</td>
-                <td class="num">31.65</td>
-                <td class="num up">+0.5%</td>
-                <td class="change-reason"><span class="tooltip-wrap" data-akey="buy:002142.SZ">估值因子显著占优，治理结构优化催化入选<span class="tooltip-text"></span></span></td>
-            </tr>
-<tr>
-                <td class="rank">3</td>
-                <td><strong>机器人</strong><br><small class="code">300024.SZ</small></td>
-                <td class="score score-buy">64.0</td>
-                <td>54.5</td>
-                <td>85.0</td>
-                <td>58.0</td>
-                <td>70.0</td>
-                <td>55.0</td>
-                <td class="num">16.08</td>
-                <td class="num up">+2.0%</td>
-                <td class="change-reason"><span class="tooltip-wrap" data-akey="buy:300024.SZ">估值因子强势领跑，子公司增资扩股催化入选<span class="tooltip-text"></span></span></td>
-            </tr>
-<tr>
-                <td class="rank">4</td>
-                <td><strong>拓尔思</strong><br><small class="code">300229.SZ</small></td>
-                <td class="score score-buy">62.1</td>
-                <td>59.0</td>
-                <td>85.0</td>
-                <td>53.0</td>
-                <td>80.0</td>
-                <td>30.0</td>
-                <td class="num">16.15</td>
-                <td class="num up">+2.1%</td>
-                <td class="change-reason"><span class="tooltip-wrap" data-akey="buy:300229.SZ">估值因子显著占优，技术面共振支撑入选<span class="tooltip-text"></span></span></td>
-            </tr>
-<tr>
-                <td class="rank">5</td>
-                <td><strong>大有能源</strong><br><small class="code">600403.SH</small></td>
-                <td class="score score-buy">64.0</td>
-                <td>56.8</td>
-                <td>85.0</td>
-                <td>58.0</td>
-                <td>70.0</td>
-                <td>50.0</td>
-                <td class="num">5.83</td>
-                <td class="num up">+2.3%</td>
-                <td class="change-reason"><span class="tooltip-wrap" data-akey="buy:600403.SH">估值因子显著占优，监管问询落地消除不确定性，触发入选<span class="tooltip-text"></span></span></td>
-            </tr>
-<tr>
-                <td class="rank">6</td>
-                <td><strong>招商证券</strong><br><small class="code">600999.SH</small></td>
-                <td class="score score-buy">62.3</td>
-                <td>54.5</td>
-                <td>70.0</td>
-                <td>58.0</td>
-                <td>60.0</td>
-                <td>75.0</td>
-                <td class="num">17.94</td>
-                <td class="num up">+1.1%</td>
-                <td class="change-reason"><span class="tooltip-wrap" data-akey="buy:600999.SH">动量因子领跑驱动入选，估值配合支撑，董事会治理事件催化<span class="tooltip-text"></span></span></td>
-            </tr>
-<tr>
-                <td class="rank">7</td>
-                <td><strong>明泰铝业</strong><br><small class="code">601677.SH</small></td>
-                <td class="score score-buy">63.3</td>
-                <td>60.5</td>
-                <td>80.0</td>
-                <td>58.0</td>
-                <td>75.0</td>
-                <td>40.0</td>
-                <td class="num">17.17</td>
-                <td class="num up">+1.0%</td>
-                <td class="change-reason"><span class="tooltip-wrap" data-akey="buy:601677.SH">估值因子显著占优，技术面共振，低吸价值凸显<span class="tooltip-text"></span></span></td>
-            </tr>
-<tr>
-                <td class="rank">8</td>
-                <td><strong>迪哲医药</strong><br><small class="code">688192.SH</small></td>
-                <td class="score score-buy">63.0</td>
-                <td>56.8</td>
-                <td>85.0</td>
-                <td>50.0</td>
-                <td>70.0</td>
-                <td>55.0</td>
-                <td class="num">53.03</td>
-                <td class="num up">+5.5%</td>
-                <td class="change-reason"><span class="tooltip-wrap" data-akey="buy:688192.SH">估值因子显著占优，技术面共振，治理公告催化<span class="tooltip-text"></span></span></td>
-            </tr>
-</tbody>
-</table>
-</div><h3 class="market-subheader">🇭🇰 港股 (4只)</h3>
-<div style="overflow-x: auto;">
-<table>
-<thead>
-<tr><th>排名</th><th>名称/代码</th><th>评分</th><th>质量</th><th>估值</th><th>事件</th><th>技术</th><th>动量</th><th>现价</th><th>涨跌幅</th><th class="change-reason">分析</th></tr>
-</thead>
-<tbody><tr>
-                <td class="rank">1</td>
-                <td><strong>远东宏信</strong><br><small class="code">03360.HK</small></td>
-                <td class="score score-buy">61.1</td>
-                <td>60.2</td>
-                <td>85.0</td>
-                <td>50.0</td>
-                <td>60.0</td>
-                <td>45.0</td>
-                <td class="num">6.79</td>
-                <td class="num up">+0.7%</td>
-                <td class="change-reason"><span class="tooltip-wrap" data-akey="buy:03360.HK">估值因子显著占优，低估值安全边际构成核心买入逻辑<span class="tooltip-text"></span></span></td>
-            </tr>
-<tr>
-                <td class="rank">2</td>
-                <td><strong>中国银河</strong><br><small class="code">06881.HK</small></td>
-                <td class="score score-buy">61.9</td>
-                <td>60.5</td>
-                <td>85.0</td>
-                <td>50.0</td>
-                <td>70.0</td>
-                <td>40.0</td>
-                <td class="num">7.83</td>
-                <td class="num up">+2.3%</td>
-                <td class="change-reason"><span class="tooltip-wrap" data-akey="buy:06881.HK">估值因子显著占优，技术面配合，事件催化入选<span class="tooltip-text"></span></span></td>
-            </tr>
-<tr>
-                <td class="rank">3</td>
-                <td><strong>津上机床中国</strong><br><small class="code">01651.HK</small></td>
-                <td class="score score-buy">61.9</td>
-                <td>54.5</td>
-                <td>65.0</td>
-                <td>58.0</td>
-                <td>70.0</td>
-                <td>70.0</td>
-                <td class="num">59.45</td>
-                <td class="num up">+6.3%</td>
-                <td class="change-reason"><span class="tooltip-wrap" data-akey="buy:01651.HK">技术面强势突破叠加估值修复，买入信号明确<span class="tooltip-text"></span></span></td>
-            </tr>
-<tr>
-                <td class="rank">4</td>
-                <td><strong>华新建材</strong><br><small class="code">06655.HK</small></td>
-                <td class="score score-buy">60.7</td>
-                <td>60.2</td>
-                <td>75.0</td>
-                <td>58.0</td>
-                <td>60.0</td>
-                <td>45.0</td>
-                <td class="num">14.22</td>
-                <td class="num up">+0.9%</td>
-                <td class="change-reason"><span class="tooltip-wrap" data-akey="buy:06655.HK">估值因子显著占优，低估值提供安全边际，但动量疲弱制约弹性<span class="tooltip-text"></span></span></td>
-            </tr>
-</tbody>
-</table>
-</div>
+    <p class="text-muted text-center">今日无新增买入建议</p>
 </div>
 <div class="section" id="sell">
     <h2>⚠️ 卖出建议</h2>
-    <div style="overflow-x: auto;">
-        <table>
-            <thead>
-                <tr><th>代码</th><th>名称</th><th>市场</th><th>评分</th><th>现价</th><th>持有收益</th><th>天数</th><th>标记</th><th class="change-reason">分析</th></tr>
-            </thead>
-            <tbody><tr>
-            <td class="code">LII.N</td>
-            <td><strong>Lennox International</strong></td>
-            <td><span class="market-badge market-us">US</span></td>
-            <td class="score score-sell">58.8</td>
-            <td class="num">446.74</td>
-            <td class="num down">-19.3%</td>
-            <td class="num">15</td>
-            <td><span class="badge badge-major">今日新增卖出</span></td>
-            <td class="change-reason"><span class="tooltip-wrap" data-akey="sell:LII.N">硬止损触发，事件因子拖累，建议止损离场<span class="tooltip-text"></span></span></td>
-        </tr>
-<tr>
-            <td class="code">601658.SH</td>
-            <td><strong>邮储银行</strong></td>
-            <td><span class="market-badge market-cn">CN</span></td>
-            <td class="score score-sell">59.8</td>
-            <td class="num">4.96</td>
-            <td class="num ">+0.0%</td>
-            <td class="num">18</td>
-            <td><span class="badge badge-major">今日新增卖出</span></td>
-            <td class="change-reason"><span class="tooltip-wrap" data-akey="sell:601658.SH">估值因子仍居高位是唯一亮点，但技术、动量双双走平显示趋势乏力，调仓卖出合理非止损。<span class="tooltip-text"></span></span></td>
-        </tr>
-<tr>
-            <td class="code">601825.SH</td>
-            <td><strong>沪农商行</strong></td>
-            <td><span class="market-badge market-cn">CN</span></td>
-            <td class="score score-sell">61.8</td>
-            <td class="num">8.37</td>
-            <td class="num up">+4.8%</td>
-            <td class="num">9</td>
-            <td><span class="badge badge-major">今日新增卖出</span></td>
-            <td class="change-reason"><span class="tooltip-wrap" data-akey="sell:601825.SH">动量因子显著失速是本次调仓卖出的核心推手，但估值与技术仍具韧性，属战术性调仓而非止损离场<span class="tooltip-text"></span></span></td>
-        </tr>
-<tr>
-            <td class="code">001965.SZ</td>
-            <td><strong>招商公路</strong></td>
-            <td><span class="market-badge market-cn">CN</span></td>
-            <td class="score score-sell">58.0</td>
-            <td class="num">9.58</td>
-            <td class="num down">-7.4%</td>
-            <td class="num">6</td>
-            <td><span class="badge badge-major">今日新增卖出</span></td>
-            <td class="change-reason"><span class="tooltip-wrap" data-akey="sell:001965.SZ">估值因子尚可但非核心支撑，事件因子平淡无催化，调仓卖出合理<span class="tooltip-text"></span></span></td>
-        </tr>
-<tr>
-            <td class="code">000885.SZ</td>
-            <td><strong>同力水泥</strong></td>
-            <td><span class="market-badge market-cn">CN</span></td>
-            <td class="score score-sell">61.1</td>
-            <td class="num">12.93</td>
-            <td class="num down">-1.4%</td>
-            <td class="num">1</td>
-            <td><span class="badge badge-major">今日新增卖出</span></td>
-            <td class="change-reason"><span class="tooltip-wrap" data-akey="sell:000885.SZ">估值因子仍处高位但缺乏催化，动量崩塌是卖出核心推手<span class="tooltip-text"></span></span></td>
-        </tr>
-<tr>
-            <td class="code">601169.SH</td>
-            <td><strong>北京银行</strong></td>
-            <td><span class="market-badge market-cn">CN</span></td>
-            <td class="score score-sell">61.5</td>
-            <td class="num">5.03</td>
-            <td class="num down">-2.5%</td>
-            <td class="num">1</td>
-            <td><span class="badge badge-major">今日新增卖出</span></td>
-            <td class="change-reason"><span class="tooltip-wrap" data-akey="sell:601169.SH">估值因子独木难支，调仓卖出合理<span class="tooltip-text"></span></span></td>
-        </tr>
-<tr>
-            <td class="code">601998.SH</td>
-            <td><strong>中信银行</strong></td>
-            <td><span class="market-badge market-cn">CN</span></td>
-            <td class="score score-sell">60.4</td>
-            <td class="num">7.55</td>
-            <td class="num down">-0.3%</td>
-            <td class="num">0</td>
-            <td><span class="badge badge-major">今日新增卖出</span></td>
-            <td class="change-reason"><span class="tooltip-wrap" data-akey="sell:601998.SH">估值因子独木难支，动量疲软致调仓出局<span class="tooltip-text"></span></span></td>
-        </tr>
-<tr>
-            <td class="code">600332.SH</td>
-            <td><strong>白云山</strong></td>
-            <td><span class="market-badge market-cn">CN</span></td>
-            <td class="score score-sell">57.4</td>
-            <td class="num">21.49</td>
-            <td class="num ">+0.0%</td>
-            <td class="num">0</td>
-            <td><span class="badge badge-major">今日新增卖出</span></td>
-            <td class="change-reason"><span class="tooltip-wrap" data-akey="sell:600332.SH">调仓被动卖出，因子无恶化，非止损操作<span class="tooltip-text"></span></span></td>
-        </tr>
-<tr>
-            <td class="code">603338.SH</td>
-            <td><strong>浙江鼎力</strong></td>
-            <td><span class="market-badge market-cn">CN</span></td>
-            <td class="score score-sell">59.8</td>
-            <td class="num">56.99</td>
-            <td class="num ">+0.0%</td>
-            <td class="num">0</td>
-            <td><span class="badge badge-major">今日新增卖出</span></td>
-            <td class="change-reason"><span class="tooltip-wrap" data-akey="sell:603338.SH">调仓卖出因动量垫底，技术独强难撑全局<span class="tooltip-text"></span></span></td>
-        </tr>
-<tr>
-            <td class="code">00135.HK</td>
-            <td><strong>昆仑能源</strong></td>
-            <td><span class="market-badge market-hk">HK</span></td>
-            <td class="score score-sell">58.5</td>
-            <td class="num">7.00</td>
-            <td class="num ">+0.0%</td>
-            <td class="num">7</td>
-            <td><span class="badge badge-major">今日新增卖出</span></td>
-            <td class="change-reason"><span class="tooltip-wrap" data-akey="sell:00135.HK">调仓卖出，事件因子平淡拖累排名<span class="tooltip-text"></span></span></td>
-        </tr>
-<tr>
-            <td class="code">09999.HK</td>
-            <td><strong>网易-S</strong></td>
-            <td><span class="market-badge market-hk">HK</span></td>
-            <td class="score score-sell">59.5</td>
-            <td class="num">202.60</td>
-            <td class="num up">+0.8%</td>
-            <td class="num">6</td>
-            <td><span class="badge badge-major">今日新增卖出</span></td>
-            <td class="change-reason"><span class="tooltip-wrap" data-akey="sell:09999.HK">调仓换股，技术面尚可但事件因子平淡<span class="tooltip-text"></span></span></td>
-        </tr>
-<tr>
-            <td class="code">02020.HK</td>
-            <td><strong>安踏体育</strong></td>
-            <td><span class="market-badge market-hk">HK</span></td>
-            <td class="score score-sell">60.3</td>
-            <td class="num">75.70</td>
-            <td class="num ">+0.0%</td>
-            <td class="num">0</td>
-            <td><span class="badge badge-major">今日新增卖出</span></td>
-            <td class="change-reason"><span class="tooltip-wrap" data-akey="sell:02020.HK">调仓卖出，事件因子拖累评分<span class="tooltip-text"></span></span></td>
-        </tr>
-<tr>
-            <td class="code">02057.HK</td>
-            <td><strong>中通快递-W</strong></td>
-            <td><span class="market-badge market-hk">HK</span></td>
-            <td class="score score-sell">60.3</td>
-            <td class="num">190.70</td>
-            <td class="num up">+0.1%</td>
-            <td class="num">0</td>
-            <td><span class="badge badge-major">今日新增卖出</span></td>
-            <td class="change-reason"><span class="tooltip-wrap" data-akey="sell:02057.HK">技术因子尚可但事件因子平淡无奇，缺乏催化支撑排名落后<span class="tooltip-text"></span></span></td>
-        </tr>
-</tbody>
-        </table>
-    </div>
+    <p class="text-muted text-center">今日无满足条件的股票</p>
 </div>
 <div class="section" id="post-sell">
     <h2>👁️ 沽后观察清单</h2>
