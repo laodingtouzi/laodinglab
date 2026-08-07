@@ -14071,7 +14071,7 @@ document.addEventListener('keydown', function(e) {
 })();
 </script>
 
-<script src="analysis_data.js"></script>
+<script>var _WB_BASE=(function(){var p=window.location.pathname;return p.indexOf('/archive/')!==-1?'/stockmarketanalysis_wb/':'';})();document.write('<script src="'+_WB_BASE+'analysis_data.js"><\/script>');</script>
 <script>
 (function(){
     // 注入分析tooltip文字
@@ -14092,7 +14092,7 @@ document.addEventListener('keydown', function(e) {
 
     function loadFiles(){
         return Promise.all(files.map(function(fname){
-            return fetch(fname).then(function(r){ return r.text(); });
+            return fetch(_WB_BASE + fname).then(function(r){ return r.text(); });
         }));
     }
 
