@@ -4,15 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WB vs Kimi 选股差异对比 · 老丁实验室</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
 <style>
 :root {
-    --bg: #fdf6f0; --bg-surface: #ffffff; --text: #1c1917;
+    --bg: #f5f0ff; --bg-surface: #ffffff; --text: #1c1917;
     --text-secondary: #57534e; --text-muted: #a8a29e;
-    --border: #f5e6d8; --border-hover: #e7d5c3;
-    --accent: #ea580c; --accent-light: #fed7aa;
-    --primary: #ea580c; --success: #16a34a; --danger: #dc2626; --warning: #ca8a04;
-    --kimi-color: #2563eb; --wb-color: #ea580c;
+    --border: #e9ddf5; --border-hover: #d4c2ed;
+    --accent: #5f01d1; --accent-light: #f3e8ff;
+    --primary: #5f01d1; --success: #16a34a; --danger: #c8102e; --warning: #ca8a04;
+    --kimi-color: #2563eb; --wb-color: #5f01d1;
     --sans: 'Inter', 'Noto Sans SC', 'PingFang SC', sans-serif;
     --serif: 'Noto Serif SC', Georgia, serif;
 }
@@ -24,7 +24,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .site-header { background: var(--bg-surface); border-bottom: 1px solid var(--border); padding: 14px 24px; }
 .header-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
 .logo-group { display: flex; align-items: center; gap: 8px; }
-.logo-mark { width: 28px; height: 28px; border-radius: 6px; background: linear-gradient(135deg, #ea580c, #dc2626); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #fff; flex-shrink: 0; }
+.logo-mark { width: 28px; height: 28px; border-radius: 6px; background: linear-gradient(135deg, #5f01d1, #7c3aed); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #fff; flex-shrink: 0; }
 .site-name { font-size: 15px; font-weight: 600; color: var(--text); }
 .site-name-en { font-family: 'Roboto Mono', monospace; font-size: 9px; color: var(--text-muted); letter-spacing: .12em; text-transform: uppercase; }
 .site-nav { display: flex; gap: 20px; align-items: center; }
@@ -32,7 +32,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .site-nav a:hover { color: var(--accent); }
 
 /* HERO */
-.hero { background: linear-gradient(135deg, #fff7ed 0%, #fdf6f0 100%); padding: 40px 24px; border-bottom: 1px solid var(--border); }
+.hero { background: linear-gradient(135deg, #f3e8ff 0%, #f5f0ff 100%); padding: 40px 24px; border-bottom: 1px solid var(--border); }
 .hero-inner { max-width: 1200px; margin: 0 auto; }
 .hero-eyebrow { font-size: 12px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 8px; }
 .hero-title { font-family: var(--serif); font-size: 28px; font-weight: 700; margin-bottom: 8px; }
@@ -58,17 +58,17 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 /* TABLE */
 .table-wrap { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; font-size: 13px; }
-th { background: #fff7ed; padding: 10px 14px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 1px solid var(--border); white-space: nowrap; }
+th { background: #f3e8ff; padding: 10px 14px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 1px solid var(--border); white-space: nowrap; }
 td { padding: 8px 14px; border-bottom: 1px solid var(--border); white-space: nowrap; }
 tr:last-child td { border-bottom: none; }
-tr:hover td { background: #fffaf5; }
-.market-cn { background: #fef3c7; color: #a16207; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
-.market-hk { background: #dcfce7; color: #15803d; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
-.market-us { background: #e0e7ff; color: #4338ca; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+tr:hover td { background: #faf5ff; }
+.market-cn { background: #fef3c7; color: #c8102e; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.market-hk { background: #f3e8ff; color: #5f01d1; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.market-us { background: #e0e7ff; color: #001f54; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
 .up { color: var(--danger); font-weight: 600; }
 .down { color: var(--success); font-weight: 600; }
 .tag-kimi { background: #dbeafe; color: #2563eb; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
-.tag-wb { background: #fed7aa; color: #ea580c; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.tag-wb { background: #f3e8ff; color: #5f01d1; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
 .tag-both { background: #dcfce7; color: #16a34a; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
 
 /* LOADING / ERROR */
@@ -76,7 +76,7 @@ tr:hover td { background: #fffaf5; }
 .loading .spinner { display: inline-block; width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 12px; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .error-box { background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px; padding: 20px; margin: 20px 0; color: #991b1b; }
-.info-box { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 10px; padding: 16px 20px; margin: 20px 0; font-size: 13px; color: var(--text-secondary); }
+.info-box { background: #f3e8ff; border: 1px solid #d4c2ed; border-radius: 10px; padding: 16px 20px; margin: 20px 0; font-size: 13px; color: var(--text-secondary); }
 
 /* FOOTER */
 .site-footer { background: var(--bg-surface); border-top: 1px solid var(--border); padding: 20px 24px; margin-top: 40px; }
@@ -107,9 +107,9 @@ tr:hover td { background: #fffaf5; }
 
 <section class="hero">
   <div class="hero-inner">
-    <div class="hero-eyebrow">WB vs Kimi · Daily Comparison</div>
+    <div class="hero-eyebrow"><span style="font-family:'Playfair Display',serif;font-style:italic;color:var(--wb-color);">WB</span> vs Kimi · Daily Comparison</div>
     <h1 class="hero-title">选股结果差异对比</h1>
-    <p class="hero-desc">对比当天 WB版 与 Kimi版 选股模型的持仓差异，包括重叠持仓、各自独有持仓及评分对比。数据来源于两版独立的 portfolio_v5.json。</p>
+    <p class="hero-desc">对比当天 <span style="color:var(--wb-color);font-weight:600;">WB版</span> 与 <span style="color:var(--kimi-color);font-weight:600;">Kimi版</span> 选股模型的持仓差异，包括重叠持仓、各自独有持仓及评分对比。数据来源于两版独立的 portfolio_v5.json。</p>
   </div>
 </section>
 
@@ -131,7 +131,7 @@ tr:hover td { background: #fffaf5; }
       <div class="stat-card stat-wb">
         <div class="stat-label">WB版 持仓数</div>
         <div class="stat-value" id="wbCount">-</div>
-        <div class="stat-sub">橙色系 · laodinglab.com/stockmarketanalysis_wb</div>
+        <div class="stat-sub">紫色系 · laodinglab.com/stockmarketanalysis_wb</div>
       </div>
       <div class="stat-card stat-overlap">
         <div class="stat-label">重叠持仓</div>
@@ -220,7 +220,7 @@ tr:hover td { background: #fffaf5; }
       <div class="footer-brand">老丁实验室 Laodinglab</div>
       <div class="footer-disclaimer">⚠️ 免责声明：本对比页面仅供研究参考，不构成投资建议。</div>
     </div>
-    <div class="footer-note">WB vs Kimi Diff · AUTOMATED</div>
+    <div class="footer-note"><span style="font-family:'Playfair Display',serif;font-style:italic;color:var(--wb-color);">WB</span> vs Kimi Diff · AUTOMATED</div>
   </div>
 </footer>
 
