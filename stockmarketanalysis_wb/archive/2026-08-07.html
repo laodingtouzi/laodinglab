@@ -441,18 +441,19 @@ tr:hover { background: #f1ebff; }
 </div>
 <div class="section" id="risk">
     <h2>🛡️ 风控状态及情绪信息</h2>
-    <div class='alert alert-success'>✅ 组合风控正常</div>
+    <div class="alert alert-warning" style="background:#fffbeb;border-color:#fbbf24;color:#92400e;">⚠️ 存在异常现象，请关注下方详情</div>
     <div class="sentiment-summary" style="margin-top: 12px; padding: 10px 12px; background: var(--bg); border-radius: 6px; font-size: 0.85rem; line-height: 1.6;">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-            <div>📉 单股最大浮亏：<b>Edison International(EIX.N) -13.3%</b></div>
-            <div>💰 组合总盈亏：<b style="color: var(--success);">+1.4%</b>（33.90万，均按汇率折算CNY）</div>
-            <div>📈 组合盈亏率：<b style="color: var(--success);">+1.4%</b></div>
-            <div>⏳ 年化盈亏率：<b style="color: var(--success);">+41.7%</b>（加权 12.5 天）</div>
-            <div>🔻 M↓ 降分持仓：<b>6</b> 只</div>
-            <div>🛑 今日硬止损触发：<b>0</b> 只</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+        <div>📉 单股最大浮亏：<b style="color:var(--danger);">Edison International(EIX.N) -13.3%</b></div>
+        <div>🔻 M↓ 降分持仓：<b>6</b> 只</div>
+        <div>🛑 今日硬止损：<b>0</b> 只</div>
+    </div>
+        <div style="margin-top:10px;padding:10px 12px;background:#fffbeb;border-radius:6px;border-left:3px solid #f59e0b;font-size:0.85rem;">
+            <div style="font-weight:600;color:#92400e;margin-bottom:6px;">🔍 异常现象提示</div>
+            <div style="padding:6px 0;border-bottom:1px dashed #e2e8f0;">🔻 M↓降分持仓达 6 只（动量衰退面较广）</div><div style="padding:6px 0;border-bottom:1px dashed #e2e8f0;">⏰ 长期滞亏：Edison International(EIX.N) 21天 -13.3%, GoDaddy(GDDY.N) 21天 -5.5%（持有>20天且浮亏<-5%）</div>
         </div>
         <div style="margin-bottom: 8px; padding: 8px 10px; background: #f0f9ff; border-radius: 4px; border-left: 3px solid var(--accent); font-size: 0.85rem;"><span style="color: var(--text-secondary); font-weight: 600;">情绪中性</span> · 近期主要事件：1. 常规公告影响有限 | 2. 金融债发行完毕及年度分红实施双重催化，质量与动量因子平稳未拖… | 3. 临时股东会及董事会决议催化，但无实质利好落地 | 4. 行长辞任公告小幅压制但未触发调仓信号，整体持仓逻辑未变 | 5. 资本债发行及分红落地中性消化</div>
-        <div style="margin-top: 8px;"><a href="#risk" style="color: var(--primary, #5f01d1); text-decoration: none;">📊 近期主要事件即下方宏观驱动摘要 ↓</a></div>
+        <div style="margin-top: 8px;"><a href="/stockmarketanalysis/macro/" target="_blank" style="color: var(--primary, #5f01d1); text-decoration: none;">📊 查阅详细宏观事件驱动报告 →</a></div>
     </div>
 </div>
 <div class="section" id="holdings">
@@ -508,7 +509,7 @@ tr:hover { background: #f1ebff; }
                 </tr>
             </thead>
             <tbody>
-                <tr class="">
+                <tr class="" data-code="600919.SH">
             <td class="code nowrap">600919.SH</td>
             <td class="name-cell"><strong>江苏银行</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -527,7 +528,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="688702.SH">
             <td class="code nowrap">688702.SH</td>
             <td class="name-cell"><strong>盛科通信-U</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -546,7 +547,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="601398.SH">
             <td class="code nowrap">601398.SH</td>
             <td class="name-cell"><strong>工商银行</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -565,7 +566,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="601939.SH">
             <td class="code nowrap">601939.SH</td>
             <td class="name-cell"><strong>建设银行</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -584,7 +585,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="000001.SZ">
             <td class="code nowrap">000001.SZ</td>
             <td class="name-cell"><strong>平安银行</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -603,7 +604,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="600123.SH">
             <td class="code nowrap">600123.SH</td>
             <td class="name-cell"><strong>兰花科创</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -622,7 +623,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="601336.SH">
             <td class="code nowrap">601336.SH</td>
             <td class="name-cell"><strong>新华保险</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -641,7 +642,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="688469.SH">
             <td class="code nowrap">688469.SH</td>
             <td class="name-cell"><strong>芯联集成-U</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -660,7 +661,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="002948.SZ">
             <td class="code nowrap">002948.SZ</td>
             <td class="name-cell"><strong>青岛银行</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -679,7 +680,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="002958.SZ">
             <td class="code nowrap">002958.SZ</td>
             <td class="name-cell"><strong>青农商行</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -698,7 +699,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="600022.SH">
             <td class="code nowrap">600022.SH</td>
             <td class="name-cell"><strong>山东钢铁</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -717,7 +718,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="600908.SH">
             <td class="code nowrap">600908.SH</td>
             <td class="name-cell"><strong>无锡银行</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -736,7 +737,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="601577.SH">
             <td class="code nowrap">601577.SH</td>
             <td class="name-cell"><strong>长沙银行</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -755,7 +756,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="002839.SZ">
             <td class="code nowrap">002839.SZ</td>
             <td class="name-cell"><strong>张家港行</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -774,7 +775,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="601166.SH">
             <td class="code nowrap">601166.SH</td>
             <td class="name-cell"><strong>兴业银行</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -793,7 +794,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="601229.SH">
             <td class="code nowrap">601229.SH</td>
             <td class="name-cell"><strong>上海银行</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -812,7 +813,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="601628.SH">
             <td class="code nowrap">601628.SH</td>
             <td class="name-cell"><strong>中国人寿</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -831,7 +832,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="688361.SH">
             <td class="code nowrap">688361.SH</td>
             <td class="name-cell"><strong>中科飞测</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -850,7 +851,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="688220.SH">
             <td class="code nowrap">688220.SH</td>
             <td class="name-cell"><strong>翱捷科技-U</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -869,7 +870,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="601328.SH">
             <td class="code nowrap">601328.SH</td>
             <td class="name-cell"><strong>交通银行</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -888,7 +889,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="600928.SH">
             <td class="code nowrap">600928.SH</td>
             <td class="name-cell"><strong>西安银行</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -907,7 +908,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="600926.SH">
             <td class="code nowrap">600926.SH</td>
             <td class="name-cell"><strong>杭州银行</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -926,7 +927,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="600018.SH">
             <td class="code nowrap">600018.SH</td>
             <td class="name-cell"><strong>上港集团</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -945,7 +946,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="600015.SH">
             <td class="code nowrap">600015.SH</td>
             <td class="name-cell"><strong>华夏银行</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -964,7 +965,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="600036.SH">
             <td class="code nowrap">600036.SH</td>
             <td class="name-cell"><strong>招商银行</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -983,7 +984,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="601009.SH">
             <td class="code nowrap">601009.SH</td>
             <td class="name-cell"><strong>南京银行</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1002,7 +1003,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="000048.SZ">
             <td class="code nowrap">000048.SZ</td>
             <td class="name-cell"><strong>京基智农</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1021,7 +1022,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="600016.SH">
             <td class="code nowrap">600016.SH</td>
             <td class="name-cell"><strong>民生银行</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1040,7 +1041,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="601860.SH">
             <td class="code nowrap">601860.SH</td>
             <td class="name-cell"><strong>紫金银行</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1059,7 +1060,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="002737.SZ">
             <td class="code nowrap">002737.SZ</td>
             <td class="name-cell"><strong>葵花药业</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1078,7 +1079,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="688141.SH">
             <td class="code nowrap">688141.SH</td>
             <td class="name-cell"><strong>杰华特</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1097,7 +1098,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="601916.SH">
             <td class="code nowrap">601916.SH</td>
             <td class="name-cell"><strong>浙商银行</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1116,7 +1117,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="002142.SZ">
             <td class="code nowrap">002142.SZ</td>
             <td class="name-cell"><strong>宁波银行</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1135,7 +1136,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="601818.SH">
             <td class="code nowrap">601818.SH</td>
             <td class="name-cell"><strong>光大银行</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1154,7 +1155,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="600704.SH">
             <td class="code nowrap">600704.SH</td>
             <td class="name-cell"><strong>物产中大</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1173,7 +1174,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="600971.SH">
             <td class="code nowrap">600971.SH</td>
             <td class="name-cell"><strong>恒源煤电</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1192,7 +1193,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="601187.SH">
             <td class="code nowrap">601187.SH</td>
             <td class="name-cell"><strong>厦门银行</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1211,7 +1212,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="600403.SH">
             <td class="code nowrap">600403.SH</td>
             <td class="name-cell"><strong>大有能源</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1230,7 +1231,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="688234.SH">
             <td class="code nowrap">688234.SH</td>
             <td class="name-cell"><strong>天岳先进</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1249,7 +1250,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="601555.SH">
             <td class="code nowrap">601555.SH</td>
             <td class="name-cell"><strong>东吴证券</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1268,7 +1269,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="601668.SH">
             <td class="code nowrap">601668.SH</td>
             <td class="name-cell"><strong>中国建筑</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1287,7 +1288,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="002966.SZ">
             <td class="code nowrap">002966.SZ</td>
             <td class="name-cell"><strong>苏州银行</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1306,7 +1307,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="601319.SH">
             <td class="code nowrap">601319.SH</td>
             <td class="name-cell"><strong>中国人保</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1325,7 +1326,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="601606.SH">
             <td class="code nowrap">601606.SH</td>
             <td class="name-cell"><strong>长城军工</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1344,7 +1345,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="605296.SH">
             <td class="code nowrap">605296.SH</td>
             <td class="name-cell"><strong>神农集团</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1363,7 +1364,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="600109.SH">
             <td class="code nowrap">600109.SH</td>
             <td class="name-cell"><strong>国金证券</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1382,7 +1383,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="002061.SZ">
             <td class="code nowrap">002061.SZ</td>
             <td class="name-cell"><strong>浙江交科</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1401,7 +1402,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="601997.SH">
             <td class="code nowrap">601997.SH</td>
             <td class="name-cell"><strong>贵阳银行</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1420,7 +1421,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="688538.SH">
             <td class="code nowrap">688538.SH</td>
             <td class="name-cell"><strong>和辉光电</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1439,7 +1440,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="300676.SZ">
             <td class="code nowrap">300676.SZ</td>
             <td class="name-cell"><strong>华大基因</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1458,7 +1459,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="688172.SH">
             <td class="code nowrap">688172.SH</td>
             <td class="name-cell"><strong>燕东微</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1477,7 +1478,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="600718.SH">
             <td class="code nowrap">600718.SH</td>
             <td class="name-cell"><strong>东软集团</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1496,7 +1497,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="000503.SZ">
             <td class="code nowrap">000503.SZ</td>
             <td class="name-cell"><strong>国新健康</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1515,7 +1516,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="601928.SH">
             <td class="code nowrap">601928.SH</td>
             <td class="name-cell"><strong>凤凰传媒</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1534,7 +1535,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="688506.SH">
             <td class="code nowrap">688506.SH</td>
             <td class="name-cell"><strong>百利天恒</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1553,7 +1554,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="688192.SH">
             <td class="code nowrap">688192.SH</td>
             <td class="name-cell"><strong>迪哲医药</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1572,7 +1573,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="000783.SZ">
             <td class="code nowrap">000783.SZ</td>
             <td class="name-cell"><strong>长江证券</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1591,7 +1592,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="600027.SH">
             <td class="code nowrap">600027.SH</td>
             <td class="name-cell"><strong>华电国际</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1610,7 +1611,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="601077.SH">
             <td class="code nowrap">601077.SH</td>
             <td class="name-cell"><strong>渝农商行</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1629,7 +1630,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="601919.SH">
             <td class="code nowrap">601919.SH</td>
             <td class="name-cell"><strong>中远海控</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1648,7 +1649,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="600782.SH">
             <td class="code nowrap">600782.SH</td>
             <td class="name-cell"><strong>新钢股份</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1667,7 +1668,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="601528.SH">
             <td class="code nowrap">601528.SH</td>
             <td class="name-cell"><strong>瑞丰银行</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1686,7 +1687,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="000059.SZ">
             <td class="code nowrap">000059.SZ</td>
             <td class="name-cell"><strong>华锦股份</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1705,7 +1706,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="600246.SH">
             <td class="code nowrap">600246.SH</td>
             <td class="name-cell"><strong>万通地产</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1724,7 +1725,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="301269.SZ">
             <td class="code nowrap">301269.SZ</td>
             <td class="name-cell"><strong>华大九天</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1743,7 +1744,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="002174.SZ">
             <td class="code nowrap">002174.SZ</td>
             <td class="name-cell"><strong>游族网络</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1762,7 +1763,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="600064.SH">
             <td class="code nowrap">600064.SH</td>
             <td class="name-cell"><strong>南京高科</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1781,7 +1782,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="600999.SH">
             <td class="code nowrap">600999.SH</td>
             <td class="name-cell"><strong>招商证券</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1800,7 +1801,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="600997.SH">
             <td class="code nowrap">600997.SH</td>
             <td class="name-cell"><strong>开滦股份</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1819,7 +1820,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="600820.SH">
             <td class="code nowrap">600820.SH</td>
             <td class="name-cell"><strong>隧道股份</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1838,7 +1839,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="000563.SZ">
             <td class="code nowrap">000563.SZ</td>
             <td class="name-cell"><strong>陕国投A</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1857,7 +1858,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="600588.SH">
             <td class="code nowrap">600588.SH</td>
             <td class="name-cell"><strong>用友软件</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1876,7 +1877,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="688126.SH">
             <td class="code nowrap">688126.SH</td>
             <td class="name-cell"><strong>沪硅产业</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1895,7 +1896,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="600901.SH">
             <td class="code nowrap">600901.SH</td>
             <td class="name-cell"><strong>江苏租赁</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1914,7 +1915,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="002127.SZ">
             <td class="code nowrap">002127.SZ</td>
             <td class="name-cell"><strong>南极电商</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1933,7 +1934,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="000543.SZ">
             <td class="code nowrap">000543.SZ</td>
             <td class="name-cell"><strong>皖能电力</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1952,7 +1953,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="600606.SH">
             <td class="code nowrap">600606.SH</td>
             <td class="name-cell"><strong>绿地控股</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1971,7 +1972,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="000898.SZ">
             <td class="code nowrap">000898.SZ</td>
             <td class="name-cell"><strong>鞍钢股份</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -1990,7 +1991,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="601186.SH">
             <td class="code nowrap">601186.SH</td>
             <td class="name-cell"><strong>中国铁建</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -2009,7 +2010,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="600674.SH">
             <td class="code nowrap">600674.SH</td>
             <td class="name-cell"><strong>川投能源</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -2028,7 +2029,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="600886.SH">
             <td class="code nowrap">600886.SH</td>
             <td class="name-cell"><strong>国投电力</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -2047,7 +2048,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="601198.SH">
             <td class="code nowrap">601198.SH</td>
             <td class="name-cell"><strong>东兴证券</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -2066,7 +2067,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="601995.SH">
             <td class="code nowrap">601995.SH</td>
             <td class="name-cell"><strong>中金公司</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -2085,7 +2086,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="603338.SH">
             <td class="code nowrap">603338.SH</td>
             <td class="name-cell"><strong>浙江鼎力</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -2104,7 +2105,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="601288.SH">
             <td class="code nowrap">601288.SH</td>
             <td class="name-cell"><strong>农业银行</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -2123,7 +2124,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="601156.SH">
             <td class="code nowrap">601156.SH</td>
             <td class="name-cell"><strong>东航物流</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -2142,7 +2143,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="600252.SH">
             <td class="code nowrap">600252.SH</td>
             <td class="name-cell"><strong>中恒集团</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -2161,7 +2162,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="601128.SH">
             <td class="code nowrap">601128.SH</td>
             <td class="name-cell"><strong>常熟银行</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -2180,7 +2181,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="601083.SH">
             <td class="code nowrap">601083.SH</td>
             <td class="name-cell"><strong>锦江航运</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -2199,7 +2200,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="601669.SH">
             <td class="code nowrap">601669.SH</td>
             <td class="name-cell"><strong>中国电建</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -2218,7 +2219,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="000776.SZ">
             <td class="code nowrap">000776.SZ</td>
             <td class="name-cell"><strong>广发证券</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -2237,7 +2238,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="600675.SH">
             <td class="code nowrap">600675.SH</td>
             <td class="name-cell"><strong>中华企业</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -2256,7 +2257,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="601825.SH">
             <td class="code nowrap">601825.SH</td>
             <td class="name-cell"><strong>沪农商行</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -2275,7 +2276,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="688352.SH">
             <td class="code nowrap">688352.SH</td>
             <td class="name-cell"><strong>颀中科技</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -2294,7 +2295,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="688561.SH">
             <td class="code nowrap">688561.SH</td>
             <td class="name-cell"><strong>奇安信</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -2313,7 +2314,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="300024.SZ">
             <td class="code nowrap">300024.SZ</td>
             <td class="name-cell"><strong>机器人</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -2332,7 +2333,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="688599.SH">
             <td class="code nowrap">688599.SH</td>
             <td class="name-cell"><strong>天合光能</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -2351,7 +2352,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="000651.SZ">
             <td class="code nowrap">000651.SZ</td>
             <td class="name-cell"><strong>格力电器</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -2370,7 +2371,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="300188.SZ">
             <td class="code nowrap">300188.SZ</td>
             <td class="name-cell"><strong>美亚柏科</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -2389,7 +2390,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="601019.SH">
             <td class="code nowrap">601019.SH</td>
             <td class="name-cell"><strong>山东出版</strong></td>
             <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
@@ -2408,7 +2409,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="02580.HK">
             <td class="code nowrap">02580.HK</td>
             <td class="name-cell"><strong>奥克斯电气</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -2427,7 +2428,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="06963.HK">
             <td class="code nowrap">06963.HK</td>
             <td class="name-cell"><strong>阳光保险</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -2446,7 +2447,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="00440.HK">
             <td class="code nowrap">00440.HK</td>
             <td class="name-cell"><strong>大新金融</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -2465,7 +2466,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="01339.HK">
             <td class="code nowrap">01339.HK</td>
             <td class="name-cell"><strong>中国人民保险集团</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -2484,7 +2485,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="03866.HK">
             <td class="code nowrap">03866.HK</td>
             <td class="name-cell"><strong>青岛银行</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -2503,7 +2504,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="03988.HK">
             <td class="code nowrap">03988.HK</td>
             <td class="name-cell"><strong>中国银行</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -2522,7 +2523,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="06818.HK">
             <td class="code nowrap">06818.HK</td>
             <td class="name-cell"><strong>中国光大银行</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -2541,7 +2542,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="02628.HK">
             <td class="code nowrap">02628.HK</td>
             <td class="name-cell"><strong>中国人寿</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -2560,7 +2561,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="00966.HK">
             <td class="code nowrap">00966.HK</td>
             <td class="name-cell"><strong>中国太平</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -2579,7 +2580,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="01776.HK">
             <td class="code nowrap">01776.HK</td>
             <td class="name-cell"><strong>广发证券</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -2598,7 +2599,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="01988.HK">
             <td class="code nowrap">01988.HK</td>
             <td class="name-cell"><strong>民生银行</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -2617,7 +2618,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="03311.HK">
             <td class="code nowrap">03311.HK</td>
             <td class="name-cell"><strong>中国建筑国际</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -2636,7 +2637,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="00293.HK">
             <td class="code nowrap">00293.HK</td>
             <td class="name-cell"><strong>国泰航空</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -2655,7 +2656,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="00053.HK">
             <td class="code nowrap">00053.HK</td>
             <td class="name-cell"><strong>国浩集团</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -2674,7 +2675,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="00590.HK">
             <td class="code nowrap">00590.HK</td>
             <td class="name-cell"><strong>六福集团</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -2693,7 +2694,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="01919.HK">
             <td class="code nowrap">01919.HK</td>
             <td class="name-cell"><strong>中远海控</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -2712,7 +2713,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="02888.HK">
             <td class="code nowrap">02888.HK</td>
             <td class="name-cell"><strong>渣打集团</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -2731,7 +2732,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="01288.HK">
             <td class="code nowrap">01288.HK</td>
             <td class="name-cell"><strong>农业银行</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -2750,7 +2751,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="09898.HK">
             <td class="code nowrap">09898.HK</td>
             <td class="name-cell"><strong>微博-SW</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -2769,7 +2770,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="01398.HK">
             <td class="code nowrap">01398.HK</td>
             <td class="name-cell"><strong>工商银行</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -2788,7 +2789,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="01963.HK">
             <td class="code nowrap">01963.HK</td>
             <td class="name-cell"><strong>重庆银行</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -2807,7 +2808,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="03968.HK">
             <td class="code nowrap">03968.HK</td>
             <td class="name-cell"><strong>招商银行</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -2826,7 +2827,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="03328.HK">
             <td class="code nowrap">03328.HK</td>
             <td class="name-cell"><strong>交通银行</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -2845,7 +2846,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="02356.HK">
             <td class="code nowrap">02356.HK</td>
             <td class="name-cell"><strong>大新银行集团</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -2864,7 +2865,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="00939.HK">
             <td class="code nowrap">00939.HK</td>
             <td class="name-cell"><strong>建设银行</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -2883,7 +2884,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="01308.HK">
             <td class="code nowrap">01308.HK</td>
             <td class="name-cell"><strong>海丰国际</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -2902,7 +2903,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="02510.HK">
             <td class="code nowrap">02510.HK</td>
             <td class="name-cell"><strong>德翔海运</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -2921,7 +2922,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="06066.HK">
             <td class="code nowrap">06066.HK</td>
             <td class="name-cell"><strong>中信建投证券</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -2940,7 +2941,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="02328.HK">
             <td class="code nowrap">02328.HK</td>
             <td class="name-cell"><strong>中国财险</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -2959,7 +2960,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="06886.HK">
             <td class="code nowrap">06886.HK</td>
             <td class="name-cell"><strong>HTSC</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -2978,7 +2979,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="02016.HK">
             <td class="code nowrap">02016.HK</td>
             <td class="name-cell"><strong>浙商银行</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -2997,7 +2998,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="02285.HK">
             <td class="code nowrap">02285.HK</td>
             <td class="name-cell"><strong>泉峰控股</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3016,7 +3017,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="00142.HK">
             <td class="code nowrap">00142.HK</td>
             <td class="name-cell"><strong>第一太平</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3035,7 +3036,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="00005.HK">
             <td class="code nowrap">00005.HK</td>
             <td class="name-cell"><strong>汇丰控股</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3054,7 +3055,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="00013.HK">
             <td class="code nowrap">00013.HK</td>
             <td class="name-cell"><strong>和黄医药</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3073,7 +3074,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="00392.HK">
             <td class="code nowrap">00392.HK</td>
             <td class="name-cell"><strong>北京控股</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3092,7 +3093,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="02611.HK">
             <td class="code nowrap">02611.HK</td>
             <td class="name-cell"><strong>国泰海通</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3111,7 +3112,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="01336.HK">
             <td class="code nowrap">01336.HK</td>
             <td class="name-cell"><strong>新华保险</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3130,7 +3131,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="01070.HK">
             <td class="code nowrap">01070.HK</td>
             <td class="name-cell"><strong>TCL电子</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3149,7 +3150,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="00945.HK">
             <td class="code nowrap">00945.HK</td>
             <td class="name-cell"><strong>宏利金融-S</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3168,7 +3169,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="00316.HK">
             <td class="code nowrap">00316.HK</td>
             <td class="name-cell"><strong>东方海外国际</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3187,7 +3188,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="02232.HK">
             <td class="code nowrap">02232.HK</td>
             <td class="name-cell"><strong>晶苑国际</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3206,7 +3207,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="03320.HK">
             <td class="code nowrap">03320.HK</td>
             <td class="name-cell"><strong>华润医药</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3225,7 +3226,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="02314.HK">
             <td class="code nowrap">02314.HK</td>
             <td class="name-cell"><strong>理文造纸</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3244,7 +3245,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="00991.HK">
             <td class="code nowrap">00991.HK</td>
             <td class="name-cell"><strong>大唐发电</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3263,7 +3264,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="00023.HK">
             <td class="code nowrap">00023.HK</td>
             <td class="name-cell"><strong>东亚银行</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3282,7 +3283,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="09999.HK">
             <td class="code nowrap">09999.HK</td>
             <td class="name-cell"><strong>网易-S</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3301,7 +3302,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="00270.HK">
             <td class="code nowrap">00270.HK</td>
             <td class="name-cell"><strong>粤海投资</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3320,7 +3321,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="02601.HK">
             <td class="code nowrap">02601.HK</td>
             <td class="name-cell"><strong>中国太保</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3339,7 +3340,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="01698.HK">
             <td class="code nowrap">01698.HK</td>
             <td class="name-cell"><strong>腾讯音乐-SW</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3358,7 +3359,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="00836.HK">
             <td class="code nowrap">00836.HK</td>
             <td class="name-cell"><strong>华润电力</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3377,7 +3378,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="00902.HK">
             <td class="code nowrap">00902.HK</td>
             <td class="name-cell"><strong>华能国际电力股份</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3396,7 +3397,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="01658.HK">
             <td class="code nowrap">01658.HK</td>
             <td class="name-cell"><strong>邮储银行</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3415,7 +3416,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="03908.HK">
             <td class="code nowrap">03908.HK</td>
             <td class="name-cell"><strong>中金公司</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3434,7 +3435,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="01908.HK">
             <td class="code nowrap">01908.HK</td>
             <td class="name-cell"><strong>建发国际集团</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3453,7 +3454,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="09899.HK">
             <td class="code nowrap">09899.HK</td>
             <td class="name-cell"><strong>网易云音乐</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3472,7 +3473,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="02282.HK">
             <td class="code nowrap">02282.HK</td>
             <td class="name-cell"><strong>美高梅中国</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3491,7 +3492,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="01766.HK">
             <td class="code nowrap">01766.HK</td>
             <td class="name-cell"><strong>中国中车</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3510,7 +3511,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="03698.HK">
             <td class="code nowrap">03698.HK</td>
             <td class="name-cell"><strong>徽商银行</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3529,7 +3530,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="02607.HK">
             <td class="code nowrap">02607.HK</td>
             <td class="name-cell"><strong>上海医药</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3548,7 +3549,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="01929.HK">
             <td class="code nowrap">01929.HK</td>
             <td class="name-cell"><strong>周大福</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3567,7 +3568,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="03998.HK">
             <td class="code nowrap">03998.HK</td>
             <td class="name-cell"><strong>波司登</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3586,7 +3587,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="03618.HK">
             <td class="code nowrap">03618.HK</td>
             <td class="name-cell"><strong>重庆农村商业银行</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3605,7 +3606,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="01913.HK">
             <td class="code nowrap">01913.HK</td>
             <td class="name-cell"><strong>普拉达</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3624,7 +3625,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="00144.HK">
             <td class="code nowrap">00144.HK</td>
             <td class="name-cell"><strong>招商局港口</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3643,7 +3644,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="01083.HK">
             <td class="code nowrap">01083.HK</td>
             <td class="name-cell"><strong>港华智慧能源</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3662,7 +3663,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="00257.HK">
             <td class="code nowrap">00257.HK</td>
             <td class="name-cell"><strong>光大环境</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3681,7 +3682,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="06099.HK">
             <td class="code nowrap">06099.HK</td>
             <td class="name-cell"><strong>招商证券</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3700,7 +3701,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="02799.HK">
             <td class="code nowrap">02799.HK</td>
             <td class="name-cell"><strong>中信金融资产</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3719,7 +3720,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="02388.HK">
             <td class="code nowrap">02388.HK</td>
             <td class="name-cell"><strong>中银香港</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3738,7 +3739,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="00358.HK">
             <td class="code nowrap">00358.HK</td>
             <td class="name-cell"><strong>江西铜业股份</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3757,7 +3758,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="01199.HK">
             <td class="code nowrap">01199.HK</td>
             <td class="name-cell"><strong>中远海运港口</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3776,7 +3777,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="06690.HK">
             <td class="code nowrap">06690.HK</td>
             <td class="name-cell"><strong>海尔智家</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3795,7 +3796,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="03339.HK">
             <td class="code nowrap">03339.HK</td>
             <td class="name-cell"><strong>中国龙工</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3814,7 +3815,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="01883.HK">
             <td class="code nowrap">01883.HK</td>
             <td class="name-cell"><strong>中信国际电讯</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3833,7 +3834,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="00941.HK">
             <td class="code nowrap">00941.HK</td>
             <td class="name-cell"><strong>中国移动</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3852,7 +3853,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="02318.HK">
             <td class="code nowrap">02318.HK</td>
             <td class="name-cell"><strong>中国平安</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3871,7 +3872,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="00087.HK">
             <td class="code nowrap">00087.HK</td>
             <td class="name-cell"><strong>太古股份公司B</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3890,7 +3891,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="02883.HK">
             <td class="code nowrap">02883.HK</td>
             <td class="name-cell"><strong>中海油田服务</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3909,7 +3910,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="06655.HK">
             <td class="code nowrap">06655.HK</td>
             <td class="name-cell"><strong>华新建材</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3928,7 +3929,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="06936.HK">
             <td class="code nowrap">06936.HK</td>
             <td class="name-cell"><strong>顺丰控股</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3947,7 +3948,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="03888.HK">
             <td class="code nowrap">03888.HK</td>
             <td class="name-cell"><strong>金山软件</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3966,7 +3967,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="01258.HK">
             <td class="code nowrap">01258.HK</td>
             <td class="name-cell"><strong>中国有色矿业</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -3985,7 +3986,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="00552.HK">
             <td class="code nowrap">00552.HK</td>
             <td class="name-cell"><strong>中国通信服务</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -4004,7 +4005,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="01836.HK">
             <td class="code nowrap">01836.HK</td>
             <td class="name-cell"><strong>九兴控股</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -4023,7 +4024,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="02518.HK">
             <td class="code nowrap">02518.HK</td>
             <td class="name-cell"><strong>汽车之家-S</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -4042,7 +4043,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="00998.HK">
             <td class="code nowrap">00998.HK</td>
             <td class="name-cell"><strong>中信银行</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -4061,7 +4062,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="09961.HK">
             <td class="code nowrap">09961.HK</td>
             <td class="name-cell"><strong>携程集团-S</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -4080,7 +4081,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="01099.HK">
             <td class="code nowrap">01099.HK</td>
             <td class="name-cell"><strong>国药控股</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -4099,7 +4100,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="00921.HK">
             <td class="code nowrap">00921.HK</td>
             <td class="name-cell"><strong>海信家电</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -4118,7 +4119,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="01109.HK">
             <td class="code nowrap">01109.HK</td>
             <td class="name-cell"><strong>华润置地</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -4137,7 +4138,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="00688.HK">
             <td class="code nowrap">00688.HK</td>
             <td class="name-cell"><strong>中国海外发展</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -4156,7 +4157,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="02057.HK">
             <td class="code nowrap">02057.HK</td>
             <td class="name-cell"><strong>中通快递-W</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -4175,7 +4176,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="02689.HK">
             <td class="code nowrap">02689.HK</td>
             <td class="name-cell"><strong>玖龙纸业</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -4194,7 +4195,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="01910.HK">
             <td class="code nowrap">01910.HK</td>
             <td class="name-cell"><strong>新秀丽</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -4213,7 +4214,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="00856.HK">
             <td class="code nowrap">00856.HK</td>
             <td class="name-cell"><strong>伟仕佳杰</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -4232,7 +4233,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="03933.HK">
             <td class="code nowrap">03933.HK</td>
             <td class="name-cell"><strong>联邦制药</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -4251,7 +4252,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="01800.HK">
             <td class="code nowrap">01800.HK</td>
             <td class="name-cell"><strong>中国交通建设</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -4270,7 +4271,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="00390.HK">
             <td class="code nowrap">00390.HK</td>
             <td class="name-cell"><strong>中国中铁</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -4289,7 +4290,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="02359.HK">
             <td class="code nowrap">02359.HK</td>
             <td class="name-cell"><strong>药明康德</strong></td>
             <td class="nowrap"><span class="market-badge market-hk">HK</span></td>
@@ -4308,7 +4309,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="GL.N">
             <td class="code nowrap">GL.N</td>
             <td class="name-cell"><strong>Globe Life</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4327,7 +4328,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="AIZ.N">
             <td class="code nowrap">AIZ.N</td>
             <td class="name-cell"><strong>Assurant</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4346,7 +4347,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="WRB.N">
             <td class="code nowrap">WRB.N</td>
             <td class="name-cell"><strong>W. R. Berkley Corporation</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4365,7 +4366,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="AMP.N">
             <td class="code nowrap">AMP.N</td>
             <td class="name-cell"><strong>Ameriprise Financial</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4384,7 +4385,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="UAL.O">
             <td class="code nowrap">UAL.O</td>
             <td class="name-cell"><strong>United Airlines Holdings</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4403,7 +4404,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="INCY.O">
             <td class="code nowrap">INCY.O</td>
             <td class="name-cell"><strong>Incyte</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4422,7 +4423,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="LYV.N">
             <td class="code nowrap">LYV.N</td>
             <td class="name-cell"><strong>Live Nation Entertainment</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4441,7 +4442,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="PNC.N">
             <td class="code nowrap">PNC.N</td>
             <td class="name-cell"><strong>PNC Financial Services</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4460,7 +4461,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="AFL.N">
             <td class="code nowrap">AFL.N</td>
             <td class="name-cell"><strong>Aflac</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4479,7 +4480,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="DAL.N">
             <td class="code nowrap">DAL.N</td>
             <td class="name-cell"><strong>Delta Air Lines</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4498,7 +4499,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="TRV.N">
             <td class="code nowrap">TRV.N</td>
             <td class="name-cell"><strong>Travelers Companies (The)</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4517,7 +4518,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="ALL.N">
             <td class="code nowrap">ALL.N</td>
             <td class="name-cell"><strong>Allstate</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4536,7 +4537,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="PHM.N">
             <td class="code nowrap">PHM.N</td>
             <td class="name-cell"><strong>PulteGroup</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4555,7 +4556,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="PRU.N">
             <td class="code nowrap">PRU.N</td>
             <td class="name-cell"><strong>Prudential Financial</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4574,7 +4575,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="AON.N">
             <td class="code nowrap">AON.N</td>
             <td class="name-cell"><strong>Aon plc</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4593,7 +4594,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="HIG.N">
             <td class="code nowrap">HIG.N</td>
             <td class="name-cell"><strong>Hartford (The)</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4612,7 +4613,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="MPC.N">
             <td class="code nowrap">MPC.N</td>
             <td class="name-cell"><strong>Marathon Petroleum</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4631,7 +4632,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="SOLV.N">
             <td class="code nowrap">SOLV.N</td>
             <td class="name-cell"><strong>Solventum</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4650,7 +4651,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="USB.N">
             <td class="code nowrap">USB.N</td>
             <td class="name-cell"><strong>U.S. Bancorp</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4669,7 +4670,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="EXPE.O">
             <td class="code nowrap">EXPE.O</td>
             <td class="name-cell"><strong>Expedia Group</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4688,7 +4689,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="JPM.N">
             <td class="code nowrap">JPM.N</td>
             <td class="name-cell"><strong>摩根大通</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4707,7 +4708,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="HBAN.O">
             <td class="code nowrap">HBAN.O</td>
             <td class="name-cell"><strong>Huntington Bancshares</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4726,7 +4727,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="RJF.N">
             <td class="code nowrap">RJF.N</td>
             <td class="name-cell"><strong>Raymond James Financial</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4745,7 +4746,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="A.N">
             <td class="code nowrap">A.N</td>
             <td class="name-cell"><strong>Agilent Technologies</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4764,7 +4765,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="CCL.N">
             <td class="code nowrap">CCL.N</td>
             <td class="name-cell"><strong>Carnival Corporation</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4783,7 +4784,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="VLTO.N">
             <td class="code nowrap">VLTO.N</td>
             <td class="name-cell"><strong>Veralto</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4802,7 +4803,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="PPG.N">
             <td class="code nowrap">PPG.N</td>
             <td class="name-cell"><strong>PPG Industries</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4821,7 +4822,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="EXPD.N">
             <td class="code nowrap">EXPD.N</td>
             <td class="name-cell"><strong>Expeditors International</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4840,7 +4841,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="FOX.O">
             <td class="code nowrap">FOX.O</td>
             <td class="name-cell"><strong>Fox Corporation (Class B)</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4859,7 +4860,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="PCG.N">
             <td class="code nowrap">PCG.N</td>
             <td class="name-cell"><strong>PG&E Corporation</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4878,7 +4879,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="TROW.O">
             <td class="code nowrap">TROW.O</td>
             <td class="name-cell"><strong>T. Rowe Price</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4897,7 +4898,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="CINF.O">
             <td class="code nowrap">CINF.O</td>
             <td class="name-cell"><strong>Cincinnati Financial</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4916,7 +4917,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="URI.N">
             <td class="code nowrap">URI.N</td>
             <td class="name-cell"><strong>United Rentals</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4935,7 +4936,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="WSM.N">
             <td class="code nowrap">WSM.N</td>
             <td class="name-cell"><strong>Williams-Sonoma, Inc.</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4954,7 +4955,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="FOXA.O">
             <td class="code nowrap">FOXA.O</td>
             <td class="name-cell"><strong>Fox Corporation (Class A)</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4973,7 +4974,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="NTAP.O">
             <td class="code nowrap">NTAP.O</td>
             <td class="name-cell"><strong>NetApp</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -4992,7 +4993,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="V.N">
             <td class="code nowrap">V.N</td>
             <td class="name-cell"><strong>Visa</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -5011,7 +5012,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="GOOGL.O">
             <td class="code nowrap">GOOGL.O</td>
             <td class="name-cell"><strong>谷歌</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -5030,7 +5031,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="JNJ.N">
             <td class="code nowrap">JNJ.N</td>
             <td class="name-cell"><strong>强生</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -5049,7 +5050,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="UNP.N">
             <td class="code nowrap">UNP.N</td>
             <td class="name-cell"><strong>Union Pacific Corporation</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -5068,7 +5069,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="CSX.O">
             <td class="code nowrap">CSX.O</td>
             <td class="name-cell"><strong>CSX Corporation</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -5087,7 +5088,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="ADP.O">
             <td class="code nowrap">ADP.O</td>
             <td class="name-cell"><strong>Automatic Data Processing</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -5106,7 +5107,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="KMB.O">
             <td class="code nowrap">KMB.O</td>
             <td class="name-cell"><strong>Kimberly-Clark</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -5125,7 +5126,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="GS.N">
             <td class="code nowrap">GS.N</td>
             <td class="name-cell"><strong>Goldman Sachs</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -5144,7 +5145,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="GIS.N">
             <td class="code nowrap">GIS.N</td>
             <td class="name-cell"><strong>General Mills</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -5163,7 +5164,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="GDDY.N">
             <td class="code nowrap">GDDY.N</td>
             <td class="name-cell"><strong>GoDaddy</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -5182,7 +5183,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="SPG.N">
             <td class="code nowrap">SPG.N</td>
             <td class="name-cell"><strong>Simon Property Group</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -5201,7 +5202,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="NSC.N">
             <td class="code nowrap">NSC.N</td>
             <td class="name-cell"><strong>Norfolk Southern</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -5220,7 +5221,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="RCL.N">
             <td class="code nowrap">RCL.N</td>
             <td class="name-cell"><strong>Royal Caribbean Group</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -5239,7 +5240,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="AES.N">
             <td class="code nowrap">AES.N</td>
             <td class="name-cell"><strong>AES Corporation</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -5258,7 +5259,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="COR.N">
             <td class="code nowrap">COR.N</td>
             <td class="name-cell"><strong>Cencora</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -5277,7 +5278,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="ITW.N">
             <td class="code nowrap">ITW.N</td>
             <td class="name-cell"><strong>Illinois Tool Works</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -5296,7 +5297,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="AXP.N">
             <td class="code nowrap">AXP.N</td>
             <td class="name-cell"><strong>American Express</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -5315,7 +5316,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="MMM.N">
             <td class="code nowrap">MMM.N</td>
             <td class="name-cell"><strong>3M</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -5334,7 +5335,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="LLY.N">
             <td class="code nowrap">LLY.N</td>
             <td class="name-cell"><strong>礼来</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -5353,7 +5354,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="NVDA.O">
             <td class="code nowrap">NVDA.O</td>
             <td class="name-cell"><strong>英伟达</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -5372,7 +5373,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="MSFT.O">
             <td class="code nowrap">MSFT.O</td>
             <td class="name-cell"><strong>微软</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -5391,7 +5392,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="AAPL.O">
             <td class="code nowrap">AAPL.O</td>
             <td class="name-cell"><strong>苹果</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -5410,7 +5411,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="MCO.N">
             <td class="code nowrap">MCO.N</td>
             <td class="name-cell"><strong>Moody's Corporation</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -5429,7 +5430,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="UNH.N">
             <td class="code nowrap">UNH.N</td>
             <td class="name-cell"><strong>联合健康</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -5448,7 +5449,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="APA.O">
             <td class="code nowrap">APA.O</td>
             <td class="name-cell"><strong>APA Corporation</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -5467,7 +5468,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="AMZN.O">
             <td class="code nowrap">AMZN.O</td>
             <td class="name-cell"><strong>亚马逊</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -5486,7 +5487,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="EIX.N">
             <td class="code nowrap">EIX.N</td>
             <td class="name-cell"><strong>Edison International</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -5505,7 +5506,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="EOG.N">
             <td class="code nowrap">EOG.N</td>
             <td class="name-cell"><strong>EOG Resources</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -5524,7 +5525,7 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap">—</td>
 
         </tr>
-<tr class="">
+<tr class="" data-code="WM.N">
             <td class="code nowrap">WM.N</td>
             <td class="name-cell"><strong>Waste Management</strong></td>
             <td class="nowrap"><span class="market-badge market-us">US</span></td>
@@ -7961,7 +7962,7 @@ tr:hover { background: #f1ebff; }
                 <td>60.0</td>
                 <td class="num">203.00</td>
                 <td class="num up">+0.2%</td>
-                <td class="change-reason"><span class="tooltip-wrap" data-akey="buy:09999.HK">技术因子强势领跑，估值配合支撑，事件中性无碍入选<span class="tooltip-text"></span></span></td>
+                <td class="change-reason"><span class="tooltip-wrap" data-akey="buy:09999.HK">技术面强势突破主导入选，估值提供安全边际<span class="tooltip-text"></span></span></td>
             </tr>
 </tbody>
 </table>
@@ -7983,7 +7984,7 @@ tr:hover { background: #f1ebff; }
             <td class="num ">+0.0%</td>
             <td class="num">0</td>
             <td><span class="badge badge-major">今日新增卖出</span></td>
-            <td class="change-reason"><span class="tooltip-wrap" data-akey="sell:03877.HK">技术面与动量双弱触发调仓<span class="tooltip-text"></span></span></td>
+            <td class="change-reason"><span class="tooltip-wrap" data-akey="sell:03877.HK">调仓换股，技术动量双弱拖累评分<span class="tooltip-text"></span></span></td>
         </tr>
 <tr>
             <td class="code">06030.HK</td>
@@ -7994,7 +7995,7 @@ tr:hover { background: #f1ebff; }
             <td class="num ">+0.0%</td>
             <td class="num">0</td>
             <td><span class="badge badge-major">今日新增卖出</span></td>
-            <td class="change-reason"><span class="tooltip-wrap" data-akey="sell:06030.HK">调仓卖出，质量因子偏弱拖累排名<span class="tooltip-text"></span></span></td>
+            <td class="change-reason"><span class="tooltip-wrap" data-akey="sell:06030.HK">调仓换股、评分平庸，质量因子拖累明显<span class="tooltip-text"></span></span></td>
         </tr>
 </tbody>
         </table>
@@ -14139,6 +14140,146 @@ document.addEventListener('keydown', function(e) {
             }
         });
     }
+})();
+</script>
+<!-- Live Sync: admin 操作后主报告自动反映最新持仓 -->
+<script>
+(function(){
+  const RAW = 'https://raw.githubusercontent.com/laodingtouzi/laodinglab/main/data/portfolio_wb';
+  const FX_USD = 6.762213;
+  const FX_HKD = 0.8669503846153847;
+  function fmtWan(v){ v=Number(v)||0; return (v/10000).toFixed(2); }
+  function fmtPct(v){ v=Number(v)||0; return (v>=0?'+':'')+v.toFixed(1)+'%'; }
+  function fmtInt(v){ v=Number(v)||0; return v.toLocaleString(); }
+
+  async function loadLiveHoldings(){
+    try{
+      const [cn,hk,us] = await Promise.all([
+        fetch(RAW+'/holdings_CN.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.json()),
+        fetch(RAW+'/holdings_HK.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.json()),
+        fetch(RAW+'/holdings_US.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.json())
+      ]);
+      const live = {...cn, ...hk, ...us};
+      patchHoldingsTable(live);
+      patchSummaryRow(live);
+    }catch(e){ /* 静默失败，不影响页面 */ }
+  }
+
+  function patchHoldingsTable(live){
+    const table = document.querySelector('#holdings table tbody');
+    if(!table) return;
+    let changed = 0, removed = 0;
+    table.querySelectorAll('tr[data-code]').forEach(tr => {
+      const code = tr.getAttribute('data-code');
+      if(!live[code]){
+        // 股票已卖出 → 标记行
+        if(!tr.classList.contains('live-sold')){
+          tr.classList.add('live-sold');
+          tr.style.opacity = '0.5';
+          tr.style.textDecoration = 'line-through';
+          const nameCell = tr.querySelector('td.name-cell');
+          if(nameCell && !nameCell.querySelector('.sold-badge')){
+            const badge = document.createElement('span');
+            badge.className = 'sold-badge';
+            badge.style.cssText = 'background:#dc2626;color:#fff;padding:1px 6px;border-radius:3px;font-size:0.7rem;margin-left:4px;';
+            badge.textContent = '已卖出';
+            nameCell.appendChild(badge);
+          }
+          removed++;
+        }
+        return;
+      }
+      const h = live[code];
+      // 检查股数是否变化
+      const sharesCell = tr.cells[7]; // shares 列
+      if(!sharesCell) return;
+      const liveShares = Number(h.shares||0);
+      const htmlShares = parseInt(sharesCell.textContent.replace(/,/g,''),10)||0;
+      if(liveShares !== htmlShares){
+        // 更新股数
+        sharesCell.textContent = fmtInt(liveShares);
+        // 更新盈亏%
+        const pnlCell = tr.cells[9];
+        if(pnlCell){
+          const tr_val = Number(h.total_return||0);
+          pnlCell.textContent = fmtPct(tr_val);
+          pnlCell.style.color = tr_val >= 0 ? 'var(--buy)' : 'var(--sell)';
+        }
+        // 更新市值
+        const mvCell = tr.cells[8];
+        if(mvCell) mvCell.textContent = fmtWan(h.market_value||0) + '万';
+        // 添加更新标记
+        if(!tr.querySelector('.sync-badge')){
+          const nameCell = tr.querySelector('td.name-cell');
+          if(nameCell){
+            const badge = document.createElement('span');
+            badge.className = 'sync-badge';
+            badge.style.cssText = 'background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:3px;font-size:0.7rem;margin-left:4px;';
+            badge.textContent = '🔄已更新';
+            nameCell.appendChild(badge);
+          }
+        }
+        changed++;
+      }
+    });
+    if(changed > 0 || removed > 0){
+      console.log('[LiveSync] 更新 '+changed+' 行，标记 '+removed+' 行已卖出');
+    }
+  }
+
+  function patchSummaryRow(live){
+    const summaryTable = document.querySelector('.summary-table tbody');
+    if(!summaryTable) return;
+    // 按市场分组计算
+    const marketData = {CN:{mv:0,cost:0,count:0}, HK:{mv:0,cost:0,count:0}, US:{mv:0,cost:0,count:0}};
+    const currMap = {CN:'CNY', HK:'HKD', US:'USD'};
+    const fxMap = {CNY:1.0, HKD:FX_HKD, USD:FX_USD};
+    Object.values(live).forEach(h => {
+      const mkt = (h.market||'CN').toUpperCase();
+      if(!marketData[mkt]) return;
+      marketData[mkt].mv += Number(h.market_value||0);
+      marketData[mkt].cost += Number(h.cost||0);
+      marketData[mkt].count++;
+    });
+    // 更新各市场行
+    summaryTable.querySelectorAll('tr').forEach(tr => {
+      const label = tr.cells[0]?.textContent || '';
+      let mkt = null;
+      if(label.includes('A股')) mkt = 'CN';
+      else if(label.includes('港股')) mkt = 'HK';
+      else if(label.includes('美股')) mkt = 'US';
+      if(!mkt || !marketData[mkt]) return;
+      const d = marketData[mkt];
+      const pnl = d.mv - d.cost;
+      const pnlPct = d.cost > 0 ? (pnl/d.cost*100) : 0;
+      if(tr.cells[1]) tr.cells[1].textContent = d.count+'只';
+      if(tr.cells[2]) tr.cells[2].textContent = fmtWan(d.mv)+'万 '+currMap[mkt];
+      if(tr.cells[4]) tr.cells[4].textContent = fmtWan(pnl)+'万';
+      if(tr.cells[5]) tr.cells[5].innerHTML = '<span style="color:'+(pnl>=0?'var(--buy)':'var(--sell)')+'">'+fmtPct(pnlPct)+'</span>';
+    });
+    // 更新合计行
+    const totalRow = summaryTable.querySelector('tr[style*="f1f5f9"]');
+    if(totalRow){
+      let totalMV=0, totalCost=0, totalCount=0;
+      Object.entries(marketData).forEach(([mkt,d]) => {
+        const fx = fxMap[currMap[mkt]] || 1;
+        totalMV += d.mv * fx;
+        totalCost += d.cost * fx;
+        totalCount += d.count;
+      });
+      const totalPnl = totalMV - totalCost;
+      const totalPnlPct = totalCost > 0 ? (totalPnl/totalCost*100) : 0;
+      if(totalRow.cells[1]) totalRow.cells[1].textContent = totalCount+'只';
+      if(totalRow.cells[2]) totalRow.cells[2].textContent = fmtWan(totalMV)+'万 CNY';
+      if(totalRow.cells[4]){ totalRow.cells[4].textContent = fmtWan(totalPnl)+'万'; totalRow.cells[4].style.color = totalPnl>=0?'var(--buy)':'var(--sell)'; }
+      if(totalRow.cells[5]){ totalRow.cells[5].innerHTML = '<span style="color:'+(totalPnl>=0?'var(--buy)':'var(--sell)')+'">'+fmtPct(totalPnlPct)+'</span>'; }
+    }
+  }
+
+  // 页面加载后 2 秒执行一次（等待表格渲染完毕）
+  setTimeout(loadLiveHoldings, 2000);
+  // 每 60 秒刷新一次（如果用户保持页面打开）
+  setInterval(loadLiveHoldings, 60000);
 })();
 </script>
 </body>
