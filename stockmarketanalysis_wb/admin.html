@@ -52,6 +52,7 @@
     <input type="password" id="tokenInput" placeholder="GitHub Token (ghp_..., repo 写权限)" onkeypress="if(event.key==='Enter')doLogin()">
     <label style="display:flex;align-items:center;gap:6px;font-size:0.85rem;color:#475569;margin-bottom:10px;cursor:pointer;"><input type="checkbox" id="rememberToken" checked>在本浏览器记住 Token (localStorage)</label>
     <button onclick="doLogin()">登录</button>
+    <button onclick="clearStoredToken()" style="background:#94a3b8;margin-top:6px;font-size:0.8rem;">🗑️ 清除已保存的旧 Token</button>
     <div class="error" id="loginError">密码或 Token 无效</div>
     <div style="margin-top:14px;font-size:0.78rem;color:#64748b;line-height:1.5;border-top:1px dashed #cbd5e1;padding-top:10px;">
       🔑 Token 仅在浏览器端调用 GitHub Contents API，不经过任何第三方服务器。<br>
@@ -146,6 +147,16 @@ function doLogin() {
   loadData();
 }
 
+function clearStoredToken() {
+  try {
+    localStorage.removeItem('wb_gh_token');
+    document.getElementById('tokenInput').value = '';
+    alert('✅ 已清除 localStorage 中的旧 Token\n请重新粘贴一个新的 GitHub Token 再登录。');
+  } catch (e) {
+    alert('清除失败: ' + e.message);
+  }
+}
+
 // 进入页面时自动填充 Token
 (function () {
   try {
@@ -166,12 +177,36 @@ async function ghGetFile(path) {
   const url = `${GH_API}/repos/${GH_OWNER}/${GH_REPO}/contents/${path}?ref=${GH_BRANCH}&t=${Date.now()}`;
   const resp = await fetch(url, { headers: ghHeaders(), cache: 'no-store' });
   if (resp.status === 404) return null;
+  if (resp.status === 401) {
+    _handle401();
+    throw new Error(`GitHub Token 已失效（HTTP 401），请重新登录`);
+  }
   if (!resp.ok) throw new Error(`GitHub GET ${path} 失败: HTTP ${resp.status}`);
   const data = await resp.json();
   const text = atob(data.content.replace(/\n/g, ''));
   let parsed;
   try { parsed = JSON.parse(text); } catch (e) { parsed = {}; }
   return { content: parsed, sha: data.sha };
+}
+
+let _handle401_called = false;
+function _handle401() {
+  if (_handle401_called) return;
+  _handle401_called = true;
+  // 清空失效 token
+  try { localStorage.removeItem('wb_gh_token'); } catch (e) {}
+  GH_TOKEN = '';
+  // 提示用户重新登录
+  alert('🔑 GitHub Token 已失效或过期\n\n请重新输入 Token 后再次操作。\n（管理员页已自动退出登录）');
+  document.getElementById('loginPage').style.display = 'block';
+  document.getElementById('adminPage').style.display = 'none';
+  document.getElementById('tokenInput').value = '';
+  document.getElementById('loginError').style.display = 'none';
+  // 关闭可能打开的模态框
+  const modal = document.getElementById('confirmModal');
+  if (modal) modal.style.display = 'none';
+  // 1.5秒后重置防抖标记，允许下次重新触发
+  setTimeout(() => { _handle401_called = false; }, 1500);
 }
 
 async function ghPutFile(path, content, sha, message) {
@@ -183,6 +218,10 @@ async function ghPutFile(path, content, sha, message) {
   };
   if (sha) body.sha = sha;
   const resp = await fetch(url, { method: 'PUT', headers: ghHeaders(), body: JSON.stringify(body) });
+  if (resp.status === 401) {
+    _handle401();
+    throw new Error(`GitHub Token 已失效（HTTP 401），请重新登录`);
+  }
   if (!resp.ok) {
     const err = await resp.text().catch(() => '');
     throw new Error(`GitHub PUT ${path} 失败: HTTP ${resp.status} ${err.slice(0, 200)}`);
