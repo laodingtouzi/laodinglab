@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>管理员后台 · 老丁实验室</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:#f8fafc; color:#334155; line-height:1.6; }
+  .container { max-width:1200px; margin:0 auto; padding:20px; }
+  header { background:#1e293b; color:#fff; padding:16px 20px; margin-bottom:24px; border-radius:8px; display:flex; align-items:center; justify-content:space-between; }
+  header h1 { font-size:1.2rem; margin:0; }
+  header .header-right { display:flex; align-items:center; gap:16px; }
+  header a { color:#94a3b8; text-decoration:none; font-size:0.85rem; }
+  header .logout-btn { background:#dc2626; color:#fff; border:none; padding:4px 12px; border-radius:4px; cursor:pointer; font-size:0.8rem; }
+  header .logout-btn:hover { background:#b91c1c; }
+  .login-box { max-width:400px; margin:100px auto; background:#fff; padding:32px; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.08); }
+  .login-box h2 { margin-bottom:20px; color:#1e293b; }
+  .login-box input { width:100%; padding:12px; margin-bottom:12px; border:1px solid #e2e8f0; border-radius:6px; font-size:1rem; }
+  .login-box button { width:100%; padding:12px; background:#5f01d1; color:#fff; border:none; border-radius:6px; font-size:1rem; cursor:pointer; }
+  .login-box button:hover { background:#4a00a8; }
+  .login-box .error { color:#dc2626; margin-top:8px; font-size:0.9rem; display:none; }
+  .section { background:#fff; border-radius:8px; padding:20px; margin-bottom:20px; box-shadow:0 1px 3px rgba(0,0,0,0.05); }
+  .section h3 { margin-bottom:16px; color:#1e293b; border-bottom:2px solid #e2e8f0; padding-bottom:8px; }
+  table { width:100%; border-collapse:collapse; font-size:0.9rem; }
+  th, td { padding:10px 8px; text-align:left; border-bottom:1px solid #e2e8f0; }
+  th { background:#f1f5f9; font-weight:600; color:#475569; }
+  .btn { padding:4px 10px; border:none; border-radius:4px; cursor:pointer; font-size:0.8rem; margin:0 2px; }
+  .btn-add { background:#16a34a; color:#fff; }
+  .btn-reduce { background:#ca8a04; color:#fff; }
+  .btn-sell { background:#dc2626; color:#fff; }
+  .btn-delist { background:#64748b; color:#fff; }
+  .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center; }
+  .modal { background:#fff; padding:24px; border-radius:12px; width:400px; max-width:90%; }
+  .modal h4 { margin-bottom:16px; }
+  .modal input { width:100%; padding:10px; margin-bottom:12px; border:1px solid #e2e8f0; border-radius:6px; }
+  .modal .actions { display:flex; gap:8px; justify-content:flex-end; margin-top:16px; }
+  .modal .actions button { padding:8px 16px; border:none; border-radius:6px; cursor:pointer; }
+  .modal .actions .cancel { background:#f1f5f9; }
+  .modal .actions .confirm { background:#5f01d1; color:#fff; }
+  .toast { position:fixed; top:20px; right:20px; padding:12px 20px; border-radius:8px; color:#fff; z-index:2000; display:none; max-width:360px; word-break:break-all; }
+  .toast.success { background:#16a34a; }
+  .toast.error { background:#dc2626; }
+  .toast.info { background:#5f01d1; }
+  .toast code { background:rgba(255,255,255,.18); padding:1px 6px; border-radius:3px; font-size:0.9em; }
+  .sync-badge { display:inline-block; background:#fef3c7; color:#92400e; padding:1px 6px; border-radius:3px; font-size:0.7rem; margin-left:4px; }
+</style>
+</head>
+<body>
+
+<div id="loginPage">
+  <div class="login-box">
+    <h2>🔒 管理员登录</h2>
+    <input type="password" id="pwdInput" placeholder="请输入管理密码" onkeypress="if(event.key==='Enter')doLogin()">
+    <button onclick="doLogin()">登录</button>
+    <div class="error" id="loginError">密码错误</div>
+    <div style="margin-top:14px;font-size:0.78rem;color:#64748b;line-height:1.5;border-top:1px dashed #cbd5e1;padding-top:10px;">
+      ☁️ Cloudflare 安全模式 · Token 由服务端保管，浏览器永不接触<br>
+      📁 数据路径：<code>data/portfolio_wb/*.json</code><br>
+      🔄 操作成功后自动刷新本页 + 同步主报告持仓数据
+    </div>
+  </div>
+</div>
+
+<div id="adminPage" style="display:none;">
+  <header>
+    <h1>管理员后台 (WB版) <span id="modeBadge" style="font-size:0.7rem;font-weight:400;padding:2px 8px;border-radius:4px;background:#16a34a;color:#fff;">☁️ Cloudflare 安全模式</span></h1>
+    <div class="header-right">
+      <a href="https://laodinglab.com/stockmarketanalysis_wb" target="_blank">← 返回报告</a>
+      <button class="logout-btn" onclick="doLogout()">退出登录</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="section">
+      <h3>📈 持有清单操作</h3>
+      <div id="holdingsLoading">加载中...</div>
+      <div id="holdingsTable" style="display:none;">
+        <input type="text" id="holdingsSearch" placeholder="🔍 搜索代码或名称..." style="width:100%;max-width:300px;padding:8px 12px;margin-bottom:12px;border:1px solid #e2e8f0;border-radius:6px;font-size:0.9rem;" oninput="filterHoldings()">
+        <table>
+          <thead>
+            <tr>
+              <th>代码</th><th>名称</th><th>市场</th><th>状态</th><th>评分</th>
+              <th>当前价</th><th>股数</th><th>盈亏%</th><th>天数</th><th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="holdingsBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>📉 沽后观察池操作</h3>
+      <div id="postSellLoading">加载中...</div>
+      <div id="postSellTable" style="display:none;">
+        <table>
+          <thead>
+            <tr>
+              <th>代码</th><th>名称</th><th>市场</th><th>卖出日</th><th>卖出价</th><th>持有收益</th><th>沽后涨跌</th><th>观察天数</th><th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="postSellBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="actionModal">
+  <div class="modal">
+    <h4 id="modalTitle">操作</h4>
+    <p id="modalInfo"></p>
+    <input type="number" id="modalShares" placeholder="股数" min="1">
+    <p id="modalSellHint" style="display:none; color:#64748b; font-size:0.85rem; margin-bottom:12px;">⚠️ 点击确认将清仓卖出该股票</p>
+    <input type="text" id="modalReason" placeholder="原因（卖出时可选）" style="display:none;">
+    <div class="actions">
+      <button class="cancel" onclick="closeModal()">取消</button>
+      <button class="confirm" id="modalConfirm" onclick="confirmAction()">确认</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ============ 配置 ============
+const API_BASE = 'https://wb-admin.johzding.workers.dev';
+const GITHUB_RAW = 'https://raw.githubusercontent.com/laodingtouzi/laodinglab/main';
+const GH_BRANCH = 'main';
+const HOLDINGS_DIR = 'data/portfolio_wb';
+
+let currentAction, currentCode, currentName, currentMarket, currentPrice;
+let holdingsDataCache = {};
+
+// ============ Bearer Token 认证 ============
+function getToken() {
+  return localStorage.getItem('wb_admin_token') || '';
+}
+
+function setToken(token) {
+  localStorage.setItem('wb_admin_token', token);
+}
+
+function clearToken() {
+  localStorage.removeItem('wb_admin_token');
+}
+
+async function doLogin() {
+  const pwd = document.getElementById('pwdInput').value;
+  if (!pwd) {
+    document.getElementById('loginError').style.display = 'block';
+    return;
+  }
+  try {
+    const resp = await fetch(API_BASE + '/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: pwd })
+    });
+    if (resp.ok) {
+      const data = await resp.json();
+      if (data.token) {
+        setToken(data.token);
+        document.getElementById('loginPage').style.display = 'none';
+        document.getElementById('adminPage').style.display = 'block';
+        document.getElementById('loginError').style.display = 'none';
+        loadData();
+      } else {
+        document.getElementById('loginError').textContent = '登录返回异常';
+        document.getElementById('loginError').style.display = 'block';
+      }
+    } else {
+      const data = await resp.json().catch(() => ({}));
+      const errEl = document.getElementById('loginError');
+      errEl.textContent = data.error || '密码错误';
+      errEl.style.display = 'block';
+    }
+  } catch (e) {
+    const errEl = document.getElementById('loginError');
+    errEl.textContent = '网络错误: ' + e.message;
+    errEl.style.display = 'block';
+  }
+}
+
+async function doLogout() {
+  try {
+    await fetch(API_BASE + '/api/logout', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + getToken() }
+    });
+  } catch (e) {}
+  clearToken();
+  document.getElementById('loginPage').style.display = 'block';
+  document.getElementById('adminPage').style.display = 'none';
+  document.getElementById('pwdInput').value = '';
+}
+
+// ============ GitHub API 代理 (跨域, Bearer Token) ============
+function ghContentsUrl(path) {
+  return API_BASE + '/api/gh/contents/' + path + '?ref=' + GH_BRANCH + '&t=' + Date.now();
+}
+
+function ghHeaders() {
+  return {
+    'Accept': 'application/vnd.github.v3+json',
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' + getToken()
+  };
+}
+
+let _handle401_called = false;
+function _handle401() {
+  if (_handle401_called) return;
+  _handle401_called = true;
+  clearToken();
+  alert('登录会话已过期，请重新登录');
+  document.getElementById('loginPage').style.display = 'block';
+  document.getElementById('adminPage').style.display = 'none';
+  document.getElementById('pwdInput').value = '';
+  document.getElementById('loginError').style.display = 'none';
+  const modal = document.getElementById('actionModal');
+  if (modal) modal.style.display = 'none';
+  setTimeout(() => { _handle401_called = false; }, 1500);
+}
+
+async function ghGetFile(path) {
+  const url = ghContentsUrl(path);
+  const resp = await fetch(url, { headers: ghHeaders(), cache: 'no-store' });
+  if (resp.status === 404) return null;
+  if (resp.status === 401) {
+    _handle401();
+    throw new Error('登录已过期，请重新登录');
+  }
+  if (!resp.ok) throw new Error('GitHub GET ' + path + ' 失败: HTTP ' + resp.status);
+  const data = await resp.json();
+  const text = atob(data.content.replace(/\n/g, ''));
+  let parsed;
+  try { parsed = JSON.parse(text); } catch (e) { parsed = {}; }
+  return { content: parsed, sha: data.sha };
+}
+
+async function ghPutFile(path, content, sha, message) {
+  const url = API_BASE + '/api/gh/contents/' + path;
+  const body = {
+    message: message,
+    content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))),
+    branch: GH_BRANCH
+  };
+  if (sha) body.sha = sha;
+  const resp = await fetch(url, { method: 'PUT', headers: ghHeaders(), body: JSON.stringify(body) });
+  if (resp.status === 401) {
+    _handle401();
+    throw new Error('登录已过期，请重新登录');
+  }
+  if (!resp.ok) {
+    const err = await resp.text().catch(() => '');
+    throw new Error('GitHub PUT ' + path + ' 失败: HTTP ' + resp.status + ' ' + err.slice(0, 200));
+  }
+  return true;
+}
+
+// ============ 数据加载 ============
+async function loadData() {
+  const noCache = { cache: 'no-store' };
+  try {
+    const [cn, hk, us] = await Promise.all([
+      fetch(GITHUB_RAW + '/' + HOLDINGS_DIR + '/holdings_CN.json?t=' + Date.now(), noCache).then(r => r.json()),
+      fetch(GITHUB_RAW + '/' + HOLDINGS_DIR + '/holdings_HK.json?t=' + Date.now(), noCache).then(r => r.json()),
+      fetch(GITHUB_RAW + '/' + HOLDINGS_DIR + '/holdings_US.json?t=' + Date.now(), noCache).then(r => r.json())
+    ]);
+    const allHoldings = { ...cn, ...hk, ...us };
+    holdingsDataCache = allHoldings;
+    renderHoldings(allHoldings);
+
+    const [psCN, psHK, psUS] = await Promise.all([
+      fetch(GITHUB_RAW + '/' + HOLDINGS_DIR + '/post_sell_CN.json?t=' + Date.now(), noCache).then(r => r.json()),
+      fetch(GITHUB_RAW + '/' + HOLDINGS_DIR + '/post_sell_HK.json?t=' + Date.now(), noCache).then(r => r.json()),
+      fetch(GITHUB_RAW + '/' + HOLDINGS_DIR + '/post_sell_US.json?t=' + Date.now(), noCache).then(r => r.json())
+    ]);
+    const allPostSell = { ...psCN, ...psHK, ...psUS };
+    renderPostSell(allPostSell);
+  } catch (e) {
+    showToast('数据加载失败: ' + e.message, 'error');
+  }
+}
+
+// ============ 工具函数 ============
+function marketFromCode(code) {
+  const norm = code.toUpperCase();
+  if (norm.endsWith('.SH') || norm.endsWith('.SZ')) return 'CN';
+  if (/^\d{5}\.HK$/.test(norm)) return 'HK';
+  if (/^[A-Z]+(\.[A-Z])?$/.test(norm) && !norm.endsWith('.SH') && !norm.endsWith('.SZ')) return 'US';
+  return '';
+}
+
+function _nowDate() {
+  return new Date().toISOString().split('T')[0];
+}
+
+function _avgPrice(oldShares, oldEntry, addShares, addPrice) {
+  const totalShares = oldShares + addShares;
+  return totalShares > 0 ? (oldShares * oldEntry + addShares * addPrice) / totalShares : 0;
+}
+
+function _updateMetricsAfterChange(h, newShares) {
+  const price = h.current_price || h.entry_price || 0;
+  h.shares = newShares;
+  h.entry_price = h.entry_price || 0;
+  if (h.entry_price > 0) {
+    h.total_return = Math.round(((price - h.entry_price) / h.entry_price) * 10000) / 100;
+  }
+  h.market_value = Math.round(newShares * price * 100) / 100;
+  h.cost = Math.round(newShares * h.entry_price * 100) / 100;
+}
+
+// ============ 操作逻辑 ============
+async function confirmAction() {
+  let shares = 0;
+  if (currentAction !== 'sell') {
+    shares = parseInt(document.getElementById('modalShares').value, 10);
+    if (!shares || shares <= 0) { showToast('请输入有效股数', 'error'); return; }
+  }
+
+  const mkt = (currentMarket || marketFromCode(currentCode) || 'CN').toUpperCase();
+  const holdingsPath = HOLDINGS_DIR + '/holdings_' + mkt + '.json';
+  const postSellPath = HOLDINGS_DIR + '/post_sell_' + mkt + '.json';
+
+  closeModal();
+  showToast('正在提交到 GitHub ...', 'info');
+
+  try {
+    const got = await ghGetFile(holdingsPath);
+    if (!got || !got.content[currentCode]) {
+      showToast(currentCode + ' 不在 ' + mkt + ' 持仓中', 'error');
+      return;
+    }
+    const obj = got.content;
+    const sha = got.sha;
+    const h = obj[currentCode];
+    const oldShares = h.shares || 0;
+    const oldEntry = h.entry_price || 0;
+    const price = currentPrice || h.current_price || oldEntry;
+
+    let actionMsg = '';
+    let needFullReload = false;
+
+    if (currentAction === 'add') {
+      const addShares = shares;
+      const avg = _avgPrice(oldShares, oldEntry, addShares, price);
+      const newShares = oldShares + addShares;
+      h.entry_price = Math.round(avg * 100) / 100;
+      _updateMetricsAfterChange(h, newShares);
+      actionMsg = '加仓 ' + addShares + ' 股 @' + price;
+    } else if (currentAction === 'reduce') {
+      const reduceShares = shares;
+      const newShares = Math.max(0, oldShares - reduceShares);
+      if (newShares === 0) {
+        let postGot = await ghGetFile(postSellPath);
+        const postObj = postGot ? postGot.content : {};
+        const postSha = postGot ? postGot.sha : null;
+        postObj[currentCode] = {
+          name: h.name, market: mkt,
+          sell_date: _nowDate(),
+          sell_price: price,
+          total_return_when_sold: h.total_return || 0,
+          hold_days: h.hold_days || 0,
+          post_sell_analysis: '手工减仓至 0',
+          manual_sell: true
+        };
+        await ghPutFile(postSellPath, postObj, postSha, 'Manual reduce to 0: ' + currentCode);
+        delete obj[currentCode];
+        await ghPutFile(holdingsPath, obj, sha, 'Manual reduce to 0: ' + currentCode);
+        showToast(currentCode + ' 已清仓', 'success');
+        needFullReload = true;
+      } else {
+        _updateMetricsAfterChange(h, newShares);
+        actionMsg = '减仓 ' + reduceShares + ' 股，现 ' + newShares + ' 股';
+      }
+    } else if (currentAction === 'sell') {
+      const reason = document.getElementById('modalReason').value || '手工卖出';
+      let postGot = await ghGetFile(postSellPath);
+      const postObj = postGot ? postGot.content : {};
+      const postSha = postGot ? postGot.sha : null;
+      postObj[currentCode] = {
+        name: h.name, market: mkt,
+        sell_date: _nowDate(),
+        sell_price: price,
+        total_return_when_sold: h.total_return || 0,
+        hold_days: h.hold_days || 0,
+        post_sell_analysis: reason,
+        manual_sell: true
+      };
+      await ghPutFile(postSellPath, postObj, postSha, 'Manual sell: ' + currentCode);
+      delete obj[currentCode];
+      await ghPutFile(holdingsPath, obj, sha, 'Manual sell: ' + currentCode);
+      showToast(currentCode + ' 卖出成功', 'success');
+      needFullReload = true;
+    } else {
+      showToast('未知操作: ' + currentAction, 'error');
+      return;
+    }
+
+    if (!needFullReload) {
+      await ghPutFile(holdingsPath, obj, sha, 'Manual ' + currentAction + ': ' + currentCode + ' (' + actionMsg + ')');
+      showToast(currentCode + ' ' + actionMsg + ' 提交成功', 'success');
+    }
+
+    // 操作成功后全量刷新
+    showToast('正在刷新数据...', 'info');
+    await loadData();
+    showToast('数据已同步', 'success');
+  } catch (e) {
+    showToast('操作失败: ' + e.message, 'error');
+    console.error(e);
+  }
+}
+
+async function doDelist(code) {
+  if (!confirm('确认剔除 ' + code + '？')) return;
+  showToast('正在提交到 GitHub ...', 'info');
+  for (const m of ['CN', 'HK', 'US']) {
+    const postSellPath = HOLDINGS_DIR + '/post_sell_' + m + '.json';
+    try {
+      const got = await ghGetFile(postSellPath);
+      if (got && got.content[code]) {
+        delete got.content[code];
+        await ghPutFile(postSellPath, got.content, got.sha, 'Delist: ' + code);
+        showToast(code + ' 已从 ' + m + ' 观察清单移除', 'success');
+        await loadData();
+        return;
+      }
+    } catch (e) { /* continue */ }
+  }
+  showToast(code + ' 不在任何 post_sell 池子里', 'error');
+}
+
+// ============ 渲染 ============
+function renderHoldings(data) {
+  const tbody = document.getElementById('holdingsBody');
+  const marketOrder = { 'CN': 0, 'HK': 1, 'US': 2 };
+  const items = Object.entries(data).sort((a, b) => {
+    const ma = marketOrder[a[1].market] ?? 99;
+    const mb = marketOrder[b[1].market] ?? 99;
+    if (ma !== mb) return ma - mb;
+    return (b[1].latest_score || 0) - (a[1].latest_score || 0);
+  });
+  tbody.innerHTML = items.map(([code, h]) => {
+    const price = h.current_price || 0;
+    const ret = h.total_return || 0;
+    const retColor = ret >= 0 ? '#dc2626' : '#16a34a';
+    return '<tr id="hold-row-' + code + '" data-code="' + code.toLowerCase() + '" data-name="' + (h.name || '').toLowerCase() + '">' +
+      '<td>' + code + '</td>' +
+      '<td><strong>' + (h.name || '') + '</strong></td>' +
+      '<td>' + (h.market || '') + '</td>' +
+      '<td>' + (h.status || '') + '</td>' +
+      '<td>' + (h.latest_score || '') + '</td>' +
+      '<td>' + price + '</td>' +
+      '<td id="hold-shares-' + code + '">' + (h.shares || 0).toLocaleString() + '</td>' +
+      '<td style="color:' + retColor + '">' + ret.toFixed(1) + '%</td>' +
+      '<td>' + (h.hold_days || 0) + '</td>' +
+      '<td>' +
+        '<button class="btn btn-add" onclick="openModal(\'add\', \'' + code + '\', \'' + (h.name || '').replace(/'/g, "\\'") + '\', \'' + (h.market || '') + '\', ' + price + ')">加仓</button>' +
+        '<button class="btn btn-reduce" onclick="openModal(\'reduce\', \'' + code + '\', \'' + (h.name || '').replace(/'/g, "\\'") + '\', \'' + (h.market || '') + '\', ' + price + ')">减仓</button>' +
+        '<button class="btn btn-sell" onclick="openModal(\'sell\', \'' + code + '\', \'' + (h.name || '').replace(/'/g, "\\'") + '\', \'' + (h.market || '') + '\', ' + price + ')">卖出</button>' +
+      '</td>' +
+    '</tr>';
+  }).join('');
+  document.getElementById('holdingsLoading').style.display = 'none';
+  document.getElementById('holdingsTable').style.display = 'block';
+}
+
+function filterHoldings() {
+  const kw = document.getElementById('holdingsSearch').value.trim().toLowerCase();
+  const rows = document.querySelectorAll('#holdingsBody tr');
+  rows.forEach(row => {
+    const code = row.getAttribute('data-code') || '';
+    const name = row.getAttribute('data-name') || '';
+    row.style.display = (!kw || code.includes(kw) || name.includes(kw)) ? '' : 'none';
+  });
+}
+
+function renderPostSell(data) {
+  const tbody = document.getElementById('postSellBody');
+  const items = Object.entries(data).sort((a, b) => (a[1].sell_date || '').localeCompare(b[1].sell_date || ''));
+  tbody.innerHTML = items.map(([code, ps]) => {
+    const holdRet = ps.total_return_when_sold || 0;
+    const postRet = ps.post_sell_return || 0;
+    const holdColor = holdRet >= 0 ? '#dc2626' : '#16a34a';
+    const postColor = postRet >= 0 ? '#dc2626' : '#16a34a';
+    return '<tr id="post-row-' + code + '">' +
+      '<td>' + code + '</td>' +
+      '<td><strong>' + (ps.name || '') + '</strong></td>' +
+      '<td>' + (ps.market || '') + '</td>' +
+      '<td>' + (ps.sell_date || '') + '</td>' +
+      '<td>' + (ps.sell_price || '') + '</td>' +
+      '<td style="color:' + holdColor + '">' + holdRet.toFixed(1) + '%</td>' +
+      '<td style="color:' + postColor + '">' + postRet.toFixed(1) + '%</td>' +
+      '<td>' + (ps.hold_days || 0) + '</td>' +
+      '<td><button class="btn btn-delist" onclick="doDelist(\'' + code + '\')">剔除</button></td>' +
+    '</tr>';
+  }).join('');
+  document.getElementById('postSellLoading').style.display = 'none';
+  document.getElementById('postSellTable').style.display = 'block';
+}
+
+function openModal(action, code, name, market, price) {
+  currentAction = action; currentCode = code; currentName = name; currentMarket = market; currentPrice = price;
+  const titles = { add: '➕ 加仓', reduce: '➖ 减仓', sell: '⤵️ 卖出（清仓）' };
+  document.getElementById('modalTitle').textContent = titles[action] || '操作';
+  document.getElementById('modalInfo').textContent = code + ' ' + name + ' | 现价 ' + price;
+  const sharesInput = document.getElementById('modalShares');
+  const sellHint = document.getElementById('modalSellHint');
+  const reasonInput = document.getElementById('modalReason');
+  if (action === 'sell') {
+    sharesInput.style.display = 'none';
+    sellHint.style.display = 'block';
+    reasonInput.style.display = 'block';
+  } else {
+    sharesInput.style.display = 'block';
+    sharesInput.value = '';
+    sellHint.style.display = 'none';
+    reasonInput.style.display = 'none';
+  }
+  reasonInput.value = '';
+  document.getElementById('actionModal').style.display = 'flex';
+}
+
+function closeModal() { document.getElementById('actionModal').style.display = 'none'; }
+
+function showToast(msg, type) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.className = 'toast ' + type;
+  toast.style.display = 'block';
+  setTimeout(() => toast.style.display = 'none', 4000);
+}
+
+// ============ 页面初始化：检查登录状态 ============
+(async function() {
+  const token = getToken();
+  if (!token) {
+    document.getElementById('loginPage').style.display = 'block';
+    return;
+  }
+  try {
+    // 用 token 尝试访问需要认证的 API 来检查是否已登录
+    const resp = await fetch(API_BASE + '/api/gh/contents/' + HOLDINGS_DIR + '?ref=' + GH_BRANCH, {
+      headers: ghHeaders(),
+      cache: 'no-store'
+    });
+    if (resp.ok) {
+      // 已登录，直接进入管理页面
+      document.getElementById('loginPage').style.display = 'none';
+      document.getElementById('adminPage').style.display = 'block';
+      loadData();
+    } else {
+      // Token 过期，显示登录页
+      clearToken();
+      document.getElementById('loginPage').style.display = 'block';
+    }
+  } catch (e) {
+    // 网络错误，显示登录页
+    document.getElementById('loginPage').style.display = 'block';
+  }
+})();
+</script>
+
+</body>
+</html>
