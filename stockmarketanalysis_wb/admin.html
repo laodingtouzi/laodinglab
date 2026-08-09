@@ -262,23 +262,23 @@ async function ghPutFile(path, content, sha, message) {
 
 // ============ 数据加载 ============
 async function loadData() {
-  const noCache = { cache: 'no-store' };
   try {
-    const [cn, hk, us] = await Promise.all([
-      fetch(GITHUB_RAW + '/' + HOLDINGS_DIR + '/holdings_CN.json?t=' + Date.now(), noCache).then(r => r.json()),
-      fetch(GITHUB_RAW + '/' + HOLDINGS_DIR + '/holdings_HK.json?t=' + Date.now(), noCache).then(r => r.json()),
-      fetch(GITHUB_RAW + '/' + HOLDINGS_DIR + '/holdings_US.json?t=' + Date.now(), noCache).then(r => r.json())
+    // 通过 Worker API → GitHub Contents API 读取（无 CDN 缓存延迟，即时获取最新数据）
+    const [cnR, hkR, usR] = await Promise.all([
+      ghGetFile(HOLDINGS_DIR + '/holdings_CN.json'),
+      ghGetFile(HOLDINGS_DIR + '/holdings_HK.json'),
+      ghGetFile(HOLDINGS_DIR + '/holdings_US.json')
     ]);
-    const allHoldings = { ...cn, ...hk, ...us };
+    const allHoldings = { ...(cnR?.content||{}), ...(hkR?.content||{}), ...(usR?.content||{}) };
     holdingsDataCache = allHoldings;
     renderHoldings(allHoldings);
 
-    const [psCN, psHK, psUS] = await Promise.all([
-      fetch(GITHUB_RAW + '/' + HOLDINGS_DIR + '/post_sell_CN.json?t=' + Date.now(), noCache).then(r => r.json()),
-      fetch(GITHUB_RAW + '/' + HOLDINGS_DIR + '/post_sell_HK.json?t=' + Date.now(), noCache).then(r => r.json()),
-      fetch(GITHUB_RAW + '/' + HOLDINGS_DIR + '/post_sell_US.json?t=' + Date.now(), noCache).then(r => r.json())
+    const [psCNR, psHKR, psUSR] = await Promise.all([
+      ghGetFile(HOLDINGS_DIR + '/post_sell_CN.json'),
+      ghGetFile(HOLDINGS_DIR + '/post_sell_HK.json'),
+      ghGetFile(HOLDINGS_DIR + '/post_sell_US.json')
     ]);
-    const allPostSell = { ...psCN, ...psHK, ...psUS };
+    const allPostSell = { ...(psCNR?.content||{}), ...(psHKR?.content||{}), ...(psUSR?.content||{}) };
     renderPostSell(allPostSell);
   } catch (e) {
     showToast('数据加载失败: ' + e.message, 'error');
