@@ -55,7 +55,8 @@
     <button onclick="clearStoredToken()" style="background:#94a3b8;margin-top:6px;font-size:0.8rem;">🗑️ 清除已保存的旧 Token</button>
     <div class="error" id="loginError">密码或 Token 无效</div>
     <div style="margin-top:14px;font-size:0.78rem;color:#64748b;line-height:1.5;border-top:1px dashed #cbd5e1;padding-top:10px;">
-      🔑 Token 仅在浏览器端调用 GitHub Contents API，不经过任何第三方服务器。<br>
+      💡 推荐使用本地模式：<code>./admin.sh</code> 或 <code>python3 admin_server.py</code><br>
+      本地模式下无需输入 Token，自动通过安全代理访问 GitHub API<br>
       📁 数据路径：<code>data/portfolio_wb/*.json</code><br>
       🔄 操作成功后自动刷新本页 + 同步主报告持仓数据
     </div>
@@ -64,7 +65,7 @@
 
 <div id="adminPage" style="display:none;">
   <header>
-    <h1>管理员后台 (WB版)</h1>
+    <h1>管理员后台 (WB版) <span id="modeBadge" style="font-size:0.7rem;font-weight:400;padding:2px 8px;border-radius:4px;background:#16a34a;color:#fff;"></span></h1>
     <a href="/stockmarketanalysis_wb">← 返回报告</a>
   </header>
 
@@ -127,9 +128,18 @@ const GH_OWNER = 'laodingtouzi';
 const GH_REPO = 'laodinglab';
 const GH_BRANCH = 'main';
 const HOLDINGS_DIR = 'data/portfolio_wb';
+const IS_LOCAL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 let GH_TOKEN = '';
 let currentAction, currentCode, currentName, currentMarket, currentPrice;
 let holdingsDataCache = {};
+
+// 本地模式：GitHub API 调用走本地代理（/api/gh/contents/*），token 由代理注入，浏览器不接触
+function ghContentsUrl(path) {
+  if (IS_LOCAL) {
+    return `/api/gh/contents/${path}?ref=${GH_BRANCH}&t=${Date.now()}`;
+  }
+  return `${GH_API}/repos/${GH_OWNER}/${GH_REPO}/contents/${path}?ref=${GH_BRANCH}&t=${Date.now()}`;
+}
 
 function doLogin() {
   const pwd = document.getElementById('pwdInput').value;
@@ -157,24 +167,39 @@ function clearStoredToken() {
   }
 }
 
-// 进入页面时自动填充 Token
+// 进入页面时：本地模式自动登录，远程模式尝试填充已保存的 Token
 (function () {
-  try {
-    const saved = localStorage.getItem('wb_gh_token');
-    if (saved) document.getElementById('tokenInput').value = saved;
-  } catch (e) {}
+  const badge = document.getElementById('modeBadge');
+  if (IS_LOCAL) {
+    // 本地模式：代理服务器已注入 token，直接进入管理页面
+    if (badge) { badge.textContent = '🔒 本地安全模式'; badge.style.background = '#16a34a'; }
+    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('adminPage').style.display = 'block';
+    loadData();
+  } else {
+    // 远程模式（GitHub Pages）：尝试从 localStorage 填充 token
+    if (badge) { badge.textContent = '⚠️ 远程模式'; badge.style.background = '#ca8a04'; }
+    try {
+      const saved = localStorage.getItem('wb_gh_token');
+      if (saved) document.getElementById('tokenInput').value = saved;
+    } catch (e) {}
+  }
 })();
 
 function ghHeaders() {
-  return {
+  const h = {
     'Accept': 'application/vnd.github.v3+json',
-    'Authorization': 'token ' + GH_TOKEN,
     'Content-Type': 'application/json'
   };
+  // 本地模式：代理服务器自动注入 Authorization header，浏览器不需要
+  if (!IS_LOCAL && GH_TOKEN) {
+    h['Authorization'] = 'token ' + GH_TOKEN;
+  }
+  return h;
 }
 
 async function ghGetFile(path) {
-  const url = `${GH_API}/repos/${GH_OWNER}/${GH_REPO}/contents/${path}?ref=${GH_BRANCH}&t=${Date.now()}`;
+  const url = ghContentsUrl(path);
   const resp = await fetch(url, { headers: ghHeaders(), cache: 'no-store' });
   if (resp.status === 404) return null;
   if (resp.status === 401) {
@@ -210,7 +235,7 @@ function _handle401() {
 }
 
 async function ghPutFile(path, content, sha, message) {
-  const url = `${GH_API}/repos/${GH_OWNER}/${GH_REPO}/contents/${path}`;
+  const url = IS_LOCAL ? `/api/gh/contents/${path}` : `${GH_API}/repos/${GH_OWNER}/${GH_REPO}/contents/${path}`;
   const body = {
     message: message,
     content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))),
