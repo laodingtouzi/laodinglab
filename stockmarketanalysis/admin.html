@@ -177,7 +177,7 @@ async function ghGetFile(path) {
   if (resp.status === 401) { clearToken(); throw new Error('Token 失效，请重新登录'); }
   if (!resp.ok) throw new Error('GET 失败: HTTP ' + resp.status);
   const data = await resp.json();
-  const text = atob(data.content.replace(/\n/g, ''));
+  const text = decodeURIComponent(escape(atob(data.content.replace(/\n/g, ''))));
   return { content: JSON.parse(text), sha: data.sha };
 }
 
