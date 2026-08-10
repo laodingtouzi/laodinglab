@@ -197,6 +197,21 @@
       
       const cloud = cloudHoldings[code];
       if (!cloud) {
+        // 云端已不存在（被卖出）— 避免重复标记
+        if (!row.hasAttribute('data-sold')) {
+          removed.push(code);
+          row.setAttribute('data-sold', 'true');
+          row.style.opacity = '0.4';
+          row.style.textDecoration = 'line-through';
+          // 在行尾最后一个单元格追加"已卖出"提示
+          const lastCell = row.cells[row.cells.length - 1];
+          if (lastCell && !lastCell.querySelector('.sold-tag')) {
+            lastCell.insertAdjacentHTML('beforeend', ' <span class="sold-tag" style="color:#dc2626;font-size:0.75rem;font-weight:600;margin-left:4px;">(已卖出)</span>');
+          }
+        }
+        return;
+      }
+      if (!cloud) {
         // 云端已不存在（被卖出）
         removed.push(code);
         row.style.opacity = '0.4';
