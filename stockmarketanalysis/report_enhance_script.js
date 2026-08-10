@@ -127,8 +127,18 @@
     });
   }
 
-  // ========== 3. 云端同步 ==========
-  const PORTFOLIO_URL = 'https://raw.githubusercontent.com/laodingtouzi/laodinglab/main/stockmarketanalysis/data/portfolio_v5.json';
+  // ========== 3. 云端同步（直接从 holdings_*.json 拉取，与admin同源） ==========
+  const GH_RAW = 'https://raw.githubusercontent.com/laodingtouzi/laodinglab/main';
+  const HOLDINGS_URLS = {
+    CN: GH_RAW + '/data/portfolio/holdings_CN.json',
+    HK: GH_RAW + '/data/portfolio/holdings_HK.json',
+    US: GH_RAW + '/data/portfolio/holdings_US.json',
+  };
+  const POSTSELL_URLS = {
+    CN: GH_RAW + '/data/portfolio/post_sell_CN.json',
+    HK: GH_RAW + '/data/portfolio/post_sell_HK.json',
+    US: GH_RAW + '/data/portfolio/post_sell_US.json',
+  };
   
   function fmtInt(n) {
     try { return parseInt(n).toLocaleString(); } catch(e) { return String(n); }
@@ -305,14 +315,18 @@
   
   async function syncFromCloud() {
     try {
-      const resp = await fetch(PORTFOLIO_URL + '?t=' + Date.now(), { cache: 'no-store' });
-      if (!resp.ok) {
-        console.warn('[Sync] 云端数据拉取失败:', resp.status);
-        return;
-      }
-      const data = await resp.json();
-      const cloudHoldings = data.holdings || {};
-      const cloudPostSell = data.post_sell || {};
+      // 并行拉取 3 个市场的 holdings 和 post_sell（与admin页面同源）
+      const [cnH, hkH, usH, cnP, hkP, usP] = await Promise.all([
+        fetch(HOLDINGS_URLS.CN + '?t=' + Date.now(), { cache: 'no-store' }).then(r => r.ok ? r.json() : {}),
+        fetch(HOLDINGS_URLS.HK + '?t=' + Date.now(), { cache: 'no-store' }).then(r => r.ok ? r.json() : {}),
+        fetch(HOLDINGS_URLS.US + '?t=' + Date.now(), { cache: 'no-store' }).then(r => r.ok ? r.json() : {}),
+        fetch(POSTSELL_URLS.CN + '?t=' + Date.now(), { cache: 'no-store' }).then(r => r.ok ? r.json() : {}),
+        fetch(POSTSELL_URLS.HK + '?t=' + Date.now(), { cache: 'no-store' }).then(r => r.ok ? r.json() : {}),
+        fetch(POSTSELL_URLS.US + '?t=' + Date.now(), { cache: 'no-store' }).then(r => r.ok ? r.json() : {}),
+      ]);
+      
+      const cloudHoldings = { ...(cnH || {}), ...(hkH || {}), ...(usH || {}) };
+      const cloudPostSell = { ...(cnP || {}), ...(hkP || {}), ...(usP || {}) };
       
       const hResult = syncHoldingsTable(cloudHoldings);
       const psResult = syncPostSellTable(cloudPostSell);
