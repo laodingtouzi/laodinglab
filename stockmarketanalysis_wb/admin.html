@@ -55,7 +55,7 @@
     <button onclick="doLogin()">登录</button>
     <div class="error" id="loginError">密码错误</div>
     <div style="margin-top:14px;font-size:0.78rem;color:#64748b;line-height:1.5;border-top:1px dashed #cbd5e1;padding-top:10px;">
-      ☁️ Cloudflare 安全模式 · Token 由服务端保管，浏览器永不接触<br>
+      🔐 AES-256-GCM 加密 · Token 加密存储，密码本地解密<br>
       📁 数据路径：<code>data/portfolio_wb/*.json</code><br>
       🔄 操作成功后自动刷新本页 + 同步主报告持仓数据
     </div>
@@ -64,7 +64,7 @@
 
 <div id="adminPage" style="display:none;">
   <header>
-    <h1>管理员后台 (WB版) <span id="modeBadge" style="font-size:0.7rem;font-weight:400;padding:2px 8px;border-radius:4px;background:#16a34a;color:#fff;">☁️ Cloudflare 安全模式</span></h1>
+    <h1>管理员后台 (WB版) <span id="modeBadge" style="font-size:0.7rem;font-weight:400;padding:2px 8px;border-radius:4px;background:#16a34a;color:#fff;">🔐 直连 GitHub API</span></h1>
     <div class="header-right">
       <a href="https://laodinglab.com/stockmarketanalysis_wb" target="_blank">← 返回报告</a>
       <button class="logout-btn" onclick="doLogout()">退出登录</button>
@@ -125,80 +125,99 @@
 
 <script>
 // ============ 配置 ============
-const API_BASE = 'https://wb-admin.johzding.workers.dev';
-const GITHUB_RAW = 'https://raw.githubusercontent.com/laodingtouzi/laodinglab/main';
+const GH_API = 'https://api.github.com/repos/laodingtouzi/laodinglab';
 const GH_BRANCH = 'main';
 const HOLDINGS_DIR = 'data/portfolio_wb';
+const AUTH_FILE = 'auth.dat'; // 与 admin.html 同目录
 
 let currentAction, currentCode, currentName, currentMarket, currentPrice;
 let holdingsDataCache = {};
 
-// ============ Bearer Token 认证 ============
+// ============ Token 管理 (sessionStorage) ============
 function getToken() {
-  return localStorage.getItem('wb_admin_token') || '';
+  return sessionStorage.getItem('wb_gh_token') || '';
 }
-
 function setToken(token) {
-  localStorage.setItem('wb_admin_token', token);
+  sessionStorage.setItem('wb_gh_token', token);
 }
-
 function clearToken() {
-  localStorage.removeItem('wb_admin_token');
+  sessionStorage.removeItem('wb_gh_token');
 }
 
+// ============ AES-256-GCM 解密 (Web Crypto API) ============
+async function decryptToken(password, encryptedB64) {
+  // base64 → bytes
+  const blob = Uint8Array.from(atob(encryptedB64.trim()), c => c.charCodeAt(0));
+  const salt = blob.slice(0, 16);
+  const iv = blob.slice(16, 28);
+  const data = blob.slice(28); // ciphertext + authTag (Web Crypto API 格式)
+
+  // PBKDF2 从密码派生 AES-256 密钥
+  const keyMaterial = await crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(password),
+    { name: 'PBKDF2' },
+    false,
+    ['deriveKey']
+  );
+  const aesKey = await crypto.subtle.deriveKey(
+    { name: 'PBKDF2', salt, iterations: 100000, hash: 'SHA-256' },
+    keyMaterial,
+    { name: 'AES-GCM', length: 256 },
+    false,
+    ['decrypt']
+  );
+
+  // AES-GCM 解密
+  const decrypted = await crypto.subtle.decrypt(
+    { name: 'AES-GCM', iv },
+    aesKey,
+    data
+  );
+  return new TextDecoder().decode(decrypted);
+}
+
+// ============ 登录 ============
 async function doLogin() {
   const pwd = document.getElementById('pwdInput').value;
   if (!pwd) {
     document.getElementById('loginError').style.display = 'block';
     return;
   }
+  const errEl = document.getElementById('loginError');
+  errEl.style.display = 'none';
   try {
-    const resp = await fetch(API_BASE + '/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password: pwd })
-    });
-    if (resp.ok) {
-      const data = await resp.json();
-      if (data.token) {
-        setToken(data.token);
-        document.getElementById('loginPage').style.display = 'none';
-        document.getElementById('adminPage').style.display = 'block';
-        document.getElementById('loginError').style.display = 'none';
-        loadData();
-      } else {
-        document.getElementById('loginError').textContent = '登录返回异常';
-        document.getElementById('loginError').style.display = 'block';
-      }
-    } else {
-      const data = await resp.json().catch(() => ({}));
-      const errEl = document.getElementById('loginError');
-      errEl.textContent = data.error || '密码错误';
-      errEl.style.display = 'block';
-    }
+    // 1. 拉取加密认证文件
+    const resp = await fetch(AUTH_FILE + '?t=' + Date.now(), { cache: 'no-store' });
+    if (!resp.ok) throw new Error('无法加载认证文件');
+    const encryptedB64 = await resp.text();
+
+    // 2. 用密码解密 Token
+    const token = await decryptToken(pwd, encryptedB64);
+    if (!token || !token.startsWith('ghp_')) throw new Error('解密失败');
+
+    // 3. 存储 Token 并进入管理页
+    setToken(token);
+    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('adminPage').style.display = 'block';
+    errEl.style.display = 'none';
+    loadData();
   } catch (e) {
-    const errEl = document.getElementById('loginError');
-    errEl.textContent = '网络错误: ' + e.message;
+    errEl.textContent = '密码错误或解密失败';
     errEl.style.display = 'block';
   }
 }
 
-async function doLogout() {
-  try {
-    await fetch(API_BASE + '/api/logout', {
-      method: 'POST',
-      headers: { 'Authorization': 'Bearer ' + getToken() }
-    });
-  } catch (e) {}
+function doLogout() {
   clearToken();
   document.getElementById('loginPage').style.display = 'block';
   document.getElementById('adminPage').style.display = 'none';
   document.getElementById('pwdInput').value = '';
 }
 
-// ============ GitHub API 代理 (跨域, Bearer Token) ============
+// ============ GitHub API 直连 (无代理，无 CDN 缓存) ============
 function ghContentsUrl(path) {
-  return API_BASE + '/api/gh/contents/' + path + '?ref=' + GH_BRANCH + '&t=' + Date.now();
+  return GH_API + '/contents/' + path + '?ref=' + GH_BRANCH + '&t=' + Date.now();
 }
 
 function ghHeaders() {
@@ -214,7 +233,7 @@ function _handle401() {
   if (_handle401_called) return;
   _handle401_called = true;
   clearToken();
-  alert('登录会话已过期，请重新登录');
+  alert('登录已过期，请重新登录');
   document.getElementById('loginPage').style.display = 'block';
   document.getElementById('adminPage').style.display = 'none';
   document.getElementById('pwdInput').value = '';
@@ -241,7 +260,7 @@ async function ghGetFile(path) {
 }
 
 async function ghPutFile(path, content, sha, message) {
-  const url = API_BASE + '/api/gh/contents/' + path;
+  const url = GH_API + '/contents/' + path;
   const body = {
     message: message,
     content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))),
@@ -263,7 +282,6 @@ async function ghPutFile(path, content, sha, message) {
 // ============ 数据加载 ============
 async function loadData() {
   try {
-    // 通过 Worker API → GitHub Contents API 读取（无 CDN 缓存延迟，即时获取最新数据）
     const [cnR, hkR, usR] = await Promise.all([
       ghGetFile(HOLDINGS_DIR + '/holdings_CN.json'),
       ghGetFile(HOLDINGS_DIR + '/holdings_HK.json'),
@@ -536,33 +554,17 @@ function showToast(msg, type) {
   setTimeout(() => toast.style.display = 'none', 4000);
 }
 
-// ============ 页面初始化：检查登录状态 ============
+// ============ 页面初始化：检查 sessionStorage 中的 Token ============
 (async function() {
   const token = getToken();
   if (!token) {
     document.getElementById('loginPage').style.display = 'block';
     return;
   }
-  try {
-    // 用 token 尝试访问需要认证的 API 来检查是否已登录
-    const resp = await fetch(API_BASE + '/api/gh/contents/' + HOLDINGS_DIR + '?ref=' + GH_BRANCH, {
-      headers: ghHeaders(),
-      cache: 'no-store'
-    });
-    if (resp.ok) {
-      // 已登录，直接进入管理页面
-      document.getElementById('loginPage').style.display = 'none';
-      document.getElementById('adminPage').style.display = 'block';
-      loadData();
-    } else {
-      // Token 过期，显示登录页
-      clearToken();
-      document.getElementById('loginPage').style.display = 'block';
-    }
-  } catch (e) {
-    // 网络错误，显示登录页
-    document.getElementById('loginPage').style.display = 'block';
-  }
+  // Token 存在，直接进入管理页
+  document.getElementById('loginPage').style.display = 'none';
+  document.getElementById('adminPage').style.display = 'block';
+  loadData();
 })();
 </script>
 
