@@ -305,6 +305,38 @@
       } else {
         console.log('[Sync] 数据一致，无需更新');
       }
+      
+      // 移除同步遮罩
+      const holdTable = document.getElementById('holdingsTable');
+      if (holdTable) {
+        const tbody = holdTable.querySelector('tbody');
+        if (tbody) tbody.style.opacity = '1';
+      }
+      const overlay = document.getElementById('holdings-syncing');
+      if (overlay) overlay.remove();
+      
+    } catch (e) {
+      console.warn('[Sync] 同步异常:', e.message);
+      // 出错时也移除遮罩
+      const holdTable = document.getElementById('holdingsTable');
+      if (holdTable) {
+        const tbody = holdTable.querySelector('tbody');
+        if (tbody) tbody.style.opacity = '1';
+      }
+      const overlay = document.getElementById('holdings-syncing');
+      if (overlay) overlay.remove();
+    }
+        let msg = '持仓数据已同步：';
+        const parts = [];
+        if (totalUpdated > 0) parts.push(totalUpdated + ' 条已更新');
+        if (totalNew > 0) parts.push(totalNew + ' 只新买入');
+        if (totalRemoved > 0) parts.push(totalRemoved + ' 只已卖出');
+        msg += parts.join('，');
+        showSyncBanner(msg, 'success');
+        console.log('[Sync] 同步完成:', { holdings: hResult, postSell: psResult });
+      } else {
+        console.log('[Sync] 数据一致，无需更新');
+      }
     } catch (e) {
       console.warn('[Sync] 同步异常:', e.message);
     }
@@ -329,7 +361,23 @@
       { colIndex: 7, extract: r => parseInt(r.querySelector('td:nth-child(8)')?.textContent?.trim() || '0') || 0 },
     ]);
 
-    setTimeout(syncFromCloud, 3000);
+    // 持有池：同步前显示遮罩
+    const holdTable = document.getElementById('holdingsTable');
+    if (holdTable) {
+      const tbody = holdTable.querySelector('tbody');
+      if (tbody) {
+        tbody.style.opacity = '0.5';
+        const overlay = document.createElement('div');
+        overlay.id = 'holdings-syncing';
+        overlay.style.cssText = 'position:absolute; left:50%; top:40%; transform:translate(-50%,-50%); background:rgba(37,99,235,0.9); color:#fff; padding:6px 14px; border-radius:20px; font-size:0.8rem; z-index:10;';
+        overlay.textContent = '⏳ 正在同步云端数据...';
+        holdTable.parentNode.style.position = 'relative';
+        holdTable.parentNode.appendChild(overlay);
+      }
+    }
+
+    setTimeout(syncFromCloud, 500);
+    setInterval(syncFromCloud, 60000);
     setInterval(syncFromCloud, 60000);
   }
 
