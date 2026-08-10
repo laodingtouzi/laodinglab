@@ -47,7 +47,7 @@
     <h2>🔒 管理员登录</h2>
     <input type="password" id="pwdInput" placeholder="请输入管理密码" onkeypress="if(event.key==='Enter')doLogin()">
     <button onclick="doLogin()">登录</button>
-    <div class="error" id="loginError">密码错误</div>
+    <div class="error" id="loginError">密码错误或解密失败</div>
   </div>
 </div>
 
@@ -110,50 +110,123 @@
 <div class="toast" id="toast"></div>
 
 <script>
-const API_URL = 'https://tri-market-api-rzer.vercel.app/api';
-const GITHUB_RAW = 'https://raw.githubusercontent.com/laodingtouzi/laodinglab/main';
-let currentAction, currentCode, currentName, currentMarket, currentPrice;
-let holdingsDataCache = {};
+// ========== 配置 ==========
+const GH_API = 'https://api.github.com/repos/laodingtouzi/laodinglab';
+const GH_BRANCH = 'main';
+const AUTH_FILE = 'auth.dat';
 
-function doLogin() {
+// ========== Token 管理 (sessionStorage) ==========
+function getToken() { return sessionStorage.getItem('gh_token') || ''; }
+function setToken(token) { sessionStorage.setItem('gh_token', token); }
+function clearToken() { sessionStorage.removeItem('gh_token'); }
+
+// ========== AES-256-GCM 解密 (Web Crypto API) ==========
+async function decryptToken(password, encryptedB64) {
+  const blob = Uint8Array.from(atob(encryptedB64.trim()), c => c.charCodeAt(0));
+  const salt = blob.slice(0, 16);
+  const iv = blob.slice(16, 28);
+  const data = blob.slice(28);
+
+  const keyMaterial = await crypto.subtle.importKey(
+    'raw', new TextEncoder().encode(password), { name: 'PBKDF2' }, false, ['deriveKey']
+  );
+  const aesKey = await crypto.subtle.deriveKey(
+    { name: 'PBKDF2', salt, iterations: 100000, hash: 'SHA-256' },
+    keyMaterial, { name: 'AES-GCM', length: 256 }, false, ['decrypt']
+  );
+
+  const decrypted = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, aesKey, data);
+  return new TextDecoder().decode(decrypted);
+}
+
+// ========== 登录 ==========
+async function doLogin() {
   const pwd = document.getElementById('pwdInput').value;
-  if (pwd === 'laoding2026') {
+  if (!pwd) return;
+
+  try {
+    const resp = await fetch(AUTH_FILE + '?t=' + Date.now(), { cache: 'no-store' });
+    if (!resp.ok) throw new Error('无法加载认证文件');
+    const encryptedB64 = await resp.text();
+
+    const token = await decryptToken(pwd, encryptedB64);
+    if (!token || !token.startsWith('ghp_')) throw new Error('解密失败');
+
+    setToken(token);
     document.getElementById('loginPage').style.display = 'none';
     document.getElementById('adminPage').style.display = 'block';
     loadData();
-  } else {
+  } catch (e) {
     document.getElementById('loginError').style.display = 'block';
   }
 }
 
+// ========== GitHub API 直连 ==========
+function ghHeaders() {
+  return {
+    'Accept': 'application/vnd.github.v3+json',
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' + getToken()
+  };
+}
+
+async function ghGetFile(path) {
+  const url = GH_API + '/contents/' + path + '?ref=' + GH_BRANCH + '&t=' + Date.now();
+  const resp = await fetch(url, { headers: ghHeaders(), cache: 'no-store' });
+  if (resp.status === 404) return null;
+  if (resp.status === 401) { clearToken(); throw new Error('Token 失效，请重新登录'); }
+  if (!resp.ok) throw new Error('GET 失败: HTTP ' + resp.status);
+  const data = await resp.json();
+  const text = atob(data.content.replace(/\n/g, ''));
+  return { content: JSON.parse(text), sha: data.sha };
+}
+
+async function ghPutFile(path, content, sha, message) {
+  const url = GH_API + '/contents/' + path;
+  const body = {
+    message: message,
+    content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))),
+    branch: GH_BRANCH
+  };
+  if (sha) body.sha = sha;
+  const resp = await fetch(url, { method: 'PUT', headers: ghHeaders(), body: JSON.stringify(body) });
+  if (resp.status === 401) { clearToken(); throw new Error('Token 失效，请重新登录'); }
+  if (!resp.ok) throw new Error('PUT 失败: HTTP ' + resp.status);
+  return true;
+}
+
+// ========== 加载数据 ==========
+let holdingsDataCache = {};
+
 async function loadData() {
-  const t = '?t=' + Date.now();
-  const noCache = { cache: 'no-store' };
   try {
     const [cn, hk, us] = await Promise.all([
-      fetch(GITHUB_RAW + '/data/portfolio/holdings_CN.json' + t, noCache).then(r => r.json()),
-      fetch(GITHUB_RAW + '/data/portfolio/holdings_HK.json' + t, noCache).then(r => r.json()),
-      fetch(GITHUB_RAW + '/data/portfolio/holdings_US.json' + t, noCache).then(r => r.json())
+      ghGetFile('data/portfolio/holdings_CN.json'),
+      ghGetFile('data/portfolio/holdings_HK.json'),
+      ghGetFile('data/portfolio/holdings_US.json')
     ]);
-    const allHoldings = { ...cn, ...hk, ...us };
+    const allHoldings = { ...(cn?.content||{}), ...(hk?.content||{}), ...(us?.content||{}) };
     holdingsDataCache = allHoldings;
     renderHoldings(allHoldings);
 
     const [psCN, psHK, psUS] = await Promise.all([
-      fetch(GITHUB_RAW + '/data/portfolio/post_sell_CN.json' + t, noCache).then(r => r.json()),
-      fetch(GITHUB_RAW + '/data/portfolio/post_sell_HK.json' + t, noCache).then(r => r.json()),
-      fetch(GITHUB_RAW + '/data/portfolio/post_sell_US.json' + t, noCache).then(r => r.json())
+      ghGetFile('data/portfolio/post_sell_CN.json'),
+      ghGetFile('data/portfolio/post_sell_HK.json'),
+      ghGetFile('data/portfolio/post_sell_US.json')
     ]);
-    const allPostSell = { ...psCN, ...psHK, ...psUS };
+    const allPostSell = { ...(psCN?.content||{}), ...(psHK?.content||{}), ...(psUS?.content||{}) };
     renderPostSell(allPostSell);
   } catch (e) {
     showToast('数据加载失败: ' + e.message, 'error');
+    if (e.message.includes('重新登录')) {
+      clearToken();
+      location.reload();
+    }
   }
 }
 
 function renderHoldings(data) {
   const tbody = document.getElementById('holdingsBody');
-  // 按市场排序：CN → HK → US，同市场内按评分降序
   const marketOrder = { 'CN': 0, 'HK': 1, 'US': 2 };
   const items = Object.entries(data).sort((a, b) => {
     const ma = marketOrder[a[1].market] ?? 99;
@@ -173,9 +246,9 @@ function renderHoldings(data) {
       <td style="color:${(h.total_return || 0) >= 0 ? '#16a34a' : '#dc2626'}">${(h.total_return || 0).toFixed(1)}%</td>
       <td>${h.hold_days || 0}</td>
       <td>
-        <button class="btn btn-add" onclick="openModal('add', '${code}', '${h.name || ''}', '${h.market || ''}', ${h.current_price || 0})">加仓</button>
-        <button class="btn btn-reduce" onclick="openModal('reduce', '${code}', '${h.name || ''}', '${h.market || ''}', ${h.current_price || 0})">减仓</button>
-        <button class="btn btn-sell" onclick="openModal('sell', '${code}', '${h.name || ''}', '${h.market || ''}', ${h.current_price || 0})">卖出</button>
+        <button class="btn btn-add" onclick="openModal('add','${code}','${h.name||''}','${h.market||''}',${h.current_price||0})">加仓</button>
+        <button class="btn btn-reduce" onclick="openModal('reduce','${code}','${h.name||''}','${h.market||''}',${h.current_price||0})">减仓</button>
+        <button class="btn btn-sell" onclick="openModal('sell','${code}','${h.name||''}','${h.market||''}',${h.current_price||0})">卖出</button>
       </td>
     </tr>
   `).join('');
@@ -185,8 +258,7 @@ function renderHoldings(data) {
 
 function filterHoldings() {
   const kw = document.getElementById('holdingsSearch').value.trim().toLowerCase();
-  const rows = document.querySelectorAll('#holdingsBody tr');
-  rows.forEach(row => {
+  document.querySelectorAll('#holdingsBody tr').forEach(row => {
     const code = row.getAttribute('data-code') || '';
     const name = row.getAttribute('data-name') || '';
     row.style.display = (!kw || code.includes(kw) || name.includes(kw)) ? '' : 'none';
@@ -213,6 +285,9 @@ function renderPostSell(data) {
   document.getElementById('postSellTable').style.display = 'block';
 }
 
+// ========== Modal & Actions ==========
+let currentAction, currentCode, currentName, currentMarket, currentPrice;
+
 function openModal(action, code, name, market, price) {
   currentAction = action; currentCode = code; currentName = name; currentMarket = market; currentPrice = price;
   const titles = { add: '➕ 加仓', reduce: '➖ 减仓', sell: '⤵️ 卖出（清仓）' };
@@ -222,14 +297,10 @@ function openModal(action, code, name, market, price) {
   const sellHint = document.getElementById('modalSellHint');
   const reasonInput = document.getElementById('modalReason');
   if (action === 'sell') {
-    sharesInput.style.display = 'none';
-    sellHint.style.display = 'block';
-    reasonInput.style.display = 'block';
+    sharesInput.style.display = 'none'; sellHint.style.display = 'block'; reasonInput.style.display = 'block';
   } else {
-    sharesInput.style.display = 'block';
-    sharesInput.value = '';
-    sellHint.style.display = 'none';
-    reasonInput.style.display = 'none';
+    sharesInput.style.display = 'block'; sharesInput.value = '';
+    sellHint.style.display = 'none'; reasonInput.style.display = 'none';
   }
   reasonInput.value = '';
   document.getElementById('actionModal').style.display = 'flex';
@@ -243,63 +314,134 @@ async function confirmAction() {
     shares = parseInt(document.getElementById('modalShares').value, 10);
     if (!shares || shares <= 0) { showToast('请输入有效股数', 'error'); return; }
   }
-
-  const payloads = {
-    add: { action: 'add', code: currentCode, market: currentMarket, add_shares: shares, add_price: currentPrice },
-    reduce: { action: 'reduce', code: currentCode, market: currentMarket, reduce_shares: shares },
-    sell: { action: 'sell', code: currentCode, market: currentMarket, sell_price: currentPrice, reason: document.getElementById('modalReason').value || '手工卖出' }
-  };
-
   closeModal();
+
   try {
-    const resp = await fetch(API_URL, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payloads[currentAction])
-    });
-    const data = await resp.json();
-    if (data.success) {
-      showToast(data.message, 'success');
-      if (data.sold_out) {
+    const m = currentMarket.toUpperCase();
+    const holdingsPath = 'data/portfolio/holdings_' + m + '.json';
+    const postSellPath = 'data/portfolio/post_sell_' + m + '.json';
+
+    // 读取当前持仓
+    const holdingsFile = await ghGetFile(holdingsPath);
+    if (!holdingsFile || !holdingsFile.content[currentCode]) {
+      throw new Error('股票不在持有清单中');
+    }
+
+    const h = holdingsFile.content[currentCode];
+
+    if (currentAction === 'sell') {
+      // 卖出：从holdings删除，加入post_sell
+      const sellPrice = currentPrice || h.current_price || 0;
+      const reason = document.getElementById('modalReason').value || '手工卖出';
+
+      delete holdingsFile.content[currentCode];
+
+      let psFile = await ghGetFile(postSellPath);
+      if (!psFile) psFile = { content: {}, sha: null };
+      psFile.content[currentCode] = {
+        name: h.name, market: m,
+        sell_date: new Date().toISOString().split('T')[0],
+        sell_price: sellPrice,
+        total_return_when_sold: h.total_return || 0,
+        hold_days: h.hold_days || 0,
+        post_sell_analysis: reason, manual_sell: true
+      };
+
+      await ghPutFile(postSellPath, psFile.content, psFile.sha, `Manual sell: ${currentCode}`);
+      await ghPutFile(holdingsPath, holdingsFile.content, holdingsFile.sha, `Manual sell: ${currentCode}`);
+
+      showToast(`${currentCode} 卖出成功`, 'success');
+      const row = document.getElementById('hold-row-' + currentCode);
+      if (row) row.remove();
+    }
+    else if (currentAction === 'add') {
+      // 加仓
+      const oldShares = h.shares || 0;
+      const oldCost = oldShares * (h.entry_price || 0);
+      const newCost = shares * currentPrice;
+      const totalShares = oldShares + shares;
+      const avgPrice = totalShares > 0 ? (oldCost + newCost) / totalShares : 0;
+
+      h.shares = totalShares;
+      h.entry_price = Math.round(avgPrice * 100) / 100;
+      h.market_value = totalShares * (h.current_price || currentPrice);
+      if (h.entry_price > 0) {
+        h.total_return = Math.round(((h.current_price || currentPrice) - h.entry_price) / h.entry_price * 10000) / 100;
+      }
+      h.cost = Math.round(totalShares * h.entry_price * 100) / 100;
+
+      await ghPutFile(holdingsPath, holdingsFile.content, holdingsFile.sha, `Manual add: ${currentCode} +${shares}`);
+
+      showToast(`${currentCode} 加仓 ${shares} 股成功`, 'success');
+      updateRow(currentCode, h);
+    }
+    else if (currentAction === 'reduce') {
+      // 减仓
+      const oldShares = h.shares || 0;
+      const newShares = Math.max(0, oldShares - shares);
+
+      if (newShares === 0) {
+        // 清仓
+        let psFile = await ghGetFile(postSellPath);
+        if (!psFile) psFile = { content: {}, sha: null };
+        psFile.content[currentCode] = {
+          name: h.name, market: m,
+          sell_date: new Date().toISOString().split('T')[0],
+          sell_price: h.current_price || 0,
+          total_return_when_sold: h.total_return || 0,
+          hold_days: h.hold_days || 0,
+          post_sell_analysis: '手工减仓至0', manual_sell: true
+        };
+        delete holdingsFile.content[currentCode];
+        await ghPutFile(postSellPath, psFile.content, psFile.sha, `Manual reduce to 0: ${currentCode}`);
+        await ghPutFile(holdingsPath, holdingsFile.content, holdingsFile.sha, `Manual reduce to 0: ${currentCode}`);
+        showToast(`${currentCode} 已清仓`, 'success');
         const row = document.getElementById('hold-row-' + currentCode);
         if (row) row.remove();
-      } else if (data.updated_stock) {
-        const s = data.updated_stock;
-        const row = document.getElementById('hold-row-' + currentCode);
-        if (row) {
-          row.cells[3].textContent = s.status || '';
-          row.cells[4].textContent = s.latest_score || '';
-          row.cells[5].textContent = s.current_price || '';
-          row.cells[6].textContent = (s.shares || 0).toLocaleString();
-          row.cells[7].textContent = (s.total_return || 0).toFixed(1) + '%';
-          row.cells[7].style.color = (s.total_return || 0) >= 0 ? '#16a34a' : '#dc2626';
-          row.cells[8].textContent = s.hold_days || 0;
+      } else {
+        h.shares = newShares;
+        h.market_value = newShares * (h.current_price || h.entry_price || 0);
+        h.cost = Math.round(newShares * h.entry_price * 100) / 100;
+        if (h.entry_price > 0) {
+          h.total_return = Math.round(((h.current_price || h.entry_price) - h.entry_price) / h.entry_price * 10000) / 100;
         }
+        await ghPutFile(holdingsPath, holdingsFile.content, holdingsFile.sha, `Manual reduce: ${currentCode} -${shares}`);
+        showToast(`${currentCode} 减仓 ${shares} 股成功`, 'success');
+        updateRow(currentCode, h);
       }
-    } else {
-      showToast(data.error || '操作失败', 'error');
     }
   } catch (e) {
-    showToast('请求失败: ' + e.message, 'error');
+    showToast('操作失败: ' + e.message, 'error');
+    if (e.message.includes('重新登录')) { clearToken(); location.reload(); }
   }
+}
+
+function updateRow(code, h) {
+  const row = document.getElementById('hold-row-' + code);
+  if (!row) return;
+  row.cells[6].textContent = (h.shares || 0).toLocaleString();
+  row.cells[7].textContent = (h.total_return || 0).toFixed(1) + '%';
+  row.cells[7].style.color = (h.total_return || 0) >= 0 ? '#16a34a' : '#dc2626';
 }
 
 async function doDelist(code) {
   if (!confirm('确认剔除 ' + code + '？')) return;
   try {
-    const resp = await fetch(API_URL, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'delist', code })
-    });
-    const data = await resp.json();
-    if (data.success) {
-      showToast(data.message, 'success');
-      const row = document.getElementById('post-row-' + code);
-      if (row) row.remove();
-    } else {
-      showToast(data.error || '剔除失败', 'error');
+    for (const m of ['CN', 'HK', 'US']) {
+      const postSellPath = 'data/portfolio/post_sell_' + m + '.json';
+      const data = await ghGetFile(postSellPath);
+      if (data && data.content[code]) {
+        delete data.content[code];
+        await ghPutFile(postSellPath, data.content, data.sha, `Delist: ${code}`);
+        showToast(`${code} 已从观察清单移除`, 'success');
+        const row = document.getElementById('post-row-' + code);
+        if (row) row.remove();
+        return;
+      }
     }
+    showToast('股票不在沽后观察清单中', 'error');
   } catch (e) {
-    showToast('请求失败: ' + e.message, 'error');
+    showToast('剔除失败: ' + e.message, 'error');
   }
 }
 
@@ -310,6 +452,18 @@ function showToast(msg, type) {
   toast.style.display = 'block';
   setTimeout(() => toast.style.display = 'none', 3000);
 }
+
+// ========== 页面初始化 ==========
+(async function() {
+  const token = getToken();
+  if (!token) {
+    document.getElementById('loginPage').style.display = 'block';
+    return;
+  }
+  document.getElementById('loginPage').style.display = 'none';
+  document.getElementById('adminPage').style.display = 'block';
+  loadData();
+})();
 </script>
 
 </body>
