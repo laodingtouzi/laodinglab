@@ -128,7 +128,17 @@
   }
 
   // ========== 3. 云端同步（直接从 holdings_*.json 拉取，与admin同源） ==========
-  const GH_RAW = 'https://raw.githubusercontent.com/laodingtouzi/laodinglab/main';
+  const BASE_URL = 'https://laodinglab.com';
+  const HOLDINGS_URLS = {
+    CN: BASE_URL + '/data/portfolio/holdings_CN.json',
+    HK: BASE_URL + '/data/portfolio/holdings_HK.json',
+    US: BASE_URL + '/data/portfolio/holdings_US.json',
+  };
+  const POSTSELL_URLS = {
+    CN: BASE_URL + '/data/portfolio/post_sell_CN.json',
+    HK: BASE_URL + '/data/portfolio/post_sell_HK.json',
+    US: BASE_URL + '/data/portfolio/post_sell_US.json',
+  };
   const HOLDINGS_URLS = {
     CN: GH_RAW + '/data/portfolio/holdings_CN.json',
     HK: GH_RAW + '/data/portfolio/holdings_HK.json',
