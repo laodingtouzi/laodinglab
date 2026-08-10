@@ -7,58 +7,58 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:#0f1117; color:#e0e0e0; line-height:1.6; }
+body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:#f5f7fa; color:#333; line-height:1.6; }
 .container { max-width:1200px; margin:0 auto; padding:20px; }
-header { text-align:center; padding:30px 0; border-bottom:1px solid #2a2d35; margin-bottom:30px; }
-header h1 { font-size:28px; color:#fff; margin-bottom:8px; }
-header .subtitle { color:#888; font-size:14px; }
-header .date { color:#666; font-size:13px; margin-top:4px; }
-a.back-link { display:inline-block; margin-top:12px; color:#4a9eff; text-decoration:none; font-size:14px; }
+header { text-align:center; padding:30px 0; border-bottom:1px solid #dee2e6; margin-bottom:30px; }
+header h1 { font-size:28px; color:#1a1a2e; margin-bottom:8px; }
+header .subtitle { color:#6c757d; font-size:14px; }
+header .date { color:#868e96; font-size:13px; margin-top:4px; }
+a.back-link { display:inline-block; margin-top:12px; color:#1976d2; text-decoration:none; font-size:14px; }
 a.back-link:hover { text-decoration:underline; }
 
 .summary-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:30px; }
-.card { background:#1a1d27; border-radius:12px; padding:20px; border:1px solid #2a2d35; }
-.card .label { color:#888; font-size:13px; margin-bottom:6px; }
-.card .value { font-size:28px; font-weight:700; color:#fff; }
-.card .sub { color:#666; font-size:12px; margin-top:4px; }
-.card.green .value { color:#4caf50; }
-.card.red .value { color:#f44336; }
-.card.blue .value { color:#4a9eff; }
-.card.orange .value { color:#ff9800; }
+.card { background:#fff; border-radius:12px; padding:20px; border:1px solid #dee2e6; box-shadow:0 1px 3px rgba(0,0,0,0.06); }
+.card .label { color:#6c757d; font-size:13px; margin-bottom:6px; }
+.card .value { font-size:28px; font-weight:700; color:#1a1a2e; }
+.card .sub { color:#868e96; font-size:12px; margin-top:4px; }
+.card.green .value { color:#2e7d32; }
+.card.red .value { color:#c62828; }
+.card.blue .value { color:#1976d2; }
+.card.orange .value { color:#e65100; }
 
-.section { background:#1a1d27; border-radius:12px; padding:24px; margin-bottom:24px; border:1px solid #2a2d35; }
-.section h2 { font-size:20px; color:#fff; margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid #2a2d35; }
-.section h3 { font-size:16px; color:#ccc; margin:16px 0 10px; }
+.section { background:#fff; border-radius:12px; padding:24px; margin-bottom:24px; border:1px solid #dee2e6; box-shadow:0 1px 3px rgba(0,0,0,0.06); }
+.section h2 { font-size:20px; color:#1a1a2e; margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid #dee2e6; }
+.section h3 { font-size:16px; color:#495057; margin:16px 0 10px; }
 
 .chart-container { position:relative; height:350px; margin:16px 0; }
 .chart-container.small { height:250px; }
 
 table { width:100%; border-collapse:collapse; margin:12px 0; font-size:13px; }
-th { background:#222531; color:#aaa; padding:10px 12px; text-align:left; font-weight:600; border-bottom:2px solid #2a2d35; }
-td { padding:8px 12px; border-bottom:1px solid #222531; color:#ddd; }
-tr:hover td { background:#1e2130; }
-.positive { color:#4caf50; font-weight:600; }
-.negative { color:#f44336; font-weight:600; }
+th { background:#f0f2f5; color:#495057; padding:10px 12px; text-align:left; font-weight:600; border-bottom:2px solid #dee2e6; }
+td { padding:8px 12px; border-bottom:1px solid #e9ecef; color:#495057; }
+tr:hover td { background:#f8f9fa; }
+.positive { color:#2e7d32; font-weight:600; }
+.negative { color:#c62828; font-weight:600; }
 .tag { display:inline-block; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:600; }
-.tag-cn { background:#1b5e20; color:#a5d6a7; }
-.tag-hk { background:#0d4741; color:#80cbc4; }
-.tag-us { background:#4a148c; color:#ce93d8; }
-.tag-warn { background:#e65100; color:#ffcc80; }
-.tag-danger { background:#b71c1c; color:#ef9a9a; }
-.tag-ok { background:#1b5e20; color:#a5d6a7; }
+.tag-cn { background:#e3f2e3; color:#2e7d32; }
+.tag-hk { background:#e0f2f1; color:#00695c; }
+.tag-us { background:#f3e5f5; color:#6a1b9a; }
+.tag-warn { background:#fff3e0; color:#e65100; }
+.tag-danger { background:#ffebee; color:#c62828; }
+.tag-ok { background:#e3f2e3; color:#2e7d32; }
 
-.problem { background:#1e1510; border-left:4px solid #ff9800; padding:14px 18px; margin:12px 0; border-radius:0 8px 8px 0; }
-.problem .title { color:#ff9800; font-weight:600; font-size:15px; margin-bottom:4px; }
-.problem .desc { color:#bbb; font-size:13px; }
-.problem .data { color:#888; font-size:12px; margin-top:4px; }
+.problem { background:#fff9e6; border-left:4px solid #ff9800; padding:14px 18px; margin:12px 0; border-radius:0 8px 8px 0; }
+.problem .title { color:#e65100; font-weight:600; font-size:15px; margin-bottom:4px; }
+.problem .desc { color:#555; font-size:13px; }
+.problem .data { color:#868e96; font-size:12px; margin-top:4px; }
 
-.suggestion { background:#0d1b14; border-left:4px solid #4caf50; padding:14px 18px; margin:12px 0; border-radius:0 8px 8px 0; }
-.suggestion .title { color:#4caf50; font-weight:600; font-size:15px; margin-bottom:4px; }
-.suggestion .desc { color:#bbb; font-size:13px; }
+.suggestion { background:#eef9f1; border-left:4px solid #4caf50; padding:14px 18px; margin:12px 0; border-radius:0 8px 8px 0; }
+.suggestion .title { color:#2e7d32; font-weight:600; font-size:15px; margin-bottom:4px; }
+.suggestion .desc { color:#555; font-size:13px; }
 
 .two-col { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
-.badge { display:inline-block; background:#2a2d35; color:#aaa; padding:2px 8px; border-radius:4px; font-size:11px; margin-left:6px; }
-footer { text-align:center; padding:20px; color:#555; font-size:12px; border-top:1px solid #2a2d35; margin-top:30px; }
+.badge { display:inline-block; background:#e9ecef; color:#495057; padding:2px 8px; border-radius:4px; font-size:11px; margin-left:6px; }
+footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-top:1px solid #dee2e6; margin-top:30px; }
 </style>
 </head>
 <body>
@@ -66,8 +66,8 @@ footer { text-align:center; padding:20px; color:#555; font-size:12px; border-top
 <header>
 <h1>三市场量化模型回测报告</h1>
 <div class="subtitle">Quality + Valuation + Sentiment + Technical + Momentum 五因子模型</div>
-<div class="date">回测区间: 2025-04-01 ~ 2026-07-24 | 322个交易日 | 生成于 2026-08-10 21:20</div>
-<a class="back-link" href="../index.html">← 返回主报告</a>
+<div class="date">回测区间: 2025-04-01 ~ 2026-07-24 | 322个交易日 | 生成于 2026-08-10 23:26</div>
+<a class="back-link" href="/stockmarketanalysis_wb/">← 返回主报告</a>
 </header>
 
 <!-- 核心指标 -->
@@ -81,7 +81,7 @@ footer { text-align:center; padding:20px; color:#555; font-size:12px; border-top
 <!-- NAV曲线 -->
 <div class="section">
 <h2>NAV净值曲线</h2>
-<p style="color:#888;font-size:13px;margin-bottom:12px">初始资金 29.2M CNY（CN/HK/US各1000万），最终NAV 38.6M CNY</p>
+<p style="color:#6c757d;font-size:13px;margin-bottom:12px">初始资金 29.2M CNY（CN/HK/US各1000万），最终NAV 38.6M CNY</p>
 <div class="chart-container"><canvas id="navChart"></canvas></div>
 </div>
 
@@ -97,8 +97,8 @@ footer { text-align:center; padding:20px; color:#555; font-size:12px; border-top
 <table>
 <tr><th>市场</th><th>已平仓交易</th><th>买入操作</th><th>未平仓</th><th>胜率</th><th>平均收益</th><th>最大盈利</th><th>最大亏损</th></tr>
 <tr><td><span class="tag tag-cn">CN</span></td><td>26</td><td>58</td><td>32</td><td>46.2%</td><td class="positive">+55.5%</td><td class="positive">+393.2%</td><td class="negative">-21.7%</td></tr><tr><td><span class="tag tag-hk">HK</span></td><td>269</td><td>364</td><td>95</td><td>53.5%</td><td class="positive">+9.58%</td><td class="positive">+231.3%</td><td class="negative">-32.0%</td></tr><tr><td><span class="tag tag-us">US</span></td><td>5</td><td>12</td><td>7</td><td>60.0%</td><td class="positive">+283.09%</td><td class="positive">+785.3%</td><td class="negative">-16.1%</td></tr></table>
-<div style="margin-top:12px;color:#888;font-size:13px">
-<strong style="color:#ccc">观察:</strong> HK贡献90%交易量（269/300笔），CN仅26笔，US仅5笔。
+<div style="margin-top:12px;color:#6c757d;font-size:13px">
+<strong style="color:#333">观察:</strong> HK贡献90%交易量（269/300笔），CN仅26笔，US仅5笔。
 CN交易偏少主因A股评分集中在65-67分区间（均值66.1），刚好踩线买入标准。
 US交易少因买入阈值70分（高于CN/HK的65分），能过线的美股少。
 </div>
@@ -108,8 +108,8 @@ US交易少因买入阈值70分（高于CN/HK的65分），能过线的美股少
 <div class="section">
 <h2>卖出类型分析 <span class="badge">核心问题</span></h2>
 <table>
-<tr><th>卖出类型</th><th>笔数</th><th>占比</th><th>胜率</th><th>平均收益</th><th>说明</th></tr><tr><td><span class="tag tag-ok">正常卖出</span></td><td>14</td><td>4%</td><td class="positive">100.0%</td><td class="positive">190.03%</td><td style="color:#888">评分降级至卖出线</td></tr><tr><td><span class="tag tag-danger">硬止损</span></td><td>76</td><td>25%</td><td class="negative">0.0%</td><td class="negative">-16.85%</td><td style="color:#888">浮亏触达止损线</td></tr><tr><td><span class="tag tag-ok">短期止损</span></td><td>16</td><td>5%</td><td class="negative">0.0%</td><td class="negative">-10.81%</td><td style="color:#888">短期跌幅过大</td></tr><tr><td><span class="tag tag-ok">排名强制卖出</span></td><td>2</td><td>0%</td><td class="positive">100.0%</td><td class="positive">332.85%</td><td style="color:#888">后5%排名</td></tr><tr><td><span class="tag tag-warn">资金限制平仓</span></td><td>192</td><td>64%</td><td class="positive">74.5%</td><td class="positive">18.56%</td><td style="color:#888">新标的需资金时强制卖出</td></tr></table>
-<div style="margin-top:12px;color:#f44336;font-size:13px">
+<tr><th>卖出类型</th><th>笔数</th><th>占比</th><th>胜率</th><th>平均收益</th><th>说明</th></tr><tr><td><span class="tag tag-ok">正常卖出</span></td><td>14</td><td>4%</td><td class="positive">100.0%</td><td class="positive">190.03%</td><td style="color:#6c757d">评分降级至卖出线</td></tr><tr><td><span class="tag tag-danger">硬止损</span></td><td>76</td><td>25%</td><td class="negative">0.0%</td><td class="negative">-16.85%</td><td style="color:#6c757d">浮亏触达止损线</td></tr><tr><td><span class="tag tag-ok">短期止损</span></td><td>16</td><td>5%</td><td class="negative">0.0%</td><td class="negative">-10.81%</td><td style="color:#6c757d">短期跌幅过大</td></tr><tr><td><span class="tag tag-ok">排名强制卖出</span></td><td>2</td><td>0%</td><td class="positive">100.0%</td><td class="positive">332.85%</td><td style="color:#6c757d">后5%排名</td></tr><tr><td><span class="tag tag-warn">资金限制平仓</span></td><td>192</td><td>64%</td><td class="positive">74.5%</td><td class="positive">18.56%</td><td style="color:#6c757d">新标的需资金时强制卖出</td></tr></table>
+<div style="margin-top:12px;color:#c62828;font-size:13px">
 <strong>关键发现:</strong> 资金限制强制平仓占64%（192/300笔），是最大的卖出原因。
 这些被强制平仓的交易胜率74.5%、均收益+18.6%——大量盈利仓位被过早卖出，错失后续涨幅。
 正常评分降级卖出仅14笔（4.7%），说明模型评分变化不够敏感，大部分卖出是被动的。
@@ -123,7 +123,7 @@ US交易少因买入阈值70分（高于CN/HK的65分），能过线的美股少
 <div>
 <table>
 <tr><th>区间</th><th>笔数</th><th>占比</th></tr><tr><td><1周</td><td>37</td><td>12%</td></tr><tr><td>1-4周</td><td>75</td><td>25%</td></tr><tr><td>1-3月</td><td>95</td><td>31%</td></tr><tr><td>3-6月</td><td>47</td><td>15%</td></tr><tr><td>6-12月</td><td>27</td><td>9%</td></tr><tr><td>>1年</td><td>19</td><td>6%</td></tr></table>
-<p style="color:#888;font-size:12px;margin-top:8px">平均93天 / 中位数49天 / 最长468天</p>
+<p style="color:#6c757d;font-size:12px;margin-top:8px">平均93天 / 中位数49天 / 最长468天</p>
 </div>
 <div style="display:flex;align-items:center;justify-content:center">
 <div class="chart-container small" style="width:100%"><canvas id="holdDaysChart"></canvas></div>
@@ -138,13 +138,13 @@ US交易少因买入阈值70分（高于CN/HK的65分），能过线的美股少
 <div>
 <table>
 <tr><th>评分区间</th><th>交易数</th><th>胜率</th><th>平均收益</th></tr><tr><td>65-67</td><td>216</td><td>50.0%</td><td class="positive">+12.4%</td></tr><tr><td>67-70</td><td>63</td><td>59.0%</td><td class="positive">+17.3%</td></tr><tr><td>70-75</td><td>21</td><td>71.0%</td><td class="positive">+79.1%</td></tr></table>
-<p style="color:#888;font-size:12px;margin-top:8px">相关系数 r=0.143（弱正相关）</p>
+<p style="color:#6c757d;font-size:12px;margin-top:8px">相关系数 r=0.143（弱正相关）</p>
 </div>
 <div style="display:flex;align-items:center">
 <div class="chart-container small" style="width:100%"><canvas id="scoreChart"></canvas></div>
 </div>
 </div>
-<div style="margin-top:12px;color:#ff9800;font-size:13px">
+<div style="margin-top:12px;color:#e65100;font-size:13px">
 <strong>关键发现:</strong> 评分70+的交易胜率71%、均收益+79.1%，远优于65-67区间（胜率50%、均收益+12.4%）。
 但70+的交易仅占7%（21/300），说明模型高分区信号太少，大部分交易集中在刚过及格线的65-67区间。
 评分与收益相关性弱（r=0.143），模型区分度有提升空间。
@@ -155,17 +155,17 @@ US交易少因买入阈值70分（高于CN/HK的65分），能过线的美股少
 <div class="section">
 <h2>TOP10 盈利交易</h2>
 <table>
-<tr><th>#</th><th>代码</th><th>名称</th><th>市场</th><th>买入日</th><th>卖出日</th><th>持仓天</th><th>买入评分</th><th>收益率</th><th>卖出原因</th></tr><tr><td>1</td><td>MU.O</td><td>Micron Technology</td><td><span class="tag tag-us">US</span></td><td>2025-05-14</td><td>2026-07-17</td><td>429</td><td>70.2</td><td class="positive">+785.3%</td><td style="color:#888;font-size:12px">评分跌破45</td></tr><tr><td>2</td><td>SNDK.O</td><td>Sandisk</td><td><span class="tag tag-us">US</span></td><td>2025-06-13</td><td>2025-12-05</td><td>175</td><td>70.5</td><td class="positive">+434.4%</td><td style="color:#888;font-size:12px">后5%排名强制卖出</td></tr><tr><td>3</td><td>301308.SZ</td><td>江波龙</td><td><span class="tag tag-cn">CN</span></td><td>2025-05-08</td><td>2026-07-17</td><td>435</td><td>68.1</td><td class="positive">+393.2%</td><td style="color:#888;font-size:12px">评分跌破40</td></tr><tr><td>4</td><td>002378.SZ</td><td>章源钨业</td><td><span class="tag tag-cn">CN</span></td><td>2025-06-16</td><td>2026-07-06</td><td>385</td><td>65.6</td><td class="positive">+263.7%</td><td style="color:#888;font-size:12px">评分跌破40</td></tr><tr><td>5</td><td>01788.HK</td><td>国泰君安国际</td><td><span class="tag tag-hk">HK</span></td><td>2025-05-12</td><td>2025-06-25</td><td>44</td><td>65.3</td><td class="positive">+231.3%</td><td style="color:#888;font-size:12px">后5%排名强制卖出</td></tr><tr><td>6</td><td>WDC.O</td><td>Western Digital</td><td><span class="tag tag-us">US</span></td><td>2025-07-16</td><td>2026-01-06</td><td>174</td><td>70.8</td><td class="positive">+227.8%</td><td style="color:#888;font-size:12px">评分跌破45</td></tr><tr><td>7</td><td>603588.SH</td><td>高能环境</td><td><span class="tag tag-cn">CN</span></td><td>2025-04-10</td><td>2026-07-10</td><td>456</td><td>65.0</td><td class="positive">+189.8%</td><td style="color:#888;font-size:12px">评分跌破40</td></tr><tr><td>8</td><td>002463.SZ</td><td>沪电股份</td><td><span class="tag tag-cn">CN</span></td><td>2025-07-02</td><td>2026-07-21</td><td>384</td><td>65.2</td><td class="positive">+169.0%</td><td style="color:#888;font-size:12px">评分跌破40</td></tr><tr><td>9</td><td>601872.SH</td><td>招商轮船</td><td><span class="tag tag-cn">CN</span></td><td>2025-05-14</td><td>2026-07-01</td><td>413</td><td>65.8</td><td class="positive">+164.1%</td><td style="color:#888;font-size:12px">评分跌破40</td></tr><tr><td>10</td><td>00992.HK</td><td>联想集团</td><td><span class="tag tag-hk">HK</span></td><td>2025-06-25</td><td>2026-07-24</td><td>394</td><td>65.6</td><td class="positive">+159.6%</td><td style="color:#888;font-size:12px">持仓超限强制卖出</td></tr></table>
+<tr><th>#</th><th>代码</th><th>名称</th><th>市场</th><th>买入日</th><th>卖出日</th><th>持仓天</th><th>买入评分</th><th>收益率</th><th>卖出原因</th></tr><tr><td>1</td><td>MU.O</td><td>Micron Technology</td><td><span class="tag tag-us">US</span></td><td>2025-05-14</td><td>2026-07-17</td><td>429</td><td>70.2</td><td class="positive">+785.3%</td><td style="color:#6c757d;font-size:12px">评分跌破45</td></tr><tr><td>2</td><td>SNDK.O</td><td>Sandisk</td><td><span class="tag tag-us">US</span></td><td>2025-06-13</td><td>2025-12-05</td><td>175</td><td>70.5</td><td class="positive">+434.4%</td><td style="color:#6c757d;font-size:12px">后5%排名强制卖出</td></tr><tr><td>3</td><td>301308.SZ</td><td>江波龙</td><td><span class="tag tag-cn">CN</span></td><td>2025-05-08</td><td>2026-07-17</td><td>435</td><td>68.1</td><td class="positive">+393.2%</td><td style="color:#6c757d;font-size:12px">评分跌破40</td></tr><tr><td>4</td><td>002378.SZ</td><td>章源钨业</td><td><span class="tag tag-cn">CN</span></td><td>2025-06-16</td><td>2026-07-06</td><td>385</td><td>65.6</td><td class="positive">+263.7%</td><td style="color:#6c757d;font-size:12px">评分跌破40</td></tr><tr><td>5</td><td>01788.HK</td><td>国泰君安国际</td><td><span class="tag tag-hk">HK</span></td><td>2025-05-12</td><td>2025-06-25</td><td>44</td><td>65.3</td><td class="positive">+231.3%</td><td style="color:#6c757d;font-size:12px">后5%排名强制卖出</td></tr><tr><td>6</td><td>WDC.O</td><td>Western Digital</td><td><span class="tag tag-us">US</span></td><td>2025-07-16</td><td>2026-01-06</td><td>174</td><td>70.8</td><td class="positive">+227.8%</td><td style="color:#6c757d;font-size:12px">评分跌破45</td></tr><tr><td>7</td><td>603588.SH</td><td>高能环境</td><td><span class="tag tag-cn">CN</span></td><td>2025-04-10</td><td>2026-07-10</td><td>456</td><td>65.0</td><td class="positive">+189.8%</td><td style="color:#6c757d;font-size:12px">评分跌破40</td></tr><tr><td>8</td><td>002463.SZ</td><td>沪电股份</td><td><span class="tag tag-cn">CN</span></td><td>2025-07-02</td><td>2026-07-21</td><td>384</td><td>65.2</td><td class="positive">+169.0%</td><td style="color:#6c757d;font-size:12px">评分跌破40</td></tr><tr><td>9</td><td>601872.SH</td><td>招商轮船</td><td><span class="tag tag-cn">CN</span></td><td>2025-05-14</td><td>2026-07-01</td><td>413</td><td>65.8</td><td class="positive">+164.1%</td><td style="color:#6c757d;font-size:12px">评分跌破40</td></tr><tr><td>10</td><td>00992.HK</td><td>联想集团</td><td><span class="tag tag-hk">HK</span></td><td>2025-06-25</td><td>2026-07-24</td><td>394</td><td>65.6</td><td class="positive">+159.6%</td><td style="color:#6c757d;font-size:12px">持仓超限强制卖出</td></tr></table>
 <h3 style="margin-top:20px">TOP10 亏损交易</h3>
 <table>
-<tr><th>#</th><th>代码</th><th>名称</th><th>市场</th><th>买入日</th><th>卖出日</th><th>持仓天</th><th>买入评分</th><th>收益率</th><th>卖出原因</th></tr><tr><td>1</td><td>06666.HK</td><td>恒大物业</td><td><span class="tag tag-hk">HK</span></td><td>2026-03-26</td><td>2026-06-25</td><td>91</td><td>65.3</td><td class="negative">-32.0%</td><td style="color:#888;font-size:12px">硬止损：浮亏-31.8%</td></tr><tr><td>2</td><td>01114.HK</td><td>BRILLIANCE CHI</td><td><span class="tag tag-hk">HK</span></td><td>2025-10-13</td><td>2026-03-16</td><td>154</td><td>66.2</td><td class="negative">-23.8%</td><td style="color:#888;font-size:12px">硬止损：浮亏-23.5%</td></tr><tr><td>3</td><td>09992.HK</td><td>泡泡玛特</td><td><span class="tag tag-hk">HK</span></td><td>2026-03-17</td><td>2026-03-25</td><td>8</td><td>66.3</td><td class="negative">-22.3%</td><td style="color:#888;font-size:12px">硬止损：浮亏-22.1%</td></tr><tr><td>4</td><td>301308.SZ</td><td>江波龙</td><td><span class="tag tag-cn">CN</span></td><td>2025-04-01</td><td>2025-04-07</td><td>6</td><td>66.2</td><td class="negative">-21.7%</td><td style="color:#888;font-size:12px">硬止损：浮亏-21.4%</td></tr><tr><td>5</td><td>09985.HK</td><td>卫龙美味</td><td><span class="tag tag-hk">HK</span></td><td>2025-12-22</td><td>2026-03-27</td><td>95</td><td>66.2</td><td class="negative">-19.5%</td><td style="color:#888;font-size:12px">硬止损：浮亏-19.2%</td></tr><tr><td>6</td><td>02669.HK</td><td>中海物业</td><td><span class="tag tag-hk">HK</span></td><td>2025-04-22</td><td>2026-01-28</td><td>281</td><td>66.8</td><td class="negative">-19.3%</td><td style="color:#888;font-size:12px">硬止损：浮亏-19.0%</td></tr><tr><td>7</td><td>01368.HK</td><td>特步国际</td><td><span class="tag tag-hk">HK</span></td><td>2025-07-21</td><td>2026-03-27</td><td>249</td><td>67.9</td><td class="negative">-19.2%</td><td style="color:#888;font-size:12px">硬止损：浮亏-19.0%</td></tr><tr><td>8</td><td>02018.HK</td><td>瑞声科技</td><td><span class="tag tag-hk">HK</span></td><td>2026-01-16</td><td>2026-03-03</td><td>46</td><td>65.9</td><td class="negative">-19.0%</td><td style="color:#888;font-size:12px">硬止损：浮亏-18.8%</td></tr><tr><td>9</td><td>03311.HK</td><td>中国建筑国际</td><td><span class="tag tag-hk">HK</span></td><td>2025-06-05</td><td>2025-10-28</td><td>145</td><td>66.7</td><td class="negative">-18.9%</td><td style="color:#888;font-size:12px">硬止损：浮亏-18.7%</td></tr><tr><td>10</td><td>03311.HK</td><td>中国建筑国际</td><td><span class="tag tag-hk">HK</span></td><td>2025-12-12</td><td>2026-06-17</td><td>187</td><td>66.3</td><td class="negative">-18.5%</td><td style="color:#888;font-size:12px">硬止损：浮亏-18.3%</td></tr></table>
+<tr><th>#</th><th>代码</th><th>名称</th><th>市场</th><th>买入日</th><th>卖出日</th><th>持仓天</th><th>买入评分</th><th>收益率</th><th>卖出原因</th></tr><tr><td>1</td><td>06666.HK</td><td>恒大物业</td><td><span class="tag tag-hk">HK</span></td><td>2026-03-26</td><td>2026-06-25</td><td>91</td><td>65.3</td><td class="negative">-32.0%</td><td style="color:#6c757d;font-size:12px">硬止损：浮亏-31.8%</td></tr><tr><td>2</td><td>01114.HK</td><td>BRILLIANCE CHI</td><td><span class="tag tag-hk">HK</span></td><td>2025-10-13</td><td>2026-03-16</td><td>154</td><td>66.2</td><td class="negative">-23.8%</td><td style="color:#6c757d;font-size:12px">硬止损：浮亏-23.5%</td></tr><tr><td>3</td><td>09992.HK</td><td>泡泡玛特</td><td><span class="tag tag-hk">HK</span></td><td>2026-03-17</td><td>2026-03-25</td><td>8</td><td>66.3</td><td class="negative">-22.3%</td><td style="color:#6c757d;font-size:12px">硬止损：浮亏-22.1%</td></tr><tr><td>4</td><td>301308.SZ</td><td>江波龙</td><td><span class="tag tag-cn">CN</span></td><td>2025-04-01</td><td>2025-04-07</td><td>6</td><td>66.2</td><td class="negative">-21.7%</td><td style="color:#6c757d;font-size:12px">硬止损：浮亏-21.4%</td></tr><tr><td>5</td><td>09985.HK</td><td>卫龙美味</td><td><span class="tag tag-hk">HK</span></td><td>2025-12-22</td><td>2026-03-27</td><td>95</td><td>66.2</td><td class="negative">-19.5%</td><td style="color:#6c757d;font-size:12px">硬止损：浮亏-19.2%</td></tr><tr><td>6</td><td>02669.HK</td><td>中海物业</td><td><span class="tag tag-hk">HK</span></td><td>2025-04-22</td><td>2026-01-28</td><td>281</td><td>66.8</td><td class="negative">-19.3%</td><td style="color:#6c757d;font-size:12px">硬止损：浮亏-19.0%</td></tr><tr><td>7</td><td>01368.HK</td><td>特步国际</td><td><span class="tag tag-hk">HK</span></td><td>2025-07-21</td><td>2026-03-27</td><td>249</td><td>67.9</td><td class="negative">-19.2%</td><td style="color:#6c757d;font-size:12px">硬止损：浮亏-19.0%</td></tr><tr><td>8</td><td>02018.HK</td><td>瑞声科技</td><td><span class="tag tag-hk">HK</span></td><td>2026-01-16</td><td>2026-03-03</td><td>46</td><td>65.9</td><td class="negative">-19.0%</td><td style="color:#6c757d;font-size:12px">硬止损：浮亏-18.8%</td></tr><tr><td>9</td><td>03311.HK</td><td>中国建筑国际</td><td><span class="tag tag-hk">HK</span></td><td>2025-06-05</td><td>2025-10-28</td><td>145</td><td>66.7</td><td class="negative">-18.9%</td><td style="color:#6c757d;font-size:12px">硬止损：浮亏-18.7%</td></tr><tr><td>10</td><td>03311.HK</td><td>中国建筑国际</td><td><span class="tag tag-hk">HK</span></td><td>2025-12-12</td><td>2026-06-17</td><td>187</td><td>66.3</td><td class="negative">-18.5%</td><td style="color:#6c757d;font-size:12px">硬止损：浮亏-18.3%</td></tr></table>
 </div>
 
 <!-- 策略问题与优化建议 -->
 <div class="section">
 <h2>策略问题诊断与优化建议</h2>
 
-<h3 style="color:#ff9800;margin-top:20px">一、已识别的问题</h3>
+<h3 style="color:#e65100;margin-top:20px">一、已识别的问题</h3>
 
 <div class="problem">
 <div class="title">问题1: 资金限制强制平仓占比过高（64%）</div>
@@ -209,7 +209,7 @@ US交易少因买入阈值70分（高于CN/HK的65分），能过线的美股少
 <div class="data">数据: 2026-03: -3.64% | 2026-07: -4.44% | 最大回撤: -6.74%</div>
 </div>
 
-<h3 style="color:#4caf50;margin-top:24px">二、优化建议</h3>
+<h3 style="color:#2e7d32;margin-top:24px">二、优化建议</h3>
 
 <div class="suggestion">
 <div class="title">建议1: 优化仓位管理机制（优先级: 高）</div>
@@ -250,20 +250,20 @@ US交易少因买入阈值70分（高于CN/HK的65分），能过线的美股少
 <!-- 回测说明 -->
 <div class="section">
 <h2>回测说明</h2>
-<div style="color:#888;font-size:13px;line-height:2">
-<p><strong style="color:#ccc">模型版本:</strong> tri_market_selector v5.3，5因子加权评分模型</p>
-<p><strong style="color:#ccc">因子权重:</strong> Quality 30% | Valuation 20% | Sentiment 20% | Technical 15% | Momentum 15%</p>
-<p><strong style="color:#ccc">买入阈值:</strong> CN/HK ≥ 65分(H类) / ≥ 40分(M类) | US ≥ 70分(H类) / ≥ 45分(M类)</p>
-<p><strong style="color:#ccc">卖出阈值:</strong> CN/HK < 40分 | US < 45分</p>
-<p><strong style="color:#ccc">仓位规则:</strong> H类10万/股，M类5万/股，三池各1000万CNY</p>
-<p><strong style="color:#ccc">止损规则:</strong> 硬止损-20%，短期止损-10%（5日内）</p>
-<p><strong style="color:#ccc">数据来源:</strong> K线(2585只) + 财报(westock finance 2484只) + 舆情缓存(13天)</p>
-<p><strong style="color:#ccc">回测区间:</strong> 2025-04-01 ~ 2026-07-24（322个交易日，预留3个月冷启动）</p>
-<p><strong style="color:#ccc">局限性:</strong> ① 舆情因子仅3.4%覆盖，其余日期设中性50.0 ② 未考虑交易成本(手续费/滑点) ③ 流动性假设: 任意金额均可成交 ④ 财报数据为最新快照，未按报告期对齐历史时点</p>
+<div style="color:#6c757d;font-size:13px;line-height:2">
+<p><strong style="color:#333">模型版本:</strong> tri_market_selector v5.3，5因子加权评分模型</p>
+<p><strong style="color:#333">因子权重:</strong> Quality 30% | Valuation 20% | Sentiment 20% | Technical 15% | Momentum 15%</p>
+<p><strong style="color:#333">买入阈值:</strong> CN/HK ≥ 65分(H类) / ≥ 40分(M类) | US ≥ 70分(H类) / ≥ 45分(M类)</p>
+<p><strong style="color:#333">卖出阈值:</strong> CN/HK < 40分 | US < 45分</p>
+<p><strong style="color:#333">仓位规则:</strong> H类10万/股，M类5万/股，三池各1000万CNY</p>
+<p><strong style="color:#333">止损规则:</strong> 硬止损-20%，短期止损-10%（5日内）</p>
+<p><strong style="color:#333">数据来源:</strong> K线(2585只) + 财报(westock finance 2484只) + 舆情缓存(13天)</p>
+<p><strong style="color:#333">回测区间:</strong> 2025-04-01 ~ 2026-07-24（322个交易日，预留3个月冷启动）</p>
+<p><strong style="color:#333">局限性:</strong> ① 舆情因子仅3.4%覆盖，其余日期设中性50.0 ② 未考虑交易成本(手续费/滑点) ③ 流动性假设: 任意金额均可成交 ④ 财报数据为最新快照，未按报告期对齐历史时点</p>
 </div>
 </div>
 
-<footer>三市场量化模型回测报告 | 生成于 2026-08-10 21:20 | 数据完整度: K线100% / 财报EPS 99% / 舆情 3.4%</footer>
+<footer>三市场量化模型回测报告 | 生成于 2026-08-10 23:26 | 数据完整度: K线100% / 财报EPS 99% / 舆情 3.4%</footer>
 </div>
 
 <script>
@@ -291,8 +291,8 @@ new Chart(navCtx, {
     responsive: true, maintainAspectRatio: false,
     plugins: { legend: {display:false} },
     scales: {
-      x: { ticks: {maxTicksLimit:12, color:'#666'}, grid:{color:'#1a1d27'} },
-      y: { ticks: {color:'#666', callback:v=>v+'M'}, grid:{color:'#222531'} }
+      x: { ticks: {maxTicksLimit:12, color:'#666'}, grid:{color:'#e9ecef'} },
+      y: { ticks: {color:'#666', callback:v=>v+'M'}, grid:{color:'#e9ecef'} }
     }
   }
 });
@@ -315,7 +315,7 @@ new Chart(monthlyCtx, {
     plugins: {legend:{display:false}},
     scales: {
       x: {ticks:{color:'#666'}, grid:{display:false}},
-      y: {ticks:{color:'#666',callback:v=>v+'%'}, grid:{color:'#222531'}}
+      y: {ticks:{color:'#666',callback:v=>v+'%'}, grid:{color:'#e9ecef'}}
     }
   }
 });
@@ -332,7 +332,7 @@ new Chart(holdCtx, {
       borderWidth: 0,
     }]
   },
-  options: {responsive:true, maintainAspectRatio:false, plugins:{legend:{position:'right',labels:{color:'#aaa',font:{size:11}}}}}
+  options: {responsive:true, maintainAspectRatio:false, plugins:{legend:{position:'right',labels:{color:'#495057',font:{size:11}}}}}
 });
 
 // 评分vs收益
@@ -349,10 +349,10 @@ new Chart(scoreCtx, {
   options: {
     responsive:true, maintainAspectRatio:false,
     scales: {
-      y: {position:'left', ticks:{color:'#666'}, grid:{color:'#222531'}},
+      y: {position:'left', ticks:{color:'#666'}, grid:{color:'#e9ecef'}},
       y1: {position:'right', ticks:{color:'#666',callback:v=>v+'%'}, grid:{display:false}, min:0, max:100}
     },
-    plugins: {legend:{labels:{color:'#aaa'}}}
+    plugins: {legend:{labels:{color:'#495057'}}}
   }
 });
 </script>
