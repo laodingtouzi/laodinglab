@@ -78,10 +78,10 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
 <div class="version-selector">
   <label>📊 回测版本:</label>
   <select id="versionSelect" onchange="switchVersion()">
-    <option value="SA_20260811_1310" data-file="backtest_history/backtest_report_SA_20260811_1310.html" selected>策略组合A v1.0 | 2026-08-11 13:10:05 | 收益+32.02% 夏普2.49 (当前)</option>
+    <option value="SA_20260811_1310" data-file="backtest_history/backtest_report_SA_20260811_1310.html" selected>策略组合A v1.0</option>
   </select>
 </div>
-<div class="version-meta" id="versionMeta">共 1 个版本 | 当前: 策略组合A v1.0 | 2026-08-11 13:10:05</div>
+<div class="version-meta" id="versionMeta">共 2 个版本</div>
 </header>
 
 <!-- 策略摘要 -->
@@ -447,13 +447,13 @@ function switchVersion() {
       const opt = document.createElement('option');
       opt.value = tag;
       opt.setAttribute('data-file', 'backtest_history/backtest_report_' + tag + '.html');
-      opt.textContent = h.strategy + ' ' + (h.version||'v1.0') + ' | ' + h.generated_at + ' | 收益+' + h.total_return + '% 夏普' + h.sharpe;
+      opt.textContent = h.strategy + ' ' + h.version;
       sel.insertBefore(opt, sel.firstChild);
       added++;
     }
     if (added > 0) {
       const meta = document.getElementById('versionMeta');
-      if (meta) meta.textContent = '共 ' + sel.options.length + ' 个版本（' + added + ' 个新版本已同步）| 当前: 策略组合A v1.0 | 2026-08-11 13:10:05';
+      if (meta) meta.textContent = '共 ' + sel.options.length + ' 个版本';
     }
   } catch(e) {
     // 静默失败，下拉框仍有本地生成的选项
