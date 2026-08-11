@@ -1,0 +1,54 @@
+{
+  "name": "策略组合A",
+  "description": "当前运行的标准5因子模型（quality 30% / valuation 20% / sentiment 20% / technical 15% / momentum 15%），与 tri_market_selector_v5.3.py 完全一致",
+  "version": "v1.0",
+  "created_at": "2026-08-10",
+  "factor_weights": {
+    "quality": 0.3,
+    "valuation": 0.2,
+    "sentiment_event": 0.2,
+    "technical": 0.15,
+    "momentum": 0.15
+  },
+  "quality_sub": {
+    "financial": 0.6,
+    "trend": 0.25,
+    "low_vol": 0.15
+  },
+  "buy_threshold": 65,
+  "buy_threshold_us": 70,
+  "sell_threshold": 40,
+  "sell_threshold_us": 45,
+  "hard_stop_loss": -15.0,
+  "short_stop_pct": -8.0,
+  "short_stop_days": 3,
+  "pools": {
+    "CN": {
+      "capital": 10000000,
+      "h_limit": 100000,
+      "m_limit": 50000,
+      "currency": "CNY"
+    },
+    "HK": {
+      "capital": 10000000,
+      "h_limit": 100000,
+      "m_limit": 50000,
+      "currency": "HKD"
+    },
+    "US": {
+      "capital": 1388888.8888888888,
+      "h_limit": 13888.888888888889,
+      "m_limit": 6944.444444444444,
+      "currency": "USD"
+    }
+  },
+  "usd_cny": 7.2,
+  "hkd_cny": 0.92,
+  "cooldown_normal": 3,
+  "cooldown_hard_stop": 7,
+  "slippage": 0.003,
+  "commission": 0.00025,
+  "backtest_start": "2025-04-01",
+  "backtest_end": "2026-07-24",
+  "warmup_days": 60
+}
