@@ -38,6 +38,16 @@
   .toast { position:fixed; top:20px; right:20px; padding:12px 20px; border-radius:8px; color:#fff; z-index:2000; display:none; }
   .toast.success { background:#16a34a; }
   .toast.error { background:#dc2626; }
+  .unsaved-bar { background:#fef3c7; border:1px solid #fbbf24; border-radius:6px; padding:12px 16px; margin-bottom:16px; display:none; align-items:center; justify-content:space-between; }
+  .unsaved-bar.show { display:flex; }
+  .unsaved-bar .count { font-weight:600; color:#92400e; }
+  .btn-save { background:#2563eb; color:#fff; padding:6px 16px; border:none; border-radius:6px; cursor:pointer; font-size:0.85rem; }
+  .btn-discard { background:#f1f5f9; color:#475569; padding:6px 16px; border:none; border-radius:6px; cursor:pointer; font-size:0.85rem; margin-left:8px; }
+  .btn-save:disabled { opacity:0.5; cursor:not-allowed; }
+  .modified-row { background-color:#fffbeb !important; }
+  .modified-badge { display:inline-block; background:#f59e0b; color:#fff; font-size:0.7rem; padding:1px 5px; border-radius:3px; margin-left:4px; }
+  .loading-spinner { display:inline-block; width:16px; height:16px; border:2px solid #e2e8f0; border-top-color:#2563eb; border-radius:50%; animation:spin 0.8s linear infinite; margin-left:8px; vertical-align:middle; }
+  @keyframes spin { to { transform:rotate(360deg); } }
 </style>
 </head>
 <body>
@@ -58,6 +68,18 @@
   </header>
 
   <div class="container">
+    <!-- 未保存操作提示栏 -->
+    <div class="unsaved-bar" id="unsavedBar">
+      <div>
+        <span>⚠️ 有 <span class="count" id="unsavedCount">0</span> 笔操作未保存</span>
+        <span id="uploadSpinner" style="display:none;"><span class="loading-spinner"></span> 正在上传...</span>
+      </div>
+      <div>
+        <button class="btn-save" id="btnSave" onclick="uploadChanges()">💾 上传保存</button>
+        <button class="btn-discard" onclick="discardChanges()">↩️ 放弃修改</button>
+      </div>
+    </div>
+
     <div class="section">
       <h3>📈 持有清单操作</h3>
       <div id="holdingsLoading">加载中...</div>
@@ -114,6 +136,12 @@
 const GH_API = 'https://api.github.com/repos/laodingtouzi/laodinglab';
 const GH_BRANCH = 'main';
 const AUTH_FILE = 'auth.dat';
+
+// ========== 全局状态 ==========
+let memoryData = {};      // 内存中的全部数据
+let modifiedFiles = {};   // 标记哪些文件被修改过 {path: true}
+let originalShas = {};    // 原始文件的sha
+let currentAction, currentCode, currentName, currentMarket, currentPrice;
 
 // ========== Token 管理 (sessionStorage) ==========
 function getToken() { return sessionStorage.getItem('gh_token') || ''; }
@@ -195,48 +223,61 @@ async function ghPutFile(path, content, sha, message) {
   return true;
 }
 
-// ========== 加载数据 ==========
-let holdingsDataCache = {};
-
+// ========== 加载数据到内存 ==========
 async function loadData() {
   try {
-    const [cn, hk, us] = await Promise.all([
-      ghGetFile('data/portfolio/holdings_CN.json'),
-      ghGetFile('data/portfolio/holdings_HK.json'),
-      ghGetFile('data/portfolio/holdings_US.json')
-    ]);
-    const allHoldings = { ...(cn?.content||{}), ...(hk?.content||{}), ...(us?.content||{}) };
-    holdingsDataCache = allHoldings;
-    renderHoldings(allHoldings);
+    modifiedFiles = {};
+    originalShas = {};
+    memoryData = {};
 
-    const [psCN, psHK, psUS] = await Promise.all([
-      ghGetFile('data/portfolio/post_sell_CN.json'),
-      ghGetFile('data/portfolio/post_sell_HK.json'),
-      ghGetFile('data/portfolio/post_sell_US.json')
-    ]);
-    const allPostSell = { ...(psCN?.content||{}), ...(psHK?.content||{}), ...(psUS?.content||{}) };
-    renderPostSell(allPostSell);
+    const markets = ['CN', 'HK', 'US'];
+    for (const m of markets) {
+      const h = await ghGetFile('data/portfolio/holdings_' + m + '.json');
+      if (h) {
+        memoryData['holdings_' + m] = h.content;
+        originalShas['data/portfolio/holdings_' + m + '.json'] = h.sha;
+      }
+      const ps = await ghGetFile('data/portfolio/post_sell_' + m + '.json');
+      if (ps) {
+        memoryData['post_sell_' + m] = ps.content;
+        originalShas['data/portfolio/post_sell_' + m + '.json'] = ps.sha;
+      }
+    }
+
+    renderHoldings();
+    renderPostSell();
+    updateUnsavedBar();
   } catch (e) {
     showToast('数据加载失败: ' + e.message, 'error');
-    if (e.message.includes('重新登录')) {
-      clearToken();
-      location.reload();
-    }
+    if (e.message.includes('重新登录')) { clearToken(); location.reload(); }
   }
 }
 
-function renderHoldings(data) {
+// ========== 渲染持有清单 ==========
+function renderHoldings() {
   const tbody = document.getElementById('holdingsBody');
   const marketOrder = { 'CN': 0, 'HK': 1, 'US': 2 };
-  const items = Object.entries(data).sort((a, b) => {
+
+  let allItems = [];
+  for (const m of ['CN', 'HK', 'US']) {
+    const data = memoryData['holdings_' + m] || {};
+    for (const [code, h] of Object.entries(data)) {
+      allItems.push([code, h]);
+    }
+  }
+
+  allItems.sort((a, b) => {
     const ma = marketOrder[a[1].market] ?? 99;
     const mb = marketOrder[b[1].market] ?? 99;
     if (ma !== mb) return ma - mb;
     return (b[1].latest_score || 0) - (a[1].latest_score || 0);
   });
-  tbody.innerHTML = items.map(([code, h]) => `
-    <tr id="hold-row-${code}" data-code="${code.toLowerCase()}" data-name="${(h.name || '').toLowerCase()}">
-      <td>${code}</td>
+
+  tbody.innerHTML = allItems.map(([code, h]) => {
+    const isModified = h._modified;
+    const modBadge = isModified ? ' <span class="modified-badge">已修改</span>' : '';
+    return `<tr id="hold-row-${code}" data-code="${code.toLowerCase()}" data-name="${(h.name || '').toLowerCase()}" class="${isModified ? 'modified-row' : ''}">
+      <td>${code}${modBadge}</td>
       <td><strong>${h.name || ''}</strong></td>
       <td>${h.market || ''}</td>
       <td>${h.status || ''}</td>
@@ -250,8 +291,9 @@ function renderHoldings(data) {
         <button class="btn btn-reduce" onclick="openModal('reduce','${code}','${h.name||''}','${h.market||''}',${h.current_price||0})">减仓</button>
         <button class="btn btn-sell" onclick="openModal('sell','${code}','${h.name||''}','${h.market||''}',${h.current_price||0})">卖出</button>
       </td>
-    </tr>
-  `).join('');
+    </tr>`;
+  }).join('');
+
   document.getElementById('holdingsLoading').style.display = 'none';
   document.getElementById('holdingsTable').style.display = 'block';
 }
@@ -265,29 +307,52 @@ function filterHoldings() {
   });
 }
 
-function renderPostSell(data) {
+// ========== 渲染沽后池 ==========
+function renderPostSell() {
   const tbody = document.getElementById('postSellBody');
-  const items = Object.entries(data).sort((a, b) => (a[1].sell_date || '').localeCompare(b[1].sell_date || ''));
-  tbody.innerHTML = items.map(([code, ps]) => `
-    <tr id="post-row-${code}">
-      <td>${code}</td>
-      <td><strong>${ps.name || ''}</strong></td>
-      <td>${ps.market || ''}</td>
-      <td>${ps.sell_date || ''}</td>
-      <td>${ps.sell_price || ''}</td>
-      <td>${(ps.total_return_when_sold || 0).toFixed(1)}%</td>
-      <td>${(ps.post_sell_return || 0).toFixed(1)}%</td>
-      <td>${ps.hold_days || 0}</td>
-      <td><button class="btn btn-delist" onclick="doDelist('${code}')">剔除</button></td>
-    </tr>
-  `).join('');
+  let allItems = [];
+  for (const m of ['CN', 'HK', 'US']) {
+    const data = memoryData['post_sell_' + m] || {};
+    for (const [code, ps] of Object.entries(data)) {
+      allItems.push([code, ps]);
+    }
+  }
+  allItems.sort((a, b) => (a[1].sell_date || '').localeCompare(b[1].sell_date || ''));
+
+  tbody.innerHTML = allItems.map(([code, ps]) => `<tr id="post-row-${code}">
+    <td>${code}</td>
+    <td><strong>${ps.name || ''}</strong></td>
+    <td>${ps.market || ''}</td>
+    <td>${ps.sell_date || ''}</td>
+    <td>${ps.sell_price || ''}</td>
+    <td>${(ps.total_return_when_sold || 0).toFixed(1)}%</td>
+    <td>${(ps.post_sell_return || 0).toFixed(1)}%</td>
+    <td>${ps.hold_days || 0}</td>
+    <td><button class="btn btn-delist" onclick="doDelist('${code}')">剔除</button></td>
+  </tr>`).join('');
+
   document.getElementById('postSellLoading').style.display = 'none';
   document.getElementById('postSellTable').style.display = 'block';
 }
 
-// ========== Modal & Actions ==========
-let currentAction, currentCode, currentName, currentMarket, currentPrice;
+// ========== 标记文件已修改 ==========
+function markModified(path) {
+  modifiedFiles[path] = true;
+  updateUnsavedBar();
+}
 
+function updateUnsavedBar() {
+  const count = Object.keys(modifiedFiles).length;
+  const bar = document.getElementById('unsavedBar');
+  document.getElementById('unsavedCount').textContent = count;
+  if (count > 0) {
+    bar.classList.add('show');
+  } else {
+    bar.classList.remove('show');
+  }
+}
+
+// ========== Modal & Actions ==========
 function openModal(action, code, name, market, price) {
   currentAction = action; currentCode = code; currentName = name; currentMarket = market; currentPrice = price;
   const titles = { add: '➕ 加仓', reduce: '➖ 减仓', sell: '⤵️ 卖出（清仓）' };
@@ -308,7 +373,7 @@ function openModal(action, code, name, market, price) {
 
 function closeModal() { document.getElementById('actionModal').style.display = 'none'; }
 
-async function confirmAction() {
+function confirmAction() {
   let shares = 0;
   if (currentAction !== 'sell') {
     shares = parseInt(document.getElementById('modalShares').value, 10);
@@ -318,96 +383,95 @@ async function confirmAction() {
 
   try {
     const m = currentMarket.toUpperCase();
+    const holdingsKey = 'holdings_' + m;
+    const postSellKey = 'post_sell_' + m;
     const holdingsPath = 'data/portfolio/holdings_' + m + '.json';
     const postSellPath = 'data/portfolio/post_sell_' + m + '.json';
 
-    // 读取当前持仓
-    const holdingsFile = await ghGetFile(holdingsPath);
-    if (!holdingsFile || !holdingsFile.content[currentCode]) {
-      throw new Error('股票不在持有清单中');
+    const h = memoryData[holdingsKey];
+    if (!h || !h[currentCode]) {
+      showToast('股票不在持有清单中', 'error');
+      return;
     }
 
-    const h = holdingsFile.content[currentCode];
+    const stock = h[currentCode];
 
     if (currentAction === 'sell') {
-      // 卖出：从holdings删除，加入post_sell
-      const sellPrice = currentPrice || h.current_price || 0;
+      const sellPrice = currentPrice || stock.current_price || 0;
       const reason = document.getElementById('modalReason').value || '手工卖出';
 
-      delete holdingsFile.content[currentCode];
-
-      let psFile = await ghGetFile(postSellPath);
-      if (!psFile) psFile = { content: {}, sha: null };
-      psFile.content[currentCode] = {
-        name: h.name, market: m,
+      let ps = memoryData[postSellKey];
+      if (!ps) { ps = {}; memoryData[postSellKey] = ps; }
+      ps[currentCode] = {
+        name: stock.name, market: m,
         sell_date: new Date().toISOString().split('T')[0],
         sell_price: sellPrice,
-        total_return_when_sold: h.total_return || 0,
-        hold_days: h.hold_days || 0,
+        total_return_when_sold: stock.total_return || 0,
+        hold_days: stock.hold_days || 0,
         post_sell_analysis: reason, manual_sell: true
       };
+      markModified(postSellPath);
 
-      await ghPutFile(postSellPath, psFile.content, psFile.sha, `Manual sell: ${currentCode}`);
-      await ghPutFile(holdingsPath, holdingsFile.content, holdingsFile.sha, `Manual sell: ${currentCode}`);
+      delete h[currentCode];
+      markModified(holdingsPath);
 
-      showToast(`${currentCode} 卖出成功`, 'success');
+      showToast(`${currentCode} 卖出成功（未保存）`, 'success');
       const row = document.getElementById('hold-row-' + currentCode);
       if (row) row.remove();
     }
     else if (currentAction === 'add') {
-      // 加仓
-      const oldShares = h.shares || 0;
-      const oldCost = oldShares * (h.entry_price || 0);
+      const oldShares = stock.shares || 0;
+      const oldCost = oldShares * (stock.entry_price || 0);
       const newCost = shares * currentPrice;
       const totalShares = oldShares + shares;
       const avgPrice = totalShares > 0 ? (oldCost + newCost) / totalShares : 0;
 
-      h.shares = totalShares;
-      h.entry_price = Math.round(avgPrice * 100) / 100;
-      h.market_value = totalShares * (h.current_price || currentPrice);
-      if (h.entry_price > 0) {
-        h.total_return = Math.round(((h.current_price || currentPrice) - h.entry_price) / h.entry_price * 10000) / 100;
+      stock.shares = totalShares;
+      stock.entry_price = Math.round(avgPrice * 100) / 100;
+      stock.market_value = totalShares * (stock.current_price || currentPrice);
+      if (stock.entry_price > 0) {
+        stock.total_return = Math.round(((stock.current_price || currentPrice) - stock.entry_price) / stock.entry_price * 10000) / 100;
       }
-      h.cost = Math.round(totalShares * h.entry_price * 100) / 100;
+      stock.cost = Math.round(totalShares * stock.entry_price * 100) / 100;
+      stock._modified = true;
 
-      await ghPutFile(holdingsPath, holdingsFile.content, holdingsFile.sha, `Manual add: ${currentCode} +${shares}`);
-
-      showToast(`${currentCode} 加仓 ${shares} 股成功`, 'success');
-      updateRow(currentCode, h);
+      markModified(holdingsPath);
+      showToast(`${currentCode} 加仓 ${shares} 股成功（未保存）`, 'success');
+      updateRow(currentCode, stock);
     }
     else if (currentAction === 'reduce') {
-      // 减仓
-      const oldShares = h.shares || 0;
+      const oldShares = stock.shares || 0;
       const newShares = Math.max(0, oldShares - shares);
 
       if (newShares === 0) {
-        // 清仓
-        let psFile = await ghGetFile(postSellPath);
-        if (!psFile) psFile = { content: {}, sha: null };
-        psFile.content[currentCode] = {
-          name: h.name, market: m,
+        let ps = memoryData[postSellKey];
+        if (!ps) { ps = {}; memoryData[postSellKey] = ps; }
+        ps[currentCode] = {
+          name: stock.name, market: m,
           sell_date: new Date().toISOString().split('T')[0],
-          sell_price: h.current_price || 0,
-          total_return_when_sold: h.total_return || 0,
-          hold_days: h.hold_days || 0,
+          sell_price: stock.current_price || 0,
+          total_return_when_sold: stock.total_return || 0,
+          hold_days: stock.hold_days || 0,
           post_sell_analysis: '手工减仓至0', manual_sell: true
         };
-        delete holdingsFile.content[currentCode];
-        await ghPutFile(postSellPath, psFile.content, psFile.sha, `Manual reduce to 0: ${currentCode}`);
-        await ghPutFile(holdingsPath, holdingsFile.content, holdingsFile.sha, `Manual reduce to 0: ${currentCode}`);
-        showToast(`${currentCode} 已清仓`, 'success');
+        markModified(postSellPath);
+
+        delete h[currentCode];
+        markModified(holdingsPath);
+        showToast(`${currentCode} 已清仓（未保存）`, 'success');
         const row = document.getElementById('hold-row-' + currentCode);
         if (row) row.remove();
       } else {
-        h.shares = newShares;
-        h.market_value = newShares * (h.current_price || h.entry_price || 0);
-        h.cost = Math.round(newShares * h.entry_price * 100) / 100;
-        if (h.entry_price > 0) {
-          h.total_return = Math.round(((h.current_price || h.entry_price) - h.entry_price) / h.entry_price * 10000) / 100;
+        stock.shares = newShares;
+        stock.market_value = newShares * (stock.current_price || stock.entry_price || 0);
+        stock.cost = Math.round(newShares * stock.entry_price * 100) / 100;
+        if (stock.entry_price > 0) {
+          stock.total_return = Math.round(((stock.current_price || stock.entry_price) - stock.entry_price) / stock.entry_price * 10000) / 100;
         }
-        await ghPutFile(holdingsPath, holdingsFile.content, holdingsFile.sha, `Manual reduce: ${currentCode} -${shares}`);
-        showToast(`${currentCode} 减仓 ${shares} 股成功`, 'success');
-        updateRow(currentCode, h);
+        stock._modified = true;
+        markModified(holdingsPath);
+        showToast(`${currentCode} 减仓 ${shares} 股成功（未保存）`, 'success');
+        updateRow(currentCode, stock);
       }
     }
   } catch (e) {
@@ -419,6 +483,11 @@ async function confirmAction() {
 function updateRow(code, h) {
   const row = document.getElementById('hold-row-' + code);
   if (!row) return;
+  row.classList.add('modified-row');
+  const badge = row.querySelector('.modified-badge');
+  if (!badge) {
+    row.cells[0].insertAdjacentHTML('beforeend', ' <span class="modified-badge">已修改</span>');
+  }
   row.cells[6].textContent = (h.shares || 0).toLocaleString();
   row.cells[7].textContent = (h.total_return || 0).toFixed(1) + '%';
   row.cells[7].style.color = (h.total_return || 0) >= 0 ? '#16a34a' : '#dc2626';
@@ -428,12 +497,13 @@ async function doDelist(code) {
   if (!confirm('确认剔除 ' + code + '？')) return;
   try {
     for (const m of ['CN', 'HK', 'US']) {
+      const postSellKey = 'post_sell_' + m;
       const postSellPath = 'data/portfolio/post_sell_' + m + '.json';
-      const data = await ghGetFile(postSellPath);
-      if (data && data.content[code]) {
-        delete data.content[code];
-        await ghPutFile(postSellPath, data.content, data.sha, `Delist: ${code}`);
-        showToast(`${code} 已从观察清单移除`, 'success');
+      const data = memoryData[postSellKey];
+      if (data && data[code]) {
+        delete data[code];
+        markModified(postSellPath);
+        showToast(`${code} 已从观察清单移除（未保存）`, 'success');
         const row = document.getElementById('post-row-' + code);
         if (row) row.remove();
         return;
@@ -443,6 +513,68 @@ async function doDelist(code) {
   } catch (e) {
     showToast('剔除失败: ' + e.message, 'error');
   }
+}
+
+// ========== 上传保存 ==========
+async function uploadChanges() {
+  const btn = document.getElementById('btnSave');
+  const spinner = document.getElementById('uploadSpinner');
+  btn.disabled = true;
+  spinner.style.display = 'inline';
+
+  try {
+    const paths = Object.keys(modifiedFiles);
+    if (paths.length === 0) {
+      showToast('没有需要保存的修改', 'warn');
+      return;
+    }
+
+    for (const path of paths) {
+      // 确定对应的内存 key
+      let memKey = '';
+      if (path.includes('holdings_CN')) memKey = 'holdings_CN';
+      else if (path.includes('holdings_HK')) memKey = 'holdings_HK';
+      else if (path.includes('holdings_US')) memKey = 'holdings_US';
+      else if (path.includes('post_sell_CN')) memKey = 'post_sell_CN';
+      else if (path.includes('post_sell_HK')) memKey = 'post_sell_HK';
+      else if (path.includes('post_sell_US')) memKey = 'post_sell_US';
+
+      if (!memKey || !memoryData[memKey]) continue;
+
+      // 清除 _modified 标记
+      const cleanData = JSON.parse(JSON.stringify(memoryData[memKey]));
+      for (const stock of Object.values(cleanData)) {
+        if (stock && typeof stock === 'object') delete stock._modified;
+      }
+
+      await ghPutFile(path, cleanData, originalShas[path], `Admin update: ${path}`);
+      // 更新 sha，防止重复上传时冲突
+      const refreshed = await ghGetFile(path);
+      if (refreshed) originalShas[path] = refreshed.sha;
+    }
+
+    modifiedFiles = {};
+    updateUnsavedBar();
+
+    // 清除所有已修改标记
+    document.querySelectorAll('.modified-row').forEach(row => row.classList.remove('modified-row'));
+    document.querySelectorAll('.modified-badge').forEach(badge => badge.remove());
+
+    showToast(`✅ 已成功保存 ${paths.length} 个文件的修改到云端`, 'success');
+  } catch (e) {
+    showToast('保存失败: ' + e.message, 'error');
+    if (e.message.includes('重新登录')) { clearToken(); location.reload(); }
+  } finally {
+    btn.disabled = false;
+    spinner.style.display = 'none';
+  }
+}
+
+// ========== 放弃修改 ==========
+async function discardChanges() {
+  if (!confirm('确定放弃所有未保存的修改？此操作不可撤销。')) return;
+  await loadData();
+  showToast('已放弃修改，重新加载云端数据', 'success');
 }
 
 function showToast(msg, type) {
