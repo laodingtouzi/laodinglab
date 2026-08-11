@@ -75,7 +75,7 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
   <a class="back-link" href="../backtest_index.html">← 返回回测首页</a>
   <h1>策略组合B V1.0 回测报告</h1>
   <div class="subtitle">增强因子 + 动态权重 + 梯度减仓 + 持仓时间管理</div>
-  <div class="date">生成时间: 2026-08-11 23:05:44</div>
+  <div class="date">生成时间: 2026-08-11 23:16:18</div>
   <div class="date">回测区间: 2025-04-01 ~ 2026-07-24 (322交易日)</div>
 
   <!-- 版本选择器（位于分割线上方） -->
@@ -86,7 +86,7 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
   <select id="versionSelect" onchange="switchVersion()">
     <option value="A_v1.0" data-file="backtest_history/backtest_report_Av1.0_20260811_2059.html">策略组合A v1.0</option>
     <option value="A_v1.5" data-file="backtest_history/backtest_report_Av1.2_20260811_2059.html">策略组合A v1.5</option>
-    <option value="B_v1.0" data-file="backtest_history/backtest_report_Bv1.0_20260811_2305.html" selected>策略组合B v1.0</option>
+    <option value="B_v1.0" data-file="backtest_history/backtest_report_Bv1.0_20260811_2316.html" selected>策略组合B v1.0</option>
   </select>
 </div>
 <div class="version-meta" id="versionMeta">共 3 个版本</div>
@@ -97,23 +97,23 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
 <div class="summary-grid">
   <div class="card green">
     <div class="label">总收益率</div>
-    <div class="value">+9.07%</div>
-    <div class="sub">初始 29.2M → 最终 31.8M CNY</div>
+    <div class="value">+13.47%</div>
+    <div class="sub">初始 29.2M → 最终 33.1M CNY</div>
   </div>
   <div class="card red">
     <div class="label">最大回撤</div>
-    <div class="value">-2.43%</div>
-    <div class="sub">夏普比率 1.67</div>
+    <div class="value">-5.42%</div>
+    <div class="sub">夏普比率 1.81</div>
   </div>
   <div class="card blue">
     <div class="label">总交易数</div>
-    <div class="value">43</div>
-    <div class="sub">胜率 39.5%</div>
+    <div class="value">88</div>
+    <div class="sub">胜率 45.5%</div>
   </div>
   <div class="card orange">
     <div class="label">平均持仓天数</div>
-    <div class="value">31天</div>
-    <div class="sub">中位数 30天 / 最长 60天</div>
+    <div class="value">26天</div>
+    <div class="sub">中位数 30天 / 最长 40天</div>
   </div>
 </div>
 
@@ -125,8 +125,8 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
     <tr><td>买入阈值</td><td>55</td><td>55</td><td>60</td></tr>
     <tr><td>卖出阈值</td><td>35</td><td>35</td><td>40</td></tr>
     <tr><td>止损</td><td colspan="3">-8.0% / 止盈 +15%+MACD死叉</td></tr>
-    <tr><td>仓位</td><td colspan="3">单只10% / 最多5只 / 强信号12% / 弱信号8% / 总上限85%</td></tr>
-    <tr><td>持仓管理</td><td colspan="3">调仓5天 / 30日减仓1/3 / 60日强制卖出</td></tr>
+    <tr><td>仓位</td><td colspan="3">单只10% / 最多8只 / 强信号12% / 弱信号8% / 总上限85%</td></tr>
+    <tr><td>持仓管理</td><td colspan="3">调仓5天 / 20日减仓1/3 / 40日强制卖出</td></tr>
     <tr><td>梯度减仓</td><td colspan="3">开启</td></tr>
   </table>
   <h3>动态权重（按市场状态）</h3>
@@ -144,9 +144,9 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
   <div class="chart-container small">
     <canvas id="stateChart"></canvas>
   </div>
-  <p>趋势市: 23天 (7.1%) |
-     震荡市: 201天 (62.4%) |
-     风险市: 98天 (30.4%)</p>
+  <p>趋势市: 24天 (7.5%) |
+     震荡市: 236天 (73.3%) |
+     风险市: 62天 (19.3%)</p>
 </div>
 
 <!-- ═══ NAV曲线 ═══ -->
@@ -162,9 +162,9 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
   <h2>分市场统计</h2>
   <table>
     <tr><th>市场</th><th>交易数</th><th>胜率</th><th>均收益</th><th>总收益</th><th>最大单笔盈</th><th>最大单笔亏</th></tr>
-    <tr><td><span class="tag tag-cn">A股</span></td><td>8</td><td>50.0%</td><td class="positive">+9.8%</td><td class="positive">+2.7%</td><td class="positive">+68.6%</td><td class="negative">-21.7%</td></tr>
-    <tr><td><span class="tag tag-hk">港股</span></td><td>25</td><td>36.0%</td><td class="positive">+2.8%</td><td class="positive">+10.9%</td><td class="positive">+47.0%</td><td class="negative">-11.4%</td></tr>
-    <tr><td><span class="tag tag-us">美股</span></td><td>10</td><td>40.0%</td><td class="positive">+10.6%</td><td class="positive">+13.8%</td><td class="positive">+57.4%</td><td class="negative">-12.1%</td></tr>
+    <tr><td><span class="tag tag-cn">A股</span></td><td>14</td><td>42.9%</td><td class="negative">-0.6%</td><td class="negative">-5.5%</td><td class="positive">+28.5%</td><td class="negative">-21.7%</td></tr>
+    <tr><td><span class="tag tag-hk">港股</span></td><td>58</td><td>41.4%</td><td class="positive">+2.2%</td><td class="positive">+21.2%</td><td class="positive">+51.3%</td><td class="negative">-12.9%</td></tr>
+    <tr><td><span class="tag tag-us">美股</span></td><td>16</td><td>62.5%</td><td class="positive">+20.0%</td><td class="positive">+25.3%</td><td class="positive">+173.0%</td><td class="negative">-12.1%</td></tr>
   </table>
 </div>
 
@@ -174,11 +174,11 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
   <table>
     <tr><th>卖出类型</th><th>笔数</th><th>胜率</th><th>均收益</th></tr>
     <tr><td>评分跌破</td><td>0</td><td>0.0%</td><td class="negative">+0.0%</td></tr>
-    <tr><td>硬止损</td><td>22</td><td>0.0%</td><td class="negative">-10.7%</td></tr>
-    <tr><td>止盈+MACD</td><td>16</td><td>100.0%</td><td class="positive">+27.5%</td></tr>
+    <tr><td>硬止损</td><td>40</td><td>0.0%</td><td class="negative">-10.3%</td></tr>
+    <tr><td>止盈+MACD</td><td>12</td><td>100.0%</td><td class="positive">+32.2%</td></tr>
     <tr><td>信号反转</td><td>0</td><td>0.0%</td><td class="negative">+0.0%</td></tr>
     <tr><td>超时减仓</td><td>0</td><td>0.0%</td><td class="negative">+0.0%</td></tr>
-    <tr><td>超时强卖</td><td>5</td><td>20.0%</td><td class="positive">+10.1%</td></tr>
+    <tr><td>超时强卖</td><td>36</td><td>77.8%</td><td class="positive">+12.9%</td></tr>
     <tr><td>梯度减仓</td><td>0</td><td>0.0%</td><td class="negative">+0.0%</td></tr>
   </table>
 </div>
@@ -188,24 +188,24 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
   <h2>双报告对比分析：策略B V1.0 vs 策略A V1.0</h2>
   <table class="compare-table">
     <tr><th>指标</th><th class="b-col">策略B V1.0</th><th class="a-col">策略A V1.0</th><th>差异</th></tr>
-    <tr><td>总收益率</td><td class="b-col">+9.07%</td><td class="a-col">+32.02%</td><td>-22.95%</td></tr>
-    <tr><td>最大回撤</td><td class="b-col">-2.43%</td><td class="a-col">-6.74%</td><td>+4.31%</td></tr>
-    <tr><td>夏普比率</td><td class="b-col">1.67</td><td class="a-col">2.49</td><td>-0.82</td></tr>
-    <tr><td>总交易数</td><td class="b-col">43</td><td class="a-col">300</td><td>-257</td></tr>
-    <tr><td>胜率</td><td class="b-col">39.5%</td><td class="a-col">53.0%</td><td>-13.5%</td></tr>
-    <tr><td>平均持仓天数</td><td class="b-col">30.8</td><td class="a-col">60.7</td><td>-29.9</td></tr>
+    <tr><td>总收益率</td><td class="b-col">+13.47%</td><td class="a-col">+32.02%</td><td>-18.55%</td></tr>
+    <tr><td>最大回撤</td><td class="b-col">-5.42%</td><td class="a-col">-6.74%</td><td>+1.32%</td></tr>
+    <tr><td>夏普比率</td><td class="b-col">1.81</td><td class="a-col">2.49</td><td>-0.68</td></tr>
+    <tr><td>总交易数</td><td class="b-col">88</td><td class="a-col">300</td><td>-212</td></tr>
+    <tr><td>胜率</td><td class="b-col">45.5%</td><td class="a-col">53.0%</td><td>-7.5%</td></tr>
+    <tr><td>平均持仓天数</td><td class="b-col">25.6</td><td class="a-col">60.7</td><td>-35.1</td></tr>
   </table>
 
   <h3>分市场对比</h3>
   <table class="compare-table">
     <tr><th>市场</th><th class="b-col">B交易数</th><th class="b-col">B胜率</th><th class="a-col">A交易数</th><th class="a-col">A胜率</th></tr>
-    <tr><td><span class="tag tag-cn">A股</span></td><td class="b-col">8</td><td class="b-col">50.0%</td><td class="a-col">26</td><td class="a-col">46.2%</td></tr>
-    <tr><td><span class="tag tag-hk">港股</span></td><td class="b-col">25</td><td class="b-col">36.0%</td><td class="a-col">269</td><td class="a-col">53.5%</td></tr>
-    <tr><td><span class="tag tag-us">美股</span></td><td class="b-col">10</td><td class="b-col">40.0%</td><td class="a-col">5</td><td class="a-col">60.0%</td></tr>
+    <tr><td><span class="tag tag-cn">A股</span></td><td class="b-col">14</td><td class="b-col">42.9%</td><td class="a-col">26</td><td class="a-col">46.2%</td></tr>
+    <tr><td><span class="tag tag-hk">港股</span></td><td class="b-col">58</td><td class="b-col">41.4%</td><td class="a-col">269</td><td class="a-col">53.5%</td></tr>
+    <tr><td><span class="tag tag-us">美股</span></td><td class="b-col">16</td><td class="b-col">62.5%</td><td class="a-col">5</td><td class="a-col">60.0%</td></tr>
   </table>
 
   <h3>持仓重叠度</h3>
-  <p>B策略交易股票数: 30 | A策略交易股票数: 146 | 重叠股票数: 17 (10.7%)</p>
+  <p>B策略交易股票数: 46 | A策略交易股票数: 146 | 重叠股票数: 29 (17.8%)</p>
 </div>
 
 <!-- ═══ TOP10盈利 ═══ -->
@@ -213,16 +213,16 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
   <h2>TOP10 盈利交易</h2>
   <table>
     <tr><th>#</th><th>代码</th><th>名称</th><th>市场</th><th>买入日</th><th>卖出日</th><th>买入价</th><th>卖出价</th><th>收益</th><th>持仓天数</th><th>卖出原因</th></tr>
-    <tr><td>1</td><td>301308.SZ</td><td>江波龙</td><td><span class="tag tag-cn">CN</span></td><td>2025-07-01</td><td>2025-09-23</td><td>85.35</td><td>143.87</td><td class="positive">+68.6%</td><td>84</td><td>持仓60天强制卖出</td></tr>
+    <tr><td>1</td><td>SNDK.O</td><td>Sandisk</td><td><span class="tag tag-us">US</span></td><td>2025-08-01</td><td>2025-09-29</td><td>41.45</td><td>113.16</td><td class="positive">+173.0%</td><td>59</td><td>持仓40天强制卖出</td></tr>
     <tr><td>2</td><td>ECHO.O</td><td>EchoStar</td><td><span class="tag tag-us">US</span></td><td>2025-11-21</td><td>2025-12-31</td><td>68.84</td><td>108.37</td><td class="positive">+57.4%</td><td>40</td><td>止盈：+57.9%+MACD死叉</td></tr>
-    <tr><td>3</td><td>01133.HK</td><td>哈尔滨电气</td><td><span class="tag tag-hk">HK</span></td><td>2025-09-03</td><td>2025-10-15</td><td>8.39</td><td>12.32</td><td class="positive">+47.0%</td><td>42</td><td>止盈：+47.4%+MACD死叉</td></tr>
-    <tr><td>4</td><td>APA.O</td><td>APA Corporation</td><td><span class="tag tag-us">US</span></td><td>2026-01-30</td><td>2026-04-08</td><td>26.49</td><td>38.63</td><td class="positive">+45.8%</td><td>68</td><td>止盈：+46.3%+MACD死叉</td></tr>
+    <tr><td>3</td><td>01133.HK</td><td>哈尔滨电气</td><td><span class="tag tag-hk">HK</span></td><td>2025-09-02</td><td>2025-10-15</td><td>8.14</td><td>12.32</td><td class="positive">+51.3%</td><td>43</td><td>止盈：+51.8%+MACD死叉</td></tr>
+    <tr><td>4</td><td>03330.HK</td><td>灵宝黄金</td><td><span class="tag tag-hk">HK</span></td><td>2025-07-30</td><td>2025-09-17</td><td>10.67</td><td>15.84</td><td class="positive">+48.4%</td><td>49</td><td>止盈：+48.9%+MACD死叉</td></tr>
     <tr><td>5</td><td>MU.O</td><td>Micron Technology</td><td><span class="tag tag-us">US</span></td><td>2025-07-31</td><td>2025-09-26</td><td>109.47</td><td>156.8</td><td class="positive">+43.2%</td><td>57</td><td>止盈：+43.7%+MACD死叉</td></tr>
-    <tr><td>6</td><td>02610.HK</td><td>南山铝业国际</td><td><span class="tag tag-hk">HK</span></td><td>2026-01-05</td><td>2026-01-30</td><td>49.23</td><td>64.51</td><td class="positive">+31.0%</td><td>25</td><td>止盈：+31.4%+MACD死叉</td></tr>
-    <tr><td>7</td><td>600711.SH</td><td>盛屯矿业</td><td><span class="tag tag-cn">CN</span></td><td>2025-06-19</td><td>2025-07-31</td><td>5.77</td><td>7.51</td><td class="positive">+30.2%</td><td>42</td><td>止盈：+30.6%+MACD死叉</td></tr>
-    <tr><td>8</td><td>600919.SH</td><td>江苏银行</td><td><span class="tag tag-cn">CN</span></td><td>2025-04-01</td><td>2025-07-01</td><td>9.61</td><td>12.1</td><td class="positive">+26.0%</td><td>91</td><td>止盈：+26.3%+MACD死叉</td></tr>
-    <tr><td>9</td><td>01378.HK</td><td>中国宏桥</td><td><span class="tag tag-hk">HK</span></td><td>2025-07-22</td><td>2025-09-03</td><td>20.91</td><td>25.22</td><td class="positive">+20.6%</td><td>43</td><td>止盈：+21.0%+MACD死叉</td></tr>
-    <tr><td>10</td><td>01308.HK</td><td>海丰国际</td><td><span class="tag tag-hk">HK</span></td><td>2025-12-31</td><td>2026-03-13</td><td>27.94</td><td>33.6</td><td class="positive">+20.2%</td><td>72</td><td>止盈：+20.6%+MACD死叉</td></tr>
+    <tr><td>6</td><td>03320.HK</td><td>华润医药</td><td><span class="tag tag-hk">HK</span></td><td>2026-03-12</td><td>2026-04-21</td><td>4.6</td><td>6.12</td><td class="positive">+33.0%</td><td>40</td><td>止盈：+33.4%+MACD死叉</td></tr>
+    <tr><td>7</td><td>MU.O</td><td>Micron Technology</td><td><span class="tag tag-us">US</span></td><td>2025-09-29</td><td>2025-11-04</td><td>164.39</td><td>217.38</td><td class="positive">+32.2%</td><td>36</td><td>止盈：+32.6%+MACD死叉</td></tr>
+    <tr><td>8</td><td>02610.HK</td><td>南山铝业国际</td><td><span class="tag tag-hk">HK</span></td><td>2026-01-05</td><td>2026-01-30</td><td>49.23</td><td>64.51</td><td class="positive">+31.0%</td><td>25</td><td>止盈：+31.4%+MACD死叉</td></tr>
+    <tr><td>9</td><td>03393.HK</td><td>威胜控股</td><td><span class="tag tag-hk">HK</span></td><td>2025-11-04</td><td>2026-01-05</td><td>13.5</td><td>17.53</td><td class="positive">+29.8%</td><td>62</td><td>持仓40天强制卖出</td></tr>
+    <tr><td>10</td><td>APA.O</td><td>APA Corporation</td><td><span class="tag tag-us">US</span></td><td>2025-12-31</td><td>2026-03-10</td><td>24.53</td><td>31.72</td><td class="positive">+29.3%</td><td>69</td><td>持仓40天强制卖出</td></tr>
   </table>
 </div>
 
@@ -232,15 +232,15 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
   <table>
     <tr><th>#</th><th>代码</th><th>名称</th><th>市场</th><th>买入日</th><th>卖出日</th><th>买入价</th><th>卖出价</th><th>收益</th><th>持仓天数</th><th>卖出原因</th></tr>
     <tr><td>1</td><td>301308.SZ</td><td>江波龙</td><td><span class="tag tag-cn">CN</span></td><td>2025-04-01</td><td>2025-04-07</td><td>92.27</td><td>72.26</td><td class="negative">-21.7%</td><td>6</td><td>硬止损：浮亏-21.4%</td></tr>
-    <tr><td>2</td><td>002611.SZ</td><td>东方精工</td><td><span class="tag tag-cn">CN</span></td><td>2026-04-21</td><td>2026-07-14</td><td>17.77</td><td>15.16</td><td class="negative">-14.7%</td><td>84</td><td>硬止损：浮亏-14.4%</td></tr>
-    <tr><td>3</td><td>601872.SH</td><td>招商轮船</td><td><span class="tag tag-cn">CN</span></td><td>2025-04-01</td><td>2025-04-07</td><td>6.63</td><td>5.79</td><td class="negative">-12.6%</td><td>6</td><td>硬止损：浮亏-12.4%</td></tr>
-    <tr><td>4</td><td>603929.SH</td><td>亚翔集成</td><td><span class="tag tag-cn">CN</span></td><td>2025-04-01</td><td>2025-04-08</td><td>32.69</td><td>28.59</td><td class="negative">-12.5%</td><td>7</td><td>硬止损：浮亏-12.3%</td></tr>
-    <tr><td>5</td><td>APA.O</td><td>APA Corporation</td><td><span class="tag tag-us">US</span></td><td>2025-12-05</td><td>2025-12-16</td><td>27.18</td><td>23.89</td><td class="negative">-12.1%</td><td>11</td><td>硬止损：浮亏-11.9%</td></tr>
-    <tr><td>6</td><td>06963.HK</td><td>阳光保险</td><td><span class="tag tag-hk">HK</span></td><td>2025-05-08</td><td>2025-06-19</td><td>3.41</td><td>3.02</td><td class="negative">-11.4%</td><td>42</td><td>硬止损：浮亏-11.1%</td></tr>
-    <tr><td>7</td><td>02510.HK</td><td>德翔海运</td><td><span class="tag tag-hk">HK</span></td><td>2026-03-03</td><td>2026-03-09</td><td>10.04</td><td>8.9</td><td class="negative">-11.3%</td><td>6</td><td>硬止损：浮亏-11.1%</td></tr>
-    <tr><td>8</td><td>ECHO.O</td><td>EchoStar</td><td><span class="tag tag-us">US</span></td><td>2025-10-15</td><td>2025-11-14</td><td>75.07</td><td>67.2</td><td class="negative">-10.5%</td><td>30</td><td>硬止损：浮亏-10.2%</td></tr>
-    <tr><td>9</td><td>00142.HK</td><td>第一太平</td><td><span class="tag tag-hk">HK</span></td><td>2026-03-11</td><td>2026-03-23</td><td>6.09</td><td>5.49</td><td class="negative">-9.8%</td><td>12</td><td>硬止损：浮亏-9.5%</td></tr>
-    <tr><td>10</td><td>02580.HK</td><td>奥克斯电气</td><td><span class="tag tag-hk">HK</span></td><td>2026-05-27</td><td>2026-06-18</td><td>10.71</td><td>9.67</td><td class="negative">-9.7%</td><td>22</td><td>硬止损：浮亏-9.4%</td></tr>
+    <tr><td>2</td><td>002532.SZ</td><td>天山铝业</td><td><span class="tag tag-cn">CN</span></td><td>2025-04-01</td><td>2025-04-07</td><td>9.04</td><td>7.65</td><td class="negative">-15.4%</td><td>6</td><td>硬止损：浮亏-15.1%</td></tr>
+    <tr><td>3</td><td>03311.HK</td><td>中国建筑国际</td><td><span class="tag tag-hk">HK</span></td><td>2026-04-28</td><td>2026-06-17</td><td>9.11</td><td>7.94</td><td class="negative">-12.9%</td><td>50</td><td>硬止损：浮亏-12.6%</td></tr>
+    <tr><td>4</td><td>601872.SH</td><td>招商轮船</td><td><span class="tag tag-cn">CN</span></td><td>2025-04-01</td><td>2025-04-07</td><td>6.63</td><td>5.79</td><td class="negative">-12.6%</td><td>6</td><td>硬止损：浮亏-12.4%</td></tr>
+    <tr><td>5</td><td>603929.SH</td><td>亚翔集成</td><td><span class="tag tag-cn">CN</span></td><td>2025-04-01</td><td>2025-04-08</td><td>32.69</td><td>28.59</td><td class="negative">-12.5%</td><td>7</td><td>硬止损：浮亏-12.3%</td></tr>
+    <tr><td>6</td><td>APA.O</td><td>APA Corporation</td><td><span class="tag tag-us">US</span></td><td>2025-12-05</td><td>2025-12-16</td><td>27.18</td><td>23.89</td><td class="negative">-12.1%</td><td>11</td><td>硬止损：浮亏-11.9%</td></tr>
+    <tr><td>7</td><td>APA.O</td><td>APA Corporation</td><td><span class="tag tag-us">US</span></td><td>2025-09-26</td><td>2025-10-10</td><td>24.76</td><td>21.87</td><td class="negative">-11.7%</td><td>14</td><td>硬止损：浮亏-11.4%</td></tr>
+    <tr><td>8</td><td>06963.HK</td><td>阳光保险</td><td><span class="tag tag-hk">HK</span></td><td>2025-05-08</td><td>2025-06-19</td><td>3.41</td><td>3.02</td><td class="negative">-11.4%</td><td>42</td><td>硬止损：浮亏-11.1%</td></tr>
+    <tr><td>9</td><td>02510.HK</td><td>德翔海运</td><td><span class="tag tag-hk">HK</span></td><td>2026-05-27</td><td>2026-05-28</td><td>9.21</td><td>8.16</td><td class="negative">-11.4%</td><td>1</td><td>硬止损：浮亏-11.2%</td></tr>
+    <tr><td>10</td><td>01530.HK</td><td>三生制药</td><td><span class="tag tag-hk">HK</span></td><td>2026-05-20</td><td>2026-05-28</td><td>19.34</td><td>17.2</td><td class="negative">-11.1%</td><td>8</td><td>硬止损：浮亏-10.8%</td></tr>
   </table>
 </div>
 
@@ -261,7 +261,7 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
 </div>
 
 <footer>
-  策略组合B V1.0 | 生成于 2026-08-11 23:05:44 | 回测引擎 backtest_strategy_b.py
+  策略组合B V1.0 | 生成于 2026-08-11 23:16:18 | 回测引擎 backtest_strategy_b.py
 </footer>
 </div>
 
@@ -332,7 +332,7 @@ new Chart(document.getElementById('navChart'), {
     labels: ["2025-04-01", "2025-04-02", "2025-04-03", "2025-04-07", "2025-04-08", "2025-04-09", "2025-04-10", "2025-04-11", "2025-04-14", "2025-04-15", "2025-04-16", "2025-04-17", "2025-04-18", "2025-04-21", "2025-04-22", "2025-04-23", "2025-04-24", "2025-04-25", "2025-04-28", "2025-04-29", "2025-04-30", "2025-05-06", "2025-05-07", "2025-05-08", "2025-05-09", "2025-05-12", "2025-05-13", "2025-05-14", "2025-05-15", "2025-05-16", "2025-05-19", "2025-05-20", "2025-05-21", "2025-05-22", "2025-05-23", "2025-05-26", "2025-05-27", "2025-05-28", "2025-05-29", "2025-05-30", "2025-06-03", "2025-06-04", "2025-06-05", "2025-06-06", "2025-06-09", "2025-06-10", "2025-06-11", "2025-06-12", "2025-06-13", "2025-06-16", "2025-06-17", "2025-06-18", "2025-06-19", "2025-06-20", "2025-06-23", "2025-06-24", "2025-06-25", "2025-06-26", "2025-06-27", "2025-06-30", "2025-07-01", "2025-07-02", "2025-07-03", "2025-07-04", "2025-07-07", "2025-07-08", "2025-07-09", "2025-07-10", "2025-07-11", "2025-07-14", "2025-07-15", "2025-07-16", "2025-07-17", "2025-07-18", "2025-07-21", "2025-07-22", "2025-07-23", "2025-07-24", "2025-07-25", "2025-07-28", "2025-07-29", "2025-07-30", "2025-07-31", "2025-08-01", "2025-08-04", "2025-08-05", "2025-08-06", "2025-08-07", "2025-08-08", "2025-08-11", "2025-08-12", "2025-08-13", "2025-08-14", "2025-08-15", "2025-08-18", "2025-08-19", "2025-08-20", "2025-08-21", "2025-08-22", "2025-08-25", "2025-08-26", "2025-08-27", "2025-08-28", "2025-08-29", "2025-09-01", "2025-09-02", "2025-09-03", "2025-09-04", "2025-09-05", "2025-09-08", "2025-09-09", "2025-09-10", "2025-09-11", "2025-09-12", "2025-09-15", "2025-09-16", "2025-09-17", "2025-09-18", "2025-09-19", "2025-09-22", "2025-09-23", "2025-09-24", "2025-09-25", "2025-09-26", "2025-09-29", "2025-09-30", "2025-10-09", "2025-10-10", "2025-10-13", "2025-10-14", "2025-10-15", "2025-10-16", "2025-10-17", "2025-10-20", "2025-10-21", "2025-10-22", "2025-10-23", "2025-10-24", "2025-10-27", "2025-10-28", "2025-10-29", "2025-10-30", "2025-10-31", "2025-11-03", "2025-11-04", "2025-11-05", "2025-11-06", "2025-11-07", "2025-11-10", "2025-11-11", "2025-11-12", "2025-11-13", "2025-11-14", "2025-11-17", "2025-11-18", "2025-11-19", "2025-11-20", "2025-11-21", "2025-11-24", "2025-11-25", "2025-11-26", "2025-11-27", "2025-11-28", "2025-12-01", "2025-12-02", "2025-12-03", "2025-12-04", "2025-12-05", "2025-12-08", "2025-12-09", "2025-12-10", "2025-12-11", "2025-12-12", "2025-12-15", "2025-12-16", "2025-12-17", "2025-12-18", "2025-12-19", "2025-12-22", "2025-12-23", "2025-12-24", "2025-12-25", "2025-12-26", "2025-12-29", "2025-12-30", "2025-12-31", "2026-01-05", "2026-01-06", "2026-01-07", "2026-01-08", "2026-01-09", "2026-01-12", "2026-01-13", "2026-01-14", "2026-01-15", "2026-01-16", "2026-01-19", "2026-01-20", "2026-01-21", "2026-01-22", "2026-01-23", "2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29", "2026-01-30", "2026-02-02", "2026-02-03", "2026-02-04", "2026-02-05", "2026-02-06", "2026-02-09", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-13", "2026-02-24", "2026-02-25", "2026-02-26", "2026-02-27", "2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-23", "2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27", "2026-03-30", "2026-03-31", "2026-04-01", "2026-04-02", "2026-04-03", "2026-04-07", "2026-04-08", "2026-04-09", "2026-04-10", "2026-04-13", "2026-04-14", "2026-04-15", "2026-04-16", "2026-04-17", "2026-04-20", "2026-04-21", "2026-04-22", "2026-04-23", "2026-04-24", "2026-04-27", "2026-04-28", "2026-04-29", "2026-04-30", "2026-05-06", "2026-05-07", "2026-05-08", "2026-05-11", "2026-05-12", "2026-05-13", "2026-05-14", "2026-05-15", "2026-05-18", "2026-05-19", "2026-05-20", "2026-05-21", "2026-05-22", "2026-05-25", "2026-05-26", "2026-05-27", "2026-05-28", "2026-05-29", "2026-06-01", "2026-06-02", "2026-06-03", "2026-06-04", "2026-06-05", "2026-06-08", "2026-06-09", "2026-06-10", "2026-06-11", "2026-06-12", "2026-06-15", "2026-06-16", "2026-06-17", "2026-06-18", "2026-06-22", "2026-06-23", "2026-06-24", "2026-06-25", "2026-06-26", "2026-06-29", "2026-06-30", "2026-07-01", "2026-07-02", "2026-07-03", "2026-07-06", "2026-07-07", "2026-07-08", "2026-07-09", "2026-07-10", "2026-07-11", "2026-07-12", "2026-07-13", "2026-07-14", "2026-07-15", "2026-07-16", "2026-07-17", "2026-07-20", "2026-07-21", "2026-07-22", "2026-07-23", "2026-07-24"],
     datasets: [{
       label: 'NAV (M CNY)',
-      data: [29.18, 29.29, 29.22, 28.63, 28.58, 28.58, 28.61, 28.59, 28.6, 28.63, 28.67, 28.69, 28.7, 28.68, 28.71, 28.69, 28.71, 28.7, 28.74, 28.76, 28.73, 28.7, 28.73, 28.76, 28.78, 28.79, 28.81, 28.87, 28.84, 28.79, 28.79, 28.83, 28.86, 28.88, 28.85, 28.78, 28.87, 28.9, 28.99, 28.94, 29.0, 29.05, 29.04, 29.09, 29.11, 29.16, 29.15, 29.15, 29.1, 29.16, 29.16, 29.17, 29.05, 29.08, 29.1, 29.18, 29.18, 29.2, 29.24, 29.25, 29.27, 29.31, 29.4, 29.36, 29.36, 29.49, 29.42, 29.35, 29.42, 29.42, 29.44, 29.37, 29.48, 29.47, 29.44, 29.43, 29.43, 29.72, 29.63, 29.76, 29.9, 29.79, 29.67, 29.44, 29.48, 29.56, 29.55, 29.72, 29.86, 29.91, 30.01, 30.01, 30.0, 30.0, 30.07, 30.1, 30.07, 30.13, 30.28, 30.31, 30.35, 30.39, 30.38, 30.31, 30.34, 30.3, 30.28, 30.3, 30.51, 30.56, 30.61, 30.69, 30.93, 31.03, 31.02, 30.96, 31.19, 31.31, 31.25, 31.35, 31.32, 31.32, 31.26, 31.25, 31.27, 31.4, 31.65, 31.45, 31.43, 31.29, 31.42, 31.35, 31.21, 31.24, 31.27, 31.2, 31.2, 31.27, 31.34, 31.27, 31.25, 31.34, 31.23, 31.14, 31.09, 31.13, 31.27, 31.29, 31.3, 31.24, 31.22, 31.28, 31.14, 31.12, 30.97, 30.98, 31.0, 30.88, 30.96, 30.95, 30.96, 30.96, 30.99, 31.04, 31.08, 31.07, 31.06, 31.17, 31.23, 31.31, 31.48, 31.45, 31.56, 31.47, 31.36, 31.33, 31.36, 31.41, 31.5, 31.5, 31.53, 31.53, 31.5, 31.52, 31.52, 31.48, 31.57, 31.76, 31.86, 31.86, 31.9, 31.87, 31.84, 31.88, 31.88, 31.82, 32.0, 32.07, 32.01, 31.85, 31.85, 31.92, 31.97, 32.13, 32.11, 31.92, 31.86, 31.96, 32.05, 31.96, 32.05, 32.08, 31.99, 32.05, 32.04, 32.04, 32.15, 32.11, 32.14, 32.24, 32.29, 32.26, 32.12, 32.21, 32.22, 32.14, 32.09, 32.23, 32.23, 32.21, 32.18, 32.23, 32.28, 32.3, 32.3, 32.35, 32.51, 32.54, 32.52, 32.56, 32.54, 32.53, 32.48, 32.53, 32.53, 32.54, 32.4, 32.39, 32.39, 32.42, 32.43, 32.43, 32.42, 32.41, 32.41, 32.38, 32.29, 32.23, 32.2, 32.16, 32.05, 32.12, 32.15, 32.22, 32.38, 32.39, 32.45, 32.42, 32.35, 32.29, 32.34, 32.31, 32.44, 32.25, 32.22, 32.27, 32.27, 32.24, 32.17, 32.11, 32.1, 32.16, 32.23, 32.29, 32.25, 32.17, 32.03, 32.01, 31.96, 31.99, 32.05, 32.03, 31.93, 31.91, 31.9, 31.89, 31.88, 31.88, 31.86, 31.86, 31.86, 31.87, 31.87, 31.87, 31.88, 31.87, 31.87, 31.86, 31.86, 31.86, 31.86, 31.86, 31.86, 31.85, 31.85, 31.85, 31.85, 31.85, 31.85, 31.85, 31.85, 31.85],
+      data: [29.17, 29.3, 29.21, 28.43, 28.42, 28.4, 28.43, 28.43, 28.5, 28.54, 28.59, 28.6, 28.62, 28.63, 28.68, 28.65, 28.7, 28.65, 28.63, 28.61, 28.48, 28.48, 28.57, 28.59, 28.62, 28.64, 28.64, 28.73, 28.64, 28.63, 28.66, 28.69, 28.69, 28.69, 28.71, 28.7, 28.78, 28.79, 28.82, 28.79, 28.77, 28.74, 28.79, 28.8, 28.87, 29.03, 29.06, 29.12, 29.13, 29.19, 29.16, 29.11, 29.04, 29.11, 29.05, 29.2, 29.23, 29.27, 29.4, 29.35, 29.47, 29.57, 29.68, 29.57, 29.41, 29.44, 29.35, 29.41, 29.37, 29.45, 29.46, 29.47, 29.6, 29.62, 29.63, 29.61, 29.59, 29.71, 29.63, 29.71, 29.84, 29.69, 29.59, 29.43, 29.59, 29.63, 29.64, 29.78, 30.03, 30.04, 30.25, 30.29, 30.27, 30.16, 30.21, 30.09, 30.0, 30.09, 30.25, 30.3, 30.43, 30.33, 30.47, 30.69, 30.69, 30.64, 30.78, 30.92, 31.28, 31.34, 31.41, 31.57, 31.88, 31.95, 31.97, 31.9, 32.12, 32.23, 32.21, 32.23, 32.24, 32.17, 32.02, 31.97, 32.09, 32.31, 32.72, 32.41, 32.42, 32.28, 32.39, 32.35, 32.2, 32.32, 32.3, 32.18, 32.24, 32.41, 32.51, 32.4, 32.42, 32.5, 32.4, 32.41, 32.21, 32.23, 32.45, 32.45, 32.46, 32.49, 32.47, 32.53, 32.42, 32.38, 32.25, 32.25, 32.27, 32.1, 32.23, 32.25, 32.33, 32.38, 32.38, 32.38, 32.44, 32.41, 32.39, 32.52, 32.64, 32.66, 32.74, 32.73, 32.87, 32.77, 32.65, 32.62, 32.63, 32.68, 32.82, 32.87, 32.9, 32.9, 32.88, 32.9, 32.87, 32.81, 32.96, 33.16, 33.31, 33.27, 33.35, 33.31, 33.41, 33.42, 33.46, 33.36, 33.5, 33.59, 33.62, 33.41, 33.54, 33.6, 33.67, 33.9, 33.78, 33.59, 33.46, 33.55, 33.67, 33.57, 33.63, 33.69, 33.74, 33.75, 33.67, 33.68, 33.7, 33.64, 33.55, 33.62, 33.7, 33.64, 33.44, 33.46, 33.6, 33.45, 33.57, 33.76, 33.61, 33.48, 33.46, 33.5, 33.59, 33.5, 33.41, 33.33, 33.6, 33.79, 33.78, 33.96, 33.94, 33.86, 34.14, 34.16, 34.16, 34.15, 34.12, 34.11, 34.14, 34.14, 34.15, 34.2, 34.21, 34.17, 34.18, 34.12, 34.1, 34.02, 34.03, 33.99, 33.88, 33.92, 33.91, 33.98, 34.09, 34.05, 34.14, 34.16, 34.1, 34.05, 34.0, 33.84, 33.93, 33.88, 33.68, 33.67, 33.67, 33.61, 33.71, 33.42, 33.57, 33.7, 33.75, 33.66, 33.58, 33.43, 33.36, 33.29, 33.31, 33.36, 33.48, 33.49, 33.31, 33.19, 33.05, 32.95, 32.8, 32.67, 32.66, 32.51, 32.5, 32.37, 32.35, 32.52, 32.71, 32.84, 32.8, 32.87, 32.77, 32.78, 32.78, 32.78, 32.75, 32.78, 32.83, 32.93, 32.8, 32.8, 32.97, 33.05, 33.05, 33.13],
       borderColor: '#1976d2',
       backgroundColor: 'rgba(25,118,210,0.1)',
       fill: true,
@@ -357,7 +357,7 @@ new Chart(document.getElementById('stateChart'), {
   data: {
     labels: ['趋势市', '震荡市', '风险市'],
     datasets: [{
-      data: [23, 201, 98],
+      data: [24, 236, 62],
       backgroundColor: ['#1565c0', '#f57c00', '#c62828'],
     }]
   },
@@ -371,7 +371,7 @@ new Chart(document.getElementById('holdDistChart'), {
     labels: ['0-7天','7-30天','30-90天','90-180天','180-365天','365天+'],
     datasets: [{
       label: '交易数',
-      data: [4, 10, 22, 7, 0, 0],
+      data: [9, 23, 56, 0, 0, 0],
       backgroundColor: '#1976d2',
     }]
   },
@@ -385,8 +385,8 @@ new Chart(document.getElementById('monthlyChart'), {
     labels: ["2025-04", "2025-05", "2025-06", "2025-07", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07"],
     datasets: [{
       label: '月度收益(%)',
-      data: [-1.55, 0.74, 1.09, 1.43, 2.13, 3.56, -0.53, -0.77, 1.58, 1.38, 1.0, 0.91, -1.18, -0.16, -0.71, -0.06],
-      backgroundColor: ["#c62828", "#2e7d32", "#2e7d32", "#2e7d32", "#2e7d32", "#2e7d32", "#c62828", "#c62828", "#2e7d32", "#2e7d32", "#2e7d32", "#2e7d32", "#c62828", "#c62828", "#c62828", "#c62828"],
+      data: [-2.37, 1.09, 1.93, 0.84, 3.68, 5.15, 0.31, -0.06, 1.31, 2.37, 0.1, 0.75, 0.14, -0.99, -3.65, 2.35],
+      backgroundColor: ["#c62828", "#2e7d32", "#2e7d32", "#2e7d32", "#2e7d32", "#2e7d32", "#2e7d32", "#c62828", "#2e7d32", "#2e7d32", "#2e7d32", "#2e7d32", "#2e7d32", "#c62828", "#c62828", "#2e7d32"],
     }]
   },
   options: {
