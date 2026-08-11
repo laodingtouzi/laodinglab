@@ -58,11 +58,13 @@ tr:hover td { background:#f8f9fa; }
 
 .two-col { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
 .badge { display:inline-block; background:#e9ecef; color:#495057; padding:2px 8px; border-radius:4px; font-size:11px; margin-left:6px; }
+
 .version-selector { display:flex; align-items:center; justify-content:center; gap:10px; margin-top:12px; }
 .version-selector label { font-size:13px; color:#495057; font-weight:600; }
-.version-selector select { padding:6px 12px; border:1px solid #ced4da; border-radius:6px; font-size:13px; color:#333; cursor:pointer; background:#fff; min-width:320px; }
+.version-selector select { padding:6px 12px; border:1px solid #ced4da; border-radius:6px; font-size:13px; color:#333; cursor:pointer; background:#fff; min-width:200px; }
 .version-selector select:hover { border-color:#1976d2; }
 .version-meta { font-size:12px; color:#868e96; margin-top:4px; text-align:center; }
+
 footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-top:1px solid #dee2e6; margin-top:30px; }
 </style>
 </head>
@@ -71,17 +73,19 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
 <header>
 <h1>三市场量化模型回测报告</h1>
 <div class="subtitle">Quality + Valuation + Sentiment + Technical + Momentum 五因子模型</div>
-<div class="date">回测区间: 2025-04-01 ~ 2026-07-24 | 322个交易日 | 报告生成于 2026-08-11 13:10:05</div>
+<div class="date">回测区间: 2025-04-01 ~ 2026-07-24 | 322个交易日 | 报告生成于 2026-08-11 20:59:36</div>
 <a class="back-link" href="/stockmarketanalysis_wb/">← 返回主报告</a>
 
 <!-- 版本选择器 -->
 <div class="version-selector">
   <label>📊 回测版本:</label>
   <select id="versionSelect" onchange="switchVersion()">
-    <option value="SA_20260811_1310" data-file="backtest_history/backtest_report_SA_20260811_1310.html" selected>策略组合A v1.0</option>
+    <option value="A_v1.0" data-file="backtest_history/backtest_report_Av1.0_20260811_2059.html" selected>策略组合A v1.0</option>
+    <option value="A_v1.2" data-file="backtest_history/backtest_report_Av1.2_20260811_2059.html">策略组合A v1.2</option>
   </select>
 </div>
 <div class="version-meta" id="versionMeta">共 2 个版本</div>
+
 </header>
 
 <!-- 策略摘要 -->
@@ -117,7 +121,7 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
 </div>
 <div style="background:#f8f9fa;padding:10px 14px;border-radius:8px;font-size:12px;color:#495057">
   <strong>策略说明:</strong> 当前运行的标准5因子模型（quality 30% / valuation 20% / sentiment 20% / technical 15% / momentum 15%），与 tri_market_selector_v5.3.py 完全一致<br>
-  <strong>创建时间:</strong> 2026-08-10  |  <strong>报告生成时间:</strong> <span style="color:#c62828;font-weight:600">2026-08-11 13:10:05</span>
+  <strong>创建时间:</strong> 2026-08-10  |  <strong>报告生成时间:</strong> <span style="color:#c62828;font-weight:600">2026-08-11 20:59:36</span>
 </div>
 </div>
 
@@ -314,7 +318,7 @@ US交易少因买入阈值70分（高于CN/HK的65分），能过线的美股少
 </div>
 </div>
 
-<footer>三市场量化模型回测报告 | 生成于 2026-08-11 13:10 | 数据完整度: K线100% / 财报EPS 99% / 舆情 3.4%</footer>
+<footer>三市场量化模型回测报告 | 生成于 2026-08-11 20:59 | 数据完整度: K线100% / 财报EPS 99% / 舆情 3.4%</footer>
 </div>
 
 <script>
@@ -408,57 +412,63 @@ new Chart(scoreCtx, {
 });
 </script>
 
-<!-- 版本切换逻辑 -->
-<script>
-// 检测当前是在主报告还是历史版本中
-const BASE_HREF = (location.pathname.includes('/backtest_history/'))
-  ? '../'   // 在历史版本目录中，相对路径回退一级
-  : '';     // 在主报告目录中
 
+<script>
+// 版本选择器
+const BASE_HREF = (location.pathname.includes('/backtest_history/')) ? '../' : '';
 function switchVersion() {
   const sel = document.getElementById('versionSelect');
+  if (!sel) return;
   const opt = sel.options[sel.selectedIndex];
   const file = opt.getAttribute('data-file');
   if (!file) return;
   const url = BASE_HREF + file;
-  // 如果是当前页面，不跳转
   if (url === '' || url === './') return;
-  location.href = url;
+  window.location.href = url;
 }
-
-// 动态从GitHub拉取最新版本索引，更新下拉框（确保旧报告也能看到新版本）
+// 非破坏性更新：只追加新版本，不清空已有选项
 (async function() {
   try {
     const idxUrl = BASE_HREF + 'backtest_history/version_index.json?t=' + Date.now();
     const resp = await fetch(idxUrl, {cache:'no-store'});
     if (!resp.ok) return;
-    const remoteIndex = await resp.json();
+    const history = await resp.json();
     const sel = document.getElementById('versionSelect');
     if (!sel) return;
-    const existingTags = new Set(Array.from(sel.options).map(o => o.value));
-    let added = 0;
-    // 倒序加入远程版本（最新在前），跳过已有的
-    for (let i = remoteIndex.length - 1; i >= 0; i--) {
-      const h = remoteIndex[i];
-      const sTag = h.strategy.replace('策略组合','S');
-      const tShort = h.generated_at.replace(/-/g,'').replace(/:/g,'').replace(/ /g,'_').slice(0,13);
-      const tag = sTag + '_' + tShort;
-      if (existingTags.has(tag)) continue;
+    const currentVal = sel.options[sel.selectedIndex]?.value;
+    // 收集已有选项
+    const existing = new Set();
+    for (let i = 0; i < sel.options.length; i++) existing.add(sel.options[i].value);
+    // 只追加不存在的版本
+    history.forEach(h => {
+      const vid = h.version_id || (h.strategy + '_' + h.version);
+      if (existing.has(vid)) {
+        // 更新文本（确保命名一致）
+        for (let i = 0; i < sel.options.length; i++) {
+          if (sel.options[i].value === vid) {
+            sel.options[i].textContent = h.strategy + ' ' + h.version;
+          }
+        }
+        return;
+      }
+      const file = h.file || '';
+      if (!file) return;
       const opt = document.createElement('option');
-      opt.value = tag;
-      opt.setAttribute('data-file', 'backtest_history/backtest_report_' + tag + '.html');
+      opt.value = vid;
+      opt.setAttribute('data-file', 'backtest_history/' + file);
       opt.textContent = h.strategy + ' ' + h.version;
-      sel.insertBefore(opt, sel.firstChild);
-      added++;
+      sel.appendChild(opt);
+      existing.add(vid);
+    });
+    // 保持当前选中
+    for (let i = 0; i < sel.options.length; i++) {
+      if (sel.options[i].value === currentVal) { sel.selectedIndex = i; break; }
     }
-    if (added > 0) {
-      const meta = document.getElementById('versionMeta');
-      if (meta) meta.textContent = '共 ' + sel.options.length + ' 个版本';
-    }
-  } catch(e) {
-    // 静默失败，下拉框仍有本地生成的选项
-  }
+    const meta = document.getElementById('versionMeta');
+    if (meta) meta.textContent = '共 ' + sel.options.length + ' 个版本';
+  } catch(e) {}
 })();
 </script>
+
 </body>
 </html>
