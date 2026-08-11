@@ -83,6 +83,7 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
 <div class="version-selector">
   <label>📊 回测版本:</label>
   <select id="versionSelect" onchange="switchVersion()">
+    <option value="SA_20260811_1310" data-file="backtest_history/backtest_report_SA_20260811_1310.html">策略组合A v1.0</option>
     <option value="SA_v12_20260811_2033" data-file="backtest_history/backtest_report_SA_v12_20260811_2033.html" selected>策略组合A v1.2</option>
   </select>
 </div>
@@ -444,19 +445,35 @@ function switchVersion() {
     if (!resp.ok) return;
     const history = await resp.json();
     const sel = document.getElementById('versionSelect');
+    if (!sel) return;
     const currentVal = sel.options[sel.selectedIndex]?.value;
-    sel.innerHTML = '';
+    // 收集已有选项，避免重复
+    const existing = new Set();
+    for (let i = 0; i < sel.options.length; i++) existing.add(sel.options[i].value);
+    let added = 0;
     history.forEach(h => {
       const tag = h.file.replace('backtest_report_','').replace('.html','');
+      if (existing.has(tag)) {
+        // 更新文本
+        for (let i = 0; i < sel.options.length; i++) {
+          if (sel.options[i].value === tag) sel.options[i].textContent = h.strategy + ' ' + h.version;
+        }
+        return;
+      }
       const opt = document.createElement('option');
       opt.value = tag;
       opt.setAttribute('data-file', 'backtest_history/' + h.file);
       opt.textContent = h.strategy + ' ' + h.version;
-      if (tag === currentVal) opt.selected = true;
       sel.appendChild(opt);
+      added++;
+      existing.add(tag);
     });
+    // 保持当前选中
+    for (let i = 0; i < sel.options.length; i++) {
+      if (sel.options[i].value === currentVal) sel.selectedIndex = i;
+    }
     const meta = document.getElementById('versionMeta');
-    if (meta) meta.textContent = '共 ' + history.length + ' 个版本';
+    if (meta) meta.textContent = '共 ' + sel.options.length + ' 个版本';
   } catch(e) {}
 })();
 </script>
