@@ -7,8 +7,8 @@
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:#f8fafc; color:#334155; line-height:1.6; }
-  .container { max-width:1200px; margin:0 auto; padding:20px; }
-  header { background:#1e293b; color:#fff; padding:16px 20px; margin-bottom:24px; border-radius:8px; display:flex; align-items:center; justify-content:space-between; }
+  .container { max-width:1400px; margin:0 auto; padding:20px; }
+  header { background:#1e293b; color:#fff; padding:16px 20px; margin-bottom:0; border-radius:8px 8px 0 0; display:flex; align-items:center; justify-content:space-between; }
   header h1 { font-size:1.2rem; margin:0; }
   header .header-right { display:flex; align-items:center; gap:16px; }
   header a { color:#94a3b8; text-decoration:none; font-size:0.85rem; }
@@ -22,9 +22,15 @@
   .login-box .error { color:#dc2626; margin-top:8px; font-size:0.9rem; display:none; }
   .section { background:#fff; border-radius:8px; padding:20px; margin-bottom:20px; box-shadow:0 1px 3px rgba(0,0,0,0.05); }
   .section h3 { margin-bottom:16px; color:#1e293b; border-bottom:2px solid #e2e8f0; padding-bottom:8px; }
-  table { width:100%; border-collapse:collapse; font-size:0.9rem; }
-  th, td { padding:10px 8px; text-align:left; border-bottom:1px solid #e2e8f0; }
+  table { width:100%; border-collapse:collapse; font-size:0.85rem; }
+  th, td { padding:8px 6px; text-align:left; border-bottom:1px solid #e2e8f0; white-space:nowrap; }
   th { background:#f1f5f9; font-weight:600; color:#475569; }
+  td.name-cell, th.name-cell { white-space:normal; min-width:80px; }
+  td.change-reason, th.change-reason { white-space:normal; min-width:120px; max-width:200px; }
+  .num { text-align:right; font-variant-numeric:tabular-nums; }
+  .nowrap { white-space:nowrap; }
+  .entry-date-gray { color:#94a3b8; font-size:0.8rem; }
+  .price-bold { font-weight:600; }
   .btn { padding:4px 10px; border:none; border-radius:4px; cursor:pointer; font-size:0.8rem; margin:0 2px; }
   .btn-add { background:#16a34a; color:#fff; }
   .btn-reduce { background:#ca8a04; color:#fff; }
@@ -69,6 +75,24 @@
   /* 行高亮 */
   tr.pending-change { background:#fef9e6 !important; }
   tr.pending-change td { background:#fef9e6 !important; }
+
+  /* 导航标签栏 */
+  .nav-tabs { background:#1e293b; padding:0 20px 12px; border-radius:0 0 8px 8px; display:flex; gap:4px; flex-wrap:wrap; margin-bottom:20px; }
+  .nav-tabs a { color:#94a3b8; text-decoration:none; font-size:0.85rem; padding:6px 14px; border-radius:6px; transition:all 0.2s; }
+  .nav-tabs a:hover { color:#fff; background:rgba(255,255,255,0.1); }
+  .nav-tabs a.active { color:#fff; background:#5f01d1; }
+  /* 排序 */
+  .table-toolbar { display:flex; align-items:center; gap:8px; margin:10px 0; flex-wrap:wrap; }
+  .table-search { padding:6px 12px; border:1px solid #e2e8f0; border-radius:6px; font-size:0.9rem; width:240px; }
+  .table-search:focus { outline:none; border-color:#5f01d1; }
+  .sortable { cursor:pointer; user-select:none; white-space:nowrap; }
+  .sortable:hover { color:#5f01d1; }
+  .sort-arrow { font-size:0.7rem; opacity:0.4; margin-left:2px; }
+  .sort-arrow.sort-asc, .sort-arrow.sort-desc { opacity:1; color:#5f01d1; font-weight:bold; }
+  .market-badge { display:inline-block; padding:1px 6px; border-radius:3px; font-size:0.75rem; font-weight:600; }
+  .market-cn { background:#dbeafe; color:#1e40af; }
+  .market-hk { background:#fce7f3; color:#9d174d; }
+  .market-us { background:#dcfce7; color:#166534; }
 </style>
 </head>
 <body>
@@ -96,6 +120,11 @@
     </div>
   </header>
 
+  <nav class="nav-tabs" id="navTabs">
+    <a href="#holdings" class="active">📈 持有清单</a>
+    <a href="#post-sell">📉 沽后观察池</a>
+  </nav>
+
   <div class="container">
     <!-- 操作栏 -->
     <div class="action-bar">
@@ -116,16 +145,25 @@
       <div class="change-log" id="changeLog"></div>
     </div>
 
-    <div class="section">
+    <div class="section" id="holdings">
       <h3>📈 持有清单操作</h3>
       <div id="holdingsLoading">加载中...</div>
       <div id="holdingsTable" style="display:none;">
-        <input type="text" id="holdingsSearch" placeholder="🔍 搜索代码或名称..." style="width:100%;max-width:300px;padding:8px 12px;margin-bottom:12px;border:1px solid #e2e8f0;border-radius:6px;font-size:0.9rem;" oninput="filterHoldings()">
-        <table>
+        <div class="table-toolbar">
+          <input type="text" class="table-search" id="holdingsSearch" placeholder="🔍 搜索代码或名称..." oninput="filterTable('holdingsTableEl',this.value)">
+        </div>
+        <table id="holdingsTableEl">
           <thead>
             <tr>
-              <th>代码</th><th>名称</th><th>市场</th><th>状态</th><th>评分</th>
-              <th>当前价</th><th>股数</th><th>盈亏%</th><th>天数</th><th>操作</th>
+              <th class="nowrap">代码</th><th class="name-cell">名称</th><th class="nowrap">市场</th>
+              <th class="nowrap sortable" onclick="sortTable('holdingsTableEl',3,this)">状态 <span class="sort-arrow">↕</span></th>
+              <th class="nowrap">评分</th><th class="nowrap">买入日</th><th class="nowrap num">买入价</th><th class="nowrap num">当前价</th>
+              <th class="nowrap num">股数</th><th class="nowrap num">市值(万)</th>
+              <th class="nowrap sortable num" onclick="sortTable('holdingsTableEl',10,this)">盈亏(%) <span class="sort-arrow">↕</span></th>
+              <th class="nowrap sortable num" onclick="sortTable('holdingsTableEl',11,this)">天数 <span class="sort-arrow">↕</span></th>
+              <th class="change-reason">变化主因</th>
+              <th class="nowrap sortable" onclick="sortTable('holdingsTableEl',13,this)">质量 <span class="sort-arrow">↕</span></th>
+              <th class="nowrap">操作</th>
             </tr>
           </thead>
           <tbody id="holdingsBody"></tbody>
@@ -133,14 +171,23 @@
       </div>
     </div>
 
-    <div class="section">
+    <div class="section" id="post-sell">
       <h3>📉 沽后观察池操作</h3>
       <div id="postSellLoading">加载中...</div>
       <div id="postSellTable" style="display:none;">
-        <table>
+        <div class="table-toolbar">
+          <input type="text" class="table-search" id="postSellSearch" placeholder="🔍 搜索代码或名称..." oninput="filterTable('postSellTableEl',this.value)">
+        </div>
+        <table id="postSellTableEl">
           <thead>
             <tr>
-              <th>代码</th><th>名称</th><th>市场</th><th>卖出日</th><th>卖出价</th><th>持有收益</th><th>沽后涨跌</th><th>观察天数</th><th>操作</th>
+              <th class="nowrap">代码</th><th class="name-cell">名称</th><th class="nowrap">市场</th>
+              <th class="nowrap sortable" onclick="sortTable('postSellTableEl',3,this)">卖出日 <span class="sort-arrow">↕</span></th>
+              <th class="nowrap num">卖出价</th>
+              <th class="nowrap sortable num" onclick="sortTable('postSellTableEl',5,this)">持有收益 <span class="sort-arrow">↕</span></th>
+              <th class="nowrap sortable num" onclick="sortTable('postSellTableEl',6,this)">沽后涨跌 <span class="sort-arrow">↕</span></th>
+              <th class="nowrap sortable num" onclick="sortTable('postSellTableEl',7,this)">观察天数 <span class="sort-arrow">↕</span></th>
+              <th class="change-reason">分析</th><th class="nowrap">操作</th>
             </tr>
           </thead>
           <tbody id="postSellBody"></tbody>
@@ -267,6 +314,28 @@ function doLogout() {
   document.getElementById('adminPage').style.display = 'none';
   document.getElementById('pwdInput').value = '';
 }
+
+// 导航栏交互
+(function() {
+  document.querySelectorAll('.nav-tabs a').forEach(a => {
+    a.addEventListener('click', function() {
+      document.querySelectorAll('.nav-tabs a').forEach(x => x.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+  window.addEventListener('scroll', function() {
+    const sections = document.querySelectorAll('.section');
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) current = s.id;
+    });
+    if (current) {
+      document.querySelectorAll('.nav-tabs a').forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+      });
+    }
+  });
+})();
 
 // ============ GitHub API ============
 function ghContentsUrl(path) {
@@ -698,17 +767,34 @@ function renderHoldings() {
     const price = h.current_price || 0;
     const ret = h.total_return || 0;
     const retColor = ret >= 0 ? '#dc2626' : '#16a34a';
+    const mkt = (h.market || '').toLowerCase();
+    const status = h.status || '';
+    const statusSortKey = ({'H':1,'M':2,'M↓':3})[status] || 9;
+    const reason = h.change_reason || '—';
+    const reasonShort = reason.length > 28 ? reason.slice(0, 28) + '…' : reason;
+    const qualityGrade = h.quality_grade || '—';
+    const qualityColors = { 'A': '#16a34a', 'B': '#ca8a04', 'C': '#dc2626' };
+    const qualityDisplay = qualityColors[qualityGrade] ? '<span style="color:'+qualityColors[qualityGrade]+';font-weight:bold">'+qualityGrade+'</span>' : qualityGrade;
+    const qualitySortKey = ({'A':1,'B':2,'C':3})[qualityGrade] || 9;
+    const entryDate = h.entry_date ? (h.entry_date.length > 5 ? h.entry_date.slice(5) : h.entry_date) : '—';
+    const entryPrice = (h.entry_price || h.entry_price === 0) ? Number(h.entry_price).toFixed(2) : '—';
+    const marketValue = (h.market_value && h.market_value > 0) ? (h.market_value / 10000).toFixed(1) : '—';
     const rowClass = pendingCodes.has(code) ? 'pending-change' : '';
     return '<tr class="' + rowClass + '" data-code="' + code.toLowerCase() + '" data-name="' + (h.name || '').toLowerCase() + '">' +
       '<td>' + code + '</td>' +
-      '<td><strong>' + (h.name || '') + '</strong></td>' +
-      '<td>' + (h.market || '') + '</td>' +
-      '<td>' + (h.status || '') + '</td>' +
+      '<td class="name-cell"><strong>' + (h.name || '') + '</strong></td>' +
+      '<td><span class="market-badge market-' + mkt + '">' + (h.market || '') + '</span></td>' +
+      '<td data-sort-value="' + statusSortKey + '">' + status + '</td>' +
       '<td>' + (h.latest_score || '') + '</td>' +
-      '<td>' + price + '</td>' +
-      '<td>' + (h.shares || 0).toLocaleString() + '</td>' +
-      '<td style="color:' + retColor + '">' + ret.toFixed(1) + '%</td>' +
-      '<td>' + (h.hold_days || 0) + '</td>' +
+      '<td class="entry-date-gray">' + entryDate + '</td>' +
+      '<td class="num price-bold">' + entryPrice + '</td>' +
+      '<td class="num price-bold">' + price + '</td>' +
+      '<td class="num">' + (h.shares || 0).toLocaleString() + '</td>' +
+      '<td class="num">' + marketValue + '</td>' +
+      '<td class="num" style="color:' + retColor + '" data-sort-value="' + ret + '">' + ret.toFixed(1) + '%</td>' +
+      '<td class="num" data-sort-value="' + (h.hold_days || 0) + '">' + (h.hold_days || 0) + '</td>' +
+      '<td class="change-reason" title="' + reason + '">' + reasonShort + '</td>' +
+      '<td data-sort-value="' + qualitySortKey + '">' + qualityDisplay + '</td>' +
       '<td>' +
         '<button class="btn btn-add" onclick="openModal(\'add\', \'' + code + '\', \'' + (h.name || '').replace(/'/g, "\\'") + '\', \'' + (h.market || '') + '\', ' + price + ')">加仓</button>' +
         '<button class="btn btn-reduce" onclick="openModal(\'reduce\', \'' + code + '\', \'' + (h.name || '').replace(/'/g, "\\'") + '\', \'' + (h.market || '') + '\', ' + price + ')">减仓</button>' +
@@ -721,13 +807,52 @@ function renderHoldings() {
 }
 
 function filterHoldings() {
-  const kw = document.getElementById('holdingsSearch').value.trim().toLowerCase();
-  const rows = document.querySelectorAll('#holdingsBody tr');
-  rows.forEach(row => {
-    const code = row.getAttribute('data-code') || '';
-    const name = row.getAttribute('data-name') || '';
-    row.style.display = (!kw || code.includes(kw) || name.includes(kw)) ? '' : 'none';
+  filterTable('holdingsTableEl', document.getElementById('holdingsSearch').value);
+}
+
+// ========== 排序 & 搜索 ==========
+function filterTable(tableId, query) {
+  const table = document.getElementById(tableId);
+  if (!table) return;
+  const q = query.trim().toLowerCase();
+  const tbody = table.querySelector('tbody');
+  if (!tbody) return;
+  tbody.querySelectorAll('tr').forEach(tr => {
+    if (!q) { tr.style.display = ''; return; }
+    const code = (tr.getAttribute('data-code') || '').toLowerCase();
+    const name = (tr.getAttribute('data-name') || '').toLowerCase();
+    tr.style.display = (code.includes(q) || name.includes(q)) ? '' : 'none';
   });
+}
+
+const _sortState = {};
+function sortTable(tableId, colIdx, thEl) {
+  const table = document.getElementById(tableId);
+  if (!table) return;
+  const tbody = table.querySelector('tbody');
+  if (!tbody) return;
+  const key = tableId + '-' + colIdx;
+  const wasAsc = _sortState[key] === 'asc';
+  const dir = wasAsc ? 'desc' : 'asc';
+  _sortState[key] = dir;
+  table.querySelectorAll('th .sort-arrow').forEach(a => { a.textContent = '↕'; a.className = 'sort-arrow'; });
+  const arrow = thEl.querySelector('.sort-arrow');
+  if (arrow) {
+    arrow.textContent = dir === 'asc' ? '↑' : '↓';
+    arrow.className = 'sort-arrow sort-' + dir;
+  }
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+  rows.sort((a, b) => {
+    const aVal = (a.cells[colIdx] && a.cells[colIdx].getAttribute('data-sort-value')) || (a.cells[colIdx] && a.cells[colIdx].textContent.trim()) || '';
+    const bVal = (b.cells[colIdx] && b.cells[colIdx].getAttribute('data-sort-value')) || (b.cells[colIdx] && b.cells[colIdx].textContent.trim()) || '';
+    const aNum = parseFloat(aVal);
+    const bNum = parseFloat(bVal);
+    let cmp;
+    if (!isNaN(aNum) && !isNaN(bNum)) cmp = aNum - bNum;
+    else cmp = String(aVal).localeCompare(String(bVal));
+    return dir === 'asc' ? cmp : -cmp;
+  });
+  rows.forEach(r => tbody.appendChild(r));
 }
 
 function renderPostSell() {
@@ -748,16 +873,21 @@ function renderPostSell() {
     const postRet = ps.post_sell_return || 0;
     const holdColor = holdRet >= 0 ? '#dc2626' : '#16a34a';
     const postColor = postRet >= 0 ? '#dc2626' : '#16a34a';
+    const mkt = (ps.market || '').toLowerCase();
+    const analysis = ps.post_sell_analysis || '—';
+    const analysisShort = analysis.length > 28 ? analysis.slice(0, 28) + '…' : analysis;
+    const sellPrice = (ps.sell_price || ps.sell_price === 0) ? Number(ps.sell_price).toFixed(2) : '—';
     const rowClass = pendingDelistCodes.has(code) ? 'pending-change' : '';
-    return '<tr class="' + rowClass + '">' +
+    return '<tr class="' + rowClass + '" data-code="' + code.toLowerCase() + '" data-name="' + (ps.name||'').toLowerCase() + '">' +
       '<td>' + code + '</td>' +
-      '<td><strong>' + (ps.name || '') + '</strong></td>' +
-      '<td>' + (ps.market || '') + '</td>' +
-      '<td>' + (ps.sell_date || '') + '</td>' +
-      '<td>' + (ps.sell_price || '') + '</td>' +
-      '<td style="color:' + holdColor + '">' + holdRet.toFixed(1) + '%</td>' +
-      '<td style="color:' + postColor + '">' + postRet.toFixed(1) + '%</td>' +
-      '<td>' + (ps.hold_days || 0) + '</td>' +
+      '<td class="name-cell"><strong>' + (ps.name || '') + '</strong></td>' +
+      '<td><span class="market-badge market-' + mkt + '">' + (ps.market || '') + '</span></td>' +
+      '<td data-sort-value="' + (ps.sell_date || '') + '">' + (ps.sell_date || '') + '</td>' +
+      '<td class="num">' + sellPrice + '</td>' +
+      '<td class="num" style="color:' + holdColor + '" data-sort-value="' + holdRet + '">' + holdRet.toFixed(1) + '%</td>' +
+      '<td class="num" style="color:' + postColor + '" data-sort-value="' + postRet + '">' + postRet.toFixed(1) + '%</td>' +
+      '<td class="num" data-sort-value="' + (ps.hold_days || 0) + '">' + (ps.hold_days || 0) + '</td>' +
+      '<td class="change-reason" title="' + analysis + '">' + analysisShort + '</td>' +
       '<td><button class="btn btn-delist" onclick="doDelist(\'' + code + '\')">剔除</button></td>' +
     '</tr>';
   }).join('');
