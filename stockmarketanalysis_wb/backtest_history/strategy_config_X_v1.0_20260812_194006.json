@@ -1,0 +1,110 @@
+{
+  "name": "策略组合X",
+  "description": "策略X：激进增长型。在B V2.1基础上：保持买入门槛(65/68/68)确保选股质量；卖出阈值提高到50/52/52加速弱股淘汰；止盈放宽至+80%+MACD死叉让超级赢家跑更久；止损放宽-15%/-25%减少假止损；取消短期止损+V2.1保护机制以加速周转；仓位提升至20万/只集中投资；动量权重提升至20%。目标总收益>50%。",
+  "version": "v1.0",
+  "version_id": "X_v1.0",
+  "created_at": "2026-08-12",
+  "status": "archived",
+  "factor_weights": {
+    "quality": 0.25,
+    "valuation": 0.15,
+    "sentiment_event": 0.2,
+    "technical": 0.2,
+    "momentum": 0.2
+  },
+  "quality_sub": {
+    "financial": 0.6,
+    "trend": 0.25,
+    "low_vol": 0.15
+  },
+  "buy_threshold": 65,
+  "buy_threshold_us": 68,
+  "buy_threshold_hk": 68,
+  "sell_threshold": 48,
+  "sell_threshold_us": 50,
+  "sell_threshold_hk": 50,
+  "hard_stop_loss": -99.0,
+  "hard_stop_loss_us": -99.0,
+  "hard_stop_loss_hk": -99.0,
+  "short_stop_pct": -99.0,
+  "short_stop_days": 0,
+  "dynamic_weights": {
+    "trend": {
+      "quality": 0.25,
+      "valuation": 0.15,
+      "sentiment_event": 0.2,
+      "technical": 0.2,
+      "momentum": 0.2
+    },
+    "range": {
+      "quality": 0.25,
+      "valuation": 0.15,
+      "sentiment_event": 0.2,
+      "technical": 0.2,
+      "momentum": 0.2
+    },
+    "risk": {
+      "quality": 0.25,
+      "valuation": 0.15,
+      "sentiment_event": 0.2,
+      "technical": 0.2,
+      "momentum": 0.2
+    }
+  },
+  "market_state_params": {
+    "ma_period": 20,
+    "volume_ratio_threshold": 1.2,
+    "volatility_high": 35,
+    "slope_risk_threshold": -1.5,
+    "per_market": true
+  },
+  "position_per_stock": 0.04,
+  "max_holdings": 999,
+  "signal_strong": 0.7,
+  "signal_weak": 0.5,
+  "position_strong": 0.05,
+  "position_weak": 0.025,
+  "total_position_cap": 0.95,
+  "rebalance_days": 1,
+  "hold_reduce_days": 999,
+  "hold_force_sell_days": 999,
+  "take_profit_pct": 40.0,
+  "take_profit_macd": true,
+  "signal_sell_score": 30,
+  "gradient_deleverage": false,
+  "profit_protect_pct": 999.0,
+  "profit_protect_watch_days": 0,
+  "sector_buffer_threshold": 999,
+  "sector_buffer_min_hold": 999,
+  "min_hold_rotation": 0,
+  "pools": {
+    "CN": {
+      "capital": 10000000,
+      "h_limit": 100000,
+      "m_limit": 50000,
+      "currency": "CNY"
+    },
+    "HK": {
+      "capital": 10000000,
+      "h_limit": 100000,
+      "m_limit": 50000,
+      "currency": "HKD"
+    },
+    "US": {
+      "capital": 1388888.8888888888,
+      "h_limit": 13888.888888888889,
+      "m_limit": 6944.444444444444,
+      "currency": "USD"
+    }
+  },
+  "usd_cny": 7.2,
+  "hkd_cny": 0.92,
+  "cooldown_normal": 3,
+  "cooldown_hard_stop": 7,
+  "slippage": 0.003,
+  "commission": 0.00025,
+  "backtest_start": "2025-04-01",
+  "backtest_end": "2026-07-24",
+  "warmup_days": 60,
+  "observation_end": ""
+}
