@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>三市场量化模型回测报告 - 策略B V2.0</title>
+<title>三市场量化模型回测报告 - 策略X V1.0</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -15,15 +15,16 @@ header .subtitle { color:#6c757d; font-size:14px; }
 header .date { color:#868e96; font-size:13px; margin-top:4px; }
 a.back-link { position:absolute; top:24px; right:24px; color:#1976d2; text-decoration:none; font-size:14px; }
 
-.summary-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:30px; }
-.card { background:#fff; border-radius:12px; padding:20px; border:1px solid #dee2e6; box-shadow:0 1px 3px rgba(0,0,0,0.06); }
-.card .label { color:#6c757d; font-size:13px; margin-bottom:6px; }
-.card .value { font-size:28px; font-weight:700; color:#1a1a2e; }
-.card .sub { color:#868e96; font-size:12px; margin-top:4px; }
+.summary-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:14px; margin-bottom:30px; }
+.card { background:#fff; border-radius:12px; padding:18px; border:1px solid #dee2e6; box-shadow:0 1px 3px rgba(0,0,0,0.06); }
+.card .label { color:#6c757d; font-size:12px; margin-bottom:6px; }
+.card .value { font-size:26px; font-weight:700; color:#1a1a2e; }
+.card .sub { color:#868e96; font-size:11px; margin-top:4px; }
 .card.green .value { color:#2e7d32; }
 .card.red .value { color:#c62828; }
 .card.blue .value { color:#1976d2; }
 .card.orange .value { color:#e65100; }
+.card.purple .value { color:#7b1fa2; }
 
 .section { background:#fff; border-radius:12px; padding:24px; margin-bottom:24px; border:1px solid #dee2e6; box-shadow:0 1px 3px rgba(0,0,0,0.06); }
 .section h2 { font-size:20px; color:#1a1a2e; margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid #dee2e6; }
@@ -48,10 +49,12 @@ tr:hover td { background:#f8f9fa; }
 
 .problem { background:#fff9e6; border-left:4px solid #ff9800; padding:14px 18px; margin:12px 0; border-radius:0 8px 8px 0; }
 .suggestion { background:#eef9f1; border-left:4px solid #4caf50; padding:14px 18px; margin:12px 0; border-radius:0 8px 8px 0; }
-.problem .title, .suggestion .title { font-weight:600; font-size:15px; margin-bottom:4px; }
+.risk-item { background:#fff3e0; border-left:4px solid #ff5722; padding:14px 18px; margin:12px 0; border-radius:0 8px 8px 0; }
+.risk-item .title, .problem .title, .suggestion .title { font-weight:600; font-size:15px; margin-bottom:4px; }
+.risk-item .title { color:#bf360c; }
 .problem .title { color:#e65100; }
 .suggestion .title { color:#2e7d32; }
-.problem .desc, .suggestion .desc { color:#555; font-size:13px; }
+.risk-item .desc, .problem .desc, .suggestion .desc { color:#555; font-size:13px; }
 
 .two-col { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
 
@@ -65,20 +68,25 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
 
 /* 对比表格 */
 .compare-table th { background:#e8eaf6; }
-.compare-table td.b-col { background:#f3f8ff; }
+.compare-table td.x-col { background:#f3f8ff; }
+.compare-table td.b-col { background:#f8f3ff; }
 .compare-table td.a-col { background:#fff8f0; }
+
+/* 迭代历程表 */
+.iter-table th { background:#f0f2f5; }
+.iter-table .best { background:#e8f5e9; font-weight:700; }
 </style>
 </head>
 <body>
 <div class="container">
 <header>
-  <a class="back-link" href="../index.html">← 返回主报告</a>
-  <h1>策略组合B V2.0 回测报告</h1>
-  <div class="subtitle">增强因子 + 固定权重评分 + 分市场状态分类器（仅调仓位）+ capital_limit轮动</div>
-  <div class="date">生成时间: 2026-08-12 16:41:04</div>
+  <a class="back-link" href="../index.html">&#8592; 返回主报告</a>
+  <h1>策略组合X V1.0 回测报告</h1>
+  <div class="subtitle">激进增长型实验策略 &#8212; 目标总收益>50%，19次迭代优化达成53.43%</div>
+  <div class="date">生成时间: 2026-08-12 20:04:23</div>
   <div class="date">回测区间: 2025-04-01 ~ 2026-07-24 (322交易日)</div>
 
-  <!-- 版本选择器（位于分割线上方） -->
+  <!-- 版本选择器 -->
   
 <!-- 版本选择器 -->
 <div class="version-selector">
@@ -88,10 +96,11 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
     <option value="A_v1.5" data-file="backtest_history/backtest_report_Av1.2_20260811_2059.html">策略组合A v1.5</option>
     <option value="B_v1.0" data-file="backtest_history/backtest_report_Bv1.0_20260811_2316.html">策略组合B v1.0</option>
     <option value="B_v2.0" data-file="backtest_history/backtest_report_Bv2.0_20260812_1640.html">策略组合B v2.0</option>
-    <option value="B_v2.1" data-file="backtest_history/backtest_report_Bv2.1_20260812_1641.html" selected>策略组合B v2.1</option>
+    <option value="B_v2.1" data-file="backtest_history/backtest_report.html">策略组合B v2.1</option>
+    <option value="X_v1.0" data-file="backtest_history/backtest_report_Xv1.0_20260812_2004.html" selected>策略组合X v1.0</option>
   </select>
 </div>
-<div class="version-meta" id="versionMeta">共 5 个版本</div>
+<div class="version-meta" id="versionMeta">共 6 个版本</div>
 
 </header>
 
@@ -99,84 +108,214 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
 <div class="summary-grid">
   <div class="card green">
     <div class="label">总收益率</div>
-    <div class="value">+29.98%</div>
-    <div class="sub">初始 29.2M → 最终 38.0M CNY</div>
+    <div class="value">+53.43%</div>
+    <div class="sub">初始 58.4M &#8594; 最终 89.6M CNY</div>
   </div>
   <div class="card red">
     <div class="label">最大回撤</div>
-    <div class="value">-4.75%</div>
-    <div class="sub">夏普比率 3.09</div>
+    <div class="value">-4.80%</div>
+    <div class="sub">回测期内最大回撤</div>
   </div>
   <div class="card blue">
-    <div class="label">总交易数</div>
-    <div class="value">416</div>
-    <div class="sub">胜率 49.5%</div>
+    <div class="label">夏普比率</div>
+    <div class="value">3.44</div>
+    <div class="sub">风险调整后收益</div>
   </div>
   <div class="card orange">
-    <div class="label">平均持仓天数</div>
-    <div class="value">80天</div>
-    <div class="sub">中位数 54天 / 最长 289天</div>
+    <div class="label">总交易数</div>
+    <div class="value">1532</div>
+    <div class="sub">胜率 46.1%</div>
+  </div>
+  <div class="card purple">
+    <div class="label">平均持仓</div>
+    <div class="value">12天</div>
+    <div class="sub">中位数 5天</div>
   </div>
 </div>
 
-<!-- ═══ V2.0改进说明 ═══ -->
+<!-- ═══ 策略X设计哲学 ═══ -->
 <div class="section">
-  <h2>B V2.0 核心改进（相比V1.0）</h2>
+  <h2>策略X 设计哲学：如何从30%到53%</h2>
   <div class="suggestion">
-    <div class="title">V2.0设计哲学：保留选股增强，回归A的资金管理框架</div>
+    <div class="title">核心思路：让赢家充分发展 + 用capital_limit高频轮换淘汰弱股</div>
     <div class="desc">
-      V1.0的增强因子（动量加速度/行业相对PE/资金斜率）提升了选股精度，但动态权重+大仓位+强制清仓破坏了A的核心盈利机制。
-      V2.0改为固定权重评分（不因市场状态扭曲）、小仓位+无持仓上限+capital_limit轮动（回归A框架）、分类器降级为仓位调节器（分市场独立计算，只影响买多少不影响评多少分）。
+      策略B V2.1的29.98%收益受限于：小仓位(10万/只)让赢家贡献有限、止损截断弱股但成本高、卖出阈值40让正常卖出偏多。
+      策略X通过<b>集中仓位(80万/只)放大赢家贡献</b>、<b>关闭止损让capital_limit自然淘汰</b>、<b>降卖出阈值到45减少主动卖出</b>、
+      <b>止盈42%+MACD死叉让赢家跑到位</b>、<b>资金池扩大到2000万减少capital_limit挤压</b>，实现收益翻倍。
     </div>
   </div>
   <table>
-    <tr><th>维度</th><th>A V1.0</th><th>B V1.0（失败）</th><th>B V2.0</th></tr>
-    <tr><td>因子权重</td><td>固定</td><td>动态（3态切换）</td><td><b>固定</b>（回归A）</td></tr>
-    <tr><td>增强因子</td><td>无</td><td>有</td><td><b>保留</b></td></tr>
-    <tr><td>分类器用途</td><td>无</td><td>改变权重+阻断买入</td><td><b>仅调仓位大小</b></td></tr>
-    <tr><td>分类器范围</td><td>—</td><td>CN管三市场</td><td><b>分市场独立</b></td></tr>
-    <tr><td>单笔仓位</td><td>10万</td><td>80-120万</td><td><b>10万</b>（回归A）</td></tr>
-    <tr><td>持仓上限</td><td>无限制</td><td>8只</td><td><b>无限制</b></td></tr>
-    <tr><td>capital_limit</td><td>有（核心引擎）</td><td>无</td><td><b>有</b>（回归A）</td></tr>
-    <tr><td>强制清仓</td><td>无</td><td>40天</td><td><b>无</b></td></tr>
-    <tr><td>止损</td><td>-15%</td><td>-8%</td><td><b>-12%</b></td></tr>
-    <tr><td>止盈</td><td>无</td><td>+15%+MACD</td><td><b>+50%+MACD</b></td></tr>
+    <tr><th>维度</th><th>B V2.1（基准）</th><th>X V1.0</th><th>变化</th></tr>
+    <tr><td>单笔仓位</td><td>1%（10万）</td><td><b>4%（80万）</b></td><td>&times;8 集中</td></tr>
+    <tr><td>资金池</td><td>1000万/市场</td><td><b>2000万/市场</b></td><td>&times;2 扩容</td></tr>
+    <tr><td>卖出阈值</td><td>40/42/42</td><td><b>45/47/47</b></td><td>&uarr; 让弱股留更久</td></tr>
+    <tr><td>止损</td><td>-12%/-20%</td><td><b>关闭（-99%）</b></td><td>capital_limit自然淘汰</td></tr>
+    <tr><td>止盈</td><td>+50%+MACD</td><td><b>+42%+MACD</b></td><td>&darr; 更早落袋</td></tr>
+    <tr><td>V2.1保护</td><td>开启</td><td><b>关闭</b></td><td>加速周转</td></tr>
+    <tr><td>动量权重</td><td>15%</td><td><b>20%</b></td><td>趋势倾斜</td></tr>
+    <tr><td>短期止损</td><td>-6%/3天</td><td><b>关闭</b></td><td>减少假止损</td></tr>
   </table>
 </div>
 
-<!-- ═══ 策略B V2.0配置 ═══ -->
+<!-- ═══ 19次迭代历程 ═══ -->
 <div class="section">
-  <h2>策略B V2.0 配置摘要</h2>
+  <h2>19次迭代优化历程</h2>
+  <p style="color:#6c757d;font-size:13px;margin-bottom:12px;">从19.97%到53.43%，每一步调参的发现与教训：</p>
+  <table class="iter-table">
+    <tr><th>版本</th><th>关键参数变化</th><th>总收益</th><th>夏普</th><th>回撤</th><th>关键发现</th></tr>
+    <tr><td>V1</td><td>买入60/止盈100/仓位15万</td><td class="negative">19.97%</td><td>-</td><td>-</td><td>低门槛&#8594;8319笔churn，交易成本吞噬收益</td></tr>
+    <tr><td>V2</td><td>买入65/止盈80/仓位20万</td><td>37.85%</td><td>-</td><td>-</td><td>恢复高门槛+集中仓位，大幅改善</td></tr>
+    <tr><td>V4</td><td>买入65/止盈50/仓位25万/止损-99</td><td>38.8%</td><td>3.13</td><td>-</td><td>关闭止损+3%，但止盈50%太高</td></tr>
+    <tr><td>V6</td><td>仓位25万/池2000万</td><td>42.24%</td><td>3.23</td><td>-6.33%</td><td>资金池扩容减少capital_limit挤压</td></tr>
+    <tr><td>V7</td><td>买入62</td><td class="negative">30.75%</td><td>-</td><td>-</td><td>降买入门槛=灾难，4113笔churn</td></tr>
+    <tr><td>V8</td><td>US买入62</td><td class="negative">30.75%</td><td>-</td><td>-</td><td>降美股门槛=灾难，US churn 1390笔</td></tr>
+    <tr><td>V10</td><td>仓位4%（80万）/池2000万</td><td>48.55%</td><td>3.21</td><td>-6.56%</td><td>4%仓位是甜点，接近50%</td></tr>
+    <tr><td>V11</td><td>+min_hold 3天</td><td>48.30%</td><td>-</td><td>-</td><td>最小持有期反而略降</td></tr>
+    <tr><td>V12</td><td>仓位5%（100万）</td><td>44.87%</td><td>-</td><td>-</td><td>5%过度集中反而下降</td></tr>
+    <tr><td>V13</td><td>池3000万+仓位80万</td><td>42.26%</td><td>-</td><td>-</td><td>3000万池不如2000万</td></tr>
+    <tr><td>V14</td><td>止盈45%</td><td>49.22%</td><td>-</td><td>-</td><td>差0.78%突破50%</td></tr>
+    <tr><td>V15</td><td>止盈42%/卖出48</td><td>49.70%</td><td>3.25</td><td>-5.82%</td><td>差0.3%突破50%</td></tr>
+    <tr><td>V16</td><td>止盈40%</td><td>49.70%</td><td>-</td><td>-</td><td>40-42%之间无新MACD触发</td></tr>
+    <tr><td>V17</td><td>仓位4.5%</td><td>45.72%</td><td>-</td><td>-</td><td>4.5%过度集中</td></tr>
+    <tr><td>V18</td><td>纯价格止盈60%</td><td>35.60%</td><td>-</td><td>-</td><td>纯价格止盈切断赢家，MACD更优</td></tr>
+    <tr class="best"><td>V19</td><td>卖出45/47/47</td><td>53.43%</td><td>3.44</td><td>-4.80%</td><td>&#127942; 降卖出阈值是关键突破</td></tr>
+  </table>
+
+  <div class="problem">
+    <div class="title">5个关键教训</div>
+    <div class="desc">
+      1. <b>买入门槛65/68/68是底线</b>：降到62导致churn灾难，降到65/62/68导致美股churn<br>
+      2. <b>仓位4%（80万）是甜点</b>：2.5%太少、5%过度集中<br>
+      3. <b>MACD死叉止盈优于纯价格止盈</b>：MACD让赢家avg 78%，纯价格只58%<br>
+      4. <b>卖出阈值45是关键突破</b>：让弱股留更久给capital_limit处理，normal sell从97笔降到47笔<br>
+      5. <b>资金池2000万是最佳搭配</b>：1000万太紧、3000万太松
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 策略X配置摘要 ═══ -->
+<div class="section">
+  <h2>策略X V1.0 配置摘要</h2>
   <table>
     <tr><th>参数</th><th>A股</th><th>美股</th><th>港股</th></tr>
     <tr><td>买入阈值</td><td>65</td><td>68</td><td>68</td></tr>
-    <tr><td>卖出阈值</td><td>40</td><td>42</td><td>42</td></tr>
-    <tr><td>止损</td><td colspan="3">硬止损 -12.0% / 短期止损 -6.0%/3天 / 止盈 +50%+MACD死叉</td></tr>
-    <tr><td>仓位</td><td colspan="3">单只1%（≈10万）/ 无持仓上限 / 总上限95%</td></tr>
-    <tr><td>分类器调仓</td><td colspan="3">趋势市×1.2 / 震荡市×1.0 / 风险市×0.5（分市场独立计算）</td></tr>
-    <tr><td>信号反转</td><td colspan="3">评分<30卖出</td></tr>
+    <tr><td>卖出阈值</td><td>45</td><td>47</td><td>47</td></tr>
+    <tr><td>止损</td><td colspan="3">硬止损关闭（-99%）/ 短期止损关闭 / 止盈 +42%+MACD死叉</td></tr>
+    <tr><td>仓位</td><td colspan="3">单只4%（&#8776;80万）/ 无持仓上限 / 总上限95%</td></tr>
+    <tr><td>资金池</td><td colspan="3">2000万/市场（B V2.1的2倍）</td></tr>
+    <tr><td>分类器调仓</td><td colspan="3">趋势市&times;1.2 / 震荡市&times;1.0 / 风险市&times;0.5（分市场独立计算）</td></tr>
+    <tr><td>V2.1保护</td><td colspan="3">已关闭（profit_protect=999 / sector_buffer=999）</td></tr>
   </table>
-  <h3>固定因子权重</h3>
+  <h3>因子权重（动量倾斜）</h3>
   <table>
     <tr><th>Quality</th><th>Valuation</th><th>Sentiment</th><th>Technical</th><th>Momentum</th></tr>
-    <tr><td>25%</td><td>25%</td><td>20%</td><td>15%</td><td>15%</td></tr>
+    <tr><td>25%</td><td>15%</td><td>20%</td><td>20%</td><td>20%</td></tr>
   </table>
-  <p style="color:#6c757d;font-size:13px;margin-top:8px;">增强因子：动量加速度（二阶差分）+ 行业相对PE（绝对PE/市场中位数PE）+ 资金斜率（5日成交量变化率）</p>
+  <p style="color:#6c757d;font-size:13px;margin-top:8px;">增强因子：动量加速度（二阶差分）+ 行业相对PE + 资金斜率（5日成交量变化率）</p>
 </div>
 
-<!-- ═══ 分市场状态分布 ═══ -->
+<!-- ═══ 三方对比 ═══ -->
 <div class="section">
-  <h2>市场状态分布（分市场独立计算）</h2>
-  <div class="chart-container small">
-    <canvas id="stateChart"></canvas>
-  </div>
-  <table>
-    <tr><th>市场</th><th>趋势市</th><th>震荡市</th><th>风险市</th></tr>
-    <tr><td><span class="tag tag-cn">A股</span></td><td>24天 (7.5%)</td><td>236天 (73.3%)</td><td>62天 (19.3%)</td></tr>
-    <tr><td><span class="tag tag-hk">港股</span></td><td>28天 (9.0%)</td><td>210天 (67.7%)</td><td>72天 (23.2%)</td></tr>
-    <tr><td><span class="tag tag-us">美股</span></td><td>10天 (3.2%)</td><td>272天 (88.0%)</td><td>27天 (8.7%)</td></tr>
+  <h2>三方对比分析：策略X vs B V2.1 vs A V1.0</h2>
+  <table class="compare-table">
+    <tr><th>指标</th><th class="x-col">策略X V1.0</th><th class="b-col">策略B V2.1</th><th class="a-col">策略A V1.0</th></tr>
+    <tr><td>总收益率</td><td class="x-col positive">+53.43%</td><td class="b-col">+29.98%</td><td class="a-col">+32.02%</td></tr>
+    <tr><td>最大回撤</td><td class="x-col">-4.80%</td><td class="b-col">-4.75%</td><td class="a-col">-6.74%</td></tr>
+    <tr><td>夏普比率</td><td class="x-col">3.44</td><td class="b-col">3.09</td><td class="a-col">2.49</td></tr>
+    <tr><td>总交易数</td><td class="x-col">1532</td><td class="b-col">416</td><td class="a-col">300</td></tr>
+    <tr><td>胜率</td><td class="x-col">46.1%</td><td class="b-col">49.5%</td><td class="a-col">53.0%</td></tr>
+    <tr><td>平均持仓天数</td><td class="x-col">11.6</td><td class="b-col">79.5</td><td class="a-col">60.7</td></tr>
+    <tr><td>单笔仓位</td><td class="x-col">80万（4%）</td><td class="b-col">10万（1%）</td><td class="a-col">10万（1%）</td></tr>
+    <tr><td>资金池</td><td class="x-col">2000万/市场</td><td class="b-col">1000万/市场</td><td class="a-col">1000万/市场</td></tr>
+    <tr><td>止损</td><td class="x-col">关闭</td><td class="b-col">-12%/-20%</td><td class="a-col">-15%</td></tr>
+    <tr><td>止盈</td><td class="x-col">+42%+MACD</td><td class="b-col">+50%+MACD</td><td class="a-col">无</td></tr>
   </table>
-  <p style="color:#6c757d;font-size:13px;margin-top:8px;">V2.0改进：分类器分市场独立计算，不再用A股状态管港股/美股。市场状态只影响仓位大小（趋势×1.2/震荡×1.0/风险×0.5），不影响评分权重。</p>
+
+  <h3>分市场对比</h3>
+  <table class="compare-table">
+    <tr><th>市场</th><th class="x-col">X交易/胜率/均收益</th><th class="b-col">B交易/胜率/均收益</th><th class="a-col">A交易/胜率/均收益</th></tr>
+    <tr><td><span class="tag tag-cn">A股</span></td><td class="x-col">840/47.0%/+1.9%</td><td class="b-col">142/48.6%/+29.1%</td><td class="a-col">26/46.2%/+55.5%</td></tr>
+    <tr><td><span class="tag tag-hk">港股</span></td><td class="x-col">662/43.5%/+1.5%</td><td class="b-col">252/48.4%/+11.9%</td><td class="a-col">269/53.5%/+9.6%</td></tr>
+    <tr><td><span class="tag tag-us">美股</span></td><td class="x-col">30/76.7%/+50.6%</td><td class="b-col">22/68.2%/+68.0%</td><td class="a-col">5/60.0%/+283.1%</td></tr>
+  </table>
+
+  <h3>capital_limit轮动对比（核心盈利引擎）</h3>
+  <table class="compare-table">
+    <tr><th>指标</th><th class="x-col">X capital_limit</th><th class="b-col">B capital_limit</th><th class="a-col">A capital_limit</th></tr>
+    <tr><td>交易笔数</td><td class="x-col">1463</td><td class="b-col">115</td><td class="a-col">192</td></tr>
+    <tr><td>胜率</td><td class="x-col">46.3%</td><td class="b-col">86.1%</td><td class="a-col">74.5%</td></tr>
+    <tr><td>均收益</td><td class="x-col">+2.0%</td><td class="b-col">+24.0%</td><td class="a-col">+18.6%</td></tr>
+  </table>
+  <p style="color:#6c757d;font-size:13px;margin-top:8px;">策略X的capital_limit笔数暴增至1463笔（B仅115笔），但胜率从86.1%降到46.3%，均收益从+24%降到+1.98%&#8212;&#8212;高频轮换的代价是质量下降，但靠大仓位弥补了总量。</p>
+</div>
+
+<!-- ═══ 风险隐患深度分析 ═══ -->
+<div class="section">
+  <h2>风险隐患深度分析</h2>
+  <p style="color:#6c757d;font-size:13px;margin-bottom:12px;">策略X的53.43%收益是<b>可达但脆弱的</b>。以下是6个关键风险点：</p>
+
+  <div class="risk-item">
+    <div class="title">1. 过拟合风险（最大隐患）</div>
+    <div class="desc">
+      19次迭代在同一回测区间（2025-04-01 ~ 2026-07-24）调参，参数（42%止盈、45卖出阈值、4%仓位）高度依赖这段特定数据。
+      换一个时间段，这些参数不一定最优。这是"在历史数据上优化参数"的典型陷阱。
+      <br><b>风险等级：高</b> &#8212; 实盘表现可能显著低于回测。
+    </div>
+  </div>
+
+  <div class="risk-item">
+    <div class="title">2. 无止损的尾部风险</div>
+    <div class="desc">
+      回测期最大回撤仅-4.8%，但这是"正常市场"。遇到急跌（如2024年9月一周-15%），没有止损意味着单只可跌-35%（CN最大单笔亏损），
+      组合层面可能-15%+。无止损本质是"用回撤换收益"，在极端行情下可能引发系统性亏损。
+      <br><b>风险等级：高</b> &#8212; 黑天鹅事件可能造成不可逆亏损。
+    </div>
+  </div>
+
+  <div class="risk-item">
+    <div class="title">3. 低胜率 + 赢家依赖</div>
+    <div class="desc">
+      胜率46.1%低于A的53%和B的49.5%。21笔止盈（avg+75%）贡献了大部分超额收益。
+      如果市场不产生足够的超级赢家（如趋势市变震荡市），收益会大幅缩水。
+      <br><b>风险等级：中</b> &#8212; 策略高度依赖趋势行情中的超级赢家。
+    </div>
+  </div>
+
+  <div class="risk-item">
+    <div class="title">4. 高换手率</div>
+    <div class="desc">
+      1532笔/322天=4.75笔/天。滑点0.3%+佣金0.025%已计入回测，但实际跑分中冲击成本可能更高
+      （尤其港股小盘股）。高换手率还意味着更多的滑点损耗和操作风险。
+      <br><b>风险等级：中</b> &#8212; 实盘执行成本可能高于回测假设。
+    </div>
+  </div>
+
+  <div class="risk-item">
+    <div class="title">5. capital_limit依赖症</div>
+    <div class="desc">
+      95%的卖出靠capital_limit轮换。这意味着策略依赖"新高分股不断出现"来淘汰低分持仓。
+      在熊市中，新股票跌破买入阈值，轮换停止，持仓会变成一潭死水&#8212;&#8212;无法主动止损，只能被动等待。
+      <br><b>风险等级：高</b> &#8212; 熊市中策略可能完全失效。
+    </div>
+  </div>
+
+  <div class="risk-item">
+    <div class="title">6. 夏普3.44的统计可信度</div>
+    <div class="desc">
+      回测仅322个交易日（约15个月）。夏普比率的95%置信区间约为 &plusmn;0.8，
+      即真实夏普可能在2.6~4.2之间。对比B V2.1的3.09&plusmn;0.8，差异并不显著。
+      <br><b>风险等级：低</b> &#8212; 统计上优于B V2.1但不能排除随机性。
+    </div>
+  </div>
+
+  <div class="suggestion">
+    <div class="title">核心结论</div>
+    <div class="desc">
+      策略X的53%收益是用<b>集中仓位+无止损+低卖出阈值</b>换取的高收益，本质是"让赢家充分发展+用capital_limit高频轮换"。
+      夏普3.44看起来漂亮，但建立在322天回测+19次过拟合调参上，且无止损在极端行情下可能引发系统性亏损。
+      <b>不建议替代B V2.1用于实盘跑分</b>，更适合作为"收益上限探针"来理解策略参数的天花板。
+    </div>
+  </div>
 </div>
 
 <!-- ═══ NAV曲线 ═══ -->
@@ -192,9 +331,9 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
   <h2>分市场统计</h2>
   <table>
     <tr><th>市场</th><th>交易数</th><th>胜率</th><th>均收益</th><th>总收益(NAV加权)</th><th>最大单笔盈</th><th>最大单笔亏</th></tr>
-    <tr><td><span class="tag tag-cn">A股</span></td><td>142</td><td>48.6%</td><td class="positive">+29.1%</td><td class="positive">+37.8%</td><td class="positive">+218.1%</td><td class="negative">-21.7%</td></tr>
-    <tr><td><span class="tag tag-hk">港股</span></td><td>252</td><td>48.4%</td><td class="positive">+11.9%</td><td class="positive">+36.8%</td><td class="positive">+231.3%</td><td class="negative">-31.4%</td></tr>
-    <tr><td><span class="tag tag-us">美股</span></td><td>22</td><td>68.2%</td><td class="positive">+68.0%</td><td class="positive">+15.8%</td><td class="positive">+489.5%</td><td class="negative">-23.5%</td></tr>
+    <tr><td><span class="tag tag-cn">A股</span></td><td>840</td><td>47.0%</td><td class="positive">+1.9%</td><td class="positive">+55.2%</td><td class="positive">+57.6%</td><td class="negative">-35.5%</td></tr>
+    <tr><td><span class="tag tag-hk">港股</span></td><td>662</td><td>43.5%</td><td class="positive">+1.5%</td><td class="positive">+41.2%</td><td class="positive">+209.1%</td><td class="negative">-23.0%</td></tr>
+    <tr><td><span class="tag tag-us">美股</span></td><td>30</td><td>76.7%</td><td class="positive">+50.6%</td><td class="positive">+62.9%</td><td class="positive">+422.2%</td><td class="negative">-45.1%</td></tr>
   </table>
 </div>
 
@@ -202,49 +341,30 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
 <div class="section">
   <h2>卖出类型统计</h2>
   <table>
-    <tr><th>卖出类型</th><th>笔数</th><th>胜率</th><th>均收益</th></tr>
-    <tr><td>评分跌破</td><td>3</td><td>0.0%</td><td class="negative">-15.0%</td></tr>
-    <tr><td>硬止损</td><td>155</td><td>0.0%</td><td class="negative">-13.9%</td></tr>
-    <tr><td>短期止损</td><td>36</td><td>0.0%</td><td class="negative">-7.8%</td></tr>
-    <tr><td>后5%排名</td><td>2</td><td>100.0%</td><td class="positive">+160.6%</td></tr>
-    <tr><td>超限轮动</td><td>115</td><td>86.1%</td><td class="positive">+24.0%</td></tr>
-    <tr><td>止盈+MACD</td><td>105</td><td>100.0%</td><td class="positive">+76.5%</td></tr>
-    <tr><td>信号反转</td><td>0</td><td>0.0%</td><td class="negative">+0.0%</td></tr>
+    <tr><th>卖出类型</th><th>笔数</th><th>胜率</th><th>均收益</th><th>占比</th></tr>
+    <tr><td>评分跌破</td><td>47</td><td>14.9%</td><td class="negative">-7.3%</td><td>3.1%</td></tr>
+    <tr><td>硬止损</td><td>0</td><td>0.0%</td><td class="negative">+0.0%</td><td>0.0%</td></tr>
+    <tr><td>短期止损</td><td>0</td><td>0.0%</td><td class="negative">+0.0%</td><td>0.0%</td></tr>
+    <tr><td>后5%排名</td><td>1</td><td>0.0%</td><td class="negative">-23.3%</td><td>0.1%</td></tr>
+    <tr><td>超限轮动</td><td>1463</td><td>46.3%</td><td class="positive">+2.0%</td><td>95.5%</td></tr>
+    <tr><td>止盈+MACD</td><td>21</td><td>100.0%</td><td class="positive">+75.2%</td><td>1.4%</td></tr>
+    <tr><td>信号反转</td><td>0</td><td>0.0%</td><td class="negative">+0.0%</td><td>0.0%</td></tr>
   </table>
+  <p style="color:#6c757d;font-size:13px;margin-top:8px;">capital_limit占95.5%，是策略X的核心轮换引擎。止盈仅21笔但avg+75%，是超额收益的主要来源。</p>
 </div>
 
-<!-- ═══ 双报告对比分析 ═══ -->
+<!-- ═══ 市场状态分布 ═══ -->
 <div class="section">
-  <h2>对比分析：策略B V2.0 vs 策略A V1.0</h2>
-  <table class="compare-table">
-    <tr><th>指标</th><th class="b-col">策略B V2.0</th><th class="a-col">策略A V1.0</th><th>差异</th></tr>
-    <tr><td>总收益率</td><td class="b-col">+29.98%</td><td class="a-col">+32.02%</td><td>-2.04pp</td></tr>
-    <tr><td>最大回撤</td><td class="b-col">-4.75%</td><td class="a-col">-6.74%</td><td>+1.99pp</td></tr>
-    <tr><td>夏普比率</td><td class="b-col">3.09</td><td class="a-col">2.49</td><td>+0.60</td></tr>
-    <tr><td>总交易数</td><td class="b-col">416</td><td class="a-col">300</td><td>+116</td></tr>
-    <tr><td>胜率</td><td class="b-col">49.5%</td><td class="a-col">53.0%</td><td>-3.5pp</td></tr>
-    <tr><td>平均持仓天数</td><td class="b-col">79.5</td><td class="a-col">60.7</td><td>+18.8</td></tr>
+  <h2>市场状态分布（分市场独立计算）</h2>
+  <div class="chart-container small">
+    <canvas id="stateChart"></canvas>
+  </div>
+  <table>
+    <tr><th>市场</th><th>趋势市</th><th>震荡市</th><th>风险市</th></tr>
+    <tr><td><span class="tag tag-cn">A股</span></td><td>24天 (7.5%)</td><td>236天 (73.3%)</td><td>62天 (19.3%)</td></tr>
+    <tr><td><span class="tag tag-hk">港股</span></td><td>28天 (9.0%)</td><td>210天 (67.7%)</td><td>72天 (23.2%)</td></tr>
+    <tr><td><span class="tag tag-us">美股</span></td><td>10天 (3.2%)</td><td>272天 (88.0%)</td><td>27天 (8.7%)</td></tr>
   </table>
-
-  <h3>capital_limit轮动对比（核心盈利引擎）</h3>
-  <table class="compare-table">
-    <tr><th>指标</th><th class="b-col">B V2.0 capital_limit</th><th class="a-col">A V1.0 capital_limit</th></tr>
-    <tr><td>交易笔数</td><td class="b-col">115</td><td class="a-col">192</td></tr>
-    <tr><td>胜率</td><td class="b-col">86.1%</td><td class="a-col">74.5%</td></tr>
-    <tr><td>均收益</td><td class="b-col">+24.0%</td><td class="a-col">+18.6%</td></tr>
-  </table>
-  <p style="color:#6c757d;font-size:13px;margin-top:8px;">B V2.0的capital_limit胜率和均收益均高于A，证明增强因子提升了选股精度。</p>
-
-  <h3>分市场对比</h3>
-  <table class="compare-table">
-    <tr><th>市场</th><th class="b-col">B交易数</th><th class="b-col">B胜率</th><th class="b-col">B均收益</th><th class="a-col">A交易数</th><th class="a-col">A胜率</th><th class="a-col">A均收益</th></tr>
-    <tr><td><span class="tag tag-cn">A股</span></td><td class="b-col">142</td><td class="b-col">48.6%</td><td class="b-col">+29.1%</td><td class="a-col">26</td><td class="a-col">46.2%</td><td class="a-col">+55.5%</td></tr>
-    <tr><td><span class="tag tag-hk">港股</span></td><td class="b-col">252</td><td class="b-col">48.4%</td><td class="b-col">+11.9%</td><td class="a-col">269</td><td class="a-col">53.5%</td><td class="a-col">+9.6%</td></tr>
-    <tr><td><span class="tag tag-us">美股</span></td><td class="b-col">22</td><td class="b-col">68.2%</td><td class="b-col">+68.0%</td><td class="a-col">5</td><td class="a-col">60.0%</td><td class="a-col">+283.1%</td></tr>
-  </table>
-
-  <h3>持仓重叠度</h3>
-  <p>B策略交易股票数: 237 | A策略交易股票数: 146 | 重叠股票数: 130 (51.4%)</p>
 </div>
 
 <!-- ═══ TOP10盈利 ═══ -->
@@ -252,16 +372,16 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
   <h2>TOP10 盈利交易</h2>
   <table>
     <tr><th>#</th><th>代码</th><th>名称</th><th>市场</th><th>买入日</th><th>卖出日</th><th>买入价</th><th>卖出价</th><th>收益</th><th>持仓天数</th><th>卖出原因</th></tr>
-    <tr><td>1</td><td>SNDK.O</td><td>Sandisk</td><td><span class="tag tag-us">US</span></td><td>2025-06-12</td><td>2025-11-18</td><td>41.42</td><td>244.2</td><td class="positive">+489.5%</td><td>159</td><td>止盈：+491.3%+MACD死叉</td></tr>
-    <tr><td>2</td><td>01788.HK</td><td>国泰君安国际</td><td><span class="tag tag-hk">HK</span></td><td>2025-05-12</td><td>2025-06-25</td><td>1.11</td><td>3.69</td><td class="positive">+231.3%</td><td>44</td><td>后5%排名强制卖出</td></tr>
-    <tr><td>3</td><td>603929.SH</td><td>亚翔集成</td><td><span class="tag tag-cn">CN</span></td><td>2025-05-08</td><td>2025-12-30</td><td>29.15</td><td>92.72</td><td class="positive">+218.1%</td><td>236</td><td>止盈：+219.1%+MACD死叉</td></tr>
-    <tr><td>4</td><td>00992.HK</td><td>联想集团</td><td><span class="tag tag-hk">HK</span></td><td>2025-06-25</td><td>2026-06-11</td><td>9.31</td><td>22.81</td><td class="positive">+145.1%</td><td>351</td><td>止盈：+145.8%+MACD死叉</td></tr>
-    <tr><td>5</td><td>ECHO.O</td><td>EchoStar</td><td><span class="tag tag-us">US</span></td><td>2025-07-24</td><td>2025-09-17</td><td>29.93</td><td>71.59</td><td class="positive">+139.2%</td><td>55</td><td>止盈：+139.9%+MACD死叉</td></tr>
-    <tr><td>6</td><td>MU.O</td><td>Micron Technology</td><td><span class="tag tag-us">US</span></td><td>2025-09-29</td><td>2026-02-04</td><td>164.39</td><td>378.26</td><td class="positive">+130.1%</td><td>128</td><td>止盈：+130.8%+MACD死叉</td></tr>
-    <tr><td>7</td><td>688183.SH</td><td>生益电子</td><td><span class="tag tag-cn">CN</span></td><td>2025-06-04</td><td>2025-08-25</td><td>31.99</td><td>73.14</td><td class="positive">+128.7%</td><td>82</td><td>持仓超限强制卖出</td></tr>
-    <tr><td>8</td><td>601991.SH</td><td>大唐发电</td><td><span class="tag tag-cn">CN</span></td><td>2025-08-21</td><td>2026-06-05</td><td>3.47</td><td>7.91</td><td class="positive">+127.8%</td><td>288</td><td>止盈：+128.5%+MACD死叉</td></tr>
-    <tr><td>9</td><td>301308.SZ</td><td>江波龙</td><td><span class="tag tag-cn">CN</span></td><td>2025-05-08</td><td>2025-10-22</td><td>80.05</td><td>180.38</td><td class="positive">+125.3%</td><td>167</td><td>止盈：+126.0%+MACD死叉</td></tr>
-    <tr><td>10</td><td>600578.SH</td><td>京能电力</td><td><span class="tag tag-cn">CN</span></td><td>2025-04-24</td><td>2026-06-05</td><td>3.77</td><td>8.43</td><td class="positive">+123.7%</td><td>407</td><td>止盈：+124.3%+MACD死叉</td></tr>
+    <tr><td>1</td><td>SNDK.O</td><td>Sandisk</td><td><span class="tag tag-us">US</span></td><td>2025-06-18</td><td>2025-11-18</td><td>46.76</td><td>244.2</td><td class="positive">+422.2%</td><td>153</td><td>止盈：+423.8%+MACD死叉</td></tr>
+    <tr><td>2</td><td>01788.HK</td><td>国泰君安国际</td><td><span class="tag tag-hk">HK</span></td><td>2025-06-23</td><td>2025-06-25</td><td>1.19</td><td>3.69</td><td class="positive">+209.1%</td><td>2</td><td>评分跌破47(浮盈保护已观察1天)</td></tr>
+    <tr><td>3</td><td>00992.HK</td><td>联想集团</td><td><span class="tag tag-hk">HK</span></td><td>2026-02-27</td><td>2026-06-01</td><td>9.76</td><td>25.16</td><td class="positive">+157.9%</td><td>94</td><td>持仓超限强制卖出</td></tr>
+    <tr><td>4</td><td>ECHO.O</td><td>EchoStar</td><td><span class="tag tag-us">US</span></td><td>2025-07-28</td><td>2025-09-04</td><td>29.86</td><td>67.02</td><td class="positive">+124.4%</td><td>38</td><td>持仓超限强制卖出</td></tr>
+    <tr><td>5</td><td>APA.O</td><td>APA Corporation</td><td><span class="tag tag-us">US</span></td><td>2025-06-03</td><td>2026-04-08</td><td>18.32</td><td>38.63</td><td class="positive">+110.8%</td><td>309</td><td>止盈：+111.5%+MACD死叉</td></tr>
+    <tr><td>6</td><td>WDC.O</td><td>Western Digital</td><td><span class="tag tag-us">US</span></td><td>2025-06-04</td><td>2025-10-14</td><td>54.59</td><td>112.79</td><td class="positive">+106.6%</td><td>132</td><td>止盈：+107.2%+MACD死叉</td></tr>
+    <tr><td>7</td><td>LITE.O</td><td>Lumentum</td><td><span class="tag tag-us">US</span></td><td>2025-07-02</td><td>2025-09-23</td><td>91.51</td><td>163.5</td><td class="positive">+78.7%</td><td>83</td><td>止盈：+79.2%+MACD死叉</td></tr>
+    <tr><td>8</td><td>MU.O</td><td>Micron Technology</td><td><span class="tag tag-us">US</span></td><td>2025-05-14</td><td>2025-09-26</td><td>95.61</td><td>156.8</td><td class="positive">+64.0%</td><td>135</td><td>止盈：+64.5%+MACD死叉</td></tr>
+    <tr><td>9</td><td>GOOGL.O</td><td>谷歌</td><td><span class="tag tag-us">US</span></td><td>2025-09-29</td><td>2026-05-19</td><td>244.78</td><td>386.5</td><td class="positive">+57.9%</td><td>232</td><td>止盈：+58.4%+MACD死叉</td></tr>
+    <tr><td>10</td><td>TER.O</td><td>Teradyne</td><td><span class="tag tag-us">US</span></td><td>2025-06-16</td><td>2025-10-20</td><td>87.94</td><td>138.77</td><td class="positive">+57.8%</td><td>126</td><td>止盈：+58.3%+MACD死叉</td></tr>
   </table>
 </div>
 
@@ -270,16 +390,16 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
   <h2>TOP10 亏损交易</h2>
   <table>
     <tr><th>#</th><th>代码</th><th>名称</th><th>市场</th><th>买入日</th><th>卖出日</th><th>买入价</th><th>卖出价</th><th>收益</th><th>持仓天数</th><th>卖出原因</th></tr>
-    <tr><td>1</td><td>06666.HK</td><td>恒大物业</td><td><span class="tag tag-hk">HK</span></td><td>2025-10-27</td><td>2026-06-25</td><td>1.13</td><td>0.78</td><td class="negative">-31.4%</td><td>241</td><td>硬止损：浮亏-31.2%(阈值-12%)</td></tr>
-    <tr><td>2</td><td>CHTR.O</td><td>Charter Communications</td><td><span class="tag tag-us">US</span></td><td>2026-01-30</td><td>2026-04-29</td><td>206.74</td><td>158.17</td><td class="negative">-23.5%</td><td>89</td><td>硬止损：浮亏-23.3%(阈值-20%)</td></tr>
-    <tr><td>3</td><td>09992.HK</td><td>泡泡玛特</td><td><span class="tag tag-hk">HK</span></td><td>2026-03-17</td><td>2026-03-25</td><td>216.05</td><td>167.8</td><td class="negative">-22.3%</td><td>8</td><td>硬止损：浮亏-22.1%(阈值-12%)</td></tr>
-    <tr><td>4</td><td>301308.SZ</td><td>江波龙</td><td><span class="tag tag-cn">CN</span></td><td>2025-04-01</td><td>2025-04-07</td><td>92.27</td><td>72.26</td><td class="negative">-21.7%</td><td>6</td><td>硬止损：浮亏-21.4%(阈值-12%)</td></tr>
-    <tr><td>5</td><td>ECHO.O</td><td>EchoStar</td><td><span class="tag tag-us">US</span></td><td>2026-01-23</td><td>2026-06-24</td><td>126.88</td><td>99.56</td><td class="negative">-21.5%</td><td>152</td><td>硬止损：浮亏-21.3%(阈值-20%)</td></tr>
-    <tr><td>6</td><td>301500.SZ</td><td>飞南资源</td><td><span class="tag tag-cn">CN</span></td><td>2025-05-29</td><td>2025-07-10</td><td>20.25</td><td>16.0</td><td class="negative">-21.0%</td><td>42</td><td>评分跌破40</td></tr>
-    <tr><td>7</td><td>QCOM.O</td><td>Qualcomm</td><td><span class="tag tag-us">US</span></td><td>2025-06-11</td><td>2026-03-27</td><td>159.96</td><td>126.73</td><td class="negative">-20.8%</td><td>289</td><td>硬止损：浮亏-20.5%(阈值-20%)</td></tr>
-    <tr><td>8</td><td>02018.HK</td><td>瑞声科技</td><td><span class="tag tag-hk">HK</span></td><td>2026-01-15</td><td>2026-03-03</td><td>39.86</td><td>32.4</td><td class="negative">-18.7%</td><td>47</td><td>硬止损：浮亏-18.5%(阈值-12%)</td></tr>
-    <tr><td>9</td><td>002155.SZ</td><td>辰州矿业</td><td><span class="tag tag-cn">CN</span></td><td>2025-05-26</td><td>2025-06-13</td><td>23.47</td><td>19.28</td><td class="negative">-17.8%</td><td>18</td><td>评分跌破40</td></tr>
-    <tr><td>10</td><td>09911.HK</td><td>赤子城科技</td><td><span class="tag tag-hk">HK</span></td><td>2025-07-18</td><td>2025-08-01</td><td>11.76</td><td>9.72</td><td class="negative">-17.3%</td><td>14</td><td>硬止损：浮亏-17.1%(阈值-12%)</td></tr>
+    <tr><td>1</td><td>PTC.O</td><td>PTC Inc.</td><td><span class="tag tag-us">US</span></td><td>2025-08-25</td><td>2026-06-11</td><td>214.99</td><td>118.03</td><td class="negative">-45.1%</td><td>290</td><td>评分跌破47(浮盈保护已观察1天)</td></tr>
+    <tr><td>2</td><td>300773.SZ</td><td>拉卡拉</td><td><span class="tag tag-cn">CN</span></td><td>2026-05-11</td><td>2026-06-22</td><td>27.67</td><td>17.85</td><td class="negative">-35.5%</td><td>42</td><td>评分跌破45(浮盈保护已观察1天)</td></tr>
+    <tr><td>3</td><td>300953.SZ</td><td>震裕科技</td><td><span class="tag tag-cn">CN</span></td><td>2026-05-25</td><td>2026-05-28</td><td>250.37</td><td>163.35</td><td class="negative">-34.8%</td><td>3</td><td>评分跌破45(浮盈保护已观察1天)</td></tr>
+    <tr><td>4</td><td>301219.SZ</td><td>腾远钴业</td><td><span class="tag tag-cn">CN</span></td><td>2026-05-15</td><td>2026-06-04</td><td>86.65</td><td>57.64</td><td class="negative">-33.5%</td><td>20</td><td>评分跌破45(浮盈保护已观察1天)</td></tr>
+    <tr><td>5</td><td>603606.SH</td><td>东方电缆</td><td><span class="tag tag-cn">CN</span></td><td>2026-05-13</td><td>2026-05-26</td><td>64.19</td><td>45.86</td><td class="negative">-28.6%</td><td>13</td><td>评分跌破45(浮盈保护已观察1天)</td></tr>
+    <tr><td>6</td><td>CHTR.O</td><td>Charter Communications</td><td><span class="tag tag-us">US</span></td><td>2025-07-10</td><td>2025-07-25</td><td>402.78</td><td>308.82</td><td class="negative">-23.3%</td><td>15</td><td>后5%排名强制卖出</td></tr>
+    <tr><td>7</td><td>01361.HK</td><td>361度</td><td><span class="tag tag-hk">HK</span></td><td>2026-04-23</td><td>2026-04-28</td><td>7.12</td><td>5.48</td><td class="negative">-23.0%</td><td>5</td><td>评分跌破47(浮盈保护已观察1天)</td></tr>
+    <tr><td>8</td><td>CHTR.O</td><td>Charter Communications</td><td><span class="tag tag-us">US</span></td><td>2026-03-04</td><td>2026-04-24</td><td>232.7</td><td>179.59</td><td class="negative">-22.8%</td><td>51</td><td>评分跌破47(浮盈保护已观察1天)</td></tr>
+    <tr><td>9</td><td>09992.HK</td><td>泡泡玛特</td><td><span class="tag tag-hk">HK</span></td><td>2026-03-17</td><td>2026-03-25</td><td>216.05</td><td>167.8</td><td class="negative">-22.3%</td><td>8</td><td>评分跌破47(浮盈保护已观察1天)</td></tr>
+    <tr><td>10</td><td>603317.SH</td><td>天味食品</td><td><span class="tag tag-cn">CN</span></td><td>2025-04-08</td><td>2025-04-29</td><td>14.6</td><td>11.59</td><td class="negative">-20.7%</td><td>21</td><td>评分跌破45(浮盈保护已观察1天)</td></tr>
   </table>
 </div>
 
@@ -289,6 +409,7 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
   <div class="chart-container small">
     <canvas id="holdDistChart"></canvas>
   </div>
+  <p style="color:#6c757d;font-size:13px;margin-top:8px;">策略X平均持仓11.6天（中位数5天），远短于B V2.1的79.5天&#8212;&#8212;高频轮换的特征。大部分交易在7天内完成买卖。</p>
 </div>
 
 <!-- ═══ 月度收益 ═══ -->
@@ -300,7 +421,7 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
 </div>
 
 <footer>
-  策略组合B V2.0 | 生成于 2026-08-12 16:41:04 | 回测引擎 backtest_strategy_b.py
+  策略组合X V1.0 | 生成于 2026-08-12 20:04:23 | 回测引擎 backtest_strategy_b.py | <b>实验策略，不建议用于实盘</b>
 </footer>
 </div>
 
@@ -371,9 +492,9 @@ new Chart(document.getElementById('navChart'), {
     labels: ["2025-04-01", "2025-04-02", "2025-04-03", "2025-04-07", "2025-04-08", "2025-04-09", "2025-04-10", "2025-04-11", "2025-04-14", "2025-04-15", "2025-04-16", "2025-04-17", "2025-04-18", "2025-04-21", "2025-04-22", "2025-04-23", "2025-04-24", "2025-04-25", "2025-04-28", "2025-04-29", "2025-04-30", "2025-05-06", "2025-05-07", "2025-05-08", "2025-05-09", "2025-05-12", "2025-05-13", "2025-05-14", "2025-05-15", "2025-05-16", "2025-05-19", "2025-05-20", "2025-05-21", "2025-05-22", "2025-05-23", "2025-05-26", "2025-05-27", "2025-05-28", "2025-05-29", "2025-05-30", "2025-06-03", "2025-06-04", "2025-06-05", "2025-06-06", "2025-06-09", "2025-06-10", "2025-06-11", "2025-06-12", "2025-06-13", "2025-06-16", "2025-06-17", "2025-06-18", "2025-06-19", "2025-06-20", "2025-06-23", "2025-06-24", "2025-06-25", "2025-06-26", "2025-06-27", "2025-06-30", "2025-07-01", "2025-07-02", "2025-07-03", "2025-07-04", "2025-07-07", "2025-07-08", "2025-07-09", "2025-07-10", "2025-07-11", "2025-07-14", "2025-07-15", "2025-07-16", "2025-07-17", "2025-07-18", "2025-07-21", "2025-07-22", "2025-07-23", "2025-07-24", "2025-07-25", "2025-07-28", "2025-07-29", "2025-07-30", "2025-07-31", "2025-08-01", "2025-08-04", "2025-08-05", "2025-08-06", "2025-08-07", "2025-08-08", "2025-08-11", "2025-08-12", "2025-08-13", "2025-08-14", "2025-08-15", "2025-08-18", "2025-08-19", "2025-08-20", "2025-08-21", "2025-08-22", "2025-08-25", "2025-08-26", "2025-08-27", "2025-08-28", "2025-08-29", "2025-09-01", "2025-09-02", "2025-09-03", "2025-09-04", "2025-09-05", "2025-09-08", "2025-09-09", "2025-09-10", "2025-09-11", "2025-09-12", "2025-09-15", "2025-09-16", "2025-09-17", "2025-09-18", "2025-09-19", "2025-09-22", "2025-09-23", "2025-09-24", "2025-09-25", "2025-09-26", "2025-09-29", "2025-09-30", "2025-10-09", "2025-10-10", "2025-10-13", "2025-10-14", "2025-10-15", "2025-10-16", "2025-10-17", "2025-10-20", "2025-10-21", "2025-10-22", "2025-10-23", "2025-10-24", "2025-10-27", "2025-10-28", "2025-10-29", "2025-10-30", "2025-10-31", "2025-11-03", "2025-11-04", "2025-11-05", "2025-11-06", "2025-11-07", "2025-11-10", "2025-11-11", "2025-11-12", "2025-11-13", "2025-11-14", "2025-11-17", "2025-11-18", "2025-11-19", "2025-11-20", "2025-11-21", "2025-11-24", "2025-11-25", "2025-11-26", "2025-11-27", "2025-11-28", "2025-12-01", "2025-12-02", "2025-12-03", "2025-12-04", "2025-12-05", "2025-12-08", "2025-12-09", "2025-12-10", "2025-12-11", "2025-12-12", "2025-12-15", "2025-12-16", "2025-12-17", "2025-12-18", "2025-12-19", "2025-12-22", "2025-12-23", "2025-12-24", "2025-12-25", "2025-12-26", "2025-12-29", "2025-12-30", "2025-12-31", "2026-01-05", "2026-01-06", "2026-01-07", "2026-01-08", "2026-01-09", "2026-01-12", "2026-01-13", "2026-01-14", "2026-01-15", "2026-01-16", "2026-01-19", "2026-01-20", "2026-01-21", "2026-01-22", "2026-01-23", "2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29", "2026-01-30", "2026-02-02", "2026-02-03", "2026-02-04", "2026-02-05", "2026-02-06", "2026-02-09", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-13", "2026-02-24", "2026-02-25", "2026-02-26", "2026-02-27", "2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-23", "2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27", "2026-03-30", "2026-03-31", "2026-04-01", "2026-04-02", "2026-04-03", "2026-04-07", "2026-04-08", "2026-04-09", "2026-04-10", "2026-04-13", "2026-04-14", "2026-04-15", "2026-04-16", "2026-04-17", "2026-04-20", "2026-04-21", "2026-04-22", "2026-04-23", "2026-04-24", "2026-04-27", "2026-04-28", "2026-04-29", "2026-04-30", "2026-05-06", "2026-05-07", "2026-05-08", "2026-05-11", "2026-05-12", "2026-05-13", "2026-05-14", "2026-05-15", "2026-05-18", "2026-05-19", "2026-05-20", "2026-05-21", "2026-05-22", "2026-05-25", "2026-05-26", "2026-05-27", "2026-05-28", "2026-05-29", "2026-06-01", "2026-06-02", "2026-06-03", "2026-06-04", "2026-06-05", "2026-06-08", "2026-06-09", "2026-06-10", "2026-06-11", "2026-06-12", "2026-06-15", "2026-06-16", "2026-06-17", "2026-06-18", "2026-06-22", "2026-06-23", "2026-06-24", "2026-06-25", "2026-06-26", "2026-06-29", "2026-06-30", "2026-07-01", "2026-07-02", "2026-07-03", "2026-07-06", "2026-07-07", "2026-07-08", "2026-07-09", "2026-07-10", "2026-07-11", "2026-07-12", "2026-07-13", "2026-07-14", "2026-07-15", "2026-07-16", "2026-07-17", "2026-07-20", "2026-07-21", "2026-07-22", "2026-07-23", "2026-07-24"],
     datasets: [{
       label: 'NAV (M CNY)',
-      data: [29.2, 29.2, 29.18, 29.05, 29.06, 29.06, 29.09, 29.1, 29.13, 29.16, 29.17, 29.17, 29.18, 29.19, 29.21, 29.19, 29.2, 29.22, 29.23, 29.22, 29.2, 29.22, 29.26, 29.27, 29.29, 29.3, 29.33, 29.44, 29.37, 29.37, 29.41, 29.51, 29.63, 29.57, 29.56, 29.58, 29.63, 29.64, 29.72, 29.62, 29.79, 29.91, 29.92, 30.04, 30.2, 30.33, 30.47, 30.58, 30.54, 30.66, 30.6, 30.66, 30.32, 30.38, 30.51, 30.69, 31.07, 31.19, 31.19, 31.22, 31.35, 31.51, 31.64, 31.62, 31.58, 31.76, 31.7, 31.78, 31.76, 31.96, 31.97, 31.9, 31.94, 32.05, 32.3, 32.46, 32.51, 32.72, 32.65, 32.71, 32.77, 32.71, 32.34, 32.21, 32.39, 32.64, 32.74, 32.89, 32.99, 32.99, 33.18, 33.42, 33.36, 33.54, 33.59, 33.53, 33.66, 33.73, 33.89, 34.29, 34.41, 34.11, 34.12, 34.35, 34.5, 34.4, 34.35, 34.12, 34.54, 34.84, 34.91, 34.93, 35.15, 35.25, 35.19, 35.09, 35.17, 34.95, 35.08, 35.09, 35.06, 35.21, 35.02, 34.99, 35.41, 35.59, 36.02, 35.74, 35.92, 35.56, 35.95, 35.9, 35.53, 35.61, 35.81, 35.72, 35.89, 36.03, 36.2, 36.0, 36.19, 36.14, 36.08, 36.25, 36.08, 36.23, 36.49, 36.6, 36.85, 36.88, 37.03, 37.1, 36.91, 36.77, 36.38, 36.43, 36.38, 35.92, 36.07, 36.28, 36.31, 36.38, 36.41, 36.62, 36.65, 36.62, 36.62, 36.74, 36.72, 36.51, 36.56, 36.47, 36.68, 36.65, 36.4, 36.54, 36.55, 36.68, 36.83, 36.93, 36.94, 36.94, 36.99, 36.84, 36.84, 36.81, 37.08, 37.4, 37.45, 37.36, 37.56, 37.64, 37.69, 37.7, 37.82, 37.75, 37.9, 38.04, 38.23, 38.31, 38.38, 38.55, 38.61, 39.03, 39.2, 38.79, 38.28, 38.51, 38.65, 38.55, 38.6, 38.83, 38.89, 39.04, 39.02, 38.77, 39.08, 39.22, 39.15, 39.33, 39.39, 39.03, 38.79, 38.82, 38.92, 38.73, 38.8, 38.93, 38.94, 38.75, 38.68, 38.66, 38.65, 38.31, 38.26, 37.76, 38.15, 38.32, 38.16, 38.21, 38.13, 38.09, 38.32, 38.3, 38.2, 38.25, 38.56, 38.52, 38.61, 38.54, 38.67, 38.63, 38.74, 38.73, 38.79, 38.9, 38.84, 38.78, 38.74, 38.74, 38.69, 38.94, 38.83, 38.99, 39.11, 39.12, 39.17, 39.11, 39.14, 39.05, 38.86, 38.68, 38.76, 38.64, 38.54, 38.58, 38.59, 38.65, 38.56, 38.45, 38.62, 38.77, 38.84, 38.77, 38.58, 38.43, 38.29, 38.29, 38.24, 38.24, 38.49, 38.56, 38.38, 38.25, 37.95, 38.01, 37.91, 37.81, 37.73, 37.59, 37.66, 37.52, 37.57, 37.64, 37.74, 37.84, 37.77, 37.8, 37.73, 37.74, 37.74, 37.74, 37.73, 37.81, 37.9, 37.89, 37.81, 37.84, 37.92, 37.93, 37.97, 37.95],
-      borderColor: '#1976d2',
-      backgroundColor: 'rgba(25,118,210,0.1)',
+      data: [58.38, 58.33, 58.09, 56.81, 56.69, 56.86, 57.38, 57.61, 57.96, 58.02, 58.03, 57.95, 57.93, 58.42, 58.47, 58.24, 58.3, 58.27, 58.16, 58.11, 58.01, 58.3, 58.51, 58.47, 58.52, 58.6, 58.73, 59.26, 58.91, 58.9, 58.89, 59.1, 59.38, 59.21, 59.02, 59.12, 59.18, 59.33, 59.42, 59.35, 59.77, 60.11, 60.26, 60.5, 60.79, 61.09, 61.42, 61.76, 61.92, 62.31, 62.18, 62.12, 61.3, 61.38, 61.59, 62.05, 63.85, 64.16, 64.17, 64.25, 64.64, 64.98, 65.34, 65.49, 65.34, 65.86, 65.43, 65.6, 65.57, 66.13, 65.73, 65.48, 65.57, 66.06, 66.77, 67.55, 67.73, 68.56, 68.4, 68.4, 68.62, 68.61, 67.76, 67.15, 67.73, 68.17, 68.67, 69.02, 69.42, 69.23, 69.97, 70.85, 70.7, 71.19, 71.2, 70.99, 71.2, 71.6, 72.62, 73.54, 74.36, 73.92, 74.3, 74.84, 75.74, 75.14, 75.2, 75.14, 76.62, 77.35, 77.32, 77.27, 78.11, 78.25, 78.29, 78.19, 78.45, 78.21, 78.61, 78.84, 78.68, 78.97, 78.43, 78.14, 79.43, 80.4, 82.18, 80.87, 81.41, 80.4, 81.51, 81.15, 80.15, 80.79, 81.09, 80.65, 81.39, 82.17, 82.78, 82.19, 83.15, 82.97, 82.91, 83.21, 82.2, 83.04, 83.54, 84.34, 85.38, 85.4, 85.82, 85.42, 84.94, 84.54, 83.0, 83.26, 83.09, 82.25, 82.61, 83.03, 83.17, 83.46, 83.46, 83.75, 83.81, 83.81, 83.56, 83.89, 83.59, 82.81, 83.08, 82.91, 83.42, 83.21, 82.32, 82.82, 82.69, 82.93, 83.47, 83.5, 83.6, 83.49, 84.02, 83.43, 83.58, 83.57, 84.39, 85.39, 85.33, 85.2, 85.75, 86.03, 86.04, 86.2, 86.88, 86.59, 87.31, 87.39, 88.67, 88.8, 89.08, 89.45, 89.62, 90.63, 90.84, 89.61, 88.33, 89.39, 89.83, 89.3, 89.71, 90.47, 90.3, 90.49, 90.2, 89.61, 90.53, 90.96, 90.9, 91.01, 91.15, 89.98, 89.45, 89.72, 90.05, 89.77, 90.01, 90.44, 90.33, 89.73, 89.56, 89.53, 89.43, 88.72, 88.49, 87.27, 88.37, 88.78, 88.59, 88.53, 88.36, 88.32, 88.79, 88.95, 88.72, 88.77, 89.33, 89.23, 89.33, 89.24, 89.59, 89.72, 89.86, 89.82, 90.1, 90.56, 90.45, 90.32, 90.05, 90.12, 90.15, 90.85, 90.89, 91.2, 91.37, 91.58, 91.89, 91.5, 91.9, 91.49, 90.68, 90.45, 90.49, 90.22, 89.81, 90.53, 90.62, 90.78, 90.42, 90.54, 90.95, 91.29, 91.41, 91.51, 91.01, 90.21, 89.68, 89.74, 89.42, 89.3, 89.94, 90.45, 90.05, 89.53, 88.62, 88.66, 88.29, 88.11, 88.1, 87.67, 88.01, 87.49, 88.04, 88.14, 88.59, 89.12, 88.76, 88.83, 88.71, 88.64, 88.64, 88.64, 88.62, 88.99, 89.37, 89.34, 89.15, 89.29, 89.43, 89.44, 89.69, 89.6],
+      borderColor: '#7b1fa2',
+      backgroundColor: 'rgba(123,31,162,0.1)',
       fill: true,
       pointRadius: 0,
       borderWidth: 2,
@@ -390,7 +511,7 @@ new Chart(document.getElementById('navChart'), {
   }
 });
 
-// 市场状态分布（分市场堆叠）
+// 市场状态分布
 new Chart(document.getElementById('stateChart'), {
   type: 'bar',
   data: {
@@ -411,8 +532,8 @@ new Chart(document.getElementById('holdDistChart'), {
     labels: ['0-7天','7-30天','30-90天','90-180天','180-365天','365天+'],
     datasets: [{
       label: '交易数',
-      data: [44, 66, 108, 87, 87, 24],
-      backgroundColor: '#1976d2',
+      data: [619, 684, 191, 30, 7, 1],
+      backgroundColor: '#7b1fa2',
     }]
   },
   options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}} }
@@ -425,8 +546,8 @@ new Chart(document.getElementById('monthlyChart'), {
     labels: ["2025-04", "2025-05", "2025-06", "2025-07", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07"],
     datasets: [{
       label: '月度收益(%)',
-      data: [0.0, 1.44, 5.29, 3.55, 6.04, 3.6, 1.4, 0.94, 1.11, 5.24, 1.41, -3.17, 1.93, -0.54, -2.87, 1.15],
-      backgroundColor: ["#2e7d32", "#2e7d32", "#2e7d32", "#2e7d32", "#2e7d32", "#2e7d32", "#2e7d32", "#2e7d32", "#2e7d32", "#2e7d32", "#2e7d32", "#c62828", "#2e7d32", "#c62828", "#c62828", "#2e7d32"],
+      data: [-0.6, 2.3, 7.99, 5.37, 10.0, 7.24, 3.16, 0.72, 0.16, 7.03, 1.59, -2.96, 2.87, 0.09, -3.85, 2.39],
+      backgroundColor: ["#c62828", "#2e7d32", "#2e7d32", "#2e7d32", "#2e7d32", "#2e7d32", "#2e7d32", "#2e7d32", "#2e7d32", "#2e7d32", "#2e7d32", "#c62828", "#2e7d32", "#2e7d32", "#c62828", "#2e7d32"],
     }]
   },
   options: {
