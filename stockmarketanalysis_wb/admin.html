@@ -497,6 +497,7 @@ function confirmAction() {
   if (currentAction !== 'sell') {
     shares = parseInt(document.getElementById('modalShares').value, 10);
     if (!shares || shares <= 0) { showToast('请输入有效股数', 'error'); return; }
+    if (shares > 99999999) { showToast('股数过大（>' + 99999999 + '），请核对输入', 'error'); return; }
   }
 
   const mkt = (currentMarket || marketFromCode(currentCode) || 'CN').toUpperCase();
@@ -528,7 +529,14 @@ function confirmAction() {
     actionLabel = 'add';
     dirtyFiles.add(holdingsKey);
   } else if (currentAction === 'reduce') {
-    const newShares = Math.max(0, oldShares - shares);
+    if (shares > oldShares) {
+      // 减仓超过持仓：报错而非静默清仓（防止手滑输错数量导致整仓卖出）
+      showToast('减仓 ' + shares + ' 股超过当前持仓 ' + oldShares + ' 股。如要清仓请使用「卖出」操作', 'error');
+      renderHoldings();
+      renderPostSell();
+      return;
+    }
+    const newShares = oldShares - shares;
     if (newShares === 0) {
       // 清仓：移到 post_sell
       const psObj = localData[postSellKey] || {};
@@ -653,6 +661,8 @@ async function uploadAll() {
   let failCount = 0;
   const errors = [];
 
+  const doneFiles = new Set();  // 本轮上传成功的文件
+
   for (let i = 0; i < filesToUpload.length; i++) {
     const f = filesToUpload[i];
     const el = document.getElementById('upload-' + f);
@@ -675,6 +685,7 @@ async function uploadAll() {
 
       // 更新云端基线
       cloudData[f] = { content: {...content}, sha: newSha };
+      doneFiles.add(f);
 
       if (el) el.innerHTML = '✅ ' + f + '.json — 成功';
       successCount++;
@@ -689,18 +700,21 @@ async function uploadAll() {
   await new Promise(r => setTimeout(r, 1000));
   document.getElementById('uploadModal').style.display = 'none';
 
+  // 只清除已成功上传文件的待上传标记；失败文件的本地修改全部保留，可直接重试
+  for (const f of doneFiles) dirtyFiles.delete(f);
+  pendingChanges = pendingChanges.filter(c =>
+    !doneFiles.has(c.file) &&
+    !(c.type === 'sell' && doneFiles.has('post_sell_' + c.code))
+  );
+  updatePendingUI();
+
   if (failCount === 0) {
-    // 全部成功
-    pendingChanges = [];
-    dirtyFiles = new Set();
-    updatePendingUI();
     showToast('✅ ' + successCount + ' 个文件已上传到云端', 'success');
   } else {
-    // 部分失败：只清除成功的文件标记
-    // 重新从GitHub拉取失败的数据，保持本地修改
-    showToast('⚠️ ' + successCount + ' 成功, ' + failCount + ' 失败: ' + errors.join('; '), 'error');
-    // 重新加载所有数据（简单处理）
-    await loadData();
+    // 部分失败：保留失败文件的本地修改（绝不能 loadData()，否则未上传的操作会被清空）
+    showToast('⚠️ ' + successCount + ' 成功, ' + failCount + ' 失败（本地修改已保留，可直接重试）: ' + errors.join('; '), 'error');
+    renderHoldings();
+    renderPostSell();
   }
 
   uploadBtn.disabled = false;
