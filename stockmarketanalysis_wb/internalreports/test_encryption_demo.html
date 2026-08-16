@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>内部报告</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+         background: #0f172a; color: #e2e8f0; min-height: 100vh;
+         display: flex; align-items: center; justify-content: center; }
+  .box { background: #1e293b; border: 1px solid #334155; border-radius: 12px;
+         padding: 40px 36px; width: 360px; max-width: 92vw; text-align: center; }
+  .box h1 { font-size: 1.05rem; font-weight: 600; margin-bottom: 6px; }
+  .box p { font-size: 0.82rem; color: #94a3b8; margin-bottom: 22px; }
+  input[type=password] { width: 100%; padding: 11px 14px; border-radius: 8px;
+         border: 1px solid #475569; background: #0f172a; color: #e2e8f0;
+         font-size: 1rem; outline: none; }
+  input[type=password]:focus { border-color: #6366f1; }
+  button { width: 100%; margin-top: 14px; padding: 11px; border: none; border-radius: 8px;
+         background: #6366f1; color: #fff; font-size: 0.95rem; cursor: pointer; }
+  button:hover { background: #4f46e5; }
+  .err { color: #f87171; font-size: 0.8rem; margin-top: 12px; min-height: 1.2em; }
+  #content { display: none; }
+  iframe { width: 100%; height: 100vh; border: none; }
+</style>
+</head>
+<body>
+<div class="box" id="gate">
+  <h1>🔒 内部报告</h1>
+  <p>此内容已加密，请输入访问密码</p>
+  <input type="password" id="pwd" placeholder="访问密码" autocomplete="off">
+  <button id="btn">解密查看</button>
+  <div class="err" id="err"></div>
+</div>
+<div id="content"></div>
+<script>
+(function () {
+  const B64 = "0m+Qxk9l5fGy5Nt1XXdFj4aeXvz0bGYRKK7smCywOEMgCsO5v/dSSaxb5MP2krMvvKK77p2AMb8q2CrMg5uKl7iy3/aGmZMXhg5nC9pK6lIJjoMNi1PbyXQ2Ut7sfN+ZU4VKK+ZQZQWV9p94vpHImXSNm+0Ey2MVjtsbWETqy7K5pzUrOOpb/KxrEoDuw51GcIWaP3gFkYG0vxXTR4jHRjxxNYuuTNMEV2SvG+HZ8DxjH4WFuifpYPsjMxHYc5IlQufhQ9oEfPYeIt0/QGYk57H2LUKyC0gMKV6F0ByIJFexmuJr66Ep9NP5grTaHHxBJHXdJ0MfemHGxyo7MY+/wz3ou1Xe+GIIa7qbPiqS9XG9P4SnHi7aNVe54TiKn/VIxA==";
+
+  function $ (id) { return document.getElementById(id); }
+
+  async function decrypt(pwd) {
+    const blob = Uint8Array.from(atob(B64), c => c.charCodeAt(0));
+    const salt = blob.slice(0, 16), iv = blob.slice(16, 28), data = blob.slice(28);
+    const km = await crypto.subtle.importKey('raw', new TextEncoder().encode(pwd),
+      { name: 'PBKDF2' }, false, ['deriveKey']);
+    const key = await crypto.subtle.deriveKey(
+      { name: 'PBKDF2', salt, iterations: 100000, hash: 'SHA-256' }, km,
+      { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+    const buf = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, data);
+    return new TextDecoder().decode(buf);
+  }
+
+  async function tryUnlock() {
+    const pwd = $('pwd').value;
+    if (!pwd) return;
+    $('err').textContent = '';
+    $('btn').disabled = true; $('btn').textContent = '解密中...';
+    try {
+      const html = await decrypt(pwd);
+      // 用 iframe srcdoc 沙箱渲染解密后的完整报告（保留其脚本与样式）
+      const f = document.createElement('iframe');
+      f.setAttribute('sandbox', 'allow-scripts allow-popups allow-modals');
+      f.srcdoc = html;
+      document.title = '内部报告 - 已解锁';
+      $('gate').style.display = 'none';
+      $('content').style.display = 'block';
+      $('content').appendChild(f);
+      // 本会话内记住密码，避免翻页重复输入
+      try { sessionStorage.setItem('wb_report_pwd', pwd); } catch (e) {}
+    } catch (e) {
+      $('err').textContent = '密码错误或解密失败';
+    } finally {
+      $('btn').disabled = false; $('btn').textContent = '解密查看';
+    }
+  }
+
+  $('btn').addEventListener('click', tryUnlock);
+  $('pwd').addEventListener('keydown', e => { if (e.key === 'Enter') tryUnlock(); });
+
+  // 同一会话自动解锁（已输过密码）
+  const cached = sessionStorage.getItem('wb_report_pwd');
+  if (cached) { $('pwd').value = cached; tryUnlock(); }
+})();
+</script>
+</body>
+</html>
