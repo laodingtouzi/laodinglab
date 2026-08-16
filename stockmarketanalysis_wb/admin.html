@@ -578,6 +578,11 @@ function confirmAction() {
     return;
   }
 
+  // 打上管理员操作时间戳（部署合并时据此识别管理端修改，避免被引擎旧数据覆盖）
+  if (obj[currentCode]) obj[currentCode].admin_updated_at = new Date().toISOString();
+  const psObjAfter = localData[postSellKey];
+  if (psObjAfter && psObjAfter[currentCode]) psObjAfter[currentCode].admin_updated_at = new Date().toISOString();
+
   localData[holdingsKey] = obj;
 
   // 记录操作
