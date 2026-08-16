@@ -600,7 +600,8 @@ function confirmAction() {
     name: currentName,
     detail: actionMsg,
     time: _nowTime(),
-    file: holdingsKey
+    file: holdingsKey,
+    market: mkt
   });
 
   updatePendingUI();
@@ -616,6 +617,7 @@ function doDelist(code) {
     const postSellKey = 'post_sell_' + m;
     const psObj = localData[postSellKey] || {};
     if (psObj[code]) {
+      const delistName = psObj[code].name || '';
       delete psObj[code];
       localData[postSellKey] = psObj;
       dirtyFiles.add(postSellKey);
@@ -623,7 +625,7 @@ function doDelist(code) {
       pendingChanges.push({
         type: 'delist',
         code: code,
-        name: psObj[code] ? (psObj[code].name || '') : '',
+        name: delistName,
         detail: '从 ' + m + ' 观察池剔除',
         time: _nowTime(),
         file: postSellKey
@@ -672,7 +674,7 @@ async function uploadAll() {
       const sha = cloudData[f] ? cloudData[f].sha : null;
       const content = localData[f];
       const msgParts = pendingChanges
-        .filter(c => c.file === f || (c.type === 'sell' && f === 'post_sell_' + c.code))
+        .filter(c => c.file === f || (c.type === 'sell' && 'post_sell_' + c.market === f))
         .map(c => c.code + ':' + c.detail);
       const commitMsg = 'Admin batch: ' + (msgParts.length > 0 ? msgParts.join('; ') : f);
 
@@ -704,7 +706,7 @@ async function uploadAll() {
   for (const f of doneFiles) dirtyFiles.delete(f);
   pendingChanges = pendingChanges.filter(c =>
     !doneFiles.has(c.file) &&
-    !(c.type === 'sell' && doneFiles.has('post_sell_' + c.code))
+    !(c.type === 'sell' && doneFiles.has('post_sell_' + c.market))
   );
   updatePendingUI();
 
@@ -832,10 +834,6 @@ function renderHoldings() {
   }).join('');
   document.getElementById('holdingsLoading').style.display = 'none';
   document.getElementById('holdingsTable').style.display = 'block';
-}
-
-function filterHoldings() {
-  filterTable('holdingsTableEl', document.getElementById('holdingsSearch').value);
 }
 
 // ========== 排序 & 搜索 ==========
