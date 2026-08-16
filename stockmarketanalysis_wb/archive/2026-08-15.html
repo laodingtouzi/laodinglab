@@ -828,16 +828,19 @@ tr:hover { background: #f1ebff; }
 </div>
 <script>
 (function(){
-  // 复用管理员页面的 GitHub Token（管理员页面存储在 sessionStorage）
+  // GitHub Token 管理：sessionStorage 优先，localStorage 兜底；401 时自动从 auth.dat 更新
   const GH_API = 'https://api.github.com';
   const GH_OWNER = 'laodingtouzi';
   const GH_REPO = 'laodinglab';
   const GH_BRANCH = 'main';
   const WL_PATH = 'data/portfolio_wb/watch_list.json';
-  const IS_LOCAL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  const WL_AUTH_FILE = '/stockmarketanalysis_wb/auth.dat';
 
   function getToken() {
     try { return sessionStorage.getItem('wb_gh_token') || localStorage.getItem('wb_gh_token') || ''; } catch(e) { return ''; }
+  }
+  function setToken(t) {
+    try { sessionStorage.setItem('wb_gh_token', t); localStorage.setItem('wb_gh_token', t); } catch(e) {}
   }
 
   function wlToast(msg, type) {
@@ -850,30 +853,75 @@ tr:hover { background: #f1ebff; }
     el._timer = setTimeout(() => { el.style.display = 'none'; }, 5000);
   }
 
-  async function ghGet(path) {
+  // 401 自动恢复：拉取 auth.dat（AES-256-GCM 加密 Token）→ 密码解密 → 更新本地 Token
+  async function refreshTokenInteractive() {
+    const pwd = window.prompt('GitHub Token 已失效。\n请输入管理密码，系统将自动更新 Token 并重试操作：');
+    if (!pwd) return null;
+    const resp = await fetch(WL_AUTH_FILE + '?t=' + Date.now(), { cache: 'no-store' });
+    if (!resp.ok) throw new Error('auth.dat 加载失败（HTTP ' + resp.status + '）');
+    const b64 = (await resp.text()).trim();
+    const blob = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+    const salt = blob.slice(0, 16), iv = blob.slice(16, 28), data = blob.slice(28);
+    const km = await crypto.subtle.importKey('raw', new TextEncoder().encode(pwd), { name: 'PBKDF2' }, false, ['deriveKey']);
+    const aesKey = await crypto.subtle.deriveKey(
+      { name: 'PBKDF2', salt, iterations: 100000, hash: 'SHA-256' }, km,
+      { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+    const dec = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, aesKey, data);
+    const token = new TextDecoder().decode(dec);
+    if (!token || !token.startsWith('ghp_')) throw new Error('解密结果无效');
+    return token;
+  }
+
+  let _wlRefreshing = false;
+  async function ensureFreshToken() {
+    if (_wlRefreshing) return null;
+    _wlRefreshing = true;
+    try {
+      wlToast('Token 失效，正在请求更新...', 'info');
+      const t = await refreshTokenInteractive();
+      if (t) { setToken(t); wlToast('Token 已自动更新，正在重试...', 'success'); }
+      return t;
+    } catch (e) {
+      wlToast('Token 更新失败: ' + e.message, 'error');
+      return null;
+    } finally {
+      setTimeout(() => { _wlRefreshing = false; }, 1000);
+    }
+  }
+
+  async function ghGet(path, _retry) {
+    if (_retry === undefined) _retry = true;
     const token = getToken();
     const headers = { 'Accept': 'application/vnd.github.v3+json', 'User-Agent': 'watchlist-sync' };
-    if (!IS_LOCAL && token) headers['Authorization'] = 'token ' + token;
-    const url = IS_LOCAL ? `/api/gh/contents/${path}?ref=${GH_BRANCH}&t=${Date.now()}`
-                         : `${GH_API}/repos/${GH_OWNER}/${GH_REPO}/contents/${path}?ref=${GH_BRANCH}&t=${Date.now()}`;
+    if (token) headers['Authorization'] = 'token ' + token;
+    const url = `${GH_API}/repos/${GH_OWNER}/${GH_REPO}/contents/${path}?ref=${GH_BRANCH}&t=${Date.now()}`;
     const resp = await fetch(url, { headers, cache: 'no-store' });
     if (resp.status === 404) return null;
-    if (resp.status === 401) { wlToast('GitHub Token 已失效，请先在管理员页面登录', 'error'); throw new Error('401'); }
+    if (resp.status === 401) {
+      if (_retry) { const t = await ensureFreshToken(); if (t) return ghGet(path, false); }
+      wlToast('Token 更新失败，请到 admin.html 重新登录', 'error');
+      throw new Error('401');
+    }
     if (!resp.ok) throw new Error('GET HTTP ' + resp.status);
     const data = await resp.json();
     const text = atob(data.content.replace(/\n/g, ''));
     return { content: JSON.parse(text), sha: data.sha };
   }
 
-  async function ghPut(path, content, sha, message) {
+  async function ghPut(path, content, sha, message, _retry) {
+    if (_retry === undefined) _retry = true;
     const token = getToken();
     const headers = { 'Accept': 'application/vnd.github.v3+json', 'User-Agent': 'watchlist-sync' };
-    if (!IS_LOCAL && token) headers['Authorization'] = 'token ' + token;
-    const url = IS_LOCAL ? `/api/gh/contents/${path}` : `${GH_API}/repos/${GH_OWNER}/${GH_REPO}/contents/${path}`;
+    if (token) headers['Authorization'] = 'token ' + token;
+    const url = `${GH_API}/repos/${GH_OWNER}/${GH_REPO}/contents/${path}`;
     const body = { message, content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))), branch: GH_BRANCH };
     if (sha) body.sha = sha;
     const resp = await fetch(url, { method: 'PUT', headers, body: JSON.stringify(body) });
-    if (resp.status === 401) { wlToast('GitHub Token 已失效，请先在管理员页面登录', 'error'); throw new Error('401'); }
+    if (resp.status === 401) {
+      if (_retry) { const t = await ensureFreshToken(); if (t) return ghPut(path, content, sha, message, false); }
+      wlToast('Token 更新失败，请到 admin.html 重新登录', 'error');
+      throw new Error('401');
+    }
     if (!resp.ok) { const err = await resp.text().catch(() => ''); throw new Error('PUT HTTP ' + resp.status + ' ' + err.slice(0,150)); }
     return true;
   }
