@@ -16962,9 +16962,29 @@ document.addEventListener('keydown', function(e) {
     }
   }
 
+  // 动态识别列索引（表头可能增删列，不能写死下标）
+  function _holdingsColIdx(){
+    const thead = document.querySelector('#holdingsTable thead');
+    if(!thead) return null;
+    const ths = thead.querySelectorAll('th');
+    const idx = {};
+    ths.forEach((th, i) => {
+      const label = (th.textContent || '').replace(/[↕↑↓\s]/g, '');
+      if(label === '股数') idx.shares = i;
+      else if(label.indexOf('市值') === 0) idx.mv = i;
+      else if(label.indexOf('盈亏') === 0 && label.indexOf('%') >= 0) idx.pnl = i;
+    });
+    if(idx.shares === undefined) return null;
+    idx.mv = idx.mv !== undefined ? idx.mv : idx.shares + 1;
+    idx.pnl = idx.pnl !== undefined ? idx.pnl : idx.shares + 2;
+    return idx;
+  }
+
   function patchHoldingsTable(live){
-    const table = document.querySelector('#holdings table tbody');
+    const table = document.querySelector('#holdingsTable tbody');
     if(!table) return;
+    const colIdx = _holdingsColIdx();
+    if(!colIdx){ console.warn('[LiveSync] 未找到持仓表头，跳过'); return; }
     let changed = 0, removed = 0;
     table.querySelectorAll('tr[data-code]').forEach(tr => {
       const code = tr.getAttribute('data-code');
@@ -16988,7 +17008,7 @@ document.addEventListener('keydown', function(e) {
       }
       const h = live[code];
       // 检查股数是否变化
-      const sharesCell = tr.cells[7]; // shares 列
+      const sharesCell = tr.cells[colIdx.shares];
       if(!sharesCell) return;
       const liveShares = Number(h.shares||0);
       const htmlShares = parseInt(sharesCell.textContent.replace(/,/g,''),10)||0;
@@ -16996,14 +17016,14 @@ document.addEventListener('keydown', function(e) {
         // 更新股数
         sharesCell.textContent = fmtInt(liveShares);
         // 更新盈亏%
-        const pnlCell = tr.cells[9];
+        const pnlCell = tr.cells[colIdx.pnl];
         if(pnlCell){
           const tr_val = Number(h.total_return||0);
           pnlCell.textContent = fmtPct(tr_val);
           pnlCell.style.color = tr_val >= 0 ? 'var(--buy)' : 'var(--sell)';
         }
         // 更新市值
-        const mvCell = tr.cells[8];
+        const mvCell = tr.cells[colIdx.mv];
         if(mvCell) mvCell.textContent = fmtWan(h.market_value||0) + '万';
         // 添加更新标记
         if(!tr.querySelector('.sync-badge')){
