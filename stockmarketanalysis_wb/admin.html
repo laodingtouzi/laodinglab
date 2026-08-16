@@ -241,15 +241,17 @@ let localData = {};
 let pendingChanges = [];
 let dirtyFiles = new Set();
 
-// ============ Token 管理 (sessionStorage) ============
+// ============ Token 管理 (sessionStorage 优先，同步写 localStorage 供主报告盯盘池使用) ============
 function getToken() {
-  return sessionStorage.getItem('wb_gh_token') || '';
+  return sessionStorage.getItem('wb_gh_token') || localStorage.getItem('wb_gh_token') || '';
 }
 function setToken(token) {
   sessionStorage.setItem('wb_gh_token', token);
+  try { localStorage.setItem('wb_gh_token', token); } catch (e) {}
 }
 function clearToken() {
   sessionStorage.removeItem('wb_gh_token');
+  try { localStorage.removeItem('wb_gh_token'); } catch (e) {}
 }
 
 // ============ AES-256-GCM 解密 (Web Crypto API) ============
