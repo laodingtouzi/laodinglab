@@ -1,0 +1,117 @@
+{
+  "name": "策略组合X-Lite",
+  "description": "策略X-Lite v1.1：降频版X，个人投资者可执行。买入门槛68/70/70（略高于X的65/68/68）；仓位1%(10万/只)三市场统一；卖出阈值40/42/42（同B V2.1）让弱股正常淘汰；最小持有期5天防止刚买就卖；止损-15%加入下行保护；保留X核心alpha：42%+MACD止盈、动量权重20%。",
+  "version": "v1.1",
+  "version_id": "X_Lite_v1.0",
+  "created_at": "2026-08-13",
+  "status": "archived",
+  "factor_weights": {
+    "quality": 0.25,
+    "valuation": 0.15,
+    "sentiment_event": 0.2,
+    "technical": 0.2,
+    "momentum": 0.2
+  },
+  "quality_sub": {
+    "financial": 0.6,
+    "trend": 0.25,
+    "low_vol": 0.15
+  },
+  "buy_threshold": 68,
+  "buy_threshold_us": 70,
+  "buy_threshold_hk": 70,
+  "sell_threshold": 40,
+  "sell_threshold_us": 42,
+  "sell_threshold_hk": 42,
+  "hard_stop_loss": -15.0,
+  "hard_stop_loss_us": -15.0,
+  "hard_stop_loss_hk": -15.0,
+  "short_stop_pct": -10.0,
+  "short_stop_days": 5,
+  "dynamic_weights": {
+    "trend": {
+      "quality": 0.25,
+      "valuation": 0.15,
+      "sentiment_event": 0.2,
+      "technical": 0.2,
+      "momentum": 0.2
+    },
+    "range": {
+      "quality": 0.25,
+      "valuation": 0.15,
+      "sentiment_event": 0.2,
+      "technical": 0.2,
+      "momentum": 0.2
+    },
+    "risk": {
+      "quality": 0.25,
+      "valuation": 0.15,
+      "sentiment_event": 0.2,
+      "technical": 0.2,
+      "momentum": 0.2
+    }
+  },
+  "market_state_params": {
+    "ma_period": 20,
+    "volume_ratio_threshold": 1.2,
+    "volatility_high": 35,
+    "slope_risk_threshold": -1.5,
+    "per_market": true
+  },
+  "position_per_stock": 0.01,
+  "risk_budget_pct": {
+    "CN": 0.003,
+    "HK": 0.0035,
+    "US": 0.004
+  },
+  "max_position_pct": 0.03,
+  "max_holdings": 999,
+  "signal_strong": 0.7,
+  "signal_weak": 0.5,
+  "position_strong": 0.08,
+  "position_weak": 0.04,
+  "total_position_cap": 0.95,
+  "rebalance_days": 1,
+  "hold_reduce_days": 999,
+  "hold_force_sell_days": 999,
+  "take_profit_pct": 42.0,
+  "take_profit_macd": true,
+  "take_profit_pure": 999.0,
+  "signal_sell_score": 30,
+  "gradient_deleverage": false,
+  "profit_protect_pct": 999.0,
+  "profit_protect_watch_days": 0,
+  "sector_buffer_threshold": 999,
+  "sector_buffer_min_hold": 999,
+  "min_hold_rotation": 5,
+  "pools": {
+    "CN": {
+      "capital": 10000000,
+      "h_limit": 100000,
+      "m_limit": 50000,
+      "currency": "CNY"
+    },
+    "HK": {
+      "capital": 10000000,
+      "h_limit": 100000,
+      "m_limit": 50000,
+      "currency": "HKD"
+    },
+    "US": {
+      "capital": 1388888.8888888888,
+      "h_limit": 13888.888888888889,
+      "m_limit": 6944.444444444444,
+      "currency": "USD"
+    }
+  },
+  "usd_cny": 7.2,
+  "hkd_cny": 0.92,
+  "cooldown_normal": 3,
+  "cooldown_hard_stop": 7,
+  "slippage": 0.003,
+  "commission": 0.00025,
+  "backtest_start": "2025-04-01",
+  "backtest_end": "2026-07-24",
+  "warmup_days": 60,
+  "observation_end": ""
+}
