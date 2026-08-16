@@ -305,8 +305,15 @@ async function doLogin() {
     errEl.style.display = 'none';
     loadData();
   } catch (e) {
-    errEl.textContent = '密码错误或解密失败';
+    // 显示具体错误，便于排查 fetch 失败 / 密码错 / 解密失败
+    const msg = String(e && e.message || e);
+    let detail = '密码错误或解密失败';
+    if (/加载认证文件/i.test(msg)) detail = '加载 auth.dat 失败：' + msg + '（请检查网络或 CDN）';
+    else if (/decrypt|AES|GCM|tag/i.test(msg)) detail = 'AES-GCM 解密失败：' + msg + '（密码可能不正确）';
+    else if (msg && msg !== '解密失败') detail = msg;
+    errEl.textContent = detail;
     errEl.style.display = 'block';
+    console.error('[admin] login error:', e);
   }
 }
 
