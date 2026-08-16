@@ -73,7 +73,7 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
 <header>
 <h1>三市场量化模型回测报告</h1>
 <div class="subtitle">Quality + Valuation + Sentiment + Technical + Momentum 五因子模型</div>
-<div class="date">回测区间: 2025-04-01 ~ 2026-07-24 | 322个交易日 | 报告生成于 2026-08-16 15:22:21</div>
+<div class="date">回测区间: 2025-04-01 ~ 2026-07-24 | 322个交易日 | 报告生成于 2026-08-16 22:06:41</div>
 <a class="back-link" href="/stockmarketanalysis_wb/">← 返回主报告</a>
 
 <!-- 版本选择器 -->
@@ -87,7 +87,7 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
     <option value="B_v2.1" data-file="backtest_history/backtest_report_Bv2.1_20260816_1522.html">策略组合B v2.1</option>
     <option value="X_v1.0" data-file="backtest_history/backtest_report_Xv1.0_20260815_0039.html">策略组合X v1.0</option>
     <option value="X_Lite_v1.0" data-file="backtest_history/backtest_report_XLitev1.0_20260816_1522.html">策略组合X-Lite v1.1</option>
-    <option value="MSAM_v1.0" data-file="backtest_history/backtest_report_MSAMv1.0_20260816_1522.html" selected>MSAM策略组合 v1.0</option>
+    <option value="MSAM_v1.0" data-file="backtest_history/backtest_report_MSAMv1.0_20260816_2206.html" selected>MSAM策略组合 v1.0</option>
   </select>
 </div>
 <div class="version-meta" id="versionMeta">共 8 个版本</div>
@@ -103,7 +103,7 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
     <table style="font-size:12px">
     <tr><th>市场</th><th>子策略</th><th>因子权重(Q/V/S/T/M)</th><th>买入/卖出</th><th>止损/止盈</th></tr>
     <tr><td>🇨🇳 CN</td><td><strong>B_v2.1</strong></td><td>25/25/20/15/15</td><td>≥65 / &lt;40</td><td>-12.0% / +50.0%</td></tr>
-    <tr><td>🇭🇰 HK</td><td><strong>A_v1.0</strong></td><td>30/20/20/15/15</td><td>≥0 / &lt;0</td><td>-15.0% / +15.0%</td></tr>
+    <tr><td>🇭🇰 HK</td><td><strong>A_v1.0</strong></td><td>30/20/20/15/15</td><td>≥65 / &lt;40</td><td>-15.0% / +15.0%</td></tr>
     <tr><td>🇺🇸 US</td><td><strong>X_Lite_v1.0</strong></td><td>25/15/20/20/20</td><td>≥70 / &lt;42</td><td>-15.0% / +42.0%</td></tr>
     </table>
     <div style="font-size:11px;color:#666;margin-top:6px">Quality子因子: 财务60% / 趋势25% / 低波15% | 情绪缓存(无缓存=50中性) | MA/RSI/MACD | 20/60日动量</div>
@@ -124,7 +124,7 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
 </div>
 <div style="background:#f8f9fa;padding:10px 14px;border-radius:8px;font-size:12px;color:#495057">
   <strong>策略说明:</strong> 三市场混合策略路由组合：CN→B_v2.1（增强因子+V2.1保护）/ HK→A_v1.0（标准5因子）/ US→X_Lite_v1.0（动量倾斜+最小持有期）。仓位统一为风险驱动模型（risk_budget/volatility + 安全网），市场状态分类参数、阈值、止损止盈按各市场路由子策略执行。本 profile 为组合注册项，字段值为默认占位，实际参数以 get_strategy_for_market(market) 为准。<br>
-  <strong>创建时间:</strong> 2026-08-15  |  <strong>报告生成时间:</strong> <span style="color:#c62828;font-weight:600">2026-08-16 15:22:21</span>
+  <strong>创建时间:</strong> 2026-08-15  |  <strong>报告生成时间:</strong> <span style="color:#c62828;font-weight:600">2026-08-16 22:06:41</span>
 </div>
 </div>
 
@@ -250,7 +250,7 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
 </div>
 </div>
 
-<footer>三市场量化模型回测报告（MSAM） | 生成于 2026-08-16 15:22</footer>
+<footer>三市场量化模型回测报告（MSAM） | 生成于 2026-08-16 22:06</footer>
 </div>
 
 <script>
@@ -402,86 +402,5 @@ function switchVersion() {
 })();
 </script>
 
-
-<!-- ═══ 新旧策略对比分析 ═══ -->
-<div class="section">
-  <h2>📊 MSAM策略组合新旧对比（固定金额 → 风险驱动）</h2>
-  <div style="background:#f0f7ff;padding:10px 14px;border-radius:8px;margin-bottom:12px;font-size:13px;color:#495057">
-    <strong>变更说明：</strong>仓位模型从"固定金额"（position_per_stock×capital）改为"风险驱动"
-    （risk_budget_pct × capital / volatility），波动率在分母直接驱动仓位大小。
-    高波动自动减仓、低波动自动加仓，每只股票对组合的风险贡献恒定。
-  </div>
-  <table style="width:100%;border-collapse:collapse">
-    <tr style="background:#e8eef5">
-      <th style="text-align:left;padding:8px">指标</th>
-      <th style="text-align:center;padding:8px">旧策略（固定金额）</th>
-      <th style="text-align:center;padding:8px">新策略（风险驱动）</th>
-    </tr>
-    <tr>
-      <td>总收益率%</td>
-      <td style="text-align:center">29.70%</td>
-      <td style="text-align:center;font-weight:bold">21.60% <span style="color:#c62828;font-size:11px">(-8.10%)</span></td>
-    </tr>
-    <tr>
-      <td>最大回撤%</td>
-      <td style="text-align:center">-6.03%</td>
-      <td style="text-align:center;font-weight:bold">-5.43% <span style="color:#c62828;font-size:11px">(+0.60%)</span></td>
-    </tr>
-    <tr>
-      <td>夏普比率</td>
-      <td style="text-align:center">2.48</td>
-      <td style="text-align:center;font-weight:bold">2.37 <span style="color:#c62828;font-size:11px">(-0.11)</span></td>
-    </tr>
-    <tr>
-      <td>总交易数</td>
-      <td style="text-align:center">208</td>
-      <td style="text-align:center;font-weight:bold">989 <span style="color:#16a34a;font-size:11px">(+781.00)</span></td>
-    </tr>
-    <tr>
-      <td>胜率%</td>
-      <td style="text-align:center">49.50%</td>
-      <td style="text-align:center;font-weight:bold">51.60% <span style="color:#16a34a;font-size:11px">(+2.10%)</span></td>
-    </tr>
-  </table>
-  <h3 style="margin-top:16px">分市场对比</h3>
-  <table style="width:100%;border-collapse:collapse">
-    <tr style="background:#e8eef5">
-      <th style="text-align:left;padding:8px">市场</th>
-      <th style="text-align:center;padding:8px">旧-交易数</th>
-      <th style="text-align:center;padding:8px">新-交易数</th>
-      <th style="text-align:center;padding:8px">旧-胜率</th>
-      <th style="text-align:center;padding:8px">新-胜率</th>
-      <th style="text-align:center;padding:8px">旧-均收益</th>
-      <th style="text-align:center;padding:8px">新-均收益</th>
-    </tr>
-    <tr>
-      <td>CN</td>
-      <td style="text-align:center">26</td>
-      <td style="text-align:center">156</td>
-      <td style="text-align:center">46.2%</td>
-      <td style="text-align:center">50.6%</td>
-      <td style="text-align:center">55.5%</td>
-      <td style="text-align:center">24.25%</td>
-    </tr>
-    <tr>
-      <td>HK</td>
-      <td style="text-align:center">177</td>
-      <td style="text-align:center">813</td>
-      <td style="text-align:center">49.7%</td>
-      <td style="text-align:center">51.4%</td>
-      <td style="text-align:center">11.83%</td>
-      <td style="text-align:center">3.34%</td>
-    </tr>
-    <tr>
-      <td>US</td>
-      <td style="text-align:center">5</td>
-      <td style="text-align:center">20</td>
-      <td style="text-align:center">60.0%</td>
-      <td style="text-align:center">65.0%</td>
-      <td style="text-align:center">283.09%</td>
-      <td style="text-align:center">52.88%</td>
-    </tr>
-  </table>
-</div>
 </body>
 </html>
