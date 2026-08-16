@@ -9,11 +9,11 @@
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:#f5f7fa; color:#333; line-height:1.6; }
 .container { max-width:1200px; margin:0 auto; padding:20px; }
-header { text-align:center; padding:30px 0; border-bottom:1px solid #dee2e6; margin-bottom:30px; }
+header { position:relative; text-align:center; padding:30px 0; border-bottom:1px solid #dee2e6; margin-bottom:30px; }
 header h1 { font-size:28px; color:#1a1a2e; margin-bottom:8px; }
 header .subtitle { color:#6c757d; font-size:14px; }
 header .date { color:#868e96; font-size:13px; margin-top:4px; }
-a.back-link { display:inline-block; margin-top:12px; color:#1976d2; text-decoration:none; font-size:14px; }
+a.back-link { position:absolute; top:24px; right:24px; color:#1976d2; text-decoration:none; font-size:14px; }
 a.back-link:hover { text-decoration:underline; }
 
 .summary-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:30px; }
@@ -73,7 +73,7 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
 <header>
 <h1>三市场量化模型回测报告</h1>
 <div class="subtitle">Quality + Valuation + Sentiment + Technical + Momentum 五因子模型</div>
-<div class="date">回测区间: 2025-04-01 ~ 2026-07-24 | 322个交易日 | 报告生成于 2026-08-16 23:09:28</div>
+<div class="date">回测区间: 2025-04-01 ~ 2026-07-24 | 322个交易日 | 报告生成于 2026-08-16 23:12:05</div>
 <a class="back-link" href="/stockmarketanalysis_wb/">← 返回主报告</a>
 
 <!-- 版本选择器 -->
@@ -87,7 +87,7 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
     <option value="B_v2.1" data-file="backtest_history/backtest_report_Bv2.1_20260816_2309.html">策略组合B v2.1</option>
     <option value="X_v1.0" data-file="backtest_history/backtest_report_Xv1.0_20260815_0039.html">策略组合X v1.0</option>
     <option value="X_Lite_v1.0" data-file="backtest_history/backtest_report_XLitev1.0_20260816_2309.html">策略组合X-Lite v1.1</option>
-    <option value="MSAM_v1.0" data-file="backtest_history/backtest_report_MSAMv1.0_20260816_2309.html" selected>MSAM策略组合 v1.0</option>
+    <option value="MSAM_v1.0" data-file="backtest_history/backtest_report_MSAMv1.0_20260816_2312.html" selected>MSAM策略组合 v1.0</option>
   </select>
 </div>
 <div class="version-meta" id="versionMeta">共 8 个版本</div>
@@ -124,7 +124,7 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
 </div>
 <div style="background:#f8f9fa;padding:10px 14px;border-radius:8px;font-size:12px;color:#495057">
   <strong>策略说明:</strong> 三市场混合策略路由组合：CN→B_v2.1（增强因子+V2.1保护）/ HK→A_v1.0（标准5因子）/ US→X_Lite_v1.0（动量倾斜+最小持有期）。仓位统一为风险驱动模型（risk_budget/volatility + 安全网），市场状态分类参数、阈值、止损止盈按各市场路由子策略执行。本 profile 为组合注册项，字段值为默认占位，实际参数以 get_strategy_for_market(market) 为准。<br>
-  <strong>创建时间:</strong> 2026-08-15  |  <strong>报告生成时间:</strong> <span style="color:#c62828;font-weight:600">2026-08-16 23:09:28</span>
+  <strong>创建时间:</strong> 2026-08-15  |  <strong>报告生成时间:</strong> <span style="color:#c62828;font-weight:600">2026-08-16 23:12:05</span>
 </div>
 </div>
 
@@ -250,7 +250,7 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
 </div>
 </div>
 
-<footer>三市场量化模型回测报告（MSAM） | 生成于 2026-08-16 23:09</footer>
+<footer>三市场量化模型回测报告（MSAM） | 生成于 2026-08-16 23:12</footer>
 </div>
 
 <script>
