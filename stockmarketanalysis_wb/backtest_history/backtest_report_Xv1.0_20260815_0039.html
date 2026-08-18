@@ -79,6 +79,16 @@ footer { text-align:center; padding:20px; color:#868e96; font-size:12px; border-
 </head>
 <body>
 <div class="container">
+<div style="background:#fff3cd;border:2px solid #ffc107;border-radius:10px;padding:14px 18px;margin-bottom:24px;">
+  <div style="font-weight:700;color:#856404;margin-bottom:6px;">⚠️ 历史档案勘误（2026-08-18标注）</div>
+  <div style="color:#856404;font-size:13px;">
+    本报告存在<b>标签与数据错配</b>：报告标签为 X_v1.0，但回测数据实际是 <b>X_Lite_v1.0（降频版）</b>的结果（总收益19.42%、199笔交易）。<br>
+    真实的 X_v1.0（激进版）回测结果为<b>总收益+53.50%、回撤-4.66%、夏普3.44、1532笔交易</b>，
+    见 <b>backtest_report_Xv1.0_20260812_2142.html</b>。<br>
+    阅读本报告时：曲线/交易明细/指标卡片为 X_Lite 数据；参数表可能展示 X_v1.0 参数，请以
+    strategy_config_X_Lite_v1.0_20260816_230928.json 为准。此错配成因已修复（generate_x_report.py 现从回测结果元数据读取 strategy_id）。
+  </div>
+</div>
 <header>
   <a class="back-link" href="../index.html">&#8592; 返回主报告</a>
   <h1>策略组合X V1.0 回测报告</h1>
