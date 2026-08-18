@@ -152,7 +152,26 @@ li { margin:4px 0; }
 </div>
 
 <div class="card">
-<h2>七、遗留事项（已记入清单，后续处理）</h2>
+<h2>七、追加审计：移动脚本路径全量复查 <span class="pill fx">21:30 补充</span></h2>
+<p style="font-size:13.5px;color:#495057;">3-4 脚本归位时的路径修复存在漏网（当日先后发现 generate_x_report.py 与 deploy_backtest_gh.py 两处），遂对 scripts/ 与 backtest/ 全部 26 个文件做系统性复查（锚点写法扫描 + 根模块 import 扫描 + cwd 相对路径扫描 + 编译 + import 级验证 + 端到端真跑），<b>新发现并修复 10 处同类缺陷</b>：</p>
+<table>
+<tr><th style="width:270px;">文件</th><th>缺陷</th><th style="width:70px;">验证</th></tr>
+<tr><td>backtest/generate_b_report.py</td><td>BASE 单 dirname 指向 backtest/ 自身 + 根模块 import 无 sys.path</td><td class="ok">真跑✅</td></tr>
+<tr><td>backtest/generate_backtest_report.py</td><td>同上</td><td class="ok">真跑✅</td></tr>
+<tr><td>backtest/generate_split_report.py</td><td>同上</td><td class="ok">真跑✅</td></tr>
+<tr><td>backtest/generate_msam_report.py</td><td>BASE 单 dirname + 数据文件 cwd 相对路径</td><td class="ok">真跑✅</td></tr>
+<tr><td>backtest/backtest_phase2.py</td><td>import strategy_config 无 sys.path（路径锚点本身正确）</td><td class="ok">import✅</td></tr>
+<tr><td>backtest/version_dropdown.py</td><td>同上（作为共享模块被 5 个生成器引用）</td><td class="ok">import✅</td></tr>
+<tr><td>scripts/verify_extended_data.py</td><td>BASE 单 parent 指向 scripts/data</td><td class="ok">真跑✅</td></tr>
+<tr><td>scripts/recompute_market_stats.py</td><td>硬编码绝对路径 + import strategy_config 无 sys.path（改锚点+sys.path）</td><td class="ok">编译✅</td></tr>
+<tr><td>scripts/reanalyze_report.py</td><td>import wb_analysis_engine 无 sys.path</td><td class="ok">import✅</td></tr>
+<tr><td>backtest/deploy_backtest_gh.py</td><td>MODEL_HOME 单 parent（21:19 发布时发现并修复）</td><td class="ok">真跑✅</td></tr>
+</table>
+<p style="font-size:13px;color:#6c757d;">复查结论：单 dirname 锚点残留清零、无 sys.path 的根模块 import 清零、cwd 相对资源路径清零；26 文件编译全过。产生副作用的验证（报告生成器真跑）在备份 version_index 与主报告页后进行，验证完成后已恢复，未污染版本历史。</p>
+</div>
+
+<div class="card">
+<h2>八、遗留事项（已记入清单，后续处理）</h2>
 <ul>
   <li>回测引擎（backtest_phase2 / backtest_strategy_b）评分函数签名与 scoring_engine 未对齐，建议下次回测迭代时统一</li>
   <li>load_watchlist 对 portfolio_tracker_v5 的 L0→L2 反向依赖（业务必要，已注释标注）</li>
