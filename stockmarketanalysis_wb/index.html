@@ -429,7 +429,7 @@ tr:hover { background: #f1ebff; }
     <p class="hero-desc">增强因子量化选股模型盘后报告：动量加速度+市场相对PE+成交量斜率，分市场止损止盈，capital_limit轮动。</p>
     <div class="hero-stats">
         <div class="hero-stat stat-buy">
-            <div class="number">1</div>
+            <div class="number">2</div>
             <div class="label">买入建议</div>
         </div>
         <div class="hero-stat stat-sell">
@@ -437,11 +437,11 @@ tr:hover { background: #f1ebff; }
             <div class="label">卖出建议</div>
         </div>
         <div class="hero-stat stat-hold">
-            <div class="number">268</div>
+            <div class="number">271</div>
             <div class="label">持有清单</div>
         </div>
         <div class="hero-stat stat-watch">
-            <div class="number" id="hero-post-sell-count">478</div>
+            <div class="number" id="hero-post-sell-count">479</div>
             <div class="label">沽后观察</div>
         </div>
     </div>
@@ -519,15 +519,15 @@ tr:hover { background: #f1ebff; }
     <div class="alert alert-danger" style="margin-bottom:6px;">🛑 今日硬止损触发 1 只</div>
     <div class="sentiment-summary" style="margin-top: 12px; padding: 10px 12px; background: var(--bg); border-radius: 6px; font-size: 0.85rem; line-height: 1.6;">
         <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
-        <div>📉 单股最大浮亏：<b style="color:var(--danger);">中国太平(00966.HK) -10.8%</b></div>
-        <div>🔻 M↓ 降分持仓：<b>0</b> 只</div>
+        <div>📉 单股最大浮亏：<b style="color:var(--danger);">美亚柏科(300188.SZ) -12.5%</b></div>
+        <div>🔻 M↓ 降分持仓：<b>1</b> 只</div>
         <div>🛑 今日硬止损：<b>1</b> 只</div>
     </div>
         <div style="margin-top:10px;padding:10px 12px;background:#fffbeb;border-radius:6px;border-left:3px solid #f59e0b;font-size:0.85rem;">
             <div style="font-weight:600;color:#92400e;margin-bottom:6px;">🔍 异常现象提示</div>
             <div style="padding:6px 0;border-bottom:1px dashed #e2e8f0;">⏰ 长期滞亏：中金公司(03908.HK) 30天 -6.0%, 阳光保险(06963.HK) 27天 -8.0%, 华能国际电力股份(00902.HK) 26天 -6.1% 等16只（持有>20天且浮亏<-5%）</div>
         </div>
-        <div style="margin-bottom: 8px; padding: 8px 10px; background: #f0f9ff; border-radius: 4px; border-left: 3px solid var(--accent); font-size: 0.85rem;"><span style="color: var(--text-secondary); font-weight: 600;">情绪中性</span> · 近期主要事件：暂无显著事件</div>
+        <div style="margin-bottom: 8px; padding: 8px 10px; background: #f0f9ff; border-radius: 4px; border-left: 3px solid var(--accent); font-size: 0.85rem;"><span style="color: var(--text-secondary); font-weight: 600;">情绪中性</span> · 近期主要事件：1. 董事变动及回购贷款等治理事件扰动，触发评级由H降至M</div>
         <div style="margin-top: 8px;"><a href="/stockmarketanalysis/macro/" target="_blank" style="color: var(--primary, #5f01d1); text-decoration: none;">📊 查阅详细宏观事件驱动报告 →</a></div>
     </div>
 </div>
@@ -996,7 +996,7 @@ tr:hover { background: #f1ebff; }
             removed.push({
               code: bestCode, name: h.name || bestCode, market: market,
               added_date: today, added_price: addPrice,
-              signal: '维持', signal_date: today, signal_reason: '',
+              signal: '买入', signal_date: today, signal_reason: '',
               latest_score: h.latest_score || 0,
               current_price: h.current_price || 0,
               entry_price: h.entry_price || 0,
@@ -1061,7 +1061,6 @@ tr:hover { background: #f1ebff; }
   function wlRenderRow(item) {
     const code = item.code || '', mkt = item.market || 'CN', name = item.name || '';
     let signal = item.signal || '买入';
-    if (signal === '维持') signal = '买入';  // 兼容旧数据
     const isSell = signal === '卖出';
     const isWatch = signal === '关注';
     const sigCls = isSell ? 'wl-signal-sell' : (isWatch ? 'wl-signal-watch' : 'wl-signal-buy');
@@ -1119,7 +1118,7 @@ tr:hover { background: #f1ebff; }
       tbody.innerHTML = stocks.map(wlRenderRow).join('');
 
       // 更新统计条（三信号）
-      const buyN = stocks.filter(s => { const sig = s.signal || '买入'; return sig === '买入' || sig === '维持'; }).length;
+      const buyN = stocks.filter(s => s.signal === '买入').length;
       const watchN = stocks.filter(s => s.signal === '关注').length;
       const sellN = stocks.filter(s => s.signal === '卖出').length;
       const sec = document.getElementById('watch-list');
@@ -1166,11 +1165,11 @@ tr:hover { background: #f1ebff; }
             </thead>
             <tbody><tr>
             <td>🇨🇳 A股</td>
-            <td>103只 (H:21 | M:82)</td>
-            <td>996.03万 CNY</td>
-            <td>99.6%</td>
-            <td style="color:var(--buy); font-weight:600;">17.99万</td>
-            <td><span style="color:var(--buy)">+1.8%</span> <span style="color:var(--buy); font-weight:bold;">（年化 +41.0%）</span></td>
+            <td>106只 (H:21 | M:85)</td>
+            <td>1026.10万 CNY</td>
+            <td>102.6%</td>
+            <td style="color:var(--buy); font-weight:600;">18.29万</td>
+            <td><span style="color:var(--buy)">+1.8%</span> <span style="color:var(--buy); font-weight:bold;">（年化 +40.8%）</span></td>
         </tr><tr>
             <td>🇭🇰 港股</td>
             <td>100只 (H:12 | M:88)</td>
@@ -1187,11 +1186,11 @@ tr:hover { background: #f1ebff; }
             <td><span style="color:var(--buy)">+3.1%</span> <span style="color:var(--buy); font-weight:bold;">（年化 +37.6%）</span></td>
         </tr><tr style="background:#f1f5f9; font-weight:600;">
         <td>合计（折算CNY）</td>
-        <td>268只</td>
-        <td>2399.68万 CNY</td>
-        <td>85.6%</td>
-        <td style="color:var(--buy);">36.67万</td>
-        <td><span style="color:var(--buy)">+1.6%</span> <span style="color:var(--buy); font-weight:bold;">（年化 +26.1%）</span></td>
+        <td>271只</td>
+        <td>2429.75万 CNY</td>
+        <td>86.7%</td>
+        <td style="color:var(--buy);">36.97万</td>
+        <td><span style="color:var(--buy)">+1.5%</span> <span style="color:var(--buy); font-weight:bold;">（年化 +26.2%）</span></td>
     </tr></tbody>
         </table>
     </div>
@@ -1607,6 +1606,25 @@ tr:hover { background: #f1ebff; }
                 <span class="tooltip-wrap" data-akey="holding:600036.SH">估值因子主导，评分持平<span class="tooltip-text"></span></span>
             </td>
             <td class="text-center nowrap" data-sort-value="2"><span style="color:#ca8a04;font-weight:bold">B</span></td>
+
+        </tr>
+<tr class="" data-code="002739.SZ" data-name="万达电影">
+            <td class="code nowrap">002739.SZ</td>
+            <td class="name-cell"><strong>万达电影</strong></td>
+            <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
+            <td class="status-cell nowrap status-sell" data-sort-value="3">M↓ <span style="color:#dc2626;font-size:0.75rem;font-weight:bold">🔴</span></td>
+            <td class="nowrap">41.0</td>
+            <td class="nowrap entry-date-gray">26-08-10</td>
+            <td class="num price-bold">9.93</td>
+            <td class="num price-bold">8.81</td>
+            <td class="num">10,070</td>
+            <td class="num">9.66</td>
+            <td class="num down" data-sort-value="-3.42">-3.4%</td>
+            <td class="num nowrap" data-sort-value="5">5</td>
+            <td class="change-reason">
+                <span class="tooltip-wrap" data-akey="holding:002739.SZ">质量因子骤降拖累评级下调，短期承压但估值与技术面仍稳健<span class="tooltip-text"></span></span>
+            </td>
+            <td class="text-center nowrap" data-sort-value="3"><span style="color:#dc2626;font-weight:bold">C</span></td>
 
         </tr>
 <tr class="" data-code="600016.SH" data-name="民生银行">
@@ -2407,6 +2425,25 @@ tr:hover { background: #f1ebff; }
             <td class="text-center nowrap" data-sort-value="2"><span style="color:#ca8a04;font-weight:bold">B</span></td>
 
         </tr>
+<tr class="" data-code="300188.SZ" data-name="美亚柏科">
+            <td class="code nowrap">300188.SZ</td>
+            <td class="name-cell"><strong>美亚柏科</strong></td>
+            <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
+            <td class="status-cell nowrap " data-sort-value="2">M <span style="color:#ca8a04;font-size:0.75rem">▼</span></td>
+            <td class="nowrap">59.3</td>
+            <td class="nowrap entry-date-gray">26-08-06</td>
+            <td class="num price-bold">12.03</td>
+            <td class="num price-bold">10.65</td>
+            <td class="num">9,000</td>
+            <td class="num">9.48</td>
+            <td class="num down" data-sort-value="-12.47">-12.5%</td>
+            <td class="num nowrap" data-sort-value="12">12</td>
+            <td class="change-reason">
+                <span class="tooltip-wrap" data-akey="holding:300188.SZ">评分持平但动量走弱，估值独木难支<span class="tooltip-text"></span></span>
+            </td>
+            <td class="text-center nowrap" data-sort-value="3"><span style="color:#dc2626;font-weight:bold">C</span></td>
+
+        </tr>
 <tr class="" data-code="600820.SH" data-name="隧道股份">
             <td class="code nowrap">600820.SH</td>
             <td class="name-cell"><strong>隧道股份</strong></td>
@@ -3165,6 +3202,25 @@ tr:hover { background: #f1ebff; }
                 <span class="tooltip-wrap" data-akey="holding:688387.SH">估值主导中性震荡<span class="tooltip-text"></span></span>
             </td>
             <td class="text-center nowrap" data-sort-value="2"><span style="color:#ca8a04;font-weight:bold">B</span></td>
+
+        </tr>
+<tr class="" data-code="600246.SH" data-name="万通地产">
+            <td class="code nowrap">600246.SH</td>
+            <td class="name-cell"><strong>万通地产</strong></td>
+            <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
+            <td class="status-cell nowrap " data-sort-value="2">M <span style="color:#dc2626;font-size:0.75rem;font-weight:bold">🔴</span></td>
+            <td class="nowrap">45.1</td>
+            <td class="nowrap entry-date-gray">26-08-04</td>
+            <td class="num price-bold">11.08</td>
+            <td class="num price-bold">13.55</td>
+            <td class="num">8,064</td>
+            <td class="num">10.93</td>
+            <td class="num up" data-sort-value="22.29">+22.3%</td>
+            <td class="num nowrap" data-sort-value="14">14</td>
+            <td class="change-reason">
+                <span class="tooltip-wrap" data-akey="holding:600246.SH">估值主导中性盘整<span class="tooltip-text"></span></span>
+            </td>
+            <td class="text-center nowrap" data-sort-value="1"><span style="color:#16a34a;font-weight:bold">A</span></td>
 
         </tr>
 <tr class="" data-code="00440.HK" data-name="大新金融">
@@ -9910,7 +9966,7 @@ tr:hover { background: #f1ebff; }
 </div>
 <div class="section" id="buy">
     <h2>✅ 买入建议（今日新增）</h2>
-    <h3 class="market-subheader">🇨🇳 A股 (1只)</h3>
+    <h3 class="market-subheader">🇨🇳 A股 (2只)</h3>
 <div style="overflow-x: auto;">
 <table>
 <thead>
@@ -9927,7 +9983,20 @@ tr:hover { background: #f1ebff; }
                 <td>50.0</td>
                 <td class="num">6.60</td>
                 <td class="num up">+2.2%</td>
-                <td class="change-reason"><span class="tooltip-wrap" data-akey="buy:601288.SH">估值因子显著占优，低估值防御属性突出<span class="tooltip-text"></span></span></td>
+                <td class="change-reason"><span class="tooltip-wrap" data-akey="buy:601288.SH">估值因子强势主导，低估值防御属性凸显<span class="tooltip-text"></span></span></td>
+            </tr>
+<tr>
+                <td class="rank">2</td>
+                <td><strong>沪农商行</strong><br><small class="code">601825.SH</small></td>
+                <td class="score score-buy">65.2</td>
+                <td>58.3</td>
+                <td>88.0</td>
+                <td>53.0</td>
+                <td>80.0</td>
+                <td>40.0</td>
+                <td class="num">8.56</td>
+                <td class="num down">-0.7%</td>
+                <td class="change-reason"><span class="tooltip-wrap" data-akey="buy:601825.SH">估值因子极度低估构成核心安全边际，技术面强势共振推动入选<span class="tooltip-text"></span></span></td>
             </tr>
 </tbody>
 </table>
@@ -9941,6 +10010,17 @@ tr:hover { background: #f1ebff; }
                 <tr><th>代码</th><th>名称</th><th>市场</th><th>评分</th><th>现价</th><th>持有收益</th><th>天数</th><th>标记</th><th class="change-reason">分析</th></tr>
             </thead>
             <tbody><tr>
+            <td class="code">002739.SZ</td>
+            <td><strong>万达电影</strong></td>
+            <td><span class="market-badge market-cn">CN</span></td>
+            <td class="score score-sell">41.0</td>
+            <td class="num">8.81</td>
+            <td class="num down">-3.4%</td>
+            <td class="num">5</td>
+            <td><span class="badge badge-major">今日新增卖出</span></td>
+            <td class="change-reason"><span class="tooltip-wrap" data-akey="sell:002739.SZ">质量40因子恶化致评分仅41，调仓轮换离场<span class="tooltip-text"></span></span></td>
+        </tr>
+<tr>
             <td class="code">300188.SZ</td>
             <td><strong>美亚柏科</strong></td>
             <td><span class="market-badge market-cn">CN</span></td>
@@ -9952,17 +10032,6 @@ tr:hover { background: #f1ebff; }
             <td class="change-reason"><span class="tooltip-wrap" data-akey="sell:300188.SZ">质量42因子恶化触发回撤止损，评分59分<span class="tooltip-text"></span></span></td>
         </tr>
 <tr>
-            <td class="code">002739.SZ</td>
-            <td><strong>万达电影</strong></td>
-            <td><span class="market-badge market-cn">CN</span></td>
-            <td class="score score-sell">41.0</td>
-            <td class="num">8.81</td>
-            <td class="num down">-3.4%</td>
-            <td class="num">5</td>
-            <td><span class="badge badge-major">今日新增卖出</span></td>
-            <td class="change-reason"><span class="tooltip-wrap" data-akey="sell:002739.SZ">质量40因子恶化拖累评分至41，调仓轮换离场<span class="tooltip-text"></span></span></td>
-        </tr>
-<tr>
             <td class="code">600246.SH</td>
             <td><strong>万通地产</strong></td>
             <td><span class="market-badge market-cn">CN</span></td>
@@ -9971,7 +10040,7 @@ tr:hover { background: #f1ebff; }
             <td class="num up">+22.3%</td>
             <td class="num">14</td>
             <td><span class="badge badge-major">今日新增卖出</span></td>
-            <td class="change-reason"><span class="tooltip-wrap" data-akey="sell:600246.SH">质量37因子恶化拖累评分至45，调仓轮换离场<span class="tooltip-text"></span></span></td>
+            <td class="change-reason"><span class="tooltip-wrap" data-akey="sell:600246.SH">质量37因子恶化致评分仅45，调仓轮换离场<span class="tooltip-text"></span></span></td>
         </tr>
 </tbody>
         </table>
@@ -12616,6 +12685,20 @@ tr:hover { background: #f1ebff; }
             <td class="num up" data-sort-value="3.26">+3.3%</td>
             <td class="num nowrap" data-sort-value="9">9</td>
             <td class="change-reason"><span class="tooltip-wrap" data-akey="postsell:601825.SH">止损离场及时，卖后横盘验证防御逻辑<span class="tooltip-text"></span></span></td>
+            <td style="text-align:center;">
+                
+            </td>
+        </tr>
+<tr data-code="601288.SH" data-name="农业银行">
+            <td class="code nowrap">601288.SH</td>
+            <td><strong>农业银行</strong></td>
+            <td class="nowrap"><span class="market-badge market-cn">CN</span></td>
+            <td class="nowrap">2026-08-09</td>
+            <td class="num">6.47</td>
+            <td class="num" data-sort-value="-5.96">-6.0%</td>
+            <td class="num up" data-sort-value="2.01">+2.0%</td>
+            <td class="num nowrap" data-sort-value="9">9</td>
+            <td class="change-reason"><span class="tooltip-wrap" data-akey="postsell:601288.SH">止损正确但时机偏早，卖后企稳验证风险释放<span class="tooltip-text"></span></span></td>
             <td style="text-align:center;">
                 
             </td>
@@ -16704,7 +16787,7 @@ tr:hover { background: #f1ebff; }
 
 <script>
 
-const DELIST_CODES = ["601088.SH", "300750.SZ", "600519.SH", "600941.SH", "300757.SZ", "600118.SH", "688048.SH", "300308.SZ", "688981.SH", "688498.SH", "301377.SZ", "688796.SH", "688235.SH", "600673.SH", "002384.SZ", "002463.SZ", "002653.SZ", "601878.SH", "600236.SH", "000963.SZ", "002422.SZ", "002532.SZ", "300628.SZ", "600025.SH", "600276.SH", "600415.SH", "601059.SH", "601788.SH", "601899.SH", "603259.SH", "000999.SZ", "600585.SH", "600031.SH", "601766.SH", "600061.SH", "600690.SH", "600028.SH", "000039.SZ", "603288.SH", "601985.SH", "002352.SZ", "300274.SZ", "600309.SH", "601006.SH", "600803.SH", "600918.SH", "002415.SZ", "600050.SH", "000708.SZ", "600219.SH", "603893.SH", "601901.SH", "000723.SZ", "000825.SZ", "600970.SH", "603565.SH", "603690.SH", "688062.SH", "002078.SZ", "002408.SZ", "300180.SZ", "600006.SH", "600011.SH", "600023.SH", "600039.SH", "600248.SH", "600323.SH", "600325.SH", "600398.SH", "600502.SH", "600821.SH", "601000.SH", "601012.SH", "601058.SH", "601066.SH", "601108.SH", "601139.SH", "601598.SH", "601601.SH", "601800.SH", "601838.SH", "601857.SH", "601991.SH", "688052.SH", "688515.SH", "688521.SH", "688549.SH", "001872.SZ", "300765.SZ", "600000.SH", "600196.SH", "601607.SH", "600795.SH", "600900.SH", "688802.SH", "688795.SH", "688783.SH", "600703.SH", "688110.SH", "688585.SH", "600741.SH", "605358.SH", "002129.SZ", "002572.SZ", "600057.SH", "600332.SH", "600350.SH", "601908.SH", "603567.SH", "000157.SZ", "688009.SH", "601377.SH", "600968.SH", "002608.SZ", "601225.SH", "601211.SH", "601326.SH", "002911.SZ", "600098.SH", "600153.SH", "600641.SH", "603323.SH", "600030.SH", "600019.SH", "000728.SZ", "000828.SZ", "600012.SH", "600282.SH", "600377.SH", "600483.SH", "000002.SZ", "000498.SZ", "600657.SH", "000552.SZ", "688303.SH", "000913.SZ", "601198.SH", "601658.SH", "001965.SZ", "000885.SZ", "601998.SH", "000166.SZ", "600761.SH", "002736.SZ", "601318.SH", "601098.SH", "300229.SZ", "601336.SH", "000563.SZ", "601555.SH", "601186.SH", "601083.SH", "600901.SH", "601019.SH", "603338.SH", "600015.SH", "601077.SH", "600908.SH", "601577.SH", "601860.SH", "601528.SH", "601128.SH", "601995.SH", "600999.SH", "000776.SZ", "601169.SH", "601688.SH", "601997.SH", "688382.SH", "000333.SZ", "000598.SZ", "000600.SZ", "002428.SZ", "002611.SZ", "600177.SH", "600266.SH", "600438.SH", "601390.SH", "601677.SH", "601988.SH", "600926.SH", "600919.SH", "002739.SZ", "603049.SH", "601187.SH", "600246.SH", "300188.SZ", "601825.SH", "01810.HK", "00883.HK", "09988.HK", "01113.HK", "03690.HK", "00656.HK", "00788.HK", "02076.HK", "01816.HK", "09896.HK", "03899.HK", "00700.HK", "00002.HK", "00303.HK", "02313.HK", "06862.HK", "00916.HK", "00669.HK", "09987.HK", "01209.HK", "01361.HK", "01898.HK", "02367.HK", "03306.HK", "00175.HK", "00297.HK", "00388.HK", "03288.HK", "01193.HK", "02331.HK", "02357.HK", "06049.HK", "03808.HK", "03606.HK", "00019.HK", "02196.HK", "01681.HK", "00027.HK", "00576.HK", "00001.HK", "01038.HK", "02698.HK", "02610.HK", "01378.HK", "00857.HK", "02380.HK", "00546.HK", "00177.HK", "00066.HK", "02858.HK", "00934.HK", "00762.HK", "00728.HK", "00322.HK", "02688.HK", "06186.HK", "01579.HK", "02507.HK", "02333.HK", "03660.HK", "01999.HK", "01114.HK", "03996.HK", "00267.HK", "00363.HK", "02669.HK", "09636.HK", "00914.HK", "01368.HK", "00152.HK", "01186.HK", "02588.HK", "01044.HK", "09973.HK", "00506.HK", "01299.HK", "09992.HK", "00135.HK", "00636.HK", "03360.HK", "02378.HK", "00659.HK", "01024.HK", "06881.HK", "01651.HK", "02020.HK", "03877.HK", "01883.HK", "00941.HK", "02359.HK", "00998.HK", "02799.HK", "03618.HK", "03698.HK", "06099.HK", "01800.HK", "00551.HK", "TSLA.O", "PFE.N", "AMD.O", "META.O", "PNW.N", "COST.O", "DGX.N", "EMR.N", "MRSH.N", "MSI.N", "AVB.N", "CPAY.N", "CTAS.O", "CHD.N", "DE.N", "CL.N", "CSCO.O", "TFC.N", "ETR.N", "TRGP.N", "VZ.N", "ABBV.N", "CCEP.O", "BRO.N", "RF.N", "UBER.N", "ABNB.O", "CFG.N", "IEX.N", "MRK.N", "BRK.B.N", "WBD.O", "GE.N", "EME.N", "MTB.N", "NCLH.N", "PKG.N", "PH.N", "J.N", "KMI.N", "PDD.O", "MA.N", "GPN.N", "ODFL.O", "BR.N", "PSX.N", "PTC.O", "FTV.N", "BXP.N", "DXCM.O", "HUBB.N", "EBAY.O", "DUK.N", "EQR.N", "JKHY.O", "FTNT.O", "HSIC.O", "STT.N", "PFG.O", "TJX.N", "WMB.N", "FISV.O", "EFX.N", "SHW.N", "BLK.N", "GOOG.O", "SO.N", "COP.N", "SPGI.N", "NXPI.O", "BMY.N", "ADBE.O", "PGR.N", "PG.N", "GWW.N", "CI.N", "NTRS.O", "KEY.N", "GILD.O", "NDAQ.O", "BX.N", "MET.N", "AVY.N", "ULTA.O", "UHS.N", "WTW.O", "HON.O", "BBY.N", "CDW.O", "DRI.N", "GD.N", "HST.O", "RL.N", "TMO.N", "VRSK.O", "VST.N", "HD.N", "JCI.N", "NWSA.O", "PEG.N", "TXT.N", "UPS.N", "ZTS.N", "EXE.O", "JBHT.O", "BALL.N", "AMGN.O", "PAYX.O", "ALLE.N", "BAC.N", "CF.N", "EG.N", "ES.N", "FITB.N", "HWM.N", "L.N", "MKC.N", "MS.N", "NEM.N", "NUE.N", "SCHW.N", "SYF.N", "TGT.N", "WFC.N", "GEHC.O", "ROST.O", "BNY.N", "CRH.N", "DHI.N", "EQT.N", "FFIV.O", "IQV.N", "LDOS.N", "SNA.N", "T.N", "AEP.O", "DVN.N", "LMT.N", "NOC.N", "OKE.N", "CB.N", "AIG.N", "ACN.N", "LII.N", "AAPL.O", "JNJ.N", "MSFT.O", "NVDA.O", "V.N", "AES.N", "AFL.N", "AON.N", "EIX.N", "EXPD.N", "GDDY.N", "GS.N", "MMM.N", "SPG.N", "URI.N", "VLTO.N", "SOLV.N", "UNP.N", "WM.N", "INCY.O", "CSX.O", "A.N", "CINF.O", "COR.N", "EOG.N", "EXPE.O", "GIS.N", "MPC.N", "WSM.N", "ADP.O", "APA.O", "AXP.N", "CCL.N", "FOX.O", "FOXA.O", "HBAN.O", "ITW.N", "KMB.O", "MCO.N", "NSC.N", "NTAP.O", "PPG.N", "RJF.N", "TROW.O", "WRB.N", "GOOGL.O", "LLY.N", "UNH.N", "AMZN.O"];
+const DELIST_CODES = ["601088.SH", "300750.SZ", "600519.SH", "600941.SH", "300757.SZ", "600118.SH", "688048.SH", "300308.SZ", "688981.SH", "688498.SH", "301377.SZ", "688796.SH", "688235.SH", "600673.SH", "002384.SZ", "002463.SZ", "002653.SZ", "601878.SH", "600236.SH", "000963.SZ", "002422.SZ", "002532.SZ", "300628.SZ", "600025.SH", "600276.SH", "600415.SH", "601059.SH", "601788.SH", "601899.SH", "603259.SH", "000999.SZ", "600585.SH", "600031.SH", "601766.SH", "600061.SH", "600690.SH", "600028.SH", "000039.SZ", "603288.SH", "601985.SH", "002352.SZ", "300274.SZ", "600309.SH", "601006.SH", "600803.SH", "600918.SH", "002415.SZ", "600050.SH", "000708.SZ", "600219.SH", "603893.SH", "601901.SH", "000723.SZ", "000825.SZ", "600970.SH", "603565.SH", "603690.SH", "688062.SH", "002078.SZ", "002408.SZ", "300180.SZ", "600006.SH", "600011.SH", "600023.SH", "600039.SH", "600248.SH", "600323.SH", "600325.SH", "600398.SH", "600502.SH", "600821.SH", "601000.SH", "601012.SH", "601058.SH", "601066.SH", "601108.SH", "601139.SH", "601598.SH", "601601.SH", "601800.SH", "601838.SH", "601857.SH", "601991.SH", "688052.SH", "688515.SH", "688521.SH", "688549.SH", "001872.SZ", "300765.SZ", "600000.SH", "600196.SH", "601607.SH", "600795.SH", "600900.SH", "688802.SH", "688795.SH", "688783.SH", "600703.SH", "688110.SH", "688585.SH", "600741.SH", "605358.SH", "002129.SZ", "002572.SZ", "600057.SH", "600332.SH", "600350.SH", "601908.SH", "603567.SH", "000157.SZ", "688009.SH", "601377.SH", "600968.SH", "002608.SZ", "601225.SH", "601211.SH", "601326.SH", "002911.SZ", "600098.SH", "600153.SH", "600641.SH", "603323.SH", "600030.SH", "600019.SH", "000728.SZ", "000828.SZ", "600012.SH", "600282.SH", "600377.SH", "600483.SH", "000002.SZ", "000498.SZ", "600657.SH", "000552.SZ", "688303.SH", "000913.SZ", "601198.SH", "601658.SH", "001965.SZ", "000885.SZ", "601998.SH", "000166.SZ", "600761.SH", "002736.SZ", "601318.SH", "601098.SH", "300229.SZ", "601336.SH", "000563.SZ", "601555.SH", "601186.SH", "601083.SH", "600901.SH", "601019.SH", "603338.SH", "600015.SH", "601077.SH", "600908.SH", "601577.SH", "601860.SH", "601528.SH", "601128.SH", "601995.SH", "600999.SH", "000776.SZ", "601169.SH", "601688.SH", "601997.SH", "688382.SH", "000333.SZ", "000598.SZ", "000600.SZ", "002428.SZ", "002611.SZ", "600177.SH", "600266.SH", "600438.SH", "601390.SH", "601677.SH", "601988.SH", "600926.SH", "600919.SH", "002739.SZ", "603049.SH", "601187.SH", "600246.SH", "300188.SZ", "601825.SH", "601288.SH", "01810.HK", "00883.HK", "09988.HK", "01113.HK", "03690.HK", "00656.HK", "00788.HK", "02076.HK", "01816.HK", "09896.HK", "03899.HK", "00700.HK", "00002.HK", "00303.HK", "02313.HK", "06862.HK", "00916.HK", "00669.HK", "09987.HK", "01209.HK", "01361.HK", "01898.HK", "02367.HK", "03306.HK", "00175.HK", "00297.HK", "00388.HK", "03288.HK", "01193.HK", "02331.HK", "02357.HK", "06049.HK", "03808.HK", "03606.HK", "00019.HK", "02196.HK", "01681.HK", "00027.HK", "00576.HK", "00001.HK", "01038.HK", "02698.HK", "02610.HK", "01378.HK", "00857.HK", "02380.HK", "00546.HK", "00177.HK", "00066.HK", "02858.HK", "00934.HK", "00762.HK", "00728.HK", "00322.HK", "02688.HK", "06186.HK", "01579.HK", "02507.HK", "02333.HK", "03660.HK", "01999.HK", "01114.HK", "03996.HK", "00267.HK", "00363.HK", "02669.HK", "09636.HK", "00914.HK", "01368.HK", "00152.HK", "01186.HK", "02588.HK", "01044.HK", "09973.HK", "00506.HK", "01299.HK", "09992.HK", "00135.HK", "00636.HK", "03360.HK", "02378.HK", "00659.HK", "01024.HK", "06881.HK", "01651.HK", "02020.HK", "03877.HK", "01883.HK", "00941.HK", "02359.HK", "00998.HK", "02799.HK", "03618.HK", "03698.HK", "06099.HK", "01800.HK", "00551.HK", "TSLA.O", "PFE.N", "AMD.O", "META.O", "PNW.N", "COST.O", "DGX.N", "EMR.N", "MRSH.N", "MSI.N", "AVB.N", "CPAY.N", "CTAS.O", "CHD.N", "DE.N", "CL.N", "CSCO.O", "TFC.N", "ETR.N", "TRGP.N", "VZ.N", "ABBV.N", "CCEP.O", "BRO.N", "RF.N", "UBER.N", "ABNB.O", "CFG.N", "IEX.N", "MRK.N", "BRK.B.N", "WBD.O", "GE.N", "EME.N", "MTB.N", "NCLH.N", "PKG.N", "PH.N", "J.N", "KMI.N", "PDD.O", "MA.N", "GPN.N", "ODFL.O", "BR.N", "PSX.N", "PTC.O", "FTV.N", "BXP.N", "DXCM.O", "HUBB.N", "EBAY.O", "DUK.N", "EQR.N", "JKHY.O", "FTNT.O", "HSIC.O", "STT.N", "PFG.O", "TJX.N", "WMB.N", "FISV.O", "EFX.N", "SHW.N", "BLK.N", "GOOG.O", "SO.N", "COP.N", "SPGI.N", "NXPI.O", "BMY.N", "ADBE.O", "PGR.N", "PG.N", "GWW.N", "CI.N", "NTRS.O", "KEY.N", "GILD.O", "NDAQ.O", "BX.N", "MET.N", "AVY.N", "ULTA.O", "UHS.N", "WTW.O", "HON.O", "BBY.N", "CDW.O", "DRI.N", "GD.N", "HST.O", "RL.N", "TMO.N", "VRSK.O", "VST.N", "HD.N", "JCI.N", "NWSA.O", "PEG.N", "TXT.N", "UPS.N", "ZTS.N", "EXE.O", "JBHT.O", "BALL.N", "AMGN.O", "PAYX.O", "ALLE.N", "BAC.N", "CF.N", "EG.N", "ES.N", "FITB.N", "HWM.N", "L.N", "MKC.N", "MS.N", "NEM.N", "NUE.N", "SCHW.N", "SYF.N", "TGT.N", "WFC.N", "GEHC.O", "ROST.O", "BNY.N", "CRH.N", "DHI.N", "EQT.N", "FFIV.O", "IQV.N", "LDOS.N", "SNA.N", "T.N", "AEP.O", "DVN.N", "LMT.N", "NOC.N", "OKE.N", "CB.N", "AIG.N", "ACN.N", "LII.N", "AAPL.O", "JNJ.N", "MSFT.O", "NVDA.O", "V.N", "AES.N", "AFL.N", "AON.N", "EIX.N", "EXPD.N", "GDDY.N", "GS.N", "MMM.N", "SPG.N", "URI.N", "VLTO.N", "SOLV.N", "UNP.N", "WM.N", "INCY.O", "CSX.O", "A.N", "CINF.O", "COR.N", "EOG.N", "EXPE.O", "GIS.N", "MPC.N", "WSM.N", "ADP.O", "APA.O", "AXP.N", "CCL.N", "FOX.O", "FOXA.O", "HBAN.O", "ITW.N", "KMB.O", "MCO.N", "NSC.N", "NTAP.O", "PPG.N", "RJF.N", "TROW.O", "WRB.N", "GOOGL.O", "LLY.N", "UNH.N", "AMZN.O"];
 let pendingDelistCode = null;
 let pendingDelistBtn = null;
 
@@ -16840,7 +16923,7 @@ document.addEventListener('keydown', function(e) {
 <div class="section" id="factors">
     <h2>📋 全量因子明细</h2>
     <details class="detail-fold" id="factor-detail">
-        <summary>点击展开查看全部 2039 只股票因子明细</summary>
+        <summary>点击展开查看全部 355 只股票因子明细</summary>
         <div id="factor-detail-content" style="overflow-x: auto; margin-top: 15px;">
             <p style="text-align:center; padding:20px; color:var(--text-muted);">点击展开后加载因子数据…</p>
         </div>
