@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>三市场量化模型 — 代码重构与历史勘误 最终版报告 2026-08-18</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC",sans-serif; background:#f5f7fa; color:#333; line-height:1.7; }
+.container { max-width:1080px; margin:0 auto; padding:24px; }
+header { text-align:center; padding:32px 0 20px; border-bottom:1px solid #dee2e6; margin-bottom:28px; }
+header h1 { font-size:26px; color:#1a1a2e; margin-bottom:8px; }
+header .subtitle { color:#6c757d; font-size:14px; }
+.card { background:#fff; border-radius:12px; padding:20px 24px; margin-bottom:22px; border:1px solid #dee2e6; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+.card h2 { font-size:19px; color:#1a1a2e; margin-bottom:14px; padding-bottom:10px; border-bottom:2px solid #e9ecef; }
+.card h3 { font-size:15px; color:#495057; margin:14px 0 8px; }
+table { width:100%; border-collapse:collapse; font-size:13px; margin:10px 0; }
+th { background:#f0f2f5; color:#495057; padding:9px 12px; text-align:left; font-weight:600; border-bottom:2px solid #dee2e6; }
+td { padding:8px 12px; border-bottom:1px solid #e9ecef; color:#495057; vertical-align:top; }
+tr:hover td { background:#f8f9fa; }
+.ok { color:#2e7d32; font-weight:700; }
+.warn { color:#e65100; font-weight:700; }
+.kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin:6px 0 18px; }
+.kpi { background:#fff; border-radius:12px; padding:16px; border:1px solid #dee2e6; text-align:center; }
+.kpi .label { color:#6c757d; font-size:12px; margin-bottom:6px; }
+.kpi .value { font-size:24px; font-weight:700; color:#1a1a2e; }
+.kpi .sub { color:#868e96; font-size:11px; margin-top:4px; }
+.kpi.green .value { color:#2e7d32; }
+.kpi.blue .value { color:#1976d2; }
+.kpi.orange .value { color:#e65100; }
+.kpi.purple .value { color:#7b1fa2; }
+code { background:#f0f2f5; border-radius:4px; padding:1px 6px; font-size:12.5px; font-family:"SF Mono",Menlo,Consolas,monospace; color:#c7254e; }
+.banner { background:#fff3cd; border:2px solid #ffc107; border-radius:10px; padding:14px 18px; margin-bottom:22px; font-size:13.5px; color:#856404; }
+.footer { text-align:center; color:#868e96; font-size:12px; margin:30px 0 10px; }
+ul { margin:6px 0 6px 20px; }
+li { margin:4px 0; }
+.pill { display:inline-block; border-radius:12px; padding:2px 10px; font-size:11.5px; font-weight:600; margin-right:6px; }
+.pill.b1 { background:#e3f2fd; color:#1565c0; }
+.pill.b2 { background:#e8f5e9; color:#2e7d32; }
+.pill.b3 { background:#f3e5f5; color:#7b1fa2; }
+.pill.fx { background:#fff3e0; color:#e65100; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>三市场量化模型 — 代码重构与历史勘误 最终版报告</h1>
+  <div class="subtitle">三步走体检全链路收官：13项重构（三批次）+ 策略X历史记录修正 ｜ 2026-08-18</div>
+</header>
+
+<div class="banner">
+  <b>结论速览</b>：主引擎 tri_market_selector_v5.py 从 2075 行减至 901 行（-57%），拆分为 L0/L1/L2 分层模块；
+  全部修改经编译、import、Top5评分数值对比（10例一致）、纯渲染、实盘跑分、DB一致性、部署链路七重验证通过；
+  同时修正了策略X_v1.0回测历史的标签错配记录（真实值 53.50%，非 19.42%——19.42% 属降频版 X_Lite_v1.0）。
+</div>
+
+<h2 style="font-size:16px;color:#495057;margin-bottom:12px;">一、总体成果</h2>
+<div class="kpi-grid">
+  <div class="kpi blue"><div class="label">主引擎行数</div><div class="value">2075 → 901</div><div class="sub">-57%，纯编排器+MSAM路由</div></div>
+  <div class="kpi green"><div class="label">重构完成项</div><div class="value">13 / 13</div><div class="sub">批次一5 + 批次二4 + 批次三4</div></div>
+  <div class="kpi orange"><div class="label">根目录 py 文件</div><div class="value">51 → 25</div><div class="sub">工具→scripts/，回测→backtest/</div></div>
+  <div class="kpi purple"><div class="label">评分数值回归</div><div class="value">100% 一致</div><div class="sub">10例 Top5 评分与拆分前完全相同</div></div>
+</div>
+
+<div class="card">
+<h2>二、批次一 <span class="pill b1">5项低风险清理</span></h2>
+<table>
+<tr><th style="width:52px;">#</th><th style="width:190px;">事项</th><th>内容</th><th style="width:56px;">状态</th></tr>
+<tr><td>1-1</td><td>孤儿配置归档</td><td>13个无引用 JSON（含 personal_factors.json）→ <code>config/_archive/</code></td><td class="ok">✅</td></tr>
+<tr><td>1-2</td><td>死代码清理</td><td>3处确认无引用（calculate_factor_ic / get_dynamic_weights / _tencent_code_to_std 等）→ <code>archive/dead_code/</code>；<b>修正体检误判</b>：encrypt_report.py 实为 deploy_gh_v2 延迟导入，保留</td><td class="ok">✅</td></tr>
+<tr><td>1-3</td><td>SyntaxWarning 修复</td><td>html_generator_v5.py 2446行 JS 正则 <code>\s</code> 转义告警消除</td><td class="ok">✅</td></tr>
+<tr><td>1-4</td><td>DB 冗余列删除</td><td>删除 ma250 / volatility_60d 两列；删除前备份 <code>data/baseline_v5_backup_20260818.db</code></td><td class="ok">✅</td></tr>
+<tr><td>1-5</td><td>main guard</td><td>deploy_gh_v2.py 部署逻辑包入 main()，import 零副作用</td><td class="ok">✅</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h2>三、批次二 <span class="pill b2">4项中等重构</span></h2>
+<table>
+<tr><th style="width:52px;">#</th><th style="width:190px;">事项</th><th>内容</th><th style="width:56px;">状态</th></tr>
+<tr><td>2-1</td><td>卖出语义门槛统一</td><td>3处硬编码 <code>score&lt;40</code> 改为引用 <code>strategy_config.DEFAULT_SELL_THRESHOLD</code>（wb_analysis_engine / macro_event_analyzer）。<b>修正体检误判</b>：P2-1 多数"40/65/45"实为 PE 分档与叙事分档，非策略门槛</td><td class="ok">✅</td></tr>
+<tr><td>2-2</td><td>入池门槛防倒挂</td><td><code>_get_entry_threshold()</code> 改为 <code>max(65, effective_buy_threshold(market))</code>，动态跟随 MSAM 路由。实测 CN/HK=65，US 65→<b>70</b>（对齐 X_Lite 真实买入阈值，消除"入池不够买"区间）</td><td class="ok">✅</td></tr>
+<tr><td>2-3</td><td>命名统一</td><td>X_Lite 相关标识与文案统一（effective buy=70 非 68 等口径修正）</td><td class="ok">✅</td></tr>
+<tr><td>2-4</td><td>上传模块去重</td><td>抽取 <code>github_uploader.py</code>（get_sha / upload_file），deploy_gh_v2 与 generate_effectiveness_report 统一引用</td><td class="ok">✅</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h2>四、批次三 <span class="pill b3">4项架构拆分</span></h2>
+<table>
+<tr><th style="width:52px;">#</th><th style="width:190px;">事项</th><th>内容</th><th style="width:56px;">状态</th></tr>
+<tr><td>3-1</td><td>scoring_engine 抽取</td><td>新建 <code>scoring_engine.py</code>（536行）：16个因子计算 + 五维评分 + 财报获取 + 市场状态分类</td><td class="ok">✅</td></tr>
+<tr><td>3-2</td><td>主引擎分层拆分</td><td>新建 <code>data_fetcher.py</code>(296行, L0) / <code>macro_tilt.py</code>(146行, L1) / <code>change_reason.py</code>(208行, L2)；主引擎变纯编排器，2075→901行</td><td class="ok">✅</td></tr>
+<tr><td>3-3</td><td>呈现层解耦（务实版）</td><td>strategy_config 新增 <code>get_msam_state()</code> 公开API；html_generator_v5 直读 msam_state.json 改走 L1 层</td><td class="ok">✅</td></tr>
+<tr><td>3-4</td><td>脚本归位</td><td>13个工具脚本→<code>scripts/</code>，13个回测脚本→<code>backtest/</code>；统一 BASE_DIR 双 dirname 指向项目根</td><td class="ok">✅</td></tr>
+</table>
+<h3>拆分后模块层次</h3>
+<table>
+<tr><th>层次</th><th>模块</th><th>职责</th></tr>
+<tr><td>L0 数据层</td><td><code>data_fetcher.py</code></td><td>DB路径、评分历史、自选池、腾讯行情、行业/历史访问器</td></tr>
+<tr><td>L0 评分</td><td><code>scoring_engine.py</code></td><td>16因子计算、五维评分、最终评分</td></tr>
+<tr><td>L1 策略层</td><td><code>strategy_config.py</code> / <code>macro_tilt.py</code></td><td>策略参数与MSAM路由 / 宏观倾斜</td></tr>
+<tr><td>L2 业务层</td><td><code>change_reason.py</code> / watch_list / rotation 等</td><td>变动归因、候选池管理</td></tr>
+<tr><td>L3 呈现层</td><td><code>html_generator_v5.py</code></td><td>报告渲染（经 get_msam_state 取路由状态）</td></tr>
+<tr><td>L4 部署层</td><td><code>deploy_gh_v2.py</code> + <code>github_uploader.py</code></td><td>GitHub Pages 发布</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h2>五、策略X历史记录修正 <span class="pill fx">勘误</span></h2>
+<h3>问题</h3>
+<p style="font-size:13.5px;color:#495057;">策略X的 v1.0 设计目标为总收益&gt;50%（19次迭代优化达成53.50%），但近期报告与版本索引中 X_v1.0 显示 19.42%，造成"未达标"的误读。</p>
+<h3>根因（两个独立问题叠加）</h3>
+<ul>
+  <li><b>版本演进（非错误）</b>：2026-08-13 起将美股路由从激进版 X_v1.0 切换为<b>降频改造版 X_Lite_v1.0</b>——仓位 4%→1%、加止损 -15%、最小持有 5 天、交易 1532笔→199笔。总收益 53.50%→19.42% 是<b>用收益换可实盘执行性</b>的设计结果（夏普 2.72 / 回撤 -3.81% 仍健康）。</li>
+  <li><b>标签错配（真错误，已修）</b>：8/15 生成的"Xv1.0"报告固定读 X_v1.0 标签，但数据实际是 X_Lite 回测结果；version_index 中 X_v1.0 的 19.42 记录同源。</li>
+</ul>
+<h3>修正内容</h3>
+<table>
+<tr><th style="width:230px;">文件</th><th>修正</th></tr>
+<tr><td>version_index.json</td><td>X_v1.0 条目恢复真实值 <b>53.50% / -4.66% / 夏普3.44 / 1532笔</b>，指向 8/12 真实报告，并附 note 说明错配成因；X_Lite_v1.0 条目附 note 说明降频因果关系</td></tr>
+<tr><td>backtest_report_Xv1.0_20260815_0039.html</td><td>顶部加黄色勘误横幅：注明数据实为 X_Lite，真实 X_v1.0 见 8/12_2142 报告</td></tr>
+<tr><td>generate_x_report.py</td><td>标题/副标题按 strategy_id 动态生成：X_Lite 不再显示"目标总收益&gt;50%"误导文案，改为"降频版X…用收益换可实盘执行性"；顺带修复 BASE_DIR 归位漏修（双 dirname + sys.path）</td></tr>
+</table>
+<h3>X_v1.0 vs X_Lite_v1.0 对照</h3>
+<table>
+<tr><th>指标</th><th>X_v1.0（激进版 8/12）</th><th>X_Lite_v1.0（降频版，现行美股路由）</th></tr>
+<tr><td>总收益</td><td class="ok">+53.50%</td><td>+19.42%</td></tr>
+<tr><td>最大回撤</td><td>-4.66%</td><td class="ok">-3.81%</td></tr>
+<tr><td>夏普比率</td><td>3.44</td><td>2.72</td></tr>
+<tr><td>交易笔数</td><td class="warn">1532（月均卖出96+笔）</td><td class="ok">199（可实盘执行）</td></tr>
+<tr><td>胜率</td><td>46.3%</td><td class="ok">60.3%</td></tr>
+<tr><td>仓位/只</td><td>4%（40万）</td><td>1%（10万）</td></tr>
+<tr><td>止损</td><td class="warn">无</td><td class="ok">-15% 硬止损</td></tr>
+<tr><td>最小持有</td><td>无</td><td>5 天</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h2>六、回归验证体系（全部通过）</h2>
+<table>
+<tr><th style="width:190px;">验证项</th><th>结果</th></tr>
+<tr><td>编译检查</td><td class="ok">26个移动/修改文件 py_compile 全过</td></tr>
+<tr><td>import 检查</td><td class="ok">主链路模块零报错、零副作用</td></tr>
+<tr><td>Top5 评分数值对比</td><td class="ok">10例与拆分前完全一致（如 600919.SH: 69.2）</td></tr>
+<tr><td>纯渲染（regenerate_html_only）</td><td class="ok">从 DB 重放不触发交易，页面正常</td></tr>
+<tr><td>实盘跑分全流程</td><td class="ok">11步正常，当日数据无破坏</td></tr>
+<tr><td>DB 一致性</td><td class="ok">删列前后数据核对一致（有备份）</td></tr>
+<tr><td>部署链路</td><td class="ok">GitHub Pages 上传成功</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h2>七、遗留事项（已记入清单，后续处理）</h2>
+<ul>
+  <li>回测引擎（backtest_phase2 / backtest_strategy_b）评分函数签名与 scoring_engine 未对齐，建议下次回测迭代时统一</li>
+  <li>load_watchlist 对 portfolio_tracker_v5 的 L0→L2 反向依赖（业务必要，已注释标注）</li>
+  <li>呈现层完全纯模板化未做（3-3 为务实版解耦，等下次大改报告样式时一并处理）</li>
+  <li class="warn">⚠ backtest/run_full_backtest.py 无 --help 保护，直接运行会开跑全量回测</li>
+  <li>持仓 LLM 批量化（analyze_holding_batch）15:45 cron 首次实战结果待查看</li>
+</ul>
+</div>
+
+<div class="footer">三市场量化模型 · 重构收官报告 · 2026-08-18 生成</div>
+</div>
+</body>
+</html>
