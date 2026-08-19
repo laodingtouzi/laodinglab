@@ -70,6 +70,10 @@ body {
 .progress-box .line { padding: 2px 0; }
 .progress-box .line:last-child { color: var(--accent); font-weight: 600; }
 .spinner { display: inline-block; width: 12px; height: 12px; border: 2px solid var(--accent-light); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 6px; vertical-align: -1px; }
+.check { display: inline-block; width: 16px; height: 16px; line-height: 16px; text-align: center; color: var(--buy); font-weight: 700; font-size: 14px; margin-right: 6px; vertical-align: -1px; }
+.line.running { opacity: 0.85; }
+.line.done .check { animation: pop 0.25s ease-out; }
+@keyframes pop { 0% { transform: scale(0.4); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 @keyframes spin { to { transform: rotate(360deg); } }
 /* 引导提示 */
 .guide-box { margin-top: 16px; background: rgba(202,138,4,.06); border: 1px solid rgba(202,138,4,.25); border-radius: 8px; padding: 14px 18px; font-size: 13px; color: #7a6210; display: none; }
@@ -223,8 +227,8 @@ function pollTask(taskId){
       .then(r => r.json())
       .then(t => {
         showProgress(t.progress || []);
-        if (t.status === 'done') { stopPoll(); resetBtn(); renderResult(t.result); }
-        else if (t.status === 'error') { stopPoll(); resetBtn(); renderError(t.error); }
+        if (t.status === 'done') { stopPoll(); resetBtn(); markAllDone(); renderResult(t.result); }
+        else if (t.status === 'error') { stopPoll(); resetBtn(); markAllDone(); renderError(t.error); }
       })
       .catch(() => {});
   }, 1500);
@@ -235,13 +239,35 @@ function resetBtn(){ const b = document.getElementById('sg-btn'); b.disabled = f
 function showProgress(lines){
   const box = document.getElementById('progress-box');
   box.style.display = 'block';
-  box.innerHTML = lines.map(l => '<div class="line"><span class="spinner"></span>' + esc(l) + '</div>').join('');
+  const n = lines.length;
+  box.innerHTML = lines.map((l, i) => {
+    const isLast = i === n - 1;
+    const cls = isLast ? 'line running' : 'line done';
+    const icon = isLast ? '<span class="spinner"></span>' : '<span class="check">✓</span>';
+    return '<div class="' + cls + '">' + icon + esc(l) + '</div>';
+  }).join('');
   box.scrollTop = box.scrollHeight;
+}
+function markAllDone(){
+  const box = document.getElementById('progress-box');
+  box.querySelectorAll('.line.running').forEach(line => {
+    line.classList.remove('running');
+    line.classList.add('done');
+    const spinner = line.querySelector('.spinner');
+    if (spinner) spinner.outerHTML = '<span class="check">✓</span>';
+  });
 }
 function appendProgress(line){
   const box = document.getElementById('progress-box');
   box.style.display = 'block';
-  box.innerHTML += '<div class="line">' + esc(line) + '</div>';
+  // 把当前最后一行（running）标记为 done，再追加新行
+  box.querySelectorAll('.line.running').forEach(line => {
+    line.classList.remove('running');
+    line.classList.add('done');
+    const spinner = line.querySelector('.spinner');
+    if (spinner) spinner.outerHTML = '<span class="check">✓</span>';
+  });
+  box.innerHTML += '<div class="line running"><span class="spinner"></span>' + esc(line) + '</div>';
 }
 function esc(s){ return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 function fmt(v, d=2){ return (v === null || v === undefined) ? '—' : (typeof v === 'number' ? v.toFixed(d) : v); }
