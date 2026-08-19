@@ -147,9 +147,9 @@ summary { cursor: pointer; font-size: 13px; color: var(--accent); font-weight: 5
     <div id="service-badge" class="service-badge service-off">● 本地分析服务：检测中...</div>
     <div class="progress-box" id="progress-box"></div>
     <div class="guide-box" id="guide-box">
-      <b>本地分析服务未启动。</b>本站为静态站点，全面分析需在本地执行（与定时任务同一套代码）。两种方式任选：
-      <div style="margin-top:8px">方式一（推荐，实时出结果）：在终端运行 <code>python3 admin_server.py</code> 启动本地服务后，回到本页重试。</div>
-      <div style="margin-top:4px">方式二（命令行）：在项目根目录运行 <code>python3 scripts/shougugou_analysis.py 股票代码</code>，结果保存在 reports/shougugou/ 目录。</div>
+      <b>本地分析服务未启动。</b>本站为静态站点，全面分析需在本地执行（与定时任务同一套代码）。启动方法（无需终端）：
+      <div style="margin-top:8px">打开 Finder → 进入项目文件夹 <code>tri_market_stock_model_wb</code> → 双击 <b>「手搓股服务.app」</b>（图标会出现在程序坞，显示即运行中），然后回到本页重试。</div>
+      <div style="margin-top:4px;color:#93800f;font-size:12px">提示：在「系统设置 → 通用 → 登录项」中添加该 App，即可开机自动启动，今后无需任何操作。程序坞中退出该 App 即停止服务。</div>
     </div>
   </div>
 
@@ -167,7 +167,8 @@ summary { cursor: pointer; font-size: 13px; color: var(--accent); font-weight: 5
 const API_BASE = 'http://127.0.0.1:8787';
 let pollTimer = null;
 
-// 页面加载：探测本地服务
+// 页面加载：探测本地服务（未启动时每5秒自动重试，双击 App 后页面自动连接，无需刷新）
+let serviceWatchTimer = null;
 (function checkService(){
   fetch(API_BASE + '/health', { mode: 'cors' })
     .then(r => r.ok ? setBadge(true) : setBadge(false))
@@ -175,8 +176,17 @@ let pollTimer = null;
 })();
 function setBadge(ok){
   const b = document.getElementById('service-badge');
-  if (ok) { b.className = 'service-badge service-ok'; b.textContent = '● 本地分析服务：已连接（可实时评估）'; }
-  else { b.className = 'service-badge service-off'; b.textContent = '● 本地分析服务：未启动（点击评估后查看指引）'; }
+  if (ok) {
+    b.className = 'service-badge service-ok'; b.textContent = '● 本地分析服务：已连接（可实时评估）';
+    if (serviceWatchTimer) { clearInterval(serviceWatchTimer); serviceWatchTimer = null; }
+  } else {
+    b.className = 'service-badge service-off'; b.textContent = '● 本地分析服务：未启动 — 双击项目文件夹中的「手搓股服务.app」后自动连接';
+    if (!serviceWatchTimer) serviceWatchTimer = setInterval(() => {
+      fetch(API_BASE + '/health', { mode: 'cors' })
+        .then(r => { if (r.ok) setBadge(true); })
+        .catch(() => {});
+    }, 5000);
+  }
 }
 
 function startAnalysis(){
@@ -202,7 +212,7 @@ function startAnalysis(){
       resetBtn();
       document.getElementById('guide-box').style.display = 'block';
       setBadge(false);
-      appendProgress('❌ 无法连接本地分析服务：' + err.message);
+      appendProgress('❌ 无法连接本地分析服务。请双击项目文件夹中的「手搓股服务.app」启动服务，本页会自动重连（无需刷新），再点「开始评估」。');
     });
 }
 
