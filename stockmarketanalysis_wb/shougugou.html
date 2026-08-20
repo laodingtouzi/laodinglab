@@ -369,18 +369,34 @@ function renderResult(r){
     html += '<table><tr><th>策略</th><th class="num">买入次数</th><th class="num">平仓次数</th><th class="num">胜率</th><th class="num">累计收益</th><th class="num">单笔均值</th><th class="num">最佳单笔</th><th class="num">最差单笔</th><th>期末状态</th></tr>' + rows + '</table>';
     html += '<div style="font-size:12px;color:var(--text-muted)">累计收益 = 该股全部平仓交易收益率之和（单股口径，不含仓位权重与资金占用）；期末状态 = 回测期末该策略对该股的持仓情况。</div>';
 
-    // 全部 0 信号汇总：当 5 套策略均无买入时给出可读结论
+    // 全部 0 信号汇总
     const allZero = (bt.strategies || []).every(s => !s.buy_count && !s.closed_trades);
     if (allZero) {
       const cur = r.scoring && r.scoring.factors ? r.scoring.factors : {};
       const curScore = r.scoring && r.scoring.final_score;
-      const thresholds = (bt.strategies || []).map(s => s.strategy_id).join(' / ');
-      html += '<div class="note-box" style="margin-top:10px"><b>📭 五套策略在回测期内均未对该股发出买入信号（非 bug）。</b>'
+      if (bt.tier === 'below_sell') {
+        html += '<div class="note-box" style="margin-top:10px;border-color:var(--sell)"><b>⛔ 不具备投资潜力</b>'
+          + '<div style="margin-top:6px;font-size:12.5px;line-height:1.7">'
+          + '当前综合评分 <b style="color:var(--sell)">' + (curScore === undefined ? '—' : curScore.toFixed(1)) + '</b> '
+          + '已低于该市场卖出阈值，五套策略在回测期内均未发出买入信号（合理结论）。'
+          + '该股当前不具备策略层面的投资价值，建议观望或回避。'
+          + '</div></div>';
+      } else {
+        html += '<div class="note-box" style="margin-top:10px"><b>📭 五套策略在回测期内均未对该股发出买入信号（非 bug）</b>'
+          + '<div style="margin-top:6px;font-size:12.5px;line-height:1.7">'
+          + '当前综合评分 <b style="color:var(--accent)">' + (curScore === undefined ? '—' : curScore.toFixed(1)) + '</b>。'
+          + '</div></div>';
+      }
+    }
+    // 动态买入阈值提示
+    if (bt.tier === 'dynamic' && bt.dynamic_buy_threshold) {
+      html += '<div class="note-box" style="margin-top:10px;border-color:var(--accent)">'
+        + '<b>📐 动态买入阈值已启用</b>'
         + '<div style="margin-top:6px;font-size:12.5px;line-height:1.7">'
-        + '当前综合评分 <b style="color:var(--accent)">' + (curScore === undefined ? '—' : curScore.toFixed(1)) + '</b>；策略买入阈值（' + esc(thresholds) + '）均要求 ≥65（X-Lite ≥68）。'
-        + '该股在 2025-04~2026-07 的 ' + (cur.data_days || '—') + ' 个交易日中，回测引擎每天都跑了五因子评分，'
-        + 'score 最高未触发买入条件，故 5 套策略的"空仓"是数据驱动的真实结论。'
-        + '<br>📌 提示：想看某只股票的真实成交分布，可去 A 股/港股近 1 年的热门 H 档股里挑评分更高的样本（如 score≥80 的票）。'
+        + '当前评分 <b>' + (r.scoring.final_score || 0).toFixed(1) + '</b> 低于策略标准买入阈值，'
+        + '已将买入阈值动态调整为 <b>' + bt.dynamic_buy_threshold + '</b>（=当前评分），'
+        + '使该股可被假定入选并完成完整回测周期。5 套策略各自的卖出阈值/止损/止盈参数保持不变，'
+        + '退出逻辑差异体现策略横向对比价值。'
         + '</div></div>';
     }
 
@@ -397,6 +413,32 @@ function renderResult(r){
             + '<td style="font-size:12px">' + esc(t.reason || '') + '</td></tr>'
         ).join('') + '</table></details>';
     });
+
+    // --- 综合评估摘要 ---
+    const a = r.assessment || {};
+    if (a.verdict) {
+      const verdictColor = a.verdict.includes('较好') || a.verdict.includes('一定') ? 'var(--buy)'
+                         : a.verdict.includes('不具备') || a.verdict.includes('不足') ? 'var(--sell)'
+                         : a.verdict.includes('有限') || a.verdict.includes('待观察') ? 'var(--text-muted)'
+                         : 'var(--accent)';
+      html += '<div class="sub-title">④ 综合评估摘要</div>';
+      html += '<div class="note-box" style="border-left:4px solid ' + verdictColor + '">'
+        + '<div style="font-size:15px;font-weight:600;color:' + verdictColor + '">' + esc(a.verdict) + '</div>'
+        + '<div style="margin-top:8px;font-size:13px;line-height:1.8">' + esc(a.summary || '') + '</div>';
+      if (a.best_strategy && a.best_strategy !== '—') {
+        html += '<div style="margin-top:8px;font-size:12px;color:var(--text-muted)">'
+          + '最优策略: <b>' + esc(a.best_strategy) + '</b> | 最差策略: ' + esc(a.worst_strategy)
+          + ' | 平均累计收益: ' + fmt(a.avg_cum_return, 1) + '% | 平均胜率: ' + fmt(a.avg_win_rate, 0) + '%'
+          + ' | 总交易: ' + a.total_trades + '笔'
+          + '</div>';
+      }
+      if (a.weakest_factors || a.strongest_factors) {
+        html += '<div style="margin-top:4px;font-size:12px;color:var(--text-muted)">'
+          + '最强因子: ' + esc(a.strongest_factors || '—') + ' | 最弱因子: ' + esc(a.weakest_factors || '—')
+          + '</div>';
+      }
+      html += '</div>';
+    }
   }
 
   area.innerHTML = html;
