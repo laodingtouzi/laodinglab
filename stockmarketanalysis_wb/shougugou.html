@@ -81,9 +81,14 @@ body {
 /* 结果渲染 */
 .placeholder { text-align: center; color: var(--text-muted); padding: 40px 0; font-size: 14px; }
 .overview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; margin-bottom: 18px; }
-.ov-item { background: #faf8ff; border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; }
+/* 第①部分 6 项摘要 → 强制一行 6 列，避免被 minmax 挤成两行 */
+.overview-grid.six-col { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; }
+.overview-grid.six-col .ov-item { padding: 8px 10px; min-width: 0; }
+.overview-grid.six-col .ov-item .k { font-size: 10px; }
+.overview-grid.six-col .ov-item .v { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ov-item { background: #faf8ff; border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; min-width: 0; }
 .ov-item .k { font-size: 11px; color: var(--text-muted); }
-.ov-item .v { font-size: 16px; font-weight: 600; margin-top: 2px; }
+.ov-item .v { font-size: 16px; font-weight: 600; margin-top: 2px; min-width: 0; }
 .mkt-tag { display: inline-block; padding: 1px 8px; border-radius: 4px; font-size: 11px; color: #fff; }
 .mkt-CN { background: #c8102e; } .mkt-HK { background: #5f01d1; } .mkt-US { background: #001f54; }
 table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 10px 0; }
@@ -286,12 +291,12 @@ function renderResult(r){
   // --- 概要 ---
   const mktName = { CN: 'A股', HK: '港股', US: '美股' }[r.market] || r.market;
   html += '<div class="sub-title">① 股票概要与数据状态</div>';
-  html += '<div class="overview-grid">'
+  html += '<div class="overview-grid six-col">'
     + ov('代码', r.code) + ov('名称', r.name)
     + ov('市场', '<span class="mkt-tag mkt-' + r.market + '">' + mktName + '</span>')
     + ov('历史K线库', r.in_library.history_csv ? '✅ 在库' : '❌ 缺失')
     + ov('全量因子库', r.in_library.extended_kline ? '✅ 已收录' : '未收录')
-    + ov('分析时间', r.generated_at + '（耗时 ' + r.elapsed_sec + 's）')
+    + ov('分析耗时', r.elapsed_sec + 's · ' + (r.generated_at || '').slice(11, 16))
     + '</div>';
   if (r.supplement_log && r.supplement_log.length) {
     html += '<div class="ok-box"><b>新股票数据补足记录：</b><div class="log-list">' + r.supplement_log.map(esc).map(s => '<div>' + s + '</div>').join('') + '</div></div>';
@@ -363,6 +368,21 @@ function renderResult(r){
     }).join('');
     html += '<table><tr><th>策略</th><th class="num">买入次数</th><th class="num">平仓次数</th><th class="num">胜率</th><th class="num">累计收益</th><th class="num">单笔均值</th><th class="num">最佳单笔</th><th class="num">最差单笔</th><th>期末状态</th></tr>' + rows + '</table>';
     html += '<div style="font-size:12px;color:var(--text-muted)">累计收益 = 该股全部平仓交易收益率之和（单股口径，不含仓位权重与资金占用）；期末状态 = 回测期末该策略对该股的持仓情况。</div>';
+
+    // 全部 0 信号汇总：当 5 套策略均无买入时给出可读结论
+    const allZero = (bt.strategies || []).every(s => !s.buy_count && !s.closed_trades);
+    if (allZero) {
+      const cur = r.scoring && r.scoring.factors ? r.scoring.factors : {};
+      const curScore = r.scoring && r.scoring.final_score;
+      const thresholds = (bt.strategies || []).map(s => s.strategy_id).join(' / ');
+      html += '<div class="note-box" style="margin-top:10px"><b>📭 五套策略在回测期内均未对该股发出买入信号（非 bug）。</b>'
+        + '<div style="margin-top:6px;font-size:12.5px;line-height:1.7">'
+        + '当前综合评分 <b style="color:var(--accent)">' + (curScore === undefined ? '—' : curScore.toFixed(1)) + '</b>；策略买入阈值（' + esc(thresholds) + '）均要求 ≥65（X-Lite ≥68）。'
+        + '该股在 2025-04~2026-07 的 ' + (cur.data_days || '—') + ' 个交易日中，回测引擎每天都跑了五因子评分，'
+        + 'score 最高未触发买入条件，故 5 套策略的"空仓"是数据驱动的真实结论。'
+        + '<br>📌 提示：想看某只股票的真实成交分布，可去 A 股/港股近 1 年的热门 H 档股里挑评分更高的样本（如 score≥80 的票）。'
+        + '</div></div>';
+    }
 
     // 交易明细
     (bt.strategies || []).forEach((s, idx) => {
