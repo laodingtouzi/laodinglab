@@ -16,9 +16,9 @@
     "period": "2025-04-01 ~ 2026-07-24"
   },
   {
-    "version_id": "A_v1.5",
+    "version_id": "A_v0.5",
     "strategy": "策略组合A",
-    "version": "v1.5",
+    "version": "v0.5",
     "status": "archived",
     "created_at": "2026-08-11",
     "generated_at": "2026-08-11 20:59:18",
@@ -30,7 +30,7 @@
     "total_trades": 240,
     "win_rate": 57.5,
     "period": "2025-04-01 ~ 2026-04-01 (操作期) + ~ 2026-07-24 (观察期)",
-    "note": "2026-08-18修正：原标签A_v1.2正式列为v1.5。A_v1.2为v1.5的前身（superseded标记）",
+    "note": "2026-08-20重命名：原 A_v1.5 应用户要求更名为 A_v0.5（A 策略以 v1.0 为代表版本）。历史报告文件名保留不变。此前 2026-08-18 原 A_v1.2 正式列为 v1.5，A_v1.2 为其前身（superseded）",
     "superseded": [
       "A_v1.2"
     ]
@@ -123,21 +123,21 @@
     "version": "v1.0",
     "status": "composite",
     "created_at": "2026-08-15",
-    "generated_at": "2026-08-20 08:41:53",
-    "file": "backtest_report_MSAMv1.0_20260820_0841.html",
-    "config_file": "strategy_config_MSAM_v1.0_20260820_084153.json",
-    "total_return": 37.34,
-    "max_drawdown": -6.18,
-    "sharpe": 3.13,
-    "total_trades": 2463,
-    "win_rate": 43.9,
+    "generated_at": "2026-08-20 14:57:13",
+    "file": "backtest_report_MSAMv1.0_20260820_1457.html",
+    "config_file": "strategy_config_MSAM_v1.0_20260820_145713.json",
+    "total_return": 21.1,
+    "max_drawdown": -5.44,
+    "sharpe": 2.35,
+    "total_trades": 989,
+    "win_rate": 51.6,
     "period": "2025-04-01 ~ 2026-07-24"
   },
   {
     "version_id": "A_v2.0",
     "strategy": "策略组合A",
     "version": "v2.0",
-    "status": "active",
+    "status": "deprecated",
     "created_at": "2026-08-20",
     "generated_at": "2026-08-20 08:38:03",
     "file": "backtest_report_Av2.0_20260820_0838.html",
@@ -147,6 +147,7 @@
     "sharpe": 3.04,
     "total_trades": 2770,
     "win_rate": 44.3,
-    "period": "2025-04-01 ~ 2026-07-24"
+    "period": "2025-04-01 ~ 2026-07-24",
+    "note": "2026-08-20 废弃：收益虽高但胜率骤降(56%→44%)、交易频率超 MSAM 预算(月均卖出63>30)，判定为不明智方案。MSAM 路由切回 A_v1.0。报告与配置保留作历史归档"
   }
 ]
