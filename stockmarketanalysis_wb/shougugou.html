@@ -437,6 +437,42 @@ function renderResult(r){
           + '最强因子: ' + esc(a.strongest_factors || '—') + ' | 最弱因子: ' + esc(a.weakest_factors || '—')
           + '</div>';
       }
+      // 增强维度①：突破路径
+      const bp = a.breakthrough_path;
+      if (bp && !bp.reached && bp.paths && bp.paths.length) {
+        html += '<div style="margin-top:8px;border-top:1px dashed var(--border);padding-top:6px">'
+          + '<div style="font-size:12px;font-weight:600;color:var(--accent)">突破路径模拟（距买入阈值 ' + bp.gap + ' 分）</div>'
+          + '<div style="margin-top:4px;font-size:11.5px;line-height:1.6">';
+        bp.paths.slice(0, 3).forEach(p => {
+          const tag = p.feasible ? '✅' : '⚠️';
+          html += '<div>' + tag + ' <b>' + esc(p.factor) + '</b> ' + p.current + '→'
+            + (p.current + p.needed).toFixed(0) + ' (需+' + p.needed + ', 权重' + p.weight_pct + '%)</div>';
+        });
+        html += '</div></div>';
+      }
+      // 增强维度②：评分趋势
+      const st = a.score_trend;
+      if (st && st.sample_count >= 3) {
+        html += '<div style="margin-top:6px;border-top:1px dashed var(--border);padding-top:6px">'
+          + '<div style="font-size:12px;font-weight:600;color:var(--accent)">评分趋势分析</div>'
+          + '<div style="margin-top:4px;font-size:11.5px;line-height:1.6">'
+          + '<div>📊 ' + st.sample_count + '条历史数据 | 最高 <b>' + st.highest + '</b>(' + st.highest_date + ') | 最低 ' + st.lowest + '</div>'
+          + '<div>' + st.trend_dir + ' 近期斜率 ' + (st.slope_30d > 0 ? '+' : '') + st.slope_30d + '/天</div>'
+          + '<div style="color:var(--text-muted)">🔮 ' + esc(st.projection) + '</div>'
+          + '</div></div>';
+      }
+      // 增强维度③：宏观事件
+      const me = a.macro_events;
+      if (me && me.theme) {
+        const statusColor = me.sector_status === '超配' ? 'var(--buy)' : me.sector_status === '低配' ? 'var(--sell)' : 'var(--text-muted)';
+        html += '<div style="margin-top:6px;border-top:1px dashed var(--border);padding-top:6px">'
+          + '<div style="font-size:12px;font-weight:600;color:var(--accent)">宏观事件分析</div>'
+          + '<div style="margin-top:4px;font-size:11.5px;line-height:1.6">'
+          + '<div>板块主题: <b>' + esc(me.theme) + '</b> | 状态: <b style="color:' + statusColor + '">' + esc(me.sector_status) + '</b> | 宏观倾斜: ' + (me.tilt > 0 ? '+' : '') + me.tilt + '分</div>'
+          + '<div style="color:var(--text-muted)">驱动因子: ' + esc(me.drivers) + '</div>'
+          + '<div style="color:var(--text-muted)">市场快照: ' + esc(me.market_snapshot) + '</div>'
+          + '</div></div>';
+      }
       html += '</div>';
     }
   }
