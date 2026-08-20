@@ -111,6 +111,11 @@ tr:hover td { background: rgba(95,1,209,.03); }
 details { margin-top: 8px; }
 summary { cursor: pointer; font-size: 13px; color: var(--accent); font-weight: 500; padding: 4px 0; }
 .sub-title { font-size: 15px; font-weight: 600; color: var(--text-secondary); margin: 18px 0 8px; }
+/* 多市场候选芯片 */
+.multi-mkt-bar { display:flex; flex-wrap:wrap; gap:8px; margin: 8px 0 12px; padding: 10px; background:var(--bg-card); border-radius:8px; border:1px dashed var(--border); }
+.multi-mkt-chip { display:flex; align-items:center; gap:8px; padding:8px 12px; background:#fff; border:1px solid var(--border); border-radius:8px; font-size:12px; }
+.multi-mkt-chip.primary { border-color:var(--buy); background:rgba(34,197,94,.06); box-shadow: 0 0 0 2px rgba(34,197,94,.12); }
+.multi-mkt-chip .mkt-tag { font-size:10px; }
 .footer-note { text-align: center; font-size: 12px; color: var(--text-muted); padding: 20px 0 30px; }
 @media (max-width: 640px) { .input-row { flex-direction: column; align-items: stretch; } #sg-input, #sg-btn { max-width: none; width: 100%; } }
 </style>
@@ -291,6 +296,38 @@ function renderResult(r){
   // --- 概要 ---
   const mktName = { CN: 'A股', HK: '港股', US: '美股' }[r.market] || r.market;
   html += '<div class="sub-title">① 股票概要与数据状态</div>';
+
+  // 多市场并排：候选标签 + 各市场快速预览
+  if (r.is_multi_market && r.candidates && r.candidates.length > 1) {
+    html += '<div class="multi-mkt-bar">';
+    r.candidates.forEach(c => {
+      const mm = r.multi_market && r.multi_market[c.market];
+      const isPrimary = c.market === r.market;
+      const sc2 = mm && mm.scoring;
+      const scoreVal = sc2 && sc2.final_score !== undefined && sc2.final_score !== null ? sc2.final_score.toFixed(1) : '—';
+      const statusVal = sc2 && sc2.status ? sc2.status : '—';
+      const statusCls = statusVal === 'H' ? 'status-H' : statusVal === 'M' ? 'status-M' : 'status-sell';
+      html += '<div class="multi-mkt-chip ' + (isPrimary ? 'primary' : '') + '">'
+        + '<span class="mkt-tag mkt-' + c.market + '">' + ({CN:'A股',HK:'港股',US:'美股'}[c.market]) + '</span>'
+        + '<b>' + esc(c.code) + '</b>'
+        + '<span style="font-size:11px;color:var(--text-muted)">' + esc(c.name) + '</span>'
+        + '<span style="font-size:18px;color:var(--accent);font-weight:600">' + scoreVal + '</span>'
+        + '<span class="' + statusCls + '" style="font-size:11px">' + statusVal + '</span>'
+        + (isPrimary ? '<span style="font-size:10px;color:var(--buy)">👈 主显示</span>' : '')
+        + '</div>';
+    });
+    html += '</div>';
+    if (r.comparison && r.comparison.verdict) {
+      html += '<div class="note-box" style="border-left:4px solid var(--accent);margin-bottom:10px">'
+        + '<b>🌐 多市场对比结论</b>'
+        + '<div style="margin-top:6px;font-size:12.5px;line-height:1.7">'
+        + esc(r.comparison.verdict)
+        + (r.comparison.score_gap !== null && r.comparison.score_gap !== undefined
+           ? ' | 评分差距 <b>' + r.comparison.score_gap + '</b> 分' : '')
+        + '</div></div>';
+    }
+  }
+
   html += '<div class="overview-grid six-col">'
     + ov('代码', r.code) + ov('名称', r.name)
     + ov('市场', '<span class="mkt-tag mkt-' + r.market + '">' + mktName + '</span>')
@@ -474,6 +511,96 @@ function renderResult(r){
           + '</div></div>';
       }
       html += '</div>';
+    }
+
+    // --- ⑨ 跨市场对比（仅多市场时显示） ---
+    if (r.is_multi_market && r.multi_market && Object.keys(r.multi_market).length > 1) {
+      const mkts = Object.keys(r.multi_market);
+      const cmp = r.comparison || {};
+      html += '<div class="sub-title">⑨ 跨市场对比（' + mkts.length + ' 个市场）</div>';
+
+      // 评分对比表
+      html += '<table><tr><th style="width:90px">市场</th><th>代码</th>'
+        + '<th class="num">综合评分</th><th>模拟状态</th><th class="num">现价</th>'
+        + '<th class="num">PE</th><th class="num">PB</th><th class="num">动量60日</th>'
+        + '<th class="num">波动率</th><th class="num">最优/最差策略</th></tr>';
+      mkts.forEach(mkt => {
+        const mm = r.multi_market[mkt];
+        if (!mm.ok) {
+          html += '<tr><td><span class="mkt-tag mkt-' + mkt + '">' + ({CN:'A股',HK:'港股',US:'美股'}[mkt]) + '</span></td>'
+            + '<td colspan="9" style="color:var(--sell)">❌ ' + esc(mm.error || '分析失败') + '</td></tr>';
+          return;
+        }
+        const sc = mm.scoring || {};
+        const f = sc.factors || {};
+        const a = mm.assessment || {};
+        const isBest = mkt === cmp.best_market;
+        const sCls = sc.status === 'H' ? 'status-H' : sc.status === 'M' ? 'status-M' : 'status-sell';
+        html += '<tr>'
+          + '<td><span class="mkt-tag mkt-' + mkt + '">' + ({CN:'A股',HK:'港股',US:'美股'}[mkt]) + '</span>'
+          + (isBest ? ' <span style="color:var(--buy);font-size:10px">★</span>' : '') + '</td>'
+          + '<td>' + esc(mm.code) + '</td>'
+          + '<td class="num"><b style="font-size:15px;color:' + (isBest ? 'var(--buy)' : 'var(--accent)') + '">'
+          + (sc.final_score === null || sc.final_score === undefined ? '—' : sc.final_score.toFixed(1)) + '</b></td>'
+          + '<td><span class="' + sCls + '">' + esc(sc.status || '—') + '</span></td>'
+          + '<td class="num">' + fmt(f.price) + '</td>'
+          + '<td class="num">' + fmt(f.pe, 1) + '</td>'
+          + '<td class="num">' + fmt(f.pb, 1) + '</td>'
+          + '<td class="num">' + fmt(f.return_60d, 1) + '%</td>'
+          + '<td class="num">' + fmt(f.volatility_20d, 1) + '</td>'
+          + '<td class="num" style="font-size:11.5px">' + esc((a.best_strategy || '—') + ' / ' + (a.worst_strategy || '—')) + '</td>'
+          + '</tr>';
+      });
+      html += '</table>';
+
+      // 因子差异表（次优 vs 最优）
+      if (cmp.factor_diffs && Object.keys(cmp.factor_diffs).length) {
+        const factorLabels = {quality:'质量',valuation:'估值',sentiment_event:'情绪',technical:'技术',momentum:'动量'};
+        html += '<div style="margin-top:10px;font-size:12px;font-weight:600;color:var(--accent)">因子差异（次优市场 - 最优市场）</div>';
+        html += '<table><tr><th style="width:90px">因子</th>';
+        mkts.slice(0, 3).forEach(m => {
+          html += '<th class="num">' + ({CN:'A股',HK:'港股',US:'美股'}[m]) + '</th>';
+        });
+        html += '<th class="num">最优 vs 次优差距</th></tr>';
+        Object.keys(cmp.factor_diffs).forEach(k => {
+          const d = cmp.factor_diffs[k];
+          html += '<tr><td><b>' + esc(factorLabels[k] || k) + '</b></td>';
+          // 取次优市场分数（取 ranked 第二的市场分数）
+          // 这里简化：只展示最优市场的因子 + 与次优的差距
+          mkts.slice(0, 3).forEach(m => {
+            const mm = r.multi_market[m];
+            if (mm && mm.scoring && mm.scoring.factors) {
+              const v = mm.scoring.factors[k];
+              html += '<td class="num">' + (v === undefined || v === null ? '—' : v.toFixed(1)) + '</td>';
+            } else {
+              html += '<td class="num">—</td>';
+            }
+          });
+          const diffColor = d.diff > 0 ? 'var(--buy)' : d.diff < 0 ? 'var(--sell)' : 'var(--text-muted)';
+          html += '<td class="num" style="color:' + diffColor + ';font-weight:600">'
+            + (d.diff > 0 ? '+' : '') + d.diff + '</td></tr>';
+        });
+        html += '</table>';
+        html += '<div style="margin-top:4px;font-size:11px;color:var(--text-muted)">注：差异为正值表示最优市场该因子更强；最优市场 = ' + esc(({CN:'A股',HK:'港股',US:'美股'}[cmp.best_market]) + '（' + cmp.best_score + '分）') + '</div>';
+      }
+
+      // 各市场综合评估 verdict 摘要
+      html += '<div style="margin-top:10px;font-size:12px;font-weight:600;color:var(--accent)">各市场评估摘要</div>';
+      mkts.forEach(mkt => {
+        const mm = r.multi_market[mkt];
+        if (!mm.ok) return;
+        const a = mm.assessment || {};
+        const verdictColor = (a.verdict || '').includes('较好') || (a.verdict || '').includes('一定') ? 'var(--buy)'
+                           : (a.verdict || '').includes('不具备') || (a.verdict || '').includes('不足') ? 'var(--sell)'
+                           : (a.verdict || '').includes('有限') || (a.verdict || '').includes('待观察') ? 'var(--text-muted)'
+                           : 'var(--accent)';
+        html += '<div style="margin-top:4px;border-left:3px solid ' + verdictColor + ';padding:6px 10px;background:var(--bg-card);border-radius:4px;font-size:12px">'
+          + '<span class="mkt-tag mkt-' + mkt + '">' + ({CN:'A股',HK:'港股',US:'美股'}[mkt]) + '</span> '
+          + '<b style="color:' + verdictColor + '">' + esc(a.verdict || '—') + '</b>'
+          + '<div style="margin-top:3px;color:var(--text-muted);font-size:11.5px">'
+          + esc((a.summary || '').slice(0, 200)) + ((a.summary || '').length > 200 ? '...' : '')
+          + '</div></div>';
+      });
     }
   }
 
