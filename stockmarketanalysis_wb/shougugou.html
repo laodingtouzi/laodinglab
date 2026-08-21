@@ -209,6 +209,9 @@ function startAnalysis(){
   const btn = document.getElementById('sg-btn');
   btn.disabled = true; btn.textContent = '评估中...';
   document.getElementById('guide-box').style.display = 'none';
+  // 清空上一次结果，避免新旧报告混在一起
+  const area = document.getElementById('result-area');
+  area.innerHTML = '<div class="placeholder">⏳ 正在分析「' + esc(q) + '」，请稍候...</div>';
   showProgress(['正在提交分析任务：' + q]);
 
   fetch(API_BASE + '/api/shougugou/start?code=' + encodeURIComponent(q), { mode: 'cors' })
