@@ -113,7 +113,8 @@ summary { cursor: pointer; font-size: 13px; color: var(--accent); font-weight: 5
 .sub-title { font-size: 15px; font-weight: 600; color: var(--text-secondary); margin: 18px 0 8px; }
 /* 多市场候选芯片 */
 .multi-mkt-bar { display:flex; flex-wrap:wrap; gap:8px; margin: 8px 0 12px; padding: 10px; background:var(--bg-card); border-radius:8px; border:1px dashed var(--border); }
-.multi-mkt-chip { display:flex; align-items:center; gap:8px; padding:8px 12px; background:#fff; border:1px solid var(--border); border-radius:8px; font-size:12px; }
+.multi-mkt-chip { display:flex; align-items:center; gap:8px; padding:8px 12px; background:#fff; border:1px solid var(--border); border-radius:8px; font-size:12px; cursor: pointer; transition: border-color .15s, box-shadow .15s, background .15s; }
+.multi-mkt-chip:hover { border-color: var(--accent); }
 .multi-mkt-chip.primary { border-color:var(--buy); background:rgba(34,197,94,.06); box-shadow: 0 0 0 2px rgba(34,197,94,.12); }
 .multi-mkt-chip .mkt-tag { font-size:10px; }
 .footer-note { text-align: center; font-size: 12px; color: var(--text-muted); padding: 20px 0 30px; }
@@ -291,13 +292,38 @@ function renderError(msg){
 }
 
 // ═══ 结果渲染 ═══
+let lastResult = null;        // 最近一次结果（用于 chip 切换时复用）
+let currentMkt = null;        // 当前展示的市场（多市场时为 CN/HK/US，单市场时为 r.market）
+
+function _buildView(r){
+  // 合成当前展示的视图：单市场时是 r 本身；多市场时把选中市场的数据 spread 到顶层
+  if (r && r.is_multi_market && r.multi_market && currentMkt && r.multi_market[currentMkt]) {
+    return Object.assign({}, r, r.multi_market[currentMkt], { market: currentMkt });
+  }
+  return r;
+}
+
+function switchMkt(mkt){
+  if (!lastResult || !lastResult.multi_market || !lastResult.multi_market[mkt]) return;
+  currentMkt = mkt;
+  renderResult(lastResult);
+  // 切换后滚动到结果区顶部，避免停留在对比表
+  document.getElementById('result-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
 function renderResult(r){
   const area = document.getElementById('result-area');
   if (!r || !r.ok) { renderError(r && r.error); return; }
+  // 保存结果 + 同步 currentMkt（新查询时重置；切换时已在外层设好）
+  lastResult = r;
+  if (currentMkt === null || !r.multi_market || !r.multi_market[currentMkt]) {
+    currentMkt = r.market;
+  }
+  const view = _buildView(r);
   let html = '';
 
   // --- 概要 ---
-  const mktName = { CN: 'A股', HK: '港股', US: '美股' }[r.market] || r.market;
+  const mktName = { CN: 'A股', HK: '港股', US: '美股' }[view.market] || view.market;
   html += '<div class="sub-title">① 股票概要与数据状态</div>';
 
   // 多市场并排：候选标签 + 各市场快速预览
@@ -305,12 +331,13 @@ function renderResult(r){
     html += '<div class="multi-mkt-bar">';
     r.candidates.forEach(c => {
       const mm = r.multi_market && r.multi_market[c.market];
-      const isPrimary = c.market === r.market;
+      const isPrimary = c.market === currentMkt;
       const sc2 = mm && mm.scoring;
       const scoreVal = sc2 && sc2.final_score !== undefined && sc2.final_score !== null ? sc2.final_score.toFixed(1) : '—';
       const statusVal = sc2 && sc2.status ? sc2.status : '—';
       const statusCls = statusVal === 'H' ? 'status-H' : statusVal === 'M' ? 'status-M' : 'status-sell';
-      html += '<div class="multi-mkt-chip ' + (isPrimary ? 'primary' : '') + '">'
+      const titleHint = isPrimary ? '当前主显示' : '点击切换主显示';
+      html += '<div class="multi-mkt-chip ' + (isPrimary ? 'primary' : '') + '" data-market="' + c.market + '" onclick="switchMkt(\'' + c.market + '\')" title="' + titleHint + '">'
         + '<span class="mkt-tag mkt-' + c.market + '">' + ({CN:'A股',HK:'港股',US:'美股'}[c.market]) + '</span>'
         + '<b>' + esc(c.code) + '</b>'
         + '<span style="font-size:11px;color:var(--text-muted)">' + esc(c.name) + '</span>'
@@ -332,18 +359,18 @@ function renderResult(r){
   }
 
   html += '<div class="overview-grid six-col">'
-    + ov('代码', r.code) + ov('名称', r.name)
-    + ov('市场', '<span class="mkt-tag mkt-' + r.market + '">' + mktName + '</span>')
-    + ov('历史K线库', r.in_library.history_csv ? '✅ 在库' : '❌ 缺失')
-    + ov('全量因子库', r.in_library.extended_kline ? '✅ 已收录' : '未收录')
-    + ov('分析耗时', r.elapsed_sec + 's · ' + (r.generated_at || '').slice(11, 16))
+    + ov('代码', view.code) + ov('名称', view.name)
+    + ov('市场', '<span class="mkt-tag mkt-' + view.market + '">' + mktName + '</span>')
+    + ov('历史K线库', view.in_library && view.in_library.history_csv ? '✅ 在库' : '❌ 缺失')
+    + ov('全量因子库', view.in_library && view.in_library.extended_kline ? '✅ 已收录' : '未收录')
+    + ov('分析耗时', (view.elapsed_sec || '—') + 's · ' + ((view.generated_at || '').slice(11, 16)))
     + '</div>';
-  if (r.supplement_log && r.supplement_log.length) {
-    html += '<div class="ok-box"><b>新股票数据补足记录：</b><div class="log-list">' + r.supplement_log.map(esc).map(s => '<div>' + s + '</div>').join('') + '</div></div>';
+  if (view.supplement_log && view.supplement_log.length) {
+    html += '<div class="ok-box"><b>新股票数据补足记录：</b><div class="log-list">' + view.supplement_log.map(esc).map(s => '<div>' + s + '</div>').join('') + '</div></div>';
   }
 
   // --- 评分 ---
-  const sc = r.scoring || {};
+  const sc = view.scoring || {};
   const f = sc.factors || {};
   html += '<div class="sub-title">② 模拟跑分（持有池字段结构，与每日选股引擎同源）</div>';
   if (sc.final_score === null || sc.final_score === undefined) {
@@ -388,7 +415,7 @@ function renderResult(r){
   }
 
   // --- 回测对比 ---
-  const bt = r.backtest || {};
+  const bt = view.backtest || {};
   html += '<div class="sub-title">③ 模拟回测：五套策略横向对比（2024年以来）</div>';
   if (!bt.applicable) {
     html += '<div class="note-box"><b>回测不适用说明：</b>' + esc(bt.reason || '') + '</div>';
@@ -412,8 +439,8 @@ function renderResult(r){
     // 全部 0 信号汇总
     const allZero = (bt.strategies || []).every(s => !s.buy_count && !s.closed_trades);
     if (allZero) {
-      const cur = r.scoring && r.scoring.factors ? r.scoring.factors : {};
-      const curScore = r.scoring && r.scoring.final_score;
+      const cur = view.scoring && view.scoring.factors ? view.scoring.factors : {};
+      const curScore = view.scoring && view.scoring.final_score;
       if (bt.tier === 'below_sell') {
         html += '<div class="note-box" style="margin-top:10px;border-color:var(--sell)"><b>⛔ 不具备投资潜力</b>'
           + '<div style="margin-top:6px;font-size:12.5px;line-height:1.7">'
@@ -433,7 +460,7 @@ function renderResult(r){
       html += '<div class="note-box" style="margin-top:10px;border-color:var(--accent)">'
         + '<b>📐 动态买入阈值已启用</b>'
         + '<div style="margin-top:6px;font-size:12.5px;line-height:1.7">'
-        + '当前评分 <b>' + (r.scoring.final_score || 0).toFixed(1) + '</b> 低于策略标准买入阈值，'
+        + '当前评分 <b>' + (view.scoring.final_score || 0).toFixed(1) + '</b> 低于策略标准买入阈值，'
         + '已将买入阈值动态调整为 <b>' + bt.dynamic_buy_threshold + '</b>（=当前评分），'
         + '使该股可被假定入选并完成完整回测周期。5 套策略各自的卖出阈值/止损/止盈参数保持不变，'
         + '退出逻辑差异体现策略横向对比价值。'
@@ -455,7 +482,7 @@ function renderResult(r){
     });
 
     // --- 综合评估摘要 ---
-    const a = r.assessment || {};
+    const a = view.assessment || {};
     if (a.verdict) {
       const verdictColor = a.verdict.includes('较好') || a.verdict.includes('一定') ? 'var(--buy)'
                          : a.verdict.includes('不具备') || a.verdict.includes('不足') ? 'var(--sell)'
