@@ -18,18 +18,29 @@
   .input-group input { flex:1; padding:12px 16px; border:1px solid #e2e8f0; border-radius:8px; font-size:1rem; }
   .input-group button { padding:12px 24px; background:var(--accent); color:#fff; border:none; border-radius:8px; font-size:1rem; cursor:pointer; }
   .input-group button:hover { background:#4a00a8; }
+  .input-group button:disabled { background:#94a3b8; cursor:not-allowed; }
   .hint { color:#64748b; font-size:0.85rem; margin-top:8px; }
-  .result { margin-top:20px; padding:16px; background:#f1f5f9; border-radius:8px; font-family:monospace; font-size:0.9rem; white-space:pre-wrap; }
+  .progress-box { margin-top:16px; padding:16px; background:#f1f5f9; border-radius:8px; }
+  .progress-bar { width:100%; height:8px; background:#e2e8f0; border-radius:4px; overflow:hidden; margin:8px 0; }
+  .progress-fill { height:100%; background:var(--accent); width:0%; transition:width 0.3s; }
+  .progress-log { font-family:monospace; font-size:0.8rem; color:#64748b; max-height:120px; overflow-y:auto; }
+  .progress-log-item { padding:2px 0; border-bottom:1px dashed #e2e8f0; }
+  .result { margin-top:20px; }
   .score-box { display:flex; gap:12px; flex-wrap:wrap; margin:12px 0; }
   .score-item { background:#dbeafe; color:#1e40af; padding:6px 12px; border-radius:6px; font-size:0.85rem; }
   .verdict { font-size:1.2rem; font-weight:600; margin:12px 0; }
   .verdict.good { color:#16a34a; }
-  .verdict.bad { color:#dc2626; }
   .verdict.warn { color:#ca8a04; }
+  .verdict.bad { color:#dc2626; }
   table { width:100%; border-collapse:collapse; font-size:0.85rem; margin-top:12px; }
   th, td { padding:8px; text-align:left; border-bottom:1px solid #e2e8f0; }
   th { background:#f1f5f9; font-weight:600; }
+  .signal-buy { background:#dcfce7; color:#166534; padding:2px 8px; border-radius:4px; font-size:0.8rem; font-weight:600; }
+  .signal-watch { background:#fef3c7; color:#92400e; padding:2px 8px; border-radius:4px; font-size:0.8rem; font-weight:600; }
+  .signal-sell { background:#fee2e2; color:#991b1b; padding:2px 8px; border-radius:4px; font-size:0.8rem; font-weight:600; }
   .footer { text-align:center; color:#94a3b8; font-size:0.8rem; margin-top:40px; padding:20px; }
+  .error-box { background:#fee2e2; color:#991b1b; padding:12px; border-radius:8px; margin-top:12px; }
+  .server-offline { background:#fef3c7; color:#92400e; padding:12px; border-radius:8px; margin-top:12px; }
 </style>
 </head>
 <body>
@@ -43,93 +54,186 @@
   <div class="card">
     <h2>输入股票代码或名称</h2>
     <div class="input-group">
-      <input type="text" id="stockInput" placeholder="例如：000001、平安银行、AAPL..." onkeypress="if(event.key==='Enter')analyze()">
-      <button onclick="analyze()">分析</button>
+      <input type="text" id="stockInput" placeholder="例如：000001、平安银行、AAPL..." onkeypress="if(event.key==='Enter')startAnalysis()">
+      <button id="analyzeBtn" onclick="startAnalysis()">分析</button>
     </div>
     <div class="hint">
       💡 支持格式：A股代码(000001)、港股代码(00700)、美股代码(AAPL)、股票名称<br>
-      ⚠️ 手搓股分析涉及全库回测，耗时约 3-5 分钟，请耐心等待。当前为 CLI 模式，结果将在下方显示。
+      ⚠️ 手搓股分析涉及全库回测，耗时约 3-5 分钟
+    </div>
+    <div id="serverStatus"></div>
+    <div id="progressArea" style="display:none;">
+      <div class="progress-box">
+        <div id="progressText">准备中...</div>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-log" id="progressLog"></div>
+      </div>
     </div>
     <div id="resultArea"></div>
   </div>
-
-  <div class="card">
-    <h2>📋 分析说明</h2>
-    <p>手搓股功能对单只股票进行全面分析，包含以下步骤：</p>
-    <ol style="margin-left:20px; margin-top:8px;">
-      <li><strong>数据检查</strong>：确认本地是否有历史K线和全量因子数据，无则自动从东方财富下载</li>
-      <li><strong>五因子评分</strong>：质量、估值、情绪、技术、动量——与每日选股引擎同源</li>
-      <li><strong>策略回测</strong>：5套策略横向对比（B_v2.1 / A_v0.5 / X_v1.0 / X_Lite / MSAM）</li>
-      <li><strong>综合评估</strong>：投资潜力判定 + 突破路径模拟 + 评分趋势 + 宏观事件分析</li>
-    </ol>
-    <p style="margin-top:12px; color:#64748b; font-size:0.85rem;">
-      注：新发行股（历史数据不足60日）回测效用有限，评分模块仍可参考。
-    </p>
-  </div>
 </div>
 
-<div class="footer">
-  老丁实验室 Laodinglab · 手搓股分析 v1.0
-</div>
+<div class="footer">老丁实验室 Laodinglab · 手搓股分析 v1.0</div>
 
 <script>
-// 由于手搓股分析需要Python后端计算（约3-5分钟），
-// 当前版本提供CLI命令指引。后续可接入后端API实现实时分析。
-function analyze() {
-  const input = document.getElementById('stockInput').value.trim();
-  if (!input) {
-    alert('请输入股票代码或名称');
-    return;
-  }
-  const area = document.getElementById('resultArea');
-  area.innerHTML = '<div class="result">⏳ 手搓股分析需要运行Python CLI命令，耗时约3-5分钟。<br><br>' +
-    '请在终端执行以下命令：<br><code style="background:#e2e8f0;padding:2px 6px;border-radius:4px;">' +
-    'python3 scripts/shougugou_analysis.py ' + input +
-    '</code><br><br>分析完成后，结果将保存至 <code>reports/shougugou/latest.json</code></div>';
-}
+const API_BASE = 'http://localhost:8788';
+let pollTimer = null;
 
-// 如果有 latest.json 缓存，自动加载显示
-(async function() {
+// 检查服务器是否在线
+(async function checkServer() {
   try {
-    const resp = await fetch('data/shougugou_latest.json?t=' + Date.now(), {cache:'no-store'});
-    if (!resp.ok) return;
-    const data = await resp.json();
-    if (data && data.ok) renderResult(data);
-  } catch (e) {}
+    const resp = await fetch(API_BASE + '/health', { method: 'GET', mode: 'cors' });
+    if (!resp.ok) throw new Error('offline');
+    document.getElementById('serverStatus').innerHTML = '';
+  } catch (e) {
+    document.getElementById('serverStatus').innerHTML =
+      '<div class="server-offline">⚠️ 本地服务未启动，请在终端执行：<code>python3 admin_server.py</code></div>';
+  }
 })();
 
-function renderResult(data) {
-  const area = document.getElementById('resultArea');
-  const sc = data.scoring || {};
-  const bt = data.backtest || {};
-  const ast = data.assessment || {};
-  let html = '<div style="margin-top:20px;">';
-  html += '<h3>📊 ' + data.code + ' ' + data.name + ' (' + data.market + ')</h3>';
+async function startAnalysis() {
+  const input = document.getElementById('stockInput').value.trim();
+  if (!input) { alert('请输入股票代码或名称'); return; }
+
+  const btn = document.getElementById('analyzeBtn');
+  const progressArea = document.getElementById('progressArea');
+  const resultArea = document.getElementById('resultArea');
+  const progressText = document.getElementById('progressText');
+  const progressFill = document.getElementById('progressFill');
+  const progressLog = document.getElementById('progressLog');
+
+  btn.disabled = true;
+  btn.textContent = '分析中...';
+  progressArea.style.display = 'block';
+  resultArea.innerHTML = '';
+  progressLog.innerHTML = '';
+  progressFill.style.width = '5%';
+  progressText.textContent = '正在启动分析任务...';
+
+  try {
+    const resp = await fetch(API_BASE + '/api/shougugou/start?code=' + encodeURIComponent(input), { mode: 'cors' });
+    const data = await resp.json();
+    if (!resp.ok) {
+      throw new Error(data.error || '启动失败');
+    }
+    const taskId = data.task_id;
+    pollTask(taskId);
+  } catch (e) {
+    progressArea.style.display = 'none';
+    resultArea.innerHTML = '<div class="error-box">❌ ' + e.message + '</div>';
+    if (e.message.includes('Failed to fetch')) {
+      resultArea.innerHTML += '<div class="server-offline">请在终端执行：<code>python3 admin_server.py</code> 启动本地服务</div>';
+    }
+    btn.disabled = false;
+    btn.textContent = '分析';
+  }
+}
+
+function pollTask(taskId) {
+  let attempts = 0;
+  const maxAttempts = 600; // 10分钟
+
+  pollTimer = setInterval(async () => {
+    attempts++;
+    if (attempts > maxAttempts) {
+      clearInterval(pollTimer);
+      document.getElementById('analyzeBtn').disabled = false;
+      document.getElementById('analyzeBtn').textContent = '分析';
+      document.getElementById('resultArea').innerHTML = '<div class="error-box">⏱️ 分析超时，请重试</div>';
+      return;
+    }
+
+    try {
+      const resp = await fetch(API_BASE + '/api/shougugou/task?id=' + taskId, { mode: 'cors' });
+      const data = await resp.json();
+      if (!resp.ok) throw new Error(data.error);
+
+      // 更新进度
+      updateProgress(data);
+
+      if (data.status === 'done') {
+        clearInterval(pollTimer);
+        renderResult(data.result);
+        document.getElementById('analyzeBtn').disabled = false;
+        document.getElementById('analyzeBtn').textContent = '分析';
+      } else if (data.status === 'error') {
+        clearInterval(pollTimer);
+        document.getElementById('resultArea').innerHTML = '<div class="error-box">❌ ' + (data.error || '分析失败') + '</div>';
+        document.getElementById('analyzeBtn').disabled = false;
+        document.getElementById('analyzeBtn').textContent = '分析';
+      }
+    } catch (e) {
+      // 轮询出错继续尝试
+    }
+  }, 1000);
+}
+
+function updateProgress(data) {
+  const progress = data.progress || [];
+  const logEl = document.getElementById('progressLog');
+  logEl.innerHTML = progress.slice(-20).map(p => '<div class="progress-log-item">' + p + '</div>').join('');
+  logEl.scrollTop = logEl.scrollHeight;
+
+  // 估算进度
+  const text = progress.join(' ');
+  let pct = 5;
+  if (text.includes('评分')) pct = 20;
+  if (text.includes('回测')) pct = 40;
+  if (text.includes('B_v2.1')) pct = 55;
+  if (text.includes('A_v0.5')) pct = 65;
+  if (text.includes('X_v1.0')) pct = 75;
+  if (text.includes('MSAM')) pct = 85;
+  if (text.includes('综合评估')) pct = 95;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressText').textContent = '分析中... ' + (progress[progress.length - 1] || '');
+}
+
+function renderResult(result) {
+  if (!result || !result.ok) {
+    document.getElementById('resultArea').innerHTML = '<div class="error-box">分析失败：' + (result ? result.error : '未知错误') + '</div>';
+    return;
+  }
+
+  const sc = result.scoring || {};
+  const bt = result.backtest || {};
+  const ast = result.assessment || {};
+
+  let html = '<div class="result"><h3>📊 ' + result.code + ' ' + result.name + ' (' + result.market + ')</h3>';
+
+  // 评分概览
   if (sc.final_score != null) {
     html += '<div class="score-box">';
     html += '<div class="score-item">综合评分: ' + sc.final_score + '</div>';
-    html += '<div class="score-item">状态: ' + sc.status + '</div>';
+    html += '<div class="score-item">状态: ' + (sc.status || '—') + '</div>';
     html += '</div>';
+
     const f = sc.factors || {};
     html += '<table><tr><th>因子</th><th>质量</th><th>估值</th><th>情绪</th><th>技术</th><th>动量</th></tr>';
-    html += '<tr><td>分数</td><td>' + (f.quality||'-') + '</td><td>' + (f.valuation||'-') + '</td><td>' + (f.sentiment_event||'-') + '</td><td>' + (f.technical||'-') + '</td><td>' + (f.momentum||'-') + '</td></tr></table>';
+    html += '<tr><td>分数</td><td>' + (f.quality || '-') + '</td><td>' + (f.valuation || '-') + '</td><td>' + (f.sentiment_event || '-') + '</td><td>' + (f.technical || '-') + '</td><td>' + (f.momentum || '-') + '</td></tr></table>';
   }
+
+  // 综合评估
   if (ast.verdict) {
     const vc = ast.verdict.includes('较好') ? 'good' : (ast.verdict.includes('不足') ? 'bad' : 'warn');
     html += '<div class="verdict ' + vc + '">综合评估：' + ast.verdict + '</div>';
     html += '<p style="color:#475569;font-size:0.9rem;">' + ast.summary + '</p>';
   }
+
+  // 回测对比
   if (bt.applicable && bt.strategies) {
     html += '<h4 style="margin-top:16px;">📈 策略回测对比</h4><table>';
     html += '<tr><th>策略</th><th>买入次数</th><th>平仓次数</th><th>胜率</th><th>累计收益</th></tr>';
     for (const s of bt.strategies) {
       if (s.error) continue;
-      html += '<tr><td>' + s.strategy_id + '</td><td>' + (s.buy_count||0) + '</td><td>' + (s.closed_trades||0) + '</td><td>' + (s.win_rate!=null?s.win_rate+'%':'-') + '</td><td>' + (s.cum_return||0) + '%</td></tr>';
+      html += '<tr><td>' + s.strategy_id + '</td><td>' + (s.buy_count || 0) + '</td><td>' + (s.closed_trades || 0) + '</td><td>' + (s.win_rate != null ? s.win_rate + '%' : '-') + '</td><td>' + (s.cum_return || 0) + '%</td></tr>';
     }
     html += '</table>';
+  } else if (bt.reason) {
+    html += '<p style="color:#64748b;font-size:0.85rem;">回测：' + bt.reason + '</p>';
   }
+
   html += '</div>';
-  area.innerHTML = html;
+  document.getElementById('resultArea').innerHTML = html;
 }
 </script>
 
