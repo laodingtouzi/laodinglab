@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>管理员后台 · 老丁实验室</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:#f8fafc; color:#334155; line-height:1.6; }
+  .container { max-width:1400px; margin:0 auto; padding:20px; }
+  header { background:#1e293b; color:#fff; padding:16px 20px; margin-bottom:0; border-radius:8px 8px 0 0; display:flex; align-items:center; justify-content:space-between; }
+  header h1 { font-size:1.2rem; margin:0; }
+  header .header-right { display:flex; align-items:center; gap:16px; }
+  header a { color:#94a3b8; text-decoration:none; font-size:0.85rem; }
+  header .logout-btn { background:#dc2626; color:#fff; border:none; padding:4px 12px; border-radius:4px; cursor:pointer; font-size:0.8rem; }
+  header .logout-btn:hover { background:#b91c1c; }
+  .login-box { max-width:400px; margin:100px auto; background:#fff; padding:32px; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.08); }
+  .login-box h2 { margin-bottom:20px; color:#1e293b; }
+  .login-box input { width:100%; padding:12px; margin-bottom:12px; border:1px solid #e2e8f0; border-radius:6px; font-size:1rem; }
+  .login-box button { width:100%; padding:12px; background:#5f01d1; color:#fff; border:none; border-radius:6px; font-size:1rem; cursor:pointer; }
+  .login-box button:hover { background:#4a00a8; }
+  .login-box .error { color:#dc2626; margin-top:8px; font-size:0.9rem; display:none; }
+  .section { background:#fff; border-radius:8px; padding:20px; margin-bottom:20px; box-shadow:0 1px 3px rgba(0,0,0,0.05); }
+  .section h3 { margin-bottom:16px; color:#1e293b; border-bottom:2px solid #e2e8f0; padding-bottom:8px; }
+  table { width:100%; border-collapse:collapse; font-size:0.85rem; }
+  th, td { padding:8px 6px; text-align:left; border-bottom:1px solid #e2e8f0; white-space:nowrap; }
+  th { background:#f1f5f9; font-weight:600; color:#475569; }
+  td.name-cell, th.name-cell { white-space:normal; min-width:80px; }
+  td.change-reason, th.change-reason { white-space:normal; min-width:120px; max-width:200px; }
+  .num { text-align:right; font-variant-numeric:tabular-nums; }
+  .nowrap { white-space:nowrap; }
+  .entry-date-gray { color:#94a3b8; font-size:0.8rem; }
+  .price-bold { font-weight:600; }
+  .btn { padding:4px 10px; border:none; border-radius:4px; cursor:pointer; font-size:0.8rem; margin:0 2px; }
+  .btn-add { background:#16a34a; color:#fff; }
+  .btn-reduce { background:#ca8a04; color:#fff; }
+  .btn-sell { background:#dc2626; color:#fff; }
+  .btn-delist { background:#64748b; color:#fff; }
+  .btn-upload { background:#2563eb; color:#fff; padding:8px 20px; font-size:0.9rem; border-radius:6px; }
+  .btn-upload:hover { background:#1d4ed8; }
+  .btn-upload:disabled { background:#94a3b8; cursor:not-allowed; }
+  .btn-discard { background:#f1f5f9; color:#64748b; padding:8px 16px; font-size:0.9rem; border-radius:6px; border:1px solid #cbd5e1; }
+  .btn-discard:hover { background:#e2e8f0; }
+  .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center; }
+  .modal { background:#fff; padding:24px; border-radius:12px; width:400px; max-width:90%; }
+  .modal h4 { margin-bottom:16px; }
+  .modal input { width:100%; padding:10px; margin-bottom:12px; border:1px solid #e2e8f0; border-radius:6px; }
+  .modal .actions { display:flex; gap:8px; justify-content:flex-end; margin-top:16px; }
+  .modal .actions button { padding:8px 16px; border:none; border-radius:6px; cursor:pointer; }
+  .modal .actions .cancel { background:#f1f5f9; }
+  .modal .actions .confirm { background:#5f01d1; color:#fff; }
+  .toast { position:fixed; top:20px; right:20px; padding:12px 20px; border-radius:8px; color:#fff; z-index:2000; display:none; max-width:360px; word-break:break-all; }
+  .toast.success { background:#16a34a; }
+  .toast.error { background:#dc2626; }
+  .toast.info { background:#5f01d1; }
+  .toast code { background:rgba(255,255,255,.18); padding:1px 6px; border-radius:3px; font-size:0.9em; }
+
+  /* 操作栏 */
+  .action-bar { background:#fff; border-radius:8px; padding:16px 20px; margin-bottom:20px; box-shadow:0 1px 3px rgba(0,0,0,0.05); display:flex; align-items:center; justify-content:space-between; gap:16px; }
+  .action-bar .pending-info { display:flex; align-items:center; gap:8px; font-size:0.9rem; }
+  .action-bar .pending-badge { background:#fef3c7; color:#92400e; padding:2px 10px; border-radius:12px; font-weight:600; font-size:0.85rem; }
+  .action-bar .pending-badge.zero { background:#dcfce7; color:#166534; }
+  .action-bar .buttons { display:flex; gap:8px; }
+
+  /* 操作日志 */
+  .change-log { margin-top:8px; max-height:120px; overflow-y:auto; background:#f8fafc; border-radius:6px; padding:8px 12px; font-size:0.8rem; color:#64748b; }
+  .change-log-item { padding:2px 0; border-bottom:1px dashed #e2e8f0; }
+  .change-log-item:last-child { border-bottom:none; }
+  .change-log-item .time { color:#94a3b8; margin-right:8px; }
+  .change-log-item .action-add { color:#16a34a; font-weight:600; }
+  .change-log-item .action-reduce { color:#ca8a04; font-weight:600; }
+  .change-log-item .action-sell { color:#dc2626; font-weight:600; }
+  .change-log-item .action-delist { color:#64748b; font-weight:600; }
+
+  /* 行高亮 */
+  tr.pending-change { background:#fef9e6 !important; }
+  tr.pending-change td { background:#fef9e6 !important; }
+
+  /* 导航标签栏 */
+  .nav-tabs { background:#1e293b; padding:0 20px 12px; border-radius:0 0 8px 8px; display:flex; gap:4px; flex-wrap:wrap; margin-bottom:20px; }
+  .nav-tabs a { color:#94a3b8; text-decoration:none; font-size:0.85rem; padding:6px 14px; border-radius:6px; transition:all 0.2s; }
+  .nav-tabs a:hover { color:#fff; background:rgba(255,255,255,0.1); }
+  .nav-tabs a.active { color:#fff; background:#5f01d1; }
+  /* 排序 */
+  .table-toolbar { display:flex; align-items:center; gap:8px; margin:10px 0; flex-wrap:wrap; }
+  .table-search { padding:6px 12px; border:1px solid #e2e8f0; border-radius:6px; font-size:0.9rem; width:240px; }
+  .table-search:focus { outline:none; border-color:#5f01d1; }
+  .sortable { cursor:pointer; user-select:none; white-space:nowrap; }
+  .sortable:hover { color:#5f01d1; }
+  .sort-arrow { font-size:0.7rem; opacity:0.4; margin-left:2px; }
+  .sort-arrow.sort-asc, .sort-arrow.sort-desc { opacity:1; color:#5f01d1; font-weight:bold; }
+  .market-badge { display:inline-block; padding:1px 6px; border-radius:3px; font-size:0.75rem; font-weight:600; }
+  .market-cn { background:#dbeafe; color:#1e40af; }
+  .market-hk { background:#fce7f3; color:#9d174d; }
+  .market-us { background:#dcfce7; color:#166534; }
+</style>
+</head>
+<body>
+
+<div id="loginPage">
+  <div class="login-box">
+    <h2>🔒 管理员登录</h2>
+    <input type="password" id="pwdInput" placeholder="请输入管理密码" onkeypress="if(event.key==='Enter')doLogin()">
+    <button onclick="doLogin()">登录</button>
+    <div class="error" id="loginError">密码错误</div>
+    <div style="margin-top:14px;font-size:0.78rem;color:#64748b;line-height:1.5;border-top:1px dashed #cbd5e1;padding-top:10px;">
+      🔐 AES-256-GCM 加密 · Token 加密存储，密码本地解密<br>
+      📁 数据路径：<code>data/portfolio/*.json</code><br>
+      📝 操作先暂存本地，确认后点"上传保存"一次性提交到云端
+    </div>
+  </div>
+</div>
+
+<div id="adminPage" style="display:none;">
+  <header>
+    <h1>管理员后台 (WB版) <span id="modeBadge" style="font-size:0.7rem;font-weight:400;padding:2px 8px;border-radius:4px;background:#16a34a;color:#fff;">🔐 直连 GitHub API</span></h1>
+    <div class="header-right">
+      <a href="https://laodinglab.com/stockmarketanalysis" target="_blank">← 返回主报告</a>
+      <button class="logout-btn" onclick="doLogout()">退出登录</button>
+    </div>
+  </header>
+
+  <nav class="nav-tabs" id="navTabs">
+    <a href="#holdings" class="active">📈 持有清单</a>
+    <a href="#post-sell">📉 沽后观察池</a>
+  </nav>
+
+  <div class="container">
+    <!-- 操作栏 -->
+    <div class="action-bar">
+      <div class="pending-info">
+        <span>未保存操作：</span>
+        <span class="pending-badge zero" id="pendingBadge">0</span>
+        <span style="color:#94a3b8;font-size:0.8rem;">笔</span>
+      </div>
+      <div class="buttons">
+        <button class="btn-discard" id="discardBtn" onclick="discardChanges()" disabled>放弃修改</button>
+        <button class="btn-upload" id="uploadBtn" onclick="uploadAll()" disabled>📥 上传保存</button>
+      </div>
+    </div>
+
+    <!-- 操作日志 -->
+    <div class="section" id="changeLogSection" style="display:none;">
+      <h3>📋 待上传操作明细</h3>
+      <div class="change-log" id="changeLog"></div>
+    </div>
+
+    <div class="section" id="holdings">
+      <h3>📈 持有清单操作</h3>
+      <div id="holdingsLoading">加载中...</div>
+      <div id="holdingsTable" style="display:none;">
+        <div class="table-toolbar">
+          <input type="text" class="table-search" id="holdingsSearch" placeholder="🔍 搜索代码或名称..." oninput="filterTable('holdingsTableEl',this.value)">
+        </div>
+        <table id="holdingsTableEl">
+          <thead>
+            <tr>
+              <th class="nowrap">代码</th><th class="name-cell">名称</th><th class="nowrap">市场</th>
+              <th class="nowrap sortable" onclick="sortTable('holdingsTableEl',3,this)">状态 <span class="sort-arrow">↕</span></th>
+              <th class="nowrap">评分</th><th class="nowrap">买入日</th><th class="nowrap num">买入价</th><th class="nowrap num">当前价</th>
+              <th class="nowrap num">股数</th><th class="nowrap num">市值(万)</th>
+              <th class="nowrap sortable num" onclick="sortTable('holdingsTableEl',10,this)">盈亏(%) <span class="sort-arrow">↕</span></th>
+              <th class="nowrap sortable num" onclick="sortTable('holdingsTableEl',11,this)">天数 <span class="sort-arrow">↕</span></th>
+              <th class="change-reason">变化主因</th>
+              <th class="nowrap sortable" onclick="sortTable('holdingsTableEl',13,this)">质量 <span class="sort-arrow">↕</span></th>
+              <th class="nowrap">操作</th>
+            </tr>
+          </thead>
+          <tbody id="holdingsBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section" id="post-sell">
+      <h3>📉 沽后观察池操作</h3>
+      <div id="postSellLoading">加载中...</div>
+      <div id="postSellTable" style="display:none;">
+        <div class="table-toolbar">
+          <input type="text" class="table-search" id="postSellSearch" placeholder="🔍 搜索代码或名称..." oninput="filterTable('postSellTableEl',this.value)">
+        </div>
+        <table id="postSellTableEl">
+          <thead>
+            <tr>
+              <th class="nowrap">代码</th><th class="name-cell">名称</th><th class="nowrap">市场</th>
+              <th class="nowrap sortable" onclick="sortTable('postSellTableEl',3,this)">卖出日 <span class="sort-arrow">↕</span></th>
+              <th class="nowrap num">卖出价</th>
+              <th class="nowrap sortable num" onclick="sortTable('postSellTableEl',5,this)">持有收益 <span class="sort-arrow">↕</span></th>
+              <th class="nowrap sortable num" onclick="sortTable('postSellTableEl',6,this)">沽后涨跌 <span class="sort-arrow">↕</span></th>
+              <th class="nowrap sortable num" onclick="sortTable('postSellTableEl',7,this)">观察天数 <span class="sort-arrow">↕</span></th>
+              <th class="change-reason">分析</th><th class="nowrap">操作</th>
+            </tr>
+          </thead>
+          <tbody id="postSellBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="actionModal">
+  <div class="modal">
+    <h4 id="modalTitle">操作</h4>
+    <p id="modalInfo"></p>
+    <input type="number" id="modalShares" placeholder="股数" min="1">
+    <p id="modalSellHint" style="display:none; color:#64748b; font-size:0.85rem; margin-bottom:12px;">⚠️ 点击确认将清仓卖出该股票</p>
+    <input type="text" id="modalReason" placeholder="原因（卖出时可选）" style="display:none;">
+    <div class="actions">
+      <button class="cancel" onclick="closeModal()">取消</button>
+      <button class="confirm" id="modalConfirm" onclick="confirmAction()">确认</button>
+    </div>
+  </div>
+</div>
+
+<!-- 上传进度 Modal -->
+<div class="modal-overlay" id="uploadModal">
+  <div class="modal">
+    <h4>📤 正在上传到云端...</h4>
+    <div id="uploadProgress" style="font-size:0.9rem;color:#64748b;line-height:2;"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ============ 配置 ============
+const GH_API = 'https://api.github.com/repos/laodingtouzi/laodinglab';
+const GH_BRANCH = 'main';
+const HOLDINGS_DIR = 'data/portfolio';
+const AUTH_FILE = 'auth.dat';
+
+let currentAction, currentCode, currentName, currentMarket, currentPrice;
+
+// ============ 本地数据模型 ============
+// cloudData: 云端基线 {holdings_CN: {content:{}, sha:""}, ...}
+// localData: 本地修改后的数据 {holdings_CN: {...}, ...}
+// pendingChanges: 待上传操作列表 [{type, code, detail, time, file}]
+// dirtyFiles: 被修改过的文件名 Set
+let cloudData = {};
+let localData = {};
+let pendingChanges = [];
+let dirtyFiles = new Set();
+
+// ============ Token 管理 (sessionStorage 优先，同步写 localStorage 供主报告盯盘池使用) ============
+function getToken() {
+  return sessionStorage.getItem('wb_gh_token') || localStorage.getItem('wb_gh_token') || '';
+}
+function setToken(token) {
+  sessionStorage.setItem('wb_gh_token', token);
+  try { localStorage.setItem('wb_gh_token', token); } catch (e) {}
+}
+function clearToken() {
+  sessionStorage.removeItem('wb_gh_token');
+  try { localStorage.removeItem('wb_gh_token'); } catch (e) {}
+}
+
+// ============ AES-256-GCM 解密 (Web Crypto API) ============
+async function decryptToken(password, encryptedB64) {
+  const blob = Uint8Array.from(atob(encryptedB64.trim()), c => c.charCodeAt(0));
+  const salt = blob.slice(0, 16);
+  const iv = blob.slice(16, 28);
+  const data = blob.slice(28);
+
+  const keyMaterial = await crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(password),
+    { name: 'PBKDF2' },
+    false,
+    ['deriveKey']
+  );
+  const aesKey = await crypto.subtle.deriveKey(
+    { name: 'PBKDF2', salt, iterations: 100000, hash: 'SHA-256' },
+    keyMaterial,
+    { name: 'AES-GCM', length: 256 },
+    false,
+    ['decrypt']
+  );
+
+  const decrypted = await crypto.subtle.decrypt(
+    { name: 'AES-GCM', iv },
+    aesKey,
+    data
+  );
+  return new TextDecoder().decode(decrypted);
+}
+
+// ============ 登录 ============
+async function doLogin() {
+  const pwd = document.getElementById('pwdInput').value;
+  if (!pwd) {
+    document.getElementById('loginError').style.display = 'block';
+    return;
+  }
+  const errEl = document.getElementById('loginError');
+  errEl.style.display = 'none';
+  try {
+    const resp = await fetch(AUTH_FILE + '?t=' + Date.now(), { cache: 'no-store' });
+    if (!resp.ok) throw new Error('无法加载认证文件');
+    const encryptedB64 = await resp.text();
+    const token = await decryptToken(pwd, encryptedB64);
+    if (!token || !token.startsWith('ghp_')) throw new Error('解密失败');
+    setToken(token);
+    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('adminPage').style.display = 'block';
+    errEl.style.display = 'none';
+    loadData();
+  } catch (e) {
+    // 显示具体错误，便于排查 fetch 失败 / 密码错 / 解密失败
+    const msg = String(e && e.message || e);
+    let detail = '密码错误或解密失败';
+    if (/加载认证文件/i.test(msg)) detail = '加载 auth.dat 失败：' + msg + '（请检查网络或 CDN）';
+    else if (/decrypt|AES|GCM|tag/i.test(msg)) detail = 'AES-GCM 解密失败：' + msg + '（密码可能不正确）';
+    else if (msg && msg !== '解密失败') detail = msg;
+    errEl.textContent = detail;
+    errEl.style.display = 'block';
+    console.error('[admin] login error:', e);
+  }
+}
+
+function doLogout() {
+  clearToken();
+  document.getElementById('loginPage').style.display = 'block';
+  document.getElementById('adminPage').style.display = 'none';
+  document.getElementById('pwdInput').value = '';
+}
+
+// 导航栏交互
+(function() {
+  document.querySelectorAll('.nav-tabs a').forEach(a => {
+    a.addEventListener('click', function() {
+      document.querySelectorAll('.nav-tabs a').forEach(x => x.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+  window.addEventListener('scroll', function() {
+    const sections = document.querySelectorAll('.section');
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) current = s.id;
+    });
+    if (current) {
+      document.querySelectorAll('.nav-tabs a').forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+      });
+    }
+  });
+})();
+
+// ============ GitHub API ============
+function ghContentsUrl(path) {
+  return GH_API + '/contents/' + path + '?ref=' + GH_BRANCH + '&t=' + Date.now();
+}
+
+function ghHeaders() {
+  return {
+    'Accept': 'application/vnd.github.v3+json',
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' + getToken()
+  };
+}
+
+let _handle401_called = false;
+function _handle401() {
+  if (_handle401_called) return;
+  _handle401_called = true;
+  clearToken();
+  alert('登录已过期，请重新登录');
+  document.getElementById('loginPage').style.display = 'block';
+  document.getElementById('adminPage').style.display = 'none';
+  document.getElementById('pwdInput').value = '';
+  document.getElementById('loginError').style.display = 'none';
+  const modal = document.getElementById('actionModal');
+  if (modal) modal.style.display = 'none';
+  setTimeout(() => { _handle401_called = false; }, 1500);
+}
+
+async function ghGetFile(path) {
+  const url = ghContentsUrl(path);
+  const resp = await fetch(url, { headers: ghHeaders(), cache: 'no-store' });
+  if (resp.status === 404) return null;
+  if (resp.status === 401) {
+    _handle401();
+    throw new Error('登录已过期，请重新登录');
+  }
+  if (!resp.ok) throw new Error('GitHub GET ' + path + ' 失败: HTTP ' + resp.status);
+  const data = await resp.json();
+  const binary = atob(data.content.replace(/\n/g, ''));
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  const text = new TextDecoder('utf-8').decode(bytes);
+  let parsed;
+  try { parsed = JSON.parse(text); } catch (e) { parsed = {}; }
+  return { content: parsed, sha: data.sha };
+}
+
+async function ghPutFile(path, content, sha, message) {
+  const url = GH_API + '/contents/' + path;
+  const jsonStr = JSON.stringify(content, null, 2);
+  const bytes = new TextEncoder().encode(jsonStr);
+  let binary = '';
+  for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+  const body = {
+    message: message,
+    content: btoa(binary),
+    branch: GH_BRANCH
+  };
+  if (sha) body.sha = sha;
+  const resp = await fetch(url, { method: 'PUT', headers: ghHeaders(), body: JSON.stringify(body) });
+  if (resp.status === 401) {
+    _handle401();
+    throw new Error('登录已过期，请重新登录');
+  }
+  if (!resp.ok) {
+    const err = await resp.text().catch(() => '');
+    throw new Error('GitHub PUT ' + path + ' 失败: HTTP ' + resp.status + ' ' + err.slice(0, 200));
+  }
+  // 返回新的 sha
+  const data = await resp.json();
+  return data.content ? data.content.sha : null;
+}
+
+// ============ 数据加载 ============
+async function loadData() {
+  try {
+    document.getElementById('holdingsLoading').style.display = 'block';
+    document.getElementById('holdingsTable').style.display = 'none';
+    document.getElementById('postSellLoading').style.display = 'block';
+    document.getElementById('postSellTable').style.display = 'none';
+
+    const files = [
+      'holdings_CN', 'holdings_HK', 'holdings_US',
+      'post_sell_CN', 'post_sell_HK', 'post_sell_US'
+    ];
+
+    const results = await Promise.all(
+      files.map(f => ghGetFile(HOLDINGS_DIR + '/' + f + '.json'))
+    );
+
+    // 存入 cloudData 和 localData
+    cloudData = {};
+    localData = {};
+    files.forEach((f, i) => {
+      const r = results[i];
+      cloudData[f] = { content: r ? {...r.content} : {}, sha: r ? r.sha : null };
+      localData[f] = r ? {...r.content} : {};
+    });
+
+    // 重置待保存状态
+    pendingChanges = [];
+    dirtyFiles = new Set();
+    updatePendingUI();
+
+    // 渲染
+    renderHoldings();
+    renderPostSell();
+  } catch (e) {
+    showToast('数据加载失败: ' + e.message, 'error');
+  }
+}
+
+// ============ 工具函数 ============
+function marketFromCode(code) {
+  const norm = code.toUpperCase();
+  if (norm.endsWith('.SH') || norm.endsWith('.SZ')) return 'CN';
+  if (/^\d{5}\.HK$/.test(norm)) return 'HK';
+  if (/^[A-Z]+(\.[A-Z])?$/.test(norm) && !norm.endsWith('.SH') && !norm.endsWith('.SZ')) return 'US';
+  return '';
+}
+
+function _nowDate() {
+  return new Date().toISOString().split('T')[0];
+}
+
+function _nowTime() {
+  return new Date().toLocaleTimeString('zh-CN', { hour12: false });
+}
+
+function _avgPrice(oldShares, oldEntry, addShares, addPrice) {
+  const totalShares = oldShares + addShares;
+  return totalShares > 0 ? (oldShares * oldEntry + addShares * addPrice) / totalShares : 0;
+}
+
+function _updateMetricsAfterChange(h, newShares) {
+  const price = h.current_price || h.entry_price || 0;
+  h.shares = newShares;
+  h.entry_price = h.entry_price || 0;
+  if (h.entry_price > 0) {
+    h.total_return = Math.round(((price - h.entry_price) / h.entry_price) * 10000) / 100;
+  }
+  h.market_value = Math.round(newShares * price * 100) / 100;
+  h.cost = Math.round(newShares * h.entry_price * 100) / 100;
+}
+
+// ============ 本地操作逻辑（不调用API，只修改内存） ============
+function confirmAction() {
+  let shares = 0;
+  if (currentAction !== 'sell') {
+    shares = parseInt(document.getElementById('modalShares').value, 10);
+    if (!shares || shares <= 0) { showToast('请输入有效股数', 'error'); return; }
+    if (shares > 99999999) { showToast('股数过大（>' + 99999999 + '），请核对输入', 'error'); return; }
+  }
+
+  const mkt = (currentMarket || marketFromCode(currentCode) || 'CN').toUpperCase();
+  const holdingsKey = 'holdings_' + mkt;
+  const postSellKey = 'post_sell_' + mkt;
+
+  closeModal();
+
+  const obj = localData[holdingsKey] || {};
+  const h = obj[currentCode];
+  if (!h) {
+    showToast(currentCode + ' 不在 ' + mkt + ' 持仓中', 'error');
+    return;
+  }
+
+  const oldShares = h.shares || 0;
+  const oldEntry = h.entry_price || 0;
+  const price = currentPrice || h.current_price || oldEntry;
+
+  let actionMsg = '';
+  let actionLabel = '';
+
+  if (currentAction === 'add') {
+    const avg = _avgPrice(oldShares, oldEntry, shares, price);
+    const newShares = oldShares + shares;
+    h.entry_price = Math.round(avg * 100) / 100;
+    _updateMetricsAfterChange(h, newShares);
+    actionMsg = '加仓 ' + shares + ' 股 @' + price;
+    actionLabel = 'add';
+    dirtyFiles.add(holdingsKey);
+  } else if (currentAction === 'reduce') {
+    if (shares > oldShares) {
+      // 减仓超过持仓：报错而非静默清仓（防止手滑输错数量导致整仓卖出）
+      showToast('减仓 ' + shares + ' 股超过当前持仓 ' + oldShares + ' 股。如要清仓请使用「卖出」操作', 'error');
+      renderHoldings();
+      renderPostSell();
+      return;
+    }
+    const newShares = oldShares - shares;
+    if (newShares === 0) {
+      // 清仓：移到 post_sell
+      const psObj = localData[postSellKey] || {};
+      psObj[currentCode] = {
+        name: h.name, market: mkt,
+        sell_date: _nowDate(),
+        sell_price: price,
+        total_return_when_sold: h.total_return || 0,
+        hold_days: h.hold_days || 0,
+        post_sell_analysis: '手工减仓至 0',
+        manual_sell: true
+      };
+      localData[postSellKey] = psObj;
+      delete obj[currentCode];
+      dirtyFiles.add(holdingsKey);
+      dirtyFiles.add(postSellKey);
+      actionMsg = '减仓至清仓 (' + shares + ' 股)';
+      actionLabel = 'reduce';
+      showToast(currentCode + ' 已清仓（待上传）', 'info');
+    } else {
+      _updateMetricsAfterChange(h, newShares);
+      actionMsg = '减仓 ' + shares + ' 股，现 ' + newShares + ' 股';
+      actionLabel = 'reduce';
+      dirtyFiles.add(holdingsKey);
+    }
+  } else if (currentAction === 'sell') {
+    const reason = document.getElementById('modalReason').value || '手工卖出';
+    const psObj = localData[postSellKey] || {};
+    psObj[currentCode] = {
+      name: h.name, market: mkt,
+      sell_date: _nowDate(),
+      sell_price: price,
+      total_return_when_sold: h.total_return || 0,
+      hold_days: h.hold_days || 0,
+      post_sell_analysis: reason,
+      manual_sell: true
+    };
+    localData[postSellKey] = psObj;
+    delete obj[currentCode];
+    dirtyFiles.add(holdingsKey);
+    dirtyFiles.add(postSellKey);
+    actionMsg = '卖出清仓 @' + price + ' (' + reason + ')';
+    actionLabel = 'sell';
+    showToast(currentCode + ' 卖出（待上传）', 'info');
+  } else {
+    showToast('未知操作: ' + currentAction, 'error');
+    return;
+  }
+
+  // 打上管理员操作时间戳（部署合并时据此识别管理端修改，避免被引擎旧数据覆盖）
+  if (obj[currentCode]) obj[currentCode].admin_updated_at = new Date().toISOString();
+  const psObjAfter = localData[postSellKey];
+  if (psObjAfter && psObjAfter[currentCode]) psObjAfter[currentCode].admin_updated_at = new Date().toISOString();
+
+  localData[holdingsKey] = obj;
+
+  // 记录操作
+  pendingChanges.push({
+    type: actionLabel,
+    code: currentCode,
+    name: currentName,
+    detail: actionMsg,
+    time: _nowTime(),
+    file: holdingsKey,
+    market: mkt
+  });
+
+  updatePendingUI();
+  renderHoldings();
+  renderPostSell();
+  showToast(currentCode + ' ' + actionMsg + '（待上传）', 'success');
+}
+
+function doDelist(code) {
+  if (!confirm('确认剔除 ' + code + '？（此操作待上传，可放弃）')) return;
+
+  for (const m of ['CN', 'HK', 'US']) {
+    const postSellKey = 'post_sell_' + m;
+    const psObj = localData[postSellKey] || {};
+    if (psObj[code]) {
+      const delistName = psObj[code].name || '';
+      delete psObj[code];
+      localData[postSellKey] = psObj;
+      dirtyFiles.add(postSellKey);
+
+      pendingChanges.push({
+        type: 'delist',
+        code: code,
+        name: delistName,
+        detail: '从 ' + m + ' 观察池剔除',
+        time: _nowTime(),
+        file: postSellKey
+      });
+
+      updatePendingUI();
+      renderPostSell();
+      showToast(code + ' 已标记剔除（待上传）', 'success');
+      return;
+    }
+  }
+  showToast(code + ' 不在任何 post_sell 池子里', 'error');
+}
+
+// ============ 上传保存 ============
+async function uploadAll() {
+  if (dirtyFiles.size === 0) {
+    showToast('没有待上传的操作', 'info');
+    return;
+  }
+
+  const uploadBtn = document.getElementById('uploadBtn');
+  const discardBtn = document.getElementById('discardBtn');
+  uploadBtn.disabled = true;
+  discardBtn.disabled = true;
+  uploadBtn.textContent = '上传中...';
+
+  // 显示上传进度
+  document.getElementById('uploadModal').style.display = 'flex';
+  const progressEl = document.getElementById('uploadProgress');
+  const filesToUpload = Array.from(dirtyFiles);
+  progressEl.innerHTML = filesToUpload.map(f => '<div id="upload-' + f + '">⏳ ' + f + '.json — 等待中</div>').join('');
+
+  let successCount = 0;
+  let failCount = 0;
+  const errors = [];
+
+  const doneFiles = new Set();  // 本轮上传成功的文件
+
+  for (let i = 0; i < filesToUpload.length; i++) {
+    const f = filesToUpload[i];
+    const el = document.getElementById('upload-' + f);
+    if (el) el.innerHTML = '🔄 ' + f + '.json — 正在上传...';
+
+    try {
+      const sha = cloudData[f] ? cloudData[f].sha : null;
+      const content = localData[f];
+      const msgParts = pendingChanges
+        .filter(c => c.file === f || (c.type === 'sell' && 'post_sell_' + c.market === f))
+        .map(c => c.code + ':' + c.detail);
+      const commitMsg = 'Admin batch: ' + (msgParts.length > 0 ? msgParts.join('; ') : f);
+
+      const newSha = await ghPutFile(
+        HOLDINGS_DIR + '/' + f + '.json',
+        content,
+        sha,
+        commitMsg
+      );
+
+      // 更新云端基线
+      cloudData[f] = { content: {...content}, sha: newSha };
+      doneFiles.add(f);
+
+      if (el) el.innerHTML = '✅ ' + f + '.json — 成功';
+      successCount++;
+    } catch (e) {
+      if (el) el.innerHTML = '❌ ' + f + '.json — 失败: ' + e.message;
+      failCount++;
+      errors.push(f + ': ' + e.message);
+    }
+  }
+
+  // 等待一下让用户看到结果
+  await new Promise(r => setTimeout(r, 1000));
+  document.getElementById('uploadModal').style.display = 'none';
+
+  // 只清除已成功上传文件的待上传标记；失败文件的本地修改全部保留，可直接重试
+  for (const f of doneFiles) dirtyFiles.delete(f);
+  pendingChanges = pendingChanges.filter(c =>
+    !doneFiles.has(c.file) &&
+    !(c.type === 'sell' && doneFiles.has('post_sell_' + c.market))
+  );
+  updatePendingUI();
+
+  if (failCount === 0) {
+    showToast('✅ ' + successCount + ' 个文件已上传到云端', 'success');
+  } else {
+    // 部分失败：保留失败文件的本地修改（绝不能 loadData()，否则未上传的操作会被清空）
+    showToast('⚠️ ' + successCount + ' 成功, ' + failCount + ' 失败（本地修改已保留，可直接重试）: ' + errors.join('; '), 'error');
+    renderHoldings();
+    renderPostSell();
+  }
+
+  uploadBtn.disabled = false;
+  uploadBtn.textContent = '📥 上传保存';
+}
+
+// ============ 放弃修改 ============
+function discardChanges() {
+  if (pendingChanges.length === 0) return;
+  if (!confirm('确认放弃所有 ' + pendingChanges.length + ' 笔未保存的操作？')) return;
+
+  // 从云端基线恢复
+  for (const f of Object.keys(cloudData)) {
+    localData[f] = {...cloudData[f].content};
+  }
+  pendingChanges = [];
+  dirtyFiles = new Set();
+  updatePendingUI();
+  renderHoldings();
+  renderPostSell();
+  showToast('已放弃所有本地修改', 'info');
+}
+
+// ============ UI 更新 ============
+function updatePendingUI() {
+  const count = pendingChanges.length;
+  const badge = document.getElementById('pendingBadge');
+  const uploadBtn = document.getElementById('uploadBtn');
+  const discardBtn = document.getElementById('discardBtn');
+  const logSection = document.getElementById('changeLogSection');
+  const logEl = document.getElementById('changeLog');
+
+  badge.textContent = count;
+  if (count > 0) {
+    badge.classList.remove('zero');
+    uploadBtn.disabled = false;
+    discardBtn.disabled = false;
+    logSection.style.display = 'block';
+
+    const typeLabels = { add: '加仓', reduce: '减仓', sell: '卖出', delist: '剔除' };
+    logEl.innerHTML = pendingChanges.map(c => {
+      return '<div class="change-log-item">' +
+        '<span class="time">' + c.time + '</span>' +
+        '<span class="action-' + c.type + '">' + typeLabels[c.type] + '</span> ' +
+        '<strong>' + c.code + '</strong> ' + (c.name || '') + ' — ' + c.detail +
+      '</div>';
+    }).join('');
+  } else {
+    badge.classList.add('zero');
+    uploadBtn.disabled = true;
+    discardBtn.disabled = true;
+    logSection.style.display = 'none';
+  }
+}
+
+// ============ 渲染 ============
+function renderHoldings() {
+  const allHoldings = {
+    ...(localData['holdings_CN'] || {}),
+    ...(localData['holdings_HK'] || {}),
+    ...(localData['holdings_US'] || {})
+  };
+  const tbody = document.getElementById('holdingsBody');
+  const marketOrder = { 'CN': 0, 'HK': 1, 'US': 2 };
+  const items = Object.entries(allHoldings).sort((a, b) => {
+    const ma = marketOrder[a[1].market] ?? 99;
+    const mb = marketOrder[b[1].market] ?? 99;
+    if (ma !== mb) return ma - mb;
+    return (b[1].latest_score || 0) - (a[1].latest_score || 0);
+  });
+
+  // 获取有 pending 变化的代码
+  const pendingCodes = new Set(pendingChanges
+    .filter(c => c.type !== 'delist')
+    .map(c => c.code));
+
+  tbody.innerHTML = items.map(([code, h]) => {
+    const price = h.current_price || 0;
+    const ret = h.total_return || 0;
+    const retColor = ret >= 0 ? '#dc2626' : '#16a34a';
+    const mkt = (h.market || '').toLowerCase();
+    const status = h.status || '';
+    const statusSortKey = ({'H':1,'M':2,'M↓':3})[status] || 9;
+    const reason = h.change_reason || '—';
+    const reasonShort = reason.length > 28 ? reason.slice(0, 28) + '…' : reason;
+    const qualityGrade = h.quality_grade || '—';
+    const qualityColors = { 'A': '#16a34a', 'B': '#ca8a04', 'C': '#dc2626' };
+    const qualityDisplay = qualityColors[qualityGrade] ? '<span style="color:'+qualityColors[qualityGrade]+';font-weight:bold">'+qualityGrade+'</span>' : qualityGrade;
+    const qualitySortKey = ({'A':1,'B':2,'C':3})[qualityGrade] || 9;
+    const entryDate = h.entry_date ? (h.entry_date.length > 5 ? h.entry_date.slice(5) : h.entry_date) : '—';
+    const entryPrice = (h.entry_price || h.entry_price === 0) ? Number(h.entry_price).toFixed(2) : '—';
+    const marketValue = (h.market_value && h.market_value > 0) ? (h.market_value / 10000).toFixed(1) : '—';
+    const rowClass = pendingCodes.has(code) ? 'pending-change' : '';
+    return '<tr class="' + rowClass + '" data-code="' + code.toLowerCase() + '" data-name="' + (h.name || '').toLowerCase() + '">' +
+      '<td>' + code + '</td>' +
+      '<td class="name-cell"><strong>' + (h.name || '') + '</strong></td>' +
+      '<td><span class="market-badge market-' + mkt + '">' + (h.market || '') + '</span></td>' +
+      '<td data-sort-value="' + statusSortKey + '">' + status + '</td>' +
+      '<td>' + (h.latest_score || '') + '</td>' +
+      '<td class="entry-date-gray">' + entryDate + '</td>' +
+      '<td class="num price-bold">' + entryPrice + '</td>' +
+      '<td class="num price-bold">' + price + '</td>' +
+      '<td class="num">' + (h.shares || 0).toLocaleString() + '</td>' +
+      '<td class="num">' + marketValue + '</td>' +
+      '<td class="num" style="color:' + retColor + '" data-sort-value="' + ret + '">' + ret.toFixed(1) + '%</td>' +
+      '<td class="num" data-sort-value="' + (h.hold_days || 0) + '">' + (h.hold_days || 0) + '</td>' +
+      '<td class="change-reason" title="' + reason + '">' + reasonShort + '</td>' +
+      '<td data-sort-value="' + qualitySortKey + '">' + qualityDisplay + '</td>' +
+      '<td>' +
+        '<button class="btn btn-add" onclick="openModal(\'add\', \'' + code + '\', \'' + (h.name || '').replace(/'/g, "\\'") + '\', \'' + (h.market || '') + '\', ' + price + ')">加仓</button>' +
+        '<button class="btn btn-reduce" onclick="openModal(\'reduce\', \'' + code + '\', \'' + (h.name || '').replace(/'/g, "\\'") + '\', \'' + (h.market || '') + '\', ' + price + ')">减仓</button>' +
+        '<button class="btn btn-sell" onclick="openModal(\'sell\', \'' + code + '\', \'' + (h.name || '').replace(/'/g, "\\'") + '\', \'' + (h.market || '') + '\', ' + price + ')">卖出</button>' +
+      '</td>' +
+    '</tr>';
+  }).join('');
+  document.getElementById('holdingsLoading').style.display = 'none';
+  document.getElementById('holdingsTable').style.display = 'block';
+}
+
+// ========== 排序 & 搜索 ==========
+function filterTable(tableId, query) {
+  const table = document.getElementById(tableId);
+  if (!table) return;
+  const q = query.trim().toLowerCase();
+  const tbody = table.querySelector('tbody');
+  if (!tbody) return;
+  tbody.querySelectorAll('tr').forEach(tr => {
+    if (!q) { tr.style.display = ''; return; }
+    const code = (tr.getAttribute('data-code') || '').toLowerCase();
+    const name = (tr.getAttribute('data-name') || '').toLowerCase();
+    tr.style.display = (code.includes(q) || name.includes(q)) ? '' : 'none';
+  });
+}
+
+const _sortState = {};
+function sortTable(tableId, colIdx, thEl) {
+  const table = document.getElementById(tableId);
+  if (!table) return;
+  const tbody = table.querySelector('tbody');
+  if (!tbody) return;
+  const key = tableId + '-' + colIdx;
+  const wasAsc = _sortState[key] === 'asc';
+  const dir = wasAsc ? 'desc' : 'asc';
+  _sortState[key] = dir;
+  table.querySelectorAll('th .sort-arrow').forEach(a => { a.textContent = '↕'; a.className = 'sort-arrow'; });
+  const arrow = thEl.querySelector('.sort-arrow');
+  if (arrow) {
+    arrow.textContent = dir === 'asc' ? '↑' : '↓';
+    arrow.className = 'sort-arrow sort-' + dir;
+  }
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+  rows.sort((a, b) => {
+    const aVal = (a.cells[colIdx] && a.cells[colIdx].getAttribute('data-sort-value')) || (a.cells[colIdx] && a.cells[colIdx].textContent.trim()) || '';
+    const bVal = (b.cells[colIdx] && b.cells[colIdx].getAttribute('data-sort-value')) || (b.cells[colIdx] && b.cells[colIdx].textContent.trim()) || '';
+    const aNum = parseFloat(aVal);
+    const bNum = parseFloat(bVal);
+    let cmp;
+    if (!isNaN(aNum) && !isNaN(bNum)) cmp = aNum - bNum;
+    else cmp = String(aVal).localeCompare(String(bVal));
+    return dir === 'asc' ? cmp : -cmp;
+  });
+  rows.forEach(r => tbody.appendChild(r));
+}
+
+function renderPostSell() {
+  const allPostSell = {
+    ...(localData['post_sell_CN'] || {}),
+    ...(localData['post_sell_HK'] || {}),
+    ...(localData['post_sell_US'] || {})
+  };
+  const tbody = document.getElementById('postSellBody');
+  const items = Object.entries(allPostSell).sort((a, b) => (a[1].sell_date || '').localeCompare(b[1].sell_date || ''));
+
+  const pendingDelistCodes = new Set(pendingChanges
+    .filter(c => c.type === 'delist')
+    .map(c => c.code));
+
+  tbody.innerHTML = items.map(([code, ps]) => {
+    const holdRet = ps.total_return_when_sold || 0;
+    const postRet = ps.post_sell_return || 0;
+    const holdColor = holdRet >= 0 ? '#dc2626' : '#16a34a';
+    const postColor = postRet >= 0 ? '#dc2626' : '#16a34a';
+    const mkt = (ps.market || '').toLowerCase();
+    const analysis = ps.post_sell_analysis || '—';
+    const analysisShort = analysis.length > 28 ? analysis.slice(0, 28) + '…' : analysis;
+    const sellPrice = (ps.sell_price || ps.sell_price === 0) ? Number(ps.sell_price).toFixed(2) : '—';
+    const rowClass = pendingDelistCodes.has(code) ? 'pending-change' : '';
+    return '<tr class="' + rowClass + '" data-code="' + code.toLowerCase() + '" data-name="' + (ps.name||'').toLowerCase() + '">' +
+      '<td>' + code + '</td>' +
+      '<td class="name-cell"><strong>' + (ps.name || '') + '</strong></td>' +
+      '<td><span class="market-badge market-' + mkt + '">' + (ps.market || '') + '</span></td>' +
+      '<td data-sort-value="' + (ps.sell_date || '') + '">' + (ps.sell_date || '') + '</td>' +
+      '<td class="num">' + sellPrice + '</td>' +
+      '<td class="num" style="color:' + holdColor + '" data-sort-value="' + holdRet + '">' + holdRet.toFixed(1) + '%</td>' +
+      '<td class="num" style="color:' + postColor + '" data-sort-value="' + postRet + '">' + postRet.toFixed(1) + '%</td>' +
+      '<td class="num" data-sort-value="' + (ps.hold_days || 0) + '">' + (ps.hold_days || 0) + '</td>' +
+      '<td class="change-reason" title="' + analysis + '">' + analysisShort + '</td>' +
+      '<td><button class="btn btn-delist" onclick="doDelist(\'' + code + '\')">剔除</button></td>' +
+    '</tr>';
+  }).join('');
+  document.getElementById('postSellLoading').style.display = 'none';
+  document.getElementById('postSellTable').style.display = 'block';
+}
+
+function openModal(action, code, name, market, price) {
+  currentAction = action; currentCode = code; currentName = name; currentMarket = market; currentPrice = price;
+  const titles = { add: '➕ 加仓', reduce: '➖ 减仓', sell: '⤵️ 卖出（清仓）' };
+  document.getElementById('modalTitle').textContent = titles[action] || '操作';
+  document.getElementById('modalInfo').textContent = code + ' ' + name + ' | 现价 ' + price;
+  const sharesInput = document.getElementById('modalShares');
+  const sellHint = document.getElementById('modalSellHint');
+  const reasonInput = document.getElementById('modalReason');
+  if (action === 'sell') {
+    sharesInput.style.display = 'none';
+    sellHint.style.display = 'block';
+    reasonInput.style.display = 'block';
+  } else {
+    sharesInput.style.display = 'block';
+    sharesInput.value = '';
+    sellHint.style.display = 'none';
+    reasonInput.style.display = 'none';
+  }
+  reasonInput.value = '';
+  document.getElementById('actionModal').style.display = 'flex';
+}
+
+function closeModal() { document.getElementById('actionModal').style.display = 'none'; }
+
+function showToast(msg, type) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.className = 'toast ' + type;
+  toast.style.display = 'block';
+  setTimeout(() => toast.style.display = 'none', 4000);
+}
+
+// ============ 离开提醒 ============
+window.addEventListener('beforeunload', function(e) {
+  if (pendingChanges.length > 0) {
+    e.preventDefault();
+    e.returnValue = '有 ' + pendingChanges.length + ' 笔未保存的操作，确定要离开吗？';
+    return e.returnValue;
+  }
+});
+
+// ============ 页面初始化 ============
+(async function() {
+  const token = getToken();
+  if (!token) {
+    document.getElementById('loginPage').style.display = 'block';
+    return;
+  }
+  document.getElementById('loginPage').style.display = 'none';
+  document.getElementById('adminPage').style.display = 'block';
+  loadData();
+})();
+</script>
+
+</body>
+</html>
