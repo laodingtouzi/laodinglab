@@ -284,6 +284,8 @@ function appendProgress(line){
   box.innerHTML += '<div class="line running"><span class="spinner"></span>' + esc(line) + '</div>';
 }
 function esc(s){ return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+// 模拟状态统一表述：H=建仓(评分≥买入阈值) / M=观望(介于两阈值之间) / 卖出=回避(低于卖出阈值)
+function statusText(s){ return s === 'H' ? '建仓' : s === 'M' ? '观望' : s === '卖出' ? '回避' : (s || '—'); }
 function fmt(v, d=2){ return (v === null || v === undefined) ? '—' : (typeof v === 'number' ? v.toFixed(d) : v); }
 function pctHtml(v){ if (v === null || v === undefined) return '<td class="num">—</td>'; return '<td class="num ' + (v > 0 ? 'up' : v < 0 ? 'down' : '') + '">' + (v > 0 ? '+' : '') + fmt(v) + '%</td>'; }
 
@@ -342,7 +344,7 @@ function renderResult(r){
         + '<b>' + esc(c.code) + '</b>'
         + '<span style="font-size:11px;color:var(--text-muted)">' + esc(c.name) + '</span>'
         + '<span style="font-size:18px;color:var(--accent);font-weight:600">' + scoreVal + '</span>'
-        + '<span class="' + statusCls + '" style="font-size:11px">' + statusVal + '</span>'
+        + '<span class="' + statusCls + '" style="font-size:11px">' + statusText(statusVal) + '</span>'
         + (isPrimary ? '<span style="font-size:10px;color:var(--buy)">👈 主显示</span>' : '')
         + '</div>';
     });
@@ -381,7 +383,7 @@ function renderResult(r){
     const statusCls = sc.status === 'H' ? 'status-H' : sc.status === 'M' ? 'status-M' : 'status-sell';
     html += '<div class="overview-grid">'
       + ov('综合评分', '<span style="font-size:22px;color:var(--accent)">' + fmt(sc.final_score, 1) + '</span>')
-      + ov('模拟状态', '<span class="' + statusCls + '">' + sc.status + '</span>')
+      + ov('模拟状态', '<span class="' + statusCls + '">' + statusText(sc.status) + '</span>')
       + ov('买入阈值', fmt(hs.buy_threshold, 0)) + ov('卖出阈值', fmt(hs.sell_threshold, 0))
       + ov('现价', fmt(hs.current_price)) + ov('区间涨幅', (hs.total_return > 0 ? '+' : '') + fmt(hs.total_return) + '%')
       + ov('模拟建仓价（区间首日）', fmt(hs.entry_price)) + ov('数据天数', hs.hold_days + ' 日')
@@ -572,7 +574,7 @@ function renderResult(r){
           + '<td>' + esc(mm.code) + '</td>'
           + '<td class="num"><b style="font-size:15px;color:' + (isBest ? 'var(--buy)' : 'var(--accent)') + '">'
           + (sc.final_score === null || sc.final_score === undefined ? '—' : sc.final_score.toFixed(1)) + '</b></td>'
-          + '<td><span class="' + sCls + '">' + esc(sc.status || '—') + '</span></td>'
+          + '<td><span class="' + sCls + '">' + statusText(sc.status) + '</span></td>'
           + '<td class="num">' + fmt(f.price) + '</td>'
           + '<td class="num">' + fmt(f.pe, 1) + '</td>'
           + '<td class="num">' + fmt(f.pb, 1) + '</td>'
