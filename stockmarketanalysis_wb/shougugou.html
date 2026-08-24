@@ -413,7 +413,29 @@ function renderResult(r){
         + '<td style="font-size:12px;color:var(--text-muted)">' + aux[i] + '</td></tr>';
     });
     html += '</table>';
+    // 评分合成说明：披露 加权分 → 波动惩罚 → 总分 的完整传导（消除"分项高总分低"不可解释现象）
+    if (f.weighted_sum !== undefined) {
+      const penDesc = f.vol_penalty
+        ? '<b style="color:var(--sell)">− 高波动惩罚 ' + Math.abs(f.vol_penalty) + '</b>（20日波动率 ' + fmt(f.volatility_20d, 1) + (f.volatility_20d > 80 ? ' > 80，扣 15 分' : ' > 50，扣 10 分') + '）'
+        : '<b style="color:var(--buy)">无惩罚</b>（20日波动率 ' + fmt(f.volatility_20d, 1) + ' 未超过 50）';
+      html += '<div class="note-box"><b>评分合成说明：</b>综合评分 = Σ(因子分 × 权重) + 高波动惩罚。'
+        + '五因子加权分 <b>' + fmt(f.weighted_sum, 1) + '</b>，' + penDesc
+        + '，即 ' + fmt(f.weighted_sum, 1) + (f.vol_penalty ? ' − ' + Math.abs(f.vol_penalty) : '') + ' = <b>' + fmt(sc.final_score, 1) + '</b>。'
+        + '高波动惩罚为风险控制项：20日波动率 >50 扣 10 分、>80 扣 15 分，与因子权重无关。</div>';
+    }
     if (!f.financial_available) html += '<div class="note-box">财报数据缺失：质量因子已回退中性分（55），补足后自动恢复。</div>';
+    // 估值口径说明：PE/PB 数据来源与所依据的报告期（point-in-time 可复算 vs 接口快照）
+    if (f.valuation_source === 'pit') {
+      let vt = '<div class="note-box"><b>估值口径（point-in-time 自算）：</b>'
+        + 'PE/PB 基于已公告财报计算（报告期 <b>' + esc(f.valuation_report_period || '—') + '</b>，公告日 <b>' + esc(f.valuation_pub_date || '—') + '</b>，方法 ' + esc(f.valuation_method || '—') + '），公式与历史时点完全一致、可复算。';
+      if (f.valuation_caveats && f.valuation_caveats.length) {
+        vt += '已知口径限制：' + esc(f.valuation_caveats.join('；')) + '。';
+      }
+      vt += '</div>';
+      html += vt;
+    } else {
+      html += '<div class="note-box"><b>估值口径（接口快照）：</b>PE/PB 为行情接口实时快照值（本股缺可用的分报告期财报数据），口径由数据源决定、不可回溯复算。财报数据补齐后自动切换为自算口径。</div>';
+    }
   }
 
   // --- 回测对比 ---
