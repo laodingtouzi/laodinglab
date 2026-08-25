@@ -315,7 +315,18 @@ function switchMkt(mkt){
 
 function renderResult(r){
   const area = document.getElementById('result-area');
-  if (!r || !r.ok) { renderError(r && r.error); return; }
+  if (!r || !r.ok) {
+    let errMsg = r && r.error;
+    // 兜底：顶层 error 为空时，收集各子市场 error
+    if (!errMsg && r && r.multi_market) {
+      const errs = Object.values(r.multi_market)
+        .filter(m => !m.ok && m.error)
+        .map(m => m.error);
+      if (errs.length) errMsg = errs.join('；');
+    }
+    renderError(errMsg);
+    return;
+  }
   // 保存结果 + 同步 currentMkt（新查询时重置；切换时已在外层设好）
   lastResult = r;
   if (currentMkt === null || !r.multi_market || !r.multi_market[currentMkt]) {
