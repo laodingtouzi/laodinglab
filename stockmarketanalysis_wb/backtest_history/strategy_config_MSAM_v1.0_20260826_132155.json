@@ -1,0 +1,126 @@
+{
+  "name": "MSAM策略组合",
+  "description": "三市场混合策略路由组合：CN→B_v2.1（增强因子+V2.1保护）/ HK→A_v1.0（标准5因子）/ US→X_Lite_v1.0（动量倾斜+最小持有期）。仓位统一为风险驱动模型（risk_budget/volatility + 安全网），市场状态分类参数、阈值、止损止盈按各市场路由子策略执行。本 profile 为组合注册项，字段值为默认占位，实际参数以 get_strategy_for_market(market) 为准。",
+  "version": "v1.0",
+  "version_id": "MSAM_v1.0",
+  "created_at": "2026-08-15",
+  "status": "composite",
+  "factor_weights": {
+    "quality": 0.3,
+    "valuation": 0.2,
+    "sentiment_event": 0.2,
+    "technical": 0.15,
+    "momentum": 0.15
+  },
+  "quality_sub": {
+    "financial": 0.6,
+    "trend": 0.25,
+    "low_vol": 0.15
+  },
+  "buy_threshold": 65,
+  "buy_threshold_us": 70,
+  "buy_threshold_hk": 0,
+  "sell_threshold": 40,
+  "sell_threshold_us": 45,
+  "sell_threshold_hk": 0,
+  "hard_stop_loss": -15.0,
+  "hard_stop_loss_us": 0.0,
+  "hard_stop_loss_hk": 0.0,
+  "short_stop_pct": -8.0,
+  "short_stop_days": 3,
+  "dynamic_weights": {
+    "trend": {
+      "quality": 0.15,
+      "valuation": 0.15,
+      "sentiment_event": 0.15,
+      "technical": 0.2,
+      "momentum": 0.35
+    },
+    "range": {
+      "quality": 0.25,
+      "valuation": 0.4,
+      "sentiment_event": 0.15,
+      "technical": 0.1,
+      "momentum": 0.1
+    },
+    "risk": {
+      "quality": 0.2,
+      "valuation": 0.15,
+      "sentiment_event": 0.35,
+      "technical": 0.15,
+      "momentum": 0.15
+    }
+  },
+  "market_state_params": {
+    "ma_period": 20,
+    "volume_ratio_threshold": 1.2,
+    "volatility_high": 30
+  },
+  "position_per_stock": 0.01,
+  "risk_budget_pct": {
+    "CN": 0.003,
+    "HK": 0.0035,
+    "US": 0.004
+  },
+  "max_position_pct": 0.03,
+  "max_holdings": 5,
+  "signal_strong": 0.7,
+  "signal_weak": 0.5,
+  "position_strong": 0.12,
+  "position_weak": 0.08,
+  "total_position_cap": 0.85,
+  "rebalance_days": 5,
+  "hold_reduce_days": 30,
+  "hold_force_sell_days": 60,
+  "take_profit_pct": 15.0,
+  "take_profit_macd": true,
+  "take_profit_pure": 999.0,
+  "signal_sell_score": 30,
+  "gradient_deleverage": true,
+  "profit_protect_pct": 5.0,
+  "profit_protect_watch_days": 3,
+  "sector_buffer_threshold": 3,
+  "sector_buffer_min_hold": 10,
+  "min_hold_rotation": 0,
+  "tier_position": false,
+  "tier_split": {
+    "top": 0.3,
+    "mid": 0.4,
+    "bottom": 0.3
+  },
+  "tier_alloc": {
+    "top": 0.5,
+    "mid": 0.4,
+    "bottom": 0.2
+  },
+  "pools": {
+    "CN": {
+      "capital": 10000000,
+      "h_limit": 100000,
+      "m_limit": 50000,
+      "currency": "CNY"
+    },
+    "HK": {
+      "capital": 10000000,
+      "h_limit": 100000,
+      "m_limit": 50000,
+      "currency": "HKD"
+    },
+    "US": {
+      "capital": 1388888.8888888888,
+      "h_limit": 13888.888888888889,
+      "m_limit": 6944.444444444444,
+      "currency": "USD"
+    }
+  },
+  "usd_cny": 7.2,
+  "hkd_cny": 0.92,
+  "cooldown_normal": 3,
+  "cooldown_hard_stop": 7,
+  "slippage": 0.003,
+  "commission": 0.00025,
+  "backtest_start": "2025-04-01",
+  "backtest_end": "2026-07-24",
+  "warmup_days": 60,
+  "observation_end": ""
+}
