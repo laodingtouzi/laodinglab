@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8">
+<title>融资杠杆回测完整对比报告</title>
+<style>
+body{font-family:-apple-system,'PingFang SC',sans-serif;max-width:960px;margin:24px auto;padding:0 16px;color:#222;background:#fafafa}
+h1{font-size:22px} h2{font-size:17px;margin-top:28px;border-left:4px solid #7c3aed;padding-left:10px}
+table{width:100%;border-collapse:collapse;background:#fff;font-size:13px}
+th{background:#efe7fd;padding:8px;text-align:left} td{padding:8px;border-bottom:1px solid #eee}
+.highlight{background:#f3ecff;border:1px solid #d8c6f5;border-radius:10px;padding:14px 18px;font-size:13px;line-height:1.8;margin:16px 0}
+.warn{background:#fff3e0;border:1px solid #ffcc80;border-radius:10px;padding:14px 18px;font-size:13px;line-height:1.8;margin:16px 0}
+.note{font-size:12px;color:#666}
+.old{color:#64748b}
+.new{color:#2563eb;font-weight:bold}
+.z{color:#7c3aed;font-weight:bold}
+</style></head><body>
+<h1>融资杠杆回测完整对比报告</h1>
+<div class="note">回测区间 2025-04-01 ~ 2026-07-24（344 个交易日）· 生成于 20260826_1706</div>
+
+<div class="highlight">
+<strong>核心规则变更</strong><br>
+① capital_limit 轮动卖出已<strong>关闭</strong> —— 超出资金池的部分视为融资杠杆，不再强制卖出低分股；<br>
+② 分市场计息：CN-LPR 3.00%、US-联邦基金 3.625%、HK-基本利率 4.00%；<br>
+③ 标准收益率 = 市值增长 / 自有资金；杠杆收益率 = (市值增长 − 融资成本) / 自有资金。
+</div>
+
+<h2>核心指标：旧版B → 新版B → Z</h2>
+<table><tr><th>指标</th><th style="text-align:center" class="old">旧版B (capital_limit ON)</th><th style="text-align:center" class="new">新版B (capital_limit OFF)</th><th style="text-align:center" class="z">Z_v1.0 (情绪+无capital_limit)</th></tr><tr><td>总收益率%</td><td style='text-align:center'>13.03</td><td style='text-align:center;font-weight:bold;color:#2563eb'>13.50 <span style="color:#16a34a;font-size:11px">(+0.47)</span></td><td style='text-align:center;font-weight:bold;color:#7c3aed'>18.31 <span style="color:#16a34a;font-size:11px">(+4.81)</span></td></tr><tr><td>最大回撤%</td><td style='text-align:center'>-5.71</td><td style='text-align:center;font-weight:bold;color:#2563eb'>-5.71</td><td style='text-align:center;font-weight:bold;color:#7c3aed'>-7.04 <span style="color:#16a34a;font-size:11px">(-1.33)</span></td></tr><tr><td>夏普比率</td><td style='text-align:center'>1.46</td><td style='text-align:center;font-weight:bold;color:#2563eb'>1.50 <span style="color:#16a34a;font-size:11px">(+0.04)</span></td><td style='text-align:center;font-weight:bold;color:#7c3aed'>1.65 <span style="color:#16a34a;font-size:11px">(+0.15)</span></td></tr><tr><td>总交易数</td><td style='text-align:center'>681</td><td style='text-align:center;font-weight:bold;color:#2563eb'>483 <span style="color:#16a34a;font-size:11px">(-198.00)</span></td><td style='text-align:center;font-weight:bold;color:#7c3aed'>660 <span style="color:#16a34a;font-size:11px">(+177.00)</span></td></tr><tr><td>胜率%</td><td style='text-align:center'>45.80</td><td style='text-align:center;font-weight:bold;color:#2563eb'>36.40 <span style="color:#c62828;font-size:11px">(-9.40)</span></td><td style='text-align:center;font-weight:bold;color:#7c3aed'>32.90 <span style="color:#c62828;font-size:11px">(-3.50)</span></td></tr><tr><td>最终NAV(万CNY)</td><td style='text-align:center'>10308.15</td><td style='text-align:center;font-weight:bold;color:#2563eb'>10351.64 <span style="color:#16a34a;font-size:11px">(+43.49)</span></td><td style='text-align:center;font-weight:bold;color:#7c3aed'>10790.25 <span style="color:#16a34a;font-size:11px">(+438.61)</span></td></tr></table>
+<div class="note">新版B相比旧版B：收益率 +0.47%（13.50% vs 13.03%），交易数 -198笔（483 vs 681），夏普 +0.04。<br>
+Z相比新版B：收益率 +4.81%，但回撤也更大（-7.04% vs -5.71%），交易更频繁（660 vs 483）。</div>
+
+<h2>融资杠杆对比</h2>
+<table><tr><th>版本</th><th style="text-align:center">最大杠杆</th><th style="text-align:center">累计融资成本</th><th style="text-align:center">标准收益率</th><th style="text-align:center">杠杆收益率</th></tr><tr><td>旧版B (capital_limit ON)</td><td style='text-align:center'>55.1万</td><td style='text-align:center'>0.22万</td><td style='text-align:center'>13.03%</td><td style='text-align:center'>13.03%</td></tr><tr><td>新版B (capital_limit OFF)</td><td style='text-align:center'>350.9万</td><td style='text-align:center'>4.75万</td><td style='text-align:center'>13.50%</td><td style='text-align:center'>13.45%</td></tr><tr><td>Z_v1.0</td><td style='text-align:center'>366.1万</td><td style='text-align:center'>6.96万</td><td style='text-align:center'>18.31%</td><td style='text-align:center'>18.24%</td></tr></table>
+<div class="note">融资成本对收益率的侵蚀极小（0.05%~0.07%），因为最大杠杆仅占自有资金的3.5%左右。</div>
+
+<h2>卖出类型分布</h2>
+<table><tr><th>卖出类型</th><th style="text-align:center">旧版B</th><th style="text-align:center">新版B</th><th style="text-align:center">Z_v1.0</th></tr><tr><td>normal</td><td style='text-align:center'>3</td><td style='text-align:center'>6</td><td style='text-align:center'>10</td></tr><tr><td>stop_loss</td><td style='text-align:center'>201</td><td style='text-align:center'>200</td><td style='text-align:center'>280</td></tr><tr><td>short_stop</td><td style='text-align:center'>116</td><td style='text-align:center'>103</td><td style='text-align:center'>158</td></tr><tr><td>rank_stop</td><td style='text-align:center'>3</td><td style='text-align:center'>6</td><td style='text-align:center'>5</td></tr><tr><td>capital_limit</td><td style='text-align:center'>260</td><td style='text-align:center'>0</td><td style='text-align:center'>0</td></tr><tr><td>take_profit</td><td style='text-align:center'>98</td><td style='text-align:center'>168</td><td style='text-align:center'>207</td></tr></table>
+<div class="note">旧版B中 capital_limit 卖出高达260笔（胜率81.2%），但关闭后总收益率反而上升，说明capital_limit轮动存在"卖飞"问题。</div>
+
+<h2>关键结论与策略建议</h2>
+<div class="highlight">
+1. <strong>capital_limit关闭是正向决策</strong>：收益率从13.03%提升到13.50%（+0.47%），交易数减少198笔，说明轮动卖出在回测中反而是负贡献；<br>
+2. <strong>融资杠杆规模可控</strong>：最大杠杆约350~366万（占自有资金3.5%），融资成本对收益影响仅0.05%~0.07%；<br>
+3. <strong>Z_v1.0情绪因子有效</strong>：收益率18.31%显著高于B基线，但回撤和交易频率也更高，需权衡风险收益比；<br>
+4. <strong>US市场无杠杆需求</strong>：两个策略在US均未使用杠杆，US 1000万资金池充足。
+</div>
+
+<div class="warn">
+<strong>参数校准建议（基于无capital_limit的新规则）</strong><br>
+• <strong>止盈阈值</strong>：当前+50%可能过高，可考虑降至+35%~+40%，增加止盈交易数、减少硬止损；<br>
+• <strong>短期止损</strong>：-6%/3天触发103~158笔，可考虑放宽至-8%/5天，减少频繁止损；<br>
+• <strong>硬止损</strong>：US -20%过于宽松（仅触发1笔），建议统一为-12%与CN/HK一致；<br>
+• <strong>持仓上限</strong>：取消capital_limit后，可考虑引入个股持仓上限（如单只不超过资金池5%）来分散风险。
+</div>
+
+</body></html>
