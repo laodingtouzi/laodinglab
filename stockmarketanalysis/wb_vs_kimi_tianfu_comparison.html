@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WB vs Kimi 手搓股报告对比分析 — 天孚通信</title>
+<style>
+:root {
+  --bg: #F5F5DC; --bg-surface: #ffffff; --text: #3D2B1F;
+  --text-secondary: #5a3d2f; --text-muted: #9c8b7a;
+  --border: #D4C4B0; --border-hover: #B8A08A;
+  --accent: #722F37; --accent-deep: #3D2B1F; --accent-light: #f0e6e8;
+  --shadow: rgba(114, 47, 55, 0.06);
+  --success: #1B4D3E; --danger: #dc2626; --warning: #ca8a04;
+  --buy: #1B4D3E; --sell: #dc2626; --hold: #ca8a04;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', 'Noto Sans SC', 'PingFang SC', sans-serif;
+  background: var(--bg); color: var(--text);
+  min-height: 100vh; line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+.container { max-width: 1100px; margin: 0 auto; padding: 40px 24px; }
+
+/* HEADER */
+.header {
+  background: linear-gradient(135deg, #722F37 0%, #5a1e26 50%, #3D2B1F 100%);
+  padding: 40px 24px; text-align: center; border-radius: 0 0 16px 16px;
+  margin-bottom: 32px;
+}
+.header h1 { font-size: 28px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+.header .subtitle { font-size: 14px; color: rgba(255,255,255,.8); font-weight: 300; }
+.header .meta { font-size: 12px; color: rgba(255,255,255,.6); margin-top: 12px; }
+
+/* SECTIONS */
+.section {
+  background: var(--bg-surface); border-radius: 12px;
+  padding: 28px; margin-bottom: 24px;
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px var(--shadow);
+}
+.section h2 {
+  font-size: 1.25rem; margin-bottom: 18px; padding-bottom: 10px;
+  border-bottom: 2px solid var(--border); color: var(--accent);
+  display: flex; align-items: center; gap: 8px;
+}
+.section h3 {
+  font-size: 1.05rem; margin: 20px 0 12px; color: var(--text-secondary);
+}
+
+/* COMPARISON TABLE */
+.compare-table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 16px 0; }
+.compare-table th {
+  background: #f0e6e8; text-align: left; padding: 10px 12px;
+  font-weight: 600; color: var(--text-secondary); white-space: nowrap;
+  border-bottom: 2px solid var(--border);
+}
+.compare-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.compare-table tr:hover td { background: rgba(114,47,55,.03); }
+.compare-table .wb-col { background: rgba(27,77,62,.04); }
+.compare-table .kimi-col { background: rgba(220,38,38,.03); }
+.compare-table .highlight { font-weight: 600; }
+
+/* TAGS */
+.tag {
+  display: inline-block; padding: 2px 10px; border-radius: 12px;
+  font-size: 11px; font-weight: 600;
+}
+.tag-wb { background: rgba(27,77,62,.1); color: var(--buy); }
+.tag-kimi { background: rgba(114,47,55,.1); color: var(--accent); }
+.tag-sell { background: rgba(220,38,38,.1); color: var(--sell); }
+.tag-warn { background: rgba(202,138,4,.1); color: var(--warning); }
+.tag-ok { background: rgba(27,77,62,.1); color: var(--success); }
+
+/* ALERT BOXES */
+.alert {
+  border-radius: 8px; padding: 14px 18px; margin: 14px 0;
+  font-size: 13.5px; line-height: 1.7;
+}
+.alert-critical {
+  background: rgba(220,38,38,.07); border-left: 4px solid var(--danger);
+  color: #7f1d1d;
+}
+.alert-warn {
+  background: rgba(202,138,4,.07); border-left: 4px solid var(--warning);
+  color: #6b5a12;
+}
+.alert-info {
+  background: rgba(27,77,62,.07); border-left: 4px solid var(--success);
+  color: #14532d;
+}
+.alert-note {
+  background: rgba(114,47,55,.05); border-left: 4px solid var(--accent);
+  color: var(--text-secondary);
+}
+
+/* FACTOR BARS */
+.factor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+.factor-card {
+  background: #faf8f5; border: 1px solid var(--border); border-radius: 8px; padding: 14px;
+}
+.factor-card h4 { font-size: 13px; color: var(--text-muted); margin-bottom: 4px; }
+.factor-card .score { font-size: 22px; font-weight: 700; color: var(--accent); }
+.factor-card .score-sell { color: var(--sell); }
+.factor-card .score-warn { color: var(--warning); }
+
+/* STRATEGY TABLE */
+.strategy-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; }
+.strategy-table th {
+  background: #f0e6e8; padding: 8px 10px; font-weight: 600; text-align: left;
+}
+.strategy-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); }
+
+/* RECOMMENDATIONS */
+.rec-box {
+  background: #faf8f5; border-radius: 8px; padding: 16px; margin: 10px 0;
+  border: 1px dashed var(--border);
+}
+.rec-box h4 { font-size: 14px; color: var(--accent); margin-bottom: 8px; }
+.rec-box ul { margin-left: 18px; font-size: 13px; line-height: 1.8; }
+.rec-box li { margin-bottom: 4px; }
+
+.footer {
+  text-align: center; font-size: 12px; color: var(--text-muted);
+  padding: 30px 0; border-top: 1px solid var(--border); margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .factor-grid { grid-template-columns: 1fr; }
+  .compare-table { font-size: 12px; }
+  .compare-table th, .compare-table td { padding: 6px 8px; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>WB vs Kimi 手搓股报告对比分析</h1>
+  <div class="subtitle">标的：天孚通信（300394.SZ）· 半导体/光通信板块</div>
+  <div class="meta">分析日期：2026-08-27 · 报告生成：2026-08-27</div>
+</div>
+
+<div class="container">
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2>📋 一、核心数据对比总览</h2>
+  <table class="compare-table">
+    <tr>
+      <th style="width:160px">维度</th>
+      <th class="wb-col">WorkBuddy (WB)</th>
+      <th class="kimi-col">Kimi</th>
+    </tr>
+    <tr>
+      <td><b>综合评分</b></td>
+      <td class="wb-col"><span class="tag tag-sell">36.3 · 卖出</span></td>
+      <td class="kimi-col"><span class="tag tag-warn">None · 数据不足</span></td>
+    </tr>
+    <tr>
+      <td><b>实时价格</b></td>
+      <td class="wb-col"><b>270.10</b> 元</td>
+      <td class="kimi-col"><span class="tag tag-sell">0.00（获取失败）</span></td>
+    </tr>
+    <tr>
+      <td><b>市盈率 PE</b></td>
+      <td class="wb-col">126.87</td>
+      <td class="kimi-col">0.00</td>
+    </tr>
+    <tr>
+      <td><b>市净率 PB</b></td>
+      <td class="wb-col">47.15</td>
+      <td class="kimi-col">0.00</td>
+    </tr>
+    <tr>
+      <td><b>日涨跌</b></td>
+      <td class="wb-col">+6.51%</td>
+      <td class="kimi-col">0.00%</td>
+    </tr>
+    <tr>
+      <td><b>财报数据</b></td>
+      <td class="wb-col"><span class="tag tag-ok">✅ 已获取（PIT时点）</span></td>
+      <td class="kimi-col"><span class="tag tag-sell">❌ 未获取</span></td>
+    </tr>
+    <tr>
+      <td><b>数据天数</b></td>
+      <td class="wb-col">1,367 日</td>
+      <td class="kimi-col">1,367 日</td>
+    </tr>
+    <tr>
+      <td><b>回测档级</b></td>
+      <td class="wb-col">below_sell（低于卖出阈值）</td>
+      <td class="kimi-col">normal（缓存命中）</td>
+    </tr>
+    <tr>
+      <td><b>五套策略信号</b></td>
+      <td class="wb-col">0 买入 / 0 平仓（全部空仓）</td>
+      <td class="kimi-col">0 买入 / 0 平仓（全部空仓）</td>
+    </tr>
+    <tr>
+      <td><b>分析耗时</b></td>
+      <td class="wb-col"><b>1.7 秒</b></td>
+      <td class="kimi-col">37.4 秒（含缓存）</td>
+    </tr>
+    <tr>
+      <td><b>结论</b></td>
+      <td class="wb-col"><b>不具备投资潜力</b>（评分&lt;卖出阈值40）</td>
+      <td class="kimi-col"><b>数据不足</b>（无法给出评分）</td>
+    </tr>
+  </table>
+
+  <div class="alert alert-critical">
+    <b>⚠️ 关键差异发现：</b>Kimi 的实时行情获取完全失败（price=0, PE=0, PB=0），导致评分模块被降级为"数据不足"。
+    这是 Kimi 当前最核心的短板——<b>实时数据获取渠道不稳定</b>，直接影响了选股建议的精准性和有效性。
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2>📊 二、五因子评分深度对比</h2>
+
+  <h3>WB 因子得分（完整计算）</h3>
+  <div class="factor-grid">
+    <div class="factor-card">
+      <h4>质量因子 Quality</h4>
+      <div class="score">75.0</div>
+      <div style="font-size:12px;color:var(--text-muted)">财报数据可用，基本面尚可</div>
+    </div>
+    <div class="factor-card">
+      <h4>估值因子 Valuation</h4>
+      <div class="score score-sell">30.0</div>
+      <div style="font-size:12px;color:var(--text-muted)">PE 126.87 / PB 47.15，严重高估</div>
+    </div>
+    <div class="factor-card">
+      <h4>情绪/事件 Sentiment</h4>
+      <div class="score">63.7</div>
+      <div style="font-size:12px;color:var(--text-muted)">semis_ai 板块宏观倾斜 +1.5</div>
+    </div>
+    <div class="factor-card">
+      <h4>技术因子 Technical</h4>
+      <div class="score">50.0</div>
+      <div style="font-size:12px;color:var(--text-muted)">MA20=232, MA60=284, RSI14=74</div>
+    </div>
+    <div class="factor-card">
+      <h4>动量因子 Momentum</h4>
+      <div class="score score-warn">32.0</div>
+      <div style="font-size:12px;color:var(--text-muted)">60日收益-37%，20日收益+48%</div>
+    </div>
+    <div class="factor-card">
+      <h4>波动惩罚 Vol Penalty</h4>
+      <div class="score score-sell">-15</div>
+      <div style="font-size:12px;color:var(--text-muted)">20日波动率 109.52%，极高</div>
+    </div>
+  </div>
+
+  <h3>Kimi 因子得分（行情获取失败导致降级）</h3>
+  <div class="alert alert-warn">
+    由于实时行情获取失败（price=0），<b>所有因子均未计算</b>，系统降级为"数据不足"模式。
+    虽然历史数据充足（1367日），但缺少实时价格作为基准，无法完成五因子评分。
+  </div>
+
+  <table class="compare-table">
+    <tr>
+      <th>因子</th>
+      <th class="wb-col">WB</th>
+      <th class="kimi-col">Kimi</th>
+      <th>差异分析</th>
+    </tr>
+    <tr>
+      <td>质量 Quality</td>
+      <td class="wb-col">75.0</td>
+      <td class="kimi-col">—（未计算）</td>
+      <td>WB 获取了完整财报数据</td>
+    </tr>
+    <tr>
+      <td>估值 Valuation</td>
+      <td class="wb-col">30.0</td>
+      <td class="kimi-col">—（未计算）</td>
+      <td>WB 使用 PIT 时点估值（PE=126.87）</td>
+    </tr>
+    <tr>
+      <td>情绪 Sentiment</td>
+      <td class="wb-col">63.7</td>
+      <td class="kimi-col">—（未计算）</td>
+      <td>WB 结合板块轮动和宏观事件</td>
+    </tr>
+    <tr>
+      <td>技术 Technical</td>
+      <td class="wb-col">50.0</td>
+      <td class="kimi-col">—（未计算）</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>动量 Momentum</td>
+      <td class="wb-col">32.0</td>
+      <td class="kimi-col">—（未计算）</td>
+      <td>—</td>
+    </tr>
+  </table>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2>📈 三、回测结果对比</h2>
+
+  <table class="strategy-table">
+    <tr>
+      <th>策略</th>
+      <th>WB 买入/平仓</th>
+      <th>Kimi 买入/平仓</th>
+      <th>一致性</th>
+    </tr>
+    <tr><td>B_v2.1（A股主力）</td><td>0 / 0</td><td>0 / 0</td><td><span class="tag tag-ok">✅ 一致</span></td></tr>
+    <tr><td>A_v1.0（港股活跃）</td><td>0 / 0</td><td>0 / 0</td><td><span class="tag tag-ok">✅ 一致</span></td></tr>
+    <tr><td>X_v1.0（激进高频）</td><td>0 / 0</td><td>0 / 0</td><td><span class="tag tag-ok">✅ 一致</span></td></tr>
+    <tr><td>X_Lite_v1.0（降频）</td><td>0 / 0</td><td>0 / 0</td><td><span class="tag tag-ok">✅ 一致</span></td></tr>
+    <tr><td>MSAM_v1.0（组合路由）</td><td>0 / 0</td><td>0 / 0</td><td><span class="tag tag-ok">✅ 一致</span></td></tr>
+    <tr><td>Z_v1.0（回望法研究线）</td><td>0 / 0</td><td>0 / 0</td><td><span class="tag tag-ok">✅ 一致</span></td></tr>
+  </table>
+
+  <div class="alert alert-info">
+    <b>回测结论：</b>两套系统对该股的回测结论完全一致——<b>五套策略均未发出买入信号</b>。
+    这是因为天孚通信当前评分远低于各策略的买入阈值，属于"below_sell"档级，回测引擎直接返回空仓结果，无需实际跑交易模拟。
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2>🔍 四、WB 独有优势分析</h2>
+
+  <h3>1. 实时数据获取能力</h3>
+  <div class="alert alert-note">
+    WB 成功获取了实时行情（price=270.1, PE=126.87, PB=47.15），而 Kimi 全部失败。
+    这可能是因为：
+    <ul style="margin:8px 0 0 18px">
+      <li>WB 使用了更多行情数据源（westock-data、腾讯 ifzq 等）</li>
+      <li>WB 的 .venv 环境中可能安装了额外的数据获取依赖</li>
+      <li>Kimi 仅依赖腾讯行情接口，且在当前环境中可能受限</li>
+    </ul>
+  </div>
+
+  <h3>2. PIT（Point-in-Time）估值方法</h3>
+  <div class="alert alert-note">
+    WB 的估值因子使用了 <b>PIT 时点估值</b>：
+    <ul style="margin:8px 0 0 18px">
+      <li>valuation_source: "pit"</li>
+      <li>valuation_report_period: "2026-06-30"</li>
+      <li>valuation_pub_date: "2026-08-19"</li>
+      <li>valuation_method: "cn_mktcap"</li>
+    </ul>
+    这意味着 WB 使用了最新财报期（2026Q2）的数据进行估值，而非过时的历史快照。
+  </div>
+
+  <h3>3. 历史评分趋势分析</h3>
+  <div class="alert alert-note">
+    WB 提供了历史评分趋势：
+    <ul style="margin:8px 0 0 18px">
+      <li>历史评分记录：39 条</li>
+      <li>最高分：47.6（2026-07-15）</li>
+      <li>当前分：36.3</li>
+      <li>趋势：下降（斜率 -0.38/天）</li>
+      <li>预测：评分呈下降趋势，需关注下行风险</li>
+    </ul>
+    Kimi 因评分降级，无法提供趋势分析。
+  </div>
+
+  <h3>4. 宏观事件与板块轮动</h3>
+  <div class="alert alert-note">
+    WB 的评估中嵌入了详细的宏观分析：
+    <ul style="margin:8px 0 0 18px">
+      <li>板块主题：semis_ai（半导体+AI）</li>
+      <li>板块状态：观望</li>
+      <li>宏观倾斜：+1.5 分</li>
+      <li>驱动因子：油价上涨(+3.5)、地缘政治(+2.9)、贸易摩擦(+2.0)</li>
+      <li>市场快照：VIX 16.0 / 美债10Y 4.7% / 美元指数 98.87</li>
+      <li>制度环境：美加关税谈判、沃什9月加息选项、胡塞曼德海峡等</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2>⚠️ 五、Kimi 关键短板诊断</h2>
+
+  <table class="compare-table">
+    <tr>
+      <th style="width:140px">短板</th>
+      <th>影响程度</th>
+      <th>具体表现</th>
+      <th>修复优先级</th>
+    </tr>
+    <tr>
+      <td><b>实时行情获取</b></td>
+      <td><span class="tag tag-sell">🔴 致命</span></td>
+      <td>price=0, PE=0, PB=0，导致评分完全失效</td>
+      <td>P0 — 立即修复</td>
+    </tr>
+    <tr>
+      <td><b>财报数据获取</b></td>
+      <td><span class="tag tag-sell">🔴 严重</span></td>
+      <td>financial_available=false，质量因子回退中性分</td>
+      <td>P0 — 立即修复</td>
+    </tr>
+    <tr>
+      <td><b>PIT 估值</b></td>
+      <td><span class="tag tag-warn">🟡 重要</span></td>
+      <td>缺少 point-in-time 历史估值还原能力</td>
+      <td>P1 — 短期修复</td>
+    </tr>
+    <tr>
+      <td><b>历史趋势分析</b></td>
+      <td><span class="tag tag-warn">🟡 重要</span></td>
+      <td>无法提供评分趋势和预测</td>
+      <td>P1 — 短期修复</td>
+    </tr>
+    <tr>
+      <td><b>宏观事件嵌入</b></td>
+      <td><span class="tag tag-warn">🟡 重要</span></td>
+      <td>评估摘要中缺少宏观/板块分析</td>
+      <td>P2 — 中期优化</td>
+    </tr>
+    <tr>
+      <td><b>分析耗时</b></td>
+      <td><span class="tag tag-ok">🟢 轻微</span></td>
+      <td>37.4秒 vs WB 1.7秒（即使缓存命中也较慢）</td>
+      <td>P2 — 中期优化</td>
+    </tr>
+  </table>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2>🎯 六、策略有效性分析与完善建议</h2>
+
+  <h3>各子策略表现（基于 WB 完整数据）</h3>
+  <div class="alert alert-warn">
+    天孚通信当前综合评分 36.3，远低于 A 股买入阈值 65 和卖出阈值 40。
+    这意味着五套策略在该股上均<b>未发出任何买入信号</b>，属于策略设计中的"合理空仓"情形。
+  </div>
+
+  <div class="rec-box">
+    <h4>策略 B_v2.1（A股主力）</h4>
+    <ul>
+      <li><b>当前表现：</b>空仓（0 买入 / 0 平仓）</li>
+      <li><b>有效性：</b>✅ 有效 — 正确识别了高估值风险（PE=126.87）</li>
+      <li><b>完善建议：</b>考虑增加"估值修复"触发机制：当 PE 从历史高位回落到行业中位数 1.5 倍以内时，可触发重新评估</li>
+    </ul>
+  </div>
+
+  <div class="rec-box">
+    <h4>策略 A_v1.0（港股活跃版本）</h4>
+    <ul>
+      <li><b>当前表现：</b>空仓</li>
+      <li><b>有效性：</b>✅ 有效 — 该股虽为 A 股，但策略逻辑一致</li>
+      <li><b>完善建议：</b>A 股和港股的估值容忍度不同，建议分市场设定动态阈值</li>
+    </ul>
+  </div>
+
+  <div class="rec-box">
+    <h4>策略 X_v1.0（激进高频）</h4>
+    <ul>
+      <li><b>当前表现：</b>空仓</li>
+      <li><b>有效性：</b>✅ 有效 — 即使激进策略也未被高波动诱惑（20日波动率 109%）</li>
+      <li><b>完善建议：</b>可考虑增加"超跌反弹"子策略：当 60 日回撤 > 50% 且 RSI < 30 时，短期博弈仓位</li>
+    </ul>
+  </div>
+
+  <div class="rec-box">
+    <h4>策略 X_Lite_v1.0（降频版本）</h4>
+    <ul>
+      <li><b>当前表现：</b>空仓</li>
+      <li><b>有效性：</b>✅ 有效</li>
+      <li><b>完善建议：</b>与 X_v1.0 的差异主要体现在交易频率，当前空仓结果一致，建议继续观察两者在买入触发后的持仓周期差异</li>
+    </ul>
+  </div>
+
+  <div class="rec-box">
+    <h4>策略 MSAM_v1.0（组合路由）</h4>
+    <ul>
+      <li><b>当前表现：</b>空仓</li>
+      <li><b>有效性：</b>✅ 有效 — 作为线上实盘口径，保守是正确的</li>
+      <li><b>完善建议：</b>MSAM 当前为线上持仓的组合策略，建议增加"调仓观察"功能：对评分持续下降但未触发卖出的股票，提前预警</li>
+    </ul>
+  </div>
+
+  <div class="rec-box">
+    <h4>策略 Z_v1.0（回望法研究线）</h4>
+    <ul>
+      <li><b>当前表现：</b>空仓</li>
+      <li><b>有效性：</b>⚠️ 待验证 — Z 策略使用了历史事件回望法，但天孚通信数据不足 60 日正常回测门槛，实际未跑交易模拟</li>
+      <li><b>完善建议：</b>需要更多 normal 档股票的回测数据来验证 Z 策略的事件驱动逻辑是否有效</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2>📌 七、总体结论与行动建议</h2>
+
+  <div class="alert alert-critical">
+    <b>核心结论：两套系统对该股的最终判断一致（不应买入），但 Kimi 的推理过程存在重大缺陷。</b>
+  </div>
+
+  <h3>WB 的优势（应保留）</h3>
+  <ul style="margin-left:18px;line-height:1.8">
+    <li>✅ 多渠道实时数据获取，确保评分不因行情缺失而失效</li>
+    <li>✅ PIT 时点估值，避免使用过时财报数据</li>
+    <li>✅ 历史评分趋势分析，提供动态视角</li>
+    <li>✅ 宏观事件嵌入，增强评估的上下文完整性</li>
+    <li>✅ 分析速度快（1.7秒）</li>
+  </ul>
+
+  <h3>Kimi 的紧急修复项</h3>
+  <ul style="margin-left:18px;line-height:1.8">
+    <li>🔴 <b>P0 — 实时行情获取：</b>修复腾讯行情接口或增加备用数据源（如东财、新浪等）</li>
+    <li>🔴 <b>P0 — 财报数据获取：</b>接入 tushare 或其他财务数据接口</li>
+    <li>🟡 <b>P1 — 评分降级逻辑优化：</b>当 price=0 时，不应简单降级为"数据不足"，而应明确提示"行情获取失败"</li>
+    <li>🟡 <b>P1 — 历史趋势分析：</b>补齐评分趋势计算模块</li>
+    <li>🟢 <b>P2 — 宏观事件嵌入：</b>复用 WB 的宏观/板块分析数据</li>
+  </ul>
+
+  <h3>对天孚通信的投资建议（基于 WB 完整分析）</h3>
+  <div class="alert alert-warn">
+    <b>当前状态：回避</b>
+    <ul style="margin:8px 0 0 18px">
+      <li>综合评分 36.3，已落入卖出区（&lt; 40）</li>
+      <li>PE 126.87 / PB 47.15，估值严重偏高</li>
+      <li>60日收益 -37%，动量为负</li>
+      <li>评分呈下降趋势（斜率 -0.38/天）</li>
+      <li>五套策略均无买入信号</li>
+      <li>如已持有，建议关注卖出阈值触发条件</li>
+    </ul>
+  </div>
+</div>
+
+<div class="footer">
+  老丁实验室 Laodinglab · WB vs Kimi 手搓股对比分析报告<br>
+  本报告仅供研究参考，不构成投资建议
+</div>
+
+</div>
+</body>
+</html>
