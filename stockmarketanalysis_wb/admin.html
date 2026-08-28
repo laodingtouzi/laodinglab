@@ -547,6 +547,7 @@ function confirmAction() {
         total_return_when_sold: h.total_return || 0,
         hold_days: h.hold_days || 0,
         post_sell_analysis: '手工减仓至 0',
+        sell_type: 'manual',
         manual_sell: true
       };
       localData[postSellKey] = psObj;
@@ -572,6 +573,7 @@ function confirmAction() {
       total_return_when_sold: h.total_return || 0,
       hold_days: h.hold_days || 0,
       post_sell_analysis: reason,
+      sell_type: 'manual',
       manual_sell: true
     };
     localData[postSellKey] = psObj;
