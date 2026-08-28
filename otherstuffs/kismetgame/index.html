@@ -379,7 +379,6 @@ const STATE = {
   config: { ruleTurn: "strict", ruleCouple: "manual", showProcess: true },
   history: { count: 0, maxValue: 0, combos: {} },
   resultText: "",
-  cardbackClickStatus: 0,
   isFlyingPickCard: false
 };
 
@@ -427,15 +426,26 @@ function initCards() {
   }
 }
 
+// 确定性伪随机数生成器（mulberry32），用年龄做种子，保证同一年龄固定洗牌结果
+function mulberry32(a) {
+  return function() {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
 // 洗牌
 function shuffle(age) {
   let arr = Array.from({length: 52}, (_, i) => i);
   let seed = age || 33;
+  let rand = mulberry32(seed);
   // 用年龄作为种子迭代次数（对应 VB6 的 Do While Age < AgeIndicated + 1）
   for (let iter = 0; iter < seed + 1; iter++) {
     // Fisher-Yates 洗牌
     for (let i = arr.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1));
+      let j = Math.floor(rand() * (i + 1));
       [arr[i], arr[j]] = [arr[j], arr[i]];
     }
   }
@@ -748,47 +758,6 @@ async function flyPickCardToMatch(idx, pairIndex) {
   matchArea.appendChild(cardEl);
 }
 
-// 找对牌过程展示（第 X 轮当前剩余牌）
-function renderMatchProgress(cards) {
-  let area = document.getElementById("matchArea");
-  area.innerHTML = "";
-  area.style.display = "block";
-  
-  let label = document.createElement("div");
-  label.className = "match-label";
-  label.textContent = `第 ${STATE.matchRound} 轮找对牌...`;
-  area.appendChild(label);
-  
-  // 将当前剩余牌在顶部区域自左而右排开，防溢出
-  let count = cards.length;
-  let areaW = area.clientWidth || 950;
-  let margin = 10;
-  let availableW = areaW - margin * 2;
-  let gap = 12;
-  let totalW = count * CARD_W + (count - 1) * gap;
-  let startX, actualGap;
-  if (totalW <= availableW) {
-    startX = (areaW - totalW) / 2;
-    actualGap = gap;
-  } else {
-    startX = margin;
-    actualGap = Math.max(6, (availableW - CARD_W) / (count - 1));
-  }
-  let y = 10;
-  
-  for (let i = 0; i < count; i++) {
-    let card = STATE.cards[cards[i]];
-    let cardEl = renderCard(card);
-    cardEl.style.position = "absolute";
-    cardEl.style.left = (startX + actualGap * i) + "px";
-    cardEl.style.top = y + "px";
-    cardEl.style.zIndex = i;
-    cardEl.classList.add("pair-in");
-    cardEl.style.animationDelay = (i * 0.015) + "s";
-    area.appendChild(cardEl);
-  }
-}
-
 // 找对牌完成后的展示区域：显示所有已配成的对牌
 function renderMatchArea() {
   let area = document.getElementById("matchArea");
@@ -913,12 +882,12 @@ function newGame() {
   STATE.pickCards = [];
   STATE.firstSelect = null;
   STATE.unusedCard = 0;
-  STATE.cardbackClickStatus = 0;
   STATE.stockWasteStack = [];
   STATE.phase = "selecting";
   STATE.resultText = "";
   STATE.revealedResults = [];
   STATE.isFlyingPickCard = false;
+  if (autoMatchTimer) { clearTimeout(autoMatchTimer); autoMatchTimer = null; }
   
   // 初始化卡牌
   initCards();
@@ -1054,8 +1023,8 @@ function onStockDeckClick() {
     return;
   }
   
-  // 检查当前可见牌是否已有可配对的（和为13或K），有则不允许翻新牌
-  if (hasMatchablePair()) {
+  // 检查当前可见牌是否已有可配对的（和为13或K），严谨模式下有则不允许翻新牌
+  if (STATE.config.ruleTurn === "strict" && hasMatchablePair()) {
     showToast("当前有可配对的牌（和为13），请先配对！");
     setStatus("当前有可配对的牌，请先完成配对再翻新牌...");
     return;
@@ -1259,6 +1228,35 @@ function hasUsefulCards() {
   return false;
 }
 
+let autoMatchTimer = null;
+// 自动选牌模式：检测到可配对的牌时自动完成配对（延迟执行，避免与玩家手动操作冲突）
+function scheduleAutoMatch() {
+  if (STATE.config.ruleCouple !== "auto") return;
+  if (STATE.phase !== "selecting") return;
+  if (STATE.firstSelect !== null) return; // 玩家正在手动选牌，不干预
+  if (autoMatchTimer) clearTimeout(autoMatchTimer);
+  autoMatchTimer = setTimeout(() => {
+    if (STATE.phase !== "selecting" || STATE.firstSelect !== null) return;
+    let visible = getActionableVisibleCards();
+    // K 单独配对
+    for (let idx of visible) {
+      if (STATE.cards[idx].value === 13) {
+        completeMatch(idx, idx);
+        return;
+      }
+    }
+    // 两张相加等于13
+    for (let i = 0; i < visible.length; i++) {
+      for (let j = i + 1; j < visible.length; j++) {
+        if (STATE.cards[visible[i]].value + STATE.cards[visible[j]].value === 13) {
+          completeMatch(visible[i], visible[j]);
+          return;
+        }
+      }
+    }
+  }, 450);
+}
+
 function checkUsefulCards() {
   // 先检查是否需要自动翻开顶端牌
   // 条件：备用牌堆已空 + 无可翻的塔牌 + 无可配对牌 + 顶端牌尚未翻开
@@ -1304,7 +1302,10 @@ function checkUsefulCards() {
     }
   }
   
-  if (canMatch) return; // 让玩家继续操作
+  if (canMatch) {
+    scheduleAutoMatch(); // 自动选牌模式下自动配对
+    return; // 让玩家继续操作
+  }
   
   // 无可配对牌——提示玩家下一步
   let hasStockCards = false;
@@ -1622,6 +1623,7 @@ async function preparePickCards(matchResult) {
 
 // ========== 找对牌算法 ==========
 async function findMatchCard() {
+  if (autoMatchTimer) { clearTimeout(autoMatchTimer); autoMatchTimer = null; }
   STATE.phase = "matching";
   document.getElementById("phaseIndicator").textContent = "第二阶段：找对牌";
   
@@ -1753,7 +1755,6 @@ async function findMatchCard() {
   document.getElementById("matchArea").style.display = "block";
   
   STATE.phase = "picking";
-  STATE.cardbackClickStatus = 1;
   STATE.revealedResults = [];
   document.getElementById("phaseIndicator").textContent = "第三阶段：选择释命牌";
   document.getElementById("pickArea").style.display = "block";
@@ -1807,7 +1808,6 @@ function onPickCard(idx) {
     
     if (STATE.pickCards.length === STATE.matchResult.length) {
       STATE.phase = "revealing";
-      STATE.cardbackClickStatus = 2;
       document.getElementById("phaseIndicator").textContent = "第四阶段：翻牌释命";
       showToast("进入第四阶段：翻牌释命");
       setStatus(`已选好 ${STATE.matchResult.length} 张牌，请依次点击翻开释命...`);
@@ -1817,9 +1817,9 @@ function onPickCard(idx) {
   });
 }
 
-// 玩家手动翻开已飞到对牌下方的释命牌
+// 玩家手动翻开已飞到对牌下方的释命牌（仅第四阶段"翻牌释命"允许翻开）
 function onRevealCard(idx) {
-  if (STATE.phase !== "revealing" && STATE.phase !== "picking") return;
+  if (STATE.phase !== "revealing") return;
   
   let card = STATE.cards[idx];
   if (card.location !== "picked") return;
@@ -1883,6 +1883,10 @@ function positionResultPanel() {
     });
     // matchArea 本身位于 gameArea 顶部 70px 处，offsetTop 是相对 matchArea 的
     let panelTop = 70 + maxBottom + 16; // 16px 间距
+    // 限制面板顶部不超出游戏区底部，保证"关闭/再一局"按钮可见
+    let gameArea = document.getElementById("gameArea");
+    let maxPanelTop = gameArea.clientHeight - (panel.offsetHeight || 410) - 10;
+    if (panelTop > maxPanelTop) panelTop = Math.max(10, maxPanelTop);
     panel.classList.add("dodge");
     panel.style.top = panelTop + "px";
   } else {
@@ -1947,10 +1951,6 @@ function finalizeResult() {
   showToast("算命完毕！");
 }
 
-function revealCards() {
-  // 兼容保留
-}
-
 function getIdentification(sex, married, mIndex, sIndex) {
   if (sIndex === 8 || mIndex === 8) {
     if (sex === "男" && married === "已婚") return "【夫妻运】";
@@ -1960,11 +1960,6 @@ function getIdentification(sex, married, mIndex, sIndex) {
     return "【桃花位】";
   }
   return "";
-}
-
-function showResult(results) {
-  // 兼容保留——实际逻辑已迁移到 appendResult + finalizeResult
-  finalizeResult();
 }
 
 function closeResult() {
@@ -2094,7 +2089,24 @@ function showToast(msg) {
 }
 
 // ========== 初始化 ==========
+// 预加载全部牌面与牌背图片，消除网页版首次翻牌时的网络加载延迟
+function preloadImages() {
+  let imgs = [];
+  for (let i = 0; i < 52; i++) {
+    let suit = Math.floor(i / 13);
+    let value = (i % 13) + 1;
+    let src = "cards/card_" + String(i).padStart(2, "0") + "_" + SUIT_EN[suit] + "_" + valueDisplay(value) + ".png";
+    let img = new Image();
+    img.src = src;
+    imgs.push(img);
+  }
+  let back = new Image();
+  back.src = "back0.png";
+}
+
 window.addEventListener("load", () => {
+  preloadImages();
+  
   // 预填上次玩家信息
   let lastPlayer = JSON.parse(localStorage.getItem("kismet_lastplayer_data") || "null");
   if (lastPlayer) {
