@@ -609,7 +609,8 @@ function renderStock() {
     }
   }
   
-  let total = deckCards.length + wasteCards.length;
+  // 标签只显示未翻开的备用牌堆张数
+  let remainingDeck = deckCards.length;
   
   // 渲染未翻开牌堆（左侧）
   if (deckCards.length > 0) {
@@ -655,9 +656,9 @@ function renderStock() {
     area.appendChild(cardEl);
   }
   
-  // 显示剩余数量
+  // 显示剩余数量（未翻开的牌堆张数）
   let label = area.querySelector(".stock-label");
-  label.textContent = "备用牌堆 (" + total + " 张)";
+  label.textContent = "备用牌堆 (" + remainingDeck + " 张)";
 }
 
 function renderSelectArea() {
