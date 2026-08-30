@@ -477,13 +477,8 @@ function mulberry32(a) {
   };
 }
 
-// 生成洗牌种子：年龄 + 当前日期，保证同一人同一天牌阵固定、不同天变化
-function getShuffleSeed(age) {
-  let today = parseInt(new Date().toISOString().slice(0, 10).replace(/-/g, ""));
-  return (age || 33) * 10000 + today;
-}
-
 // 洗牌
+// seed：PRNG 种子，建议每局变化；age：决定连续洗牌多少次（对应 VB6 的 Do While Age < AgeIndicated + 1）
 function shuffle(seed, age) {
   let arr = Array.from({length: 52}, (_, i) => i);
   let rand = mulberry32(seed || 33);
@@ -950,8 +945,8 @@ function newGame() {
     STATE.cards[i].faceUp = false;
   }
   
-  // 洗牌
-  shuffle(getShuffleSeed(STATE.player.age), STATE.player.age);
+  // 洗牌：每局用时间戳+年龄作为新种子，保证连续开局牌阵不同；洗牌次数仍由年龄决定
+  shuffle(Date.now() + (STATE.player.age || 33), STATE.player.age);
   
   // 彻底清理所有 DOM 牌元素
   document.getElementById("pyramidArea").innerHTML = "";
