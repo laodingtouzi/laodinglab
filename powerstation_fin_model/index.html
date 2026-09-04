@@ -92,6 +92,36 @@
             0%, 100% { text-shadow: 0 0 16px rgba(37,99,235,0.15); }
             50% { text-shadow: 0 0 36px rgba(37,99,235,0.28); }
         }
+        .top-actions {
+            position: absolute;
+            top: 24px;
+            right: 32px;
+            display: flex;
+            gap: 8px;
+            z-index: 5;
+        }
+        .top-actions a {
+            background: var(--blue-light);
+            border: 1px solid rgba(37, 99, 235, 0.22);
+            color: var(--blue-dark);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.92rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .top-actions a:hover {
+            background: var(--blue);
+            color: #fff;
+            border-color: var(--blue);
+        }
+        @media (max-width: 720px) {
+            .top-actions { position: static; margin: 0 0 14px; justify-content: flex-end; }
+        }
         h2 {
             margin: 0 0 20px 0;
             font-weight: 600;
@@ -802,6 +832,7 @@
 </head>
 <body>
 <div class="container">
+    <div class="top-actions"><a href="simple.html" title="简化版：3 项核心参数 + 即时 IRR 计算">⚡ 简易模型</a></div>
     <h2>☀️ 光伏电站 IRR 模型 <span>逐年电价</span></h2>
 
     <div class="top-row">
