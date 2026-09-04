@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="jln60DjenZnyFHuLJbZTzJ">
+<head data-page-node-id="gpeV2UTWaqOCPwfIc6NUaU">
+<meta charset="UTF-8" data-page-node-id="5ZpDEteenDAUlTCzXCw3OU">
+<meta name="viewport" content="width=device-width,initial-scale=1" data-page-node-id="Z3GXEuKKBD6JARsRO7CSAt">
+<title>100MW 光伏电站 IRR 交互计算器</title>
+<style>
+:root{--ink:#1e293b;--sub:#64748b;--line:#e2e8f0;--blue:#1d4ed8;--red:#b91c1c;--green:#047857;--amber:#b45309}
+*{box-sizing:border-box}
+body{margin:0;background:#f1f5f9;color:var(--ink);font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;font-size:14px;line-height:1.65}
+.wrap{max-width:1120px;margin:0 auto;padding:26px 18px 60px}
+header{background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:1px solid var(--line);border-radius:14px;padding:22px 28px;margin-bottom:18px}
+header h1{margin:0 0 6px;font-size:22px}
+header .meta{color:var(--sub);font-size:12.5px}
+h2{font-size:17px;margin:30px 0 12px;padding-left:10px;border-left:4px solid var(--blue)}
+.layout{display:grid;grid-template-columns:330px 1fr;gap:16px;align-items:start}
+@media(max-width:900px){.layout{grid-template-columns:1fr}}
+.panel,.card{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+.panel{padding:16px 18px}
+.param{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px dashed var(--line)}
+.param:last-of-type{border-bottom:none}
+.param .lab{font-size:13px}
+.param .lab small{display:block;color:var(--sub);font-size:11px}
+.price-group{border:1.5px dashed #93c5fd;border-radius:11px;padding:8px 14px 4px;margin:10px 0;background:linear-gradient(180deg,#f0f7ff,#fff)}
+.price-group legend{font-size:13.5px;font-weight:700;color:#1d4ed8;padding:0 8px;background:#dbeafe;border-radius:6px}
+.price-group legend small{display:block;font-weight:400;color:var(--sub);font-size:11px;margin-top:2px;background:transparent;padding:0}
+.composite{margin:6px 0 10px;padding:9px 12px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;display:flex;align-items:center;justify-content:space-between}
+.composite .ck{font-size:12.5px;color:#1e40af;font-weight:600}
+.composite .cv{font-size:15px;font-weight:700;color:#1d4ed8;font-family:ui-monospace,Menlo,Consolas,monospace}
+.stepper{display:flex;align-items:stretch;border:1px solid #cbd5e1;border-radius:8px;overflow:hidden;background:#fff}
+.stepper button{width:30px;border:none;background:#f8fafc;color:var(--blue);font-size:15px;cursor:pointer;user-select:none;transition:background .12s}
+.stepper button:hover{background:#e0e9ff}
+.stepper button:active{background:#c7d7fe}
+.stepper input{width:76px;border:none;text-align:center;font-size:13.5px;font-weight:600;color:var(--ink);padding:7px 2px;outline:none;font-family:inherit}
+.stepper input:focus{background:#eff6ff}
+.stepper .unit{display:flex;align-items:center;padding:0 8px;background:#f8fafc;color:var(--sub);font-size:11.5px;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+.btn{display:block;width:100%;margin-top:14px;padding:11px;border:none;border-radius:9px;background:var(--blue);color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+.btn:hover{background:#1a49c0}
+.btn:active{transform:translateY(1px)}
+.tip{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:10px 14px;font-size:12.5px;color:#1e40af;margin-top:12px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+@media(max-width:700px){.cards{grid-template-columns:repeat(2,1fr)}}
+.card{padding:14px 16px}
+.card .k{color:var(--sub);font-size:12px}
+.card .v{font-size:21px;font-weight:700;margin-top:2px;white-space:nowrap}
+.card .n{color:var(--sub);font-size:11.5px;margin-top:2px}
+table{border-collapse:collapse;width:100%;font-size:12.5px;background:#fff}
+th{background:#f8fafc;border-bottom:2px solid #cbd5e1;padding:7px 5px;font-size:12px;white-space:nowrap;position:sticky;top:0}
+td{border-bottom:1px solid var(--line);padding:5.5px 5px;text-align:center;white-space:nowrap}
+tr.pos td{background:#f0fdf4}
+.tbl-wrap{overflow:auto;border:1px solid var(--line);border-radius:10px;max-height:430px}
+canvas{width:100%;border:1px solid var(--line);border-radius:10px;background:#fff;display:block}
+#fig1{height:300px}
+#fig2{height:290px}
+.mile{width:100%;font-size:13px}
+.mile td,.mile th{padding:8px 6px;text-align:center}
+.mile td:first-child{text-align:left;font-weight:600}
+.hit{color:var(--green);font-weight:700}
+.miss{color:var(--sub)}
+footer{color:var(--sub);font-size:12px;text-align:center;margin-top:34px}
+.chart-note{color:var(--sub);font-size:11.5px;margin:6px 2px 0}
+</style>
+</head>
+<body data-page-node-id="Bqc5TGAFIi8NQlT6SrnY3o">
+<div class="wrap" data-page-node-id="AKHE4MaifCxlmMsFreve0T">
+
+<header data-page-node-id="vDFA8AzVARAvrEdGbnfgM1">
+<h1>光伏电站 IRR 交互计算器</h1>
+<div class="meta" data-page-node-id="Rl5UfJ4aSqJOdDPDA4dSkR">口径：增值税 = 毛利额 × 增值税率（简化定率）· 附加税 = 增值税 × 附加税率 · 所得税 25% · 折旧 = 总投资 ÷ 运营期（直线、残值0）· 发电量恒定无衰减 · 全投资、无杠杆。输入框内回车或点击「重新计算」刷新；▲▼ 每点一次自动刷新。</div>
+</header>
+
+<div class="layout" data-page-node-id="8CTCpmhYLBZtRpVJLuz4q1">
+<!-- ============ 左侧：参数面板 ============ -->
+<div data-page-node-id="jx5Zj0Jvs6W2yAxTEaTt8R">
+<div class="panel" data-page-node-id="hEnxUpnXXechKIAmqSo2Uq">
+<div style="font-weight:700;margin-bottom:6px" data-page-node-id="7YRpzIUkrZqBem46j4GvUi">参数调节</div>
+
+<div class="param" data-page-node-id="XymE5s2ns7wgeohzhRHCyG"><div class="lab" data-page-node-id="Cv4O06WyyoMryYh7tMSHsW">造价（元/W）<small data-page-node-id="IqFvrlTsqayYfHCpSfaPHC">总投资 = 造价 × 1 亿 W</small></div>
+<div class="stepper" data-page-node-id="RXt9FgsB5YNR6siSMnY9KJ"><button data-t="capex" data-d="-1" data-page-node-id="l2Qclba7r0pnBwMZGAZxAf">−</button><input id="in-capex" type="number" step="0.01" min="0.5" max="10" value="3" data-page-node-id="e0zVj2TH8CV602ODty4anm"><div class="unit" data-page-node-id="YgNoaHyH34qvVieFbjuidY">元/W</div><button data-t="capex" data-d="1" data-page-node-id="Qvon8e3flMMOMEWI6DI7xM">+</button></div></div>
+
+<fieldset class="price-group" data-page-node-id="o3slGhh6pT49BGYDNtJEjV">
+<legend data-page-node-id="js3K87tuLcF4qhsSmDTJUW">电价构成 <small>综合电价 = 机制电价 × 机制比例 + 现货电价 × (1−机制比例)</small></legend>
+
+<div class="param"><div class="lab">机制电价<small>保障性收购部分</small></div>
+<div class="stepper"><button data-t="mech" data-d="-1">−</button><input id="in-mech" type="number" step="0.01" min="0" max="2" value="0.35"><div class="unit">元</div><button data-t="mech" data-d="1">+</button></div></div>
+
+<div class="param"><div class="lab">机制比例<small>保障性部分占比</small></div>
+<div class="stepper"><button data-t="ratio" data-d="-1">−</button><input id="in-ratio" type="number" step="1" min="0" max="100" value="80"><div class="unit">%</div><button data-t="ratio" data-d="1">+</button></div></div>
+
+<div class="param"><div class="lab">现货电价<small>市场化部分</small></div>
+<div class="stepper"><button data-t="spot" data-d="-1">−</button><input id="in-spot" type="number" step="0.01" min="0" max="2" value="0.20"><div class="unit">元</div><button data-t="spot" data-d="1">+</button></div></div>
+
+<div class="composite" id="composite-display"><span class="ck">综合电价</span><span class="cv" id="composite-val">0.32 元/kWh</span></div>
+</fieldset>
+
+<div class="param" data-page-node-id="8a3cEdKxIAGmxSeTcdPtiu"><div class="lab" data-page-node-id="yun5m7yODPfYVffftIKXlD">运维 + 租金（元/kWh）<small data-page-node-id="m6juwHqIxQbdVDRxE82v21">成本端</small></div>
+<div class="stepper" data-page-node-id="Hk5EPu5G4DprVnFwgTVP9F"><button data-t="cost" data-d="-1" data-page-node-id="By9PXtBN7JrdxJkT93TuOl">−</button><input id="in-cost" type="number" step="0.01" min="0" max="1" value="0.08" data-page-node-id="oXeD4PRHg7SCtH8HN2mhBG"><div class="unit" data-page-node-id="KaA76NSE93MxaJBgKJOQ83">元</div><button data-t="cost" data-d="1" data-page-node-id="yVFXclpt2HEYOHEkSbxyiy">+</button></div></div>
+
+<div class="param" data-page-node-id="ySB2WNfQPAUqSnVoAatCO8"><div class="lab" data-page-node-id="7AuosrVze2HwF2IaAhHIiA">利用小时数（h/年）<small data-page-node-id="BvvzyKyyyc3Vcb7miI5ZJR">1000h ⇒ 1W 年发 1 度 · 步长 10h</small></div>
+<div class="stepper" data-page-node-id="AJuIrZnVhSpCC6OaEyI0dH"><button data-t="hours" data-d="-1" data-page-node-id="KVrGP5wUycFdKe7ET2fHCa">−</button><input id="in-hours" type="number" step="10" min="400" max="3000" value="1000" data-page-node-id="Gem950TWjE5fr32j7CIRzn"><div class="unit" data-page-node-id="SDeBXADtDFELGjgvBHLyE5">h</div><button data-t="hours" data-d="1" data-page-node-id="nV40rGxywRXiLow5R4bWJc">+</button></div></div>
+
+<div class="param" data-page-node-id="eu7HuXXJBB8lzkiDRbVlCV"><div class="lab" data-page-node-id="E63coe3PYfwFojDb3WxaHy">运营期（年）<small data-page-node-id="cXITdCBXau3t2BE02a6A5f">折旧年限同此</small></div>
+<div class="stepper" data-page-node-id="ija4pI7c8q61YtQTiavIx6"><button data-t="years" data-d="-1" data-page-node-id="AdlJbJN1vvqYFEK4TRY9k6">−</button><input id="in-years" type="number" step="1" min="5" max="40" value="25" data-page-node-id="LRA67H71edEmEWlmHx8147"><div class="unit" data-page-node-id="Iu6aB8xoB6FjsojXySwVsu">年</div><button data-t="years" data-d="1" data-page-node-id="uwWnf19UHErBTOiFGIHQsZ">+</button></div></div>
+
+<div class="param" data-page-node-id="GFcBVck9jgEkxh35ateezd"><div class="lab" data-page-node-id="RbQWGLAWlNAMUlnSiR8hnQ">增值税率<small data-page-node-id="gbTAh3JUmROkqWvwd23Tie">按毛利额定率征收</small></div>
+<div class="stepper" data-page-node-id="MHcK0vUtGkPG5gt7U7ZdJE"><button data-t="vat" data-d="-1" data-page-node-id="oSYcJdSETBzfRZGtUlMfSW">−</button><input id="in-vat" type="number" step="1" min="0" max="17" value="2" data-page-node-id="Q03hjAH6q6rnOKMe5Wd7CT"><div class="unit" data-page-node-id="kc3b1667euNWaD4T86UFCA">%</div><button data-t="vat" data-d="1" data-page-node-id="LAU499KutGMvC6OjDNTovM">+</button></div></div>
+
+<div class="param" data-page-node-id="IVB1A0QmkvBwqfjmUVmqh4"><div class="lab" data-page-node-id="eRu4s9CcqtMVpwDs2nTAkZ">附加税率<small data-page-node-id="U7ko10koWttYIOcvFRhnQ0">城建+教育附加，按增值税计</small></div>
+<div class="stepper" data-page-node-id="ZI4FcmLgr7BBWEpgmsBAvb"><button data-t="surtax" data-d="-1" data-page-node-id="5PipsjBvv68bdq3ETusDtb">−</button><input id="in-surtax" type="number" step="1" min="0" max="20" value="12" data-page-node-id="N4WhBDa6RF7oVFo1bsz3YA"><div class="unit" data-page-node-id="ERZvUE7LExEhJ5VYOAP6lR">%</div><button data-t="surtax" data-d="1" data-page-node-id="29SZlNq5dYCrdPSU5PMU6Q">+</button></div></div>
+
+<div class="param" data-page-node-id="8CdHxXKm3OmbPlIjw1sowQ"><div class="lab" data-page-node-id="HQTzB3l1zHQBq13qv69G0t">企业所得税率</div>
+<div class="stepper" data-page-node-id="OAbNDewvnWE5RpDsIVKX57"><button data-t="cit" data-d="-1" data-page-node-id="9pfCDQSXig5Zfaf7yXRve1">−</button><input id="in-cit" type="number" step="1" min="0" max="35" value="25" data-page-node-id="LCZWNCfVeNMu2qDtuumY0x"><div class="unit" data-page-node-id="kTSw7lxg6hAKGEY4JYfBuK">%</div><button data-t="cit" data-d="1" data-page-node-id="zP7dYteXMRvO4KF1QEt9xm">+</button></div></div>
+
+<button class="btn" id="go" data-page-node-id="sc3G6X04jV6AXuy5w2bNu4">重新计算</button>
+<div class="tip" data-page-node-id="jrOsVfH3H0xwWFZnbD8e61">单位说明：金额均为万元。造价每 ±0.01 元/W = 总投资 ±100 万；电价每 ±0.01 元/kWh = 年收入 ±（小时数×10）万元。</div>
+</div>
+</div>
+
+<!-- ============ 右侧：结果 ============ -->
+<div data-page-node-id="J2OU2CZFHWesG2q9zWcyHz">
+<div class="cards" data-page-node-id="28kmzCHYY5HgaOudgQryID">
+<div class="card" data-page-node-id="t9HP97wmK8sToWxpjhTTVz"><div class="k" data-page-node-id="C70QiSV49mVH4PHdiSC2nL">全生命周期 IRR（全投资）</div><div class="v" style="color:var(--blue)" id="r-irr" data-page-node-id="PBxpavOgggbIAXZTvK1GM5">—</div><div class="n" id="r-irr-n" data-page-node-id="DEqLkIatFYcFwyjdDJxH3c">—</div></div>
+<div class="card" data-page-node-id="jLtpkASuyZtIVYqw74gcEo"><div class="k" data-page-node-id="jd3aWmyHL6iQz8zOqq3vZI">静态回收期</div><div class="v" style="color:var(--amber)" id="r-pb" data-page-node-id="ndK0oeUa3FyAjL88ESzNPS">—</div><div class="n" id="r-pb-n" data-page-node-id="WZgEL0J9Axey8WegV9vBma">—</div></div>
+<div class="card" data-page-node-id="pRzb2ST79reMFm1awQrvtP"><div class="k" data-page-node-id="bMDopBar6Yek7tHnAjHanr">年净现金流</div><div class="v" style="color:var(--blue)" id="r-cf" data-page-node-id="7mltWEsnUaetXmWeiccbha">—</div><div class="n" id="r-cf-n" data-page-node-id="Zv6MX1Ai6EKNGt37Rvovoy">—</div></div>
+<div class="card" data-page-node-id="r3e1h0pKwRFqYlKDIwgDoV"><div class="k" data-page-node-id="9ljv0bgzCBXZLzZWZnLOiS">动态回收期 @4% / @5%</div><div class="v" style="color:var(--sub);font-size:18px" id="r-dpb" data-page-node-id="tPPf4fxVHC0ZvGPzXvMthG">—</div><div class="n" data-page-node-id="6ukRGKjKQOJfReilFbtCQr">按资金成本折现的回收年限</div></div>
+<div class="card" data-page-node-id="gLt6VTZBTyZZuaH0OpByuG"><div class="k" data-page-node-id="O7ewcdijxVty2TkxPVAQSV">期末累计净现金流</div><div class="v" style="color:var(--red)" id="r-cum" data-page-node-id="9cvysCG7m8PeMuhhXIjBa1">—</div><div class="n" id="r-cum-n" data-page-node-id="kUAunoIoIyJAYKeWcEK2VA">—</div></div>
+<div class="card" data-page-node-id="XrlHT1tPqZjyqyiqRaKXYj"><div class="k" data-page-node-id="cpuXbp6plMYFKR7AS4zlPQ">总投资 / 年发电量</div><div class="v" style="font-size:17px" id="r-scale" data-page-node-id="EwR7DFfgEzLmsCWoUj7aML">—</div><div class="n" id="r-scale-n" data-page-node-id="IfOTvJlIq8GyBJ2r09RP3k">—</div></div>
+</div>
+
+<div class="panel" style="margin-bottom:16px" data-page-node-id="0zwKIeTNdmAFIYgrXzIWvd">
+<div style="font-weight:700;margin-bottom:8px" data-page-node-id="edwMVBHR8AX9eH6KtimHc6">IRR 里程碑：达到各收益率水平的年份</div>
+<table class="mile" data-page-node-id="rSP1h5LGU3bQdRfuCQGED4"><tr data-page-node-id="7i0TcDnBiqfGY5lZe0wTkH"><th style="text-align:left" data-page-node-id="2WHVfuu7vUSwVh7k4uIHyR">收益率水平</th><th data-page-node-id="TnBEUEm6A2GczOZfhhyTki">2%</th><th data-page-node-id="Hm2CqCVcFWl1XFGfE0M5t3">3%</th><th data-page-node-id="nPzQIZDn852sxrey1aeJpN">4%</th><th data-page-node-id="EnB47t4x8SZGdGh8hi3WXG">5%</th><th data-page-node-id="uBztVD6qhC1a0ShQ8YZ2F3">6%</th><th data-page-node-id="lKCkEZtF45JzySrayusVy8">8%</th></tr>
+<tr data-page-node-id="vOxH1vC8VFvpTrYr5PRejI"><td data-page-node-id="6Kd8l0eJuDQbaHnIDefMTV">达成年份</td><td id="m-2" data-page-node-id="sXEarwfpC86Uj5QxWCZyDF">—</td><td id="m-3" data-page-node-id="SNpJ8h5TYNUtRE4uOJhV98">—</td><td id="m-4" data-page-node-id="jca3I6Oe2QF4EdEIRaMJmj">—</td><td id="m-5" data-page-node-id="V6Upr030Ei5Q6vGuXPJnrC">—</td><td id="m-6" data-page-node-id="N72B1qYv61P3VM6QtbJVjy">—</td><td id="m-8" data-page-node-id="dFpULMbPCgWTSEhGXEvDyG">—</td></tr></table>
+<div class="chart-note" id="mile-note" data-page-node-id="gNPdbBSNQ2bGxHTP5wSAXS">—</div>
+</div>
+
+<canvas id="fig1" height="300" data-page-node-id="DlxRDdSiyYF86QAcWJN2lh"></canvas>
+<p class="chart-note" data-page-node-id="0Ox9MfBkhFOQwKV91rcgUp">图1：年度净现金流（柱）与累计净现金流（线，含期初投资）。金色虚线 = 静态回收点。</p>
+
+<div style="height:14px" data-page-node-id="WAz4ffhuhNzx0f3tCvdxup"></div>
+<canvas id="fig2" height="290" data-page-node-id="xjvJt2Ql5qkjRlHXrsZQIz"></canvas>
+<p class="chart-note" data-page-node-id="H7zGvgMWGZfmHJjTGAybN0">图2：累积 IRR 爬升曲线（"若只运营到第 N 年"的年化收益率）与各收益率里程碑。</p>
+
+<h2 data-page-node-id="DDlfrxeClmV8AJTAIxCIhc">逐年现金流与累积 IRR 明细</h2>
+<div class="tbl-wrap" data-page-node-id="g6ZImjQhf4oAevjL6B6azt">
+<table id="tbl" data-page-node-id="AiR8Ct6ZX7TE9y1lYDsKKZ">
+<tr data-page-node-id="LQmThOJpXJPQsg3Wp8p3AZ"><th data-page-node-id="9Evt5d6JT7GLgKBQ4OwNq7">年份</th><th data-page-node-id="YMvGXgyXj9vRtucd3KB786">电费收入<br data-page-node-id="ydZGhzdzRUqwsZTkG8fRHy">(万)</th><th data-page-node-id="VbCbd5ZZqpH9CIOQUnIGi8">运维租金<br data-page-node-id="DPMAkKF5u7I4Gya6AKTNhF">(万)</th><th data-page-node-id="NMcqk4PQpDHvmEVQtzIk8B">增值税<br data-page-node-id="Iqp1BuPspAK8LqcsW1O9yA">(万)</th><th data-page-node-id="AMREvpnJESOMRd5XpvdFNH">附加税<br data-page-node-id="0iAOZN0KMiSw6AkPgbA3PJ">(万)</th><th data-page-node-id="nNU1nl5pclZKmA5e0SeJcs">折旧<br data-page-node-id="WDlCuN04WNBpakM8YG3D9X">(万)</th><th data-page-node-id="Sxs8aFaAv5IwwKdcamAtr1">利润总额<br data-page-node-id="BEeuHgEMMZNm5juMZWGuWC">(万)</th><th data-page-node-id="KvGSTZ68x91SSas6fvMq9n">所得税<br data-page-node-id="iWLYYEpZlMJbQ7WfEjwl4h">(万)</th><th data-page-node-id="g7geLJGkwIQmQyYYDlQx0i">净现金流<br data-page-node-id="b5PQN4iC7VfFKVFWNru6Ce">(万)</th><th data-page-node-id="asDAF1lIRlSTaeSDKScGcR">累计净现金流<br data-page-node-id="USowRjm3uRzEykDpCOXwFe">(万)</th><th data-page-node-id="bGKeoHIEwG3gzuW0FV0Wxp">累积IRR</th><th data-page-node-id="I4wwvzjeiAx3OuNmXnf8Te">IRR增量<br data-page-node-id="cRIByYBVd59fA26HoHZkhW">(pp)</th></tr>
+</table>
+</div>
+<p class="chart-note" data-page-node-id="J2I53t6pVCP9KgG1ZeUbvt">绿色行 = 累计现金流已转正（回本后）。所有年份参数恒定，故各年数字相同（IRR/累计列除外）。</p>
+</div>
+</div>
+
+<footer data-page-node-id="8nuUCr8ZBd7DuwCF6HhgCc">100MW 光伏电站全生命周期财务模型 · 简化税制口径（增值税=毛利额×税率）· 全部计算在浏览器本地完成 · 基准口径详见同目录分析报告</footer>
+</div>
+
+<script>
+"use strict";
+var WAN = 1e4; // 元 → 万元
+
+/* ---------- 财务函数 ---------- */
+function npv(rate, cfs){ var s=0; for(var i=0;i<cfs.length;i++) s += cfs[i]/Math.pow(1+rate,i+1); return s; }
+function irrOf(cfs){ // cfs[0] = -capex
+  var lo=-0.95, hi=5.0, flo, fhi, f, mid, i;
+  flo = cfs[0] + npv(lo, cfs.slice(1));
+  fhi = cfs[0] + npv(hi, cfs.slice(1));
+  if(flo*fhi > 0) return null;
+  for(i=0;i<200;i++){
+    mid=(lo+hi)/2;
+    f = cfs[0] + npv(mid, cfs.slice(1));
+    if(Math.abs(f)<1e-7) return mid;
+    if((flo>0)===(f>0)){ lo=mid; flo=f; } else { hi=mid; fhi=f; }
+  }
+  return (lo+hi)/2;
+}
+function paybackDisc(capex, cf, years, r){
+  var cum=-capex, d;
+  for(var i=1;i<=years;i++){
+    d = cf/Math.pow(1+r,i);
+    if(cum+d>=0) return (i-1) + (-cum)/d;
+    cum += d;
+  }
+  return null;
+}
+function milestoneYr(runIrr, t){
+  for(var i=0;i<runIrr.length;i++) if(runIrr[i]!==null && runIrr[i]>=t) return i+1;
+  return null;
+}
+
+/* ---------- 模型 ---------- */
+function compute(p){
+  var capex = p.capex * 1e8;                 // 元
+  var gen   = p.hours * 1e5;                 // kWh（100MW=1e8W；1W×1h=1Wh → 1e8W×h/1000）
+  var rev   = gen * p.price;                 // 元/年
+  var cost  = gen * p.cost;
+  var gross = rev - cost;
+  var vat   = gross * p.vat;
+  var st    = vat * p.surtax;
+  var dep   = capex / p.years;
+  var profit= gross - vat - st - dep;
+  var cit   = Math.max(0, profit) * p.cit;
+  var cf    = rev - cost - vat - st - cit;
+  var cfs = new Array(p.years); for(var i=0;i<p.years;i++) cfs[i]=cf;
+  var full = (cf>0) ? irrOf([-capex].concat(cfs)) : null;
+  var runIrr = [], seq = [-capex];
+  for(i=0;i<p.years;i++){ seq.push(cf); runIrr.push(irrOf(seq.slice())); }
+  var pb = (cf>0) ? capex/cf : null;
+  return {
+    capex:capex, gen:gen, rev:rev, cost:cost, vat:vat, st:st, dep:dep,
+    profit:profit, cit:cit, cf:cf, years:p.years,
+    full:full, runIrr:runIrr, pb:pb,
+    dpb4: paybackDisc(capex, cf, p.years, 0.04),
+    dpb5: paybackDisc(capex, cf, p.years, 0.05)
+  };
+}
+
+/* ---------- 参数读取 ---------- */
+var IDS = {capex:"in-capex", mech:"in-mech", ratio:"in-ratio", spot:"in-spot", cost:"in-cost", hours:"in-hours", years:"in-years", vat:"in-vat", surtax:"in-surtax", cit:"in-cit"};
+function readParams(){
+  var p = {}, k, v, el, defs = {capex:3, mech:0.35, ratio:80, spot:0.20, cost:0.08, hours:1000, years:25, vat:0.02, surtax:0.12, cit:0.25};
+  for(k in IDS){
+    el = document.getElementById(IDS[k]);
+    v = parseFloat(el.value);
+    if(isNaN(v) || v < parseFloat(el.min) || v > parseFloat(el.max)) v = defs[k];
+    if(k==="vat" || k==="ratio" || k==="surtax" || k==="cit") v = v/100;
+    p[k]=v;
+  }
+  p.price = p.mech * p.ratio + p.spot * (1 - p.ratio);
+  return p;
+}
+
+/* ---------- 主刷新 ---------- */
+function fmtWan(x, d){ return (x/WAN).toLocaleString("zh-CN",{minimumFractionDigits:(d===undefined?1:d), maximumFractionDigits:(d===undefined?1:d)}); }
+function fmtYr(v){ return v===null ? "未达到" : "第 "+Math.ceil(v)+" 年"; }
+
+var R = null; // 最近一次结果
+
+function recalc(){
+  var p = readParams();
+  R = compute(p);
+  var m = R;
+
+  document.getElementById("r-irr").textContent   = m.full===null ? "无法达成" : (m.full*100).toFixed(2)+"%";
+  document.getElementById("r-irr-n").textContent = m.years+" 年口径，无杠杆";
+  document.getElementById("r-pb").textContent    = m.pb===null ? "无法回本" : m.pb.toFixed(1)+" 年";
+  document.getElementById("r-pb-n").textContent  = m.pb===null ? "年现金流 ≤ 0" : "累计现金流转正在第 "+Math.ceil(m.pb)+" 年";
+  document.getElementById("r-cf").textContent    = fmtWan(m.cf)+" 万/年";
+  document.getElementById("r-cf-n").textContent  = "收入 "+fmtWan(m.rev,0)+" − 运维租金 "+fmtWan(m.cost,0)+" − 增值税 "+fmtWan(m.vat,0)+" − 附加 "+fmtWan(m.st,0)+" − 所得税 "+fmtWan(m.cit,0);
+  var d4 = m.dpb4===null ? "未达" : m.dpb4.toFixed(1)+"年", d5 = m.dpb5===null ? "未达" : m.dpb5.toFixed(1)+"年";
+  document.getElementById("r-dpb").textContent  = d4+" / "+d5;
+  var cumEnd = m.cf*m.years - m.capex;
+  document.getElementById("r-cum").textContent   = (cumEnd>=0?"+":"")+fmtWan(cumEnd,0)+" 万";
+  document.getElementById("r-cum-n").textContent = "总流入 "+fmtWan(m.cf*m.years,0)+" 万 − 投资 "+fmtWan(m.capex,0)+" 万";
+  document.getElementById("r-scale").textContent = fmtWan(m.capex,0)+" 万 / "+(m.gen/1e8).toFixed(2)+" 亿kWh";
+  document.getElementById("r-scale-n").textContent = "1e8 W × "+Math.round(p.hours)+"h";
+
+  [2,3,4,5,6,8].forEach(function(t){
+    var y = milestoneYr(m.runIrr, t/100);
+    var el = document.getElementById("m-"+t);
+    el.textContent = y===null ? "未达到" : "第 "+y+" 年";
+    el.className = y===null ? "miss" : "hit";
+  });
+  var y5 = milestoneYr(m.runIrr, 0.05);
+  document.getElementById("mile-note").textContent =
+    m.full===null ? "当前参数下全周期 IRR 为负，所有里程碑均未达到。" :
+    ("全周期 IRR = "+(m.full*100).toFixed(2)+"%。"+(m.full<0.05 ? "5% 里程碑"+(y5?"在第 "+y5+" 年达成":"未达成")+"。" : "5% 里程碑在第 "+y5+" 年达成。"));
+
+  drawFig1(m); drawFig2(m); fillTable(m);
+}
+
+/* ---------- 逐年表 ---------- */
+function fillTable(m){
+  var tbl = document.getElementById("tbl");
+  while(tbl.rows.length>1) tbl.deleteRow(1);
+  var cum = -m.capex, prevIrr = null;
+  for(var i=0;i<m.years;i++){
+    cum += m.cf;
+    var ri = m.runIrr[i];
+    var tr = tbl.insertRow(-1);
+    if(cum>=0) tr.className="pos";
+    var irrS = ri===null ? "—" : (ri*100).toFixed(2)+"%";
+    var inc = (ri!==null && prevIrr!==null) ? ((ri-prevIrr)*100).toFixed(2) : "";
+    var cells = [i+1, fmtWan(m.rev), fmtWan(m.cost), fmtWan(m.vat), fmtWan(m.st), fmtWan(m.dep), fmtWan(m.profit), fmtWan(m.cit), fmtWan(m.cf), (cum>=0?"+":"")+fmtWan(cum,0), irrS, inc];
+    for(var c=0;c<cells.length;c++){
+      var td=tr.insertCell(-1); td.innerHTML = (c===8?"<b style='color:#1d4ed8'>":"")+(cells[c]===null?"—":cells[c])+(c===8?"</b>":"");
+    }
+    prevIrr = ri;
+  }
+}
+
+/* ---------- 画图（canvas，浅色） ---------- */
+function setupCanvas(cv){
+  var dpr = window.devicePixelRatio||1;
+  // 从 CSS 布局尺寸取值（属性 height 会被 dpr 乘算污染，不能重复读取）
+  var rect = cv.getBoundingClientRect();
+  var w = Math.round(rect.width), h = Math.round(rect.height);
+  if(w<10||h<10){ w = cv.clientWidth; h = parseInt(cv.getAttribute("height"),10); }
+  cv.width = w*dpr; cv.height = h*dpr;
+  var ctx = cv.getContext("2d"); ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.clearRect(0,0,w,h);
+  return {ctx:ctx, w:w, h:h};
+}
+function niceTicks(min,max,n){
+  var span=max-min, step0=span/n, mag=Math.pow(10,Math.floor(Math.log10(step0))), norm=step0/mag, step;
+  step = norm<1.5?1:norm<3.5?2:norm<7.5?5:10; step*=mag;
+  var t=[], v=Math.ceil(min/step)*step;
+  for(;v<=max+1e-9;v+=step) t.push(v);
+  return t;
+}
+function fmtTick(v){ var a=Math.abs(v); return a>=1e4 ? (v/1e4).toFixed(1)+"亿" : v>=100 ? Math.round(v).toLocaleString() : v.toFixed(a<1?1:0); }
+
+function drawFig1(m){
+  var cv=document.getElementById("fig1"), S=setupCanvas(cv), ctx=S.ctx, W=S.w, H=S.h;
+  var padL=64,padR=14,padT=14,padB=30, pw=W-padL-padR, ph=H-padT-padB;
+  var cums=[], c=-m.capex; cums.push(c);
+  for(var i=0;i<m.years;i++){ c+=m.cf; cums.push(c); }
+  var ymin=Math.min(-m.capex, 0), ymax=Math.max(cums[cums.length-1], m.cf, 0);
+  if(ymax===ymin) ymax=ymin+1;
+  var ypad=(ymax-ymin)*0.06; ymin-=ypad; ymax+=ypad;
+  var xw = pw/(m.years+1);
+  function X(i){ return padL + xw*(i+0.5); }
+  function Y(v){ return padT + ph*(1-(v-ymin)/(ymax-ymin)); }
+  ctx.strokeStyle="#e8ecf1"; ctx.lineWidth=1; ctx.font="11px PingFang SC"; ctx.fillStyle="#94a3b8";
+  niceTicks(ymin,ymax,6).forEach(function(v){
+    var y=Y(v); ctx.beginPath(); ctx.moveTo(padL,y); ctx.lineTo(W-padR,y); ctx.stroke();
+    ctx.fillText(fmtTick(v), 6, y+4);
+  });
+  ctx.textAlign="center";
+  var xstep = Math.max(1, Math.ceil((m.years+1)/13));
+  for(i=0;i<=m.years;i+=xstep) ctx.fillText(i, X(i), H-10);
+  // 柱：年度现金流
+  ctx.fillStyle="#3b82f6";
+  var bw=Math.max(2, xw*0.55);
+  for(i=0;i<m.years;i++){
+    var y0=Y(0), y1=Y(m.cf);
+    ctx.fillRect(X(i)-bw/2, Math.min(y0,y1), bw, Math.abs(y0-y1)||1);
+  }
+  // 线：累计现金流
+  ctx.strokeStyle="#dc2626"; ctx.lineWidth=2; ctx.beginPath();
+  for(i=0;i<=m.years;i++){ var px=X(i), py=Y(cums[i]); i===0?ctx.moveTo(px,py):ctx.lineTo(px,py); }
+  ctx.stroke();
+  ctx.fillStyle="#dc2626";
+  for(i=0;i<=m.years;i++){ ctx.beginPath(); ctx.arc(X(i),Y(cums[i]),2.6,0,7); ctx.fill(); }
+  // 静态回收点
+  if(m.pb!==null && m.pb<=m.years){
+    var xb=padL+xw*(m.pb+0.5);
+    ctx.strokeStyle="#f59e0b"; ctx.lineWidth=1.6; ctx.setLineDash([5,4]);
+    ctx.beginPath(); ctx.moveTo(xb,padT); ctx.lineTo(xb,H-padB); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle="#b45309"; ctx.textAlign="left";
+    ctx.fillText("回收期 "+m.pb.toFixed(1)+" 年", Math.min(xb+6,W-110), padT+12);
+  }
+  // 图例
+  ctx.textAlign="left"; ctx.font="11.5px PingFang SC";
+  ctx.fillStyle="#3b82f6"; ctx.fillRect(padL+6,padT+4,14,8);
+  ctx.fillStyle="#475569"; ctx.fillText("年度净现金流（"+fmtWan(m.cf,0)+" 万/年）", padL+24, padT+12);
+  ctx.fillStyle="#dc2626"; ctx.fillRect(padL+6,padT+20,14,3);
+  ctx.fillStyle="#475569"; ctx.fillText("累计净现金流（期末 "+(cums[m.years]>=0?"+":"")+fmtWan(cums[m.years],0)+" 万）", padL+24, padT+27);
+}
+
+function drawFig2(m){
+  var cv=document.getElementById("fig2"), S=setupCanvas(cv), ctx=S.ctx, W=S.w, H=S.h;
+  var padL=56,padR=14,padT=14,padB=30, pw=W-padL-padR, ph=H-padT-padB;
+  var vals = m.runIrr.map(function(v){ return v===null?0:v*100; });
+  var dmin=-3, dmax=Math.max(8, Math.ceil((m.full===null?0:m.full*100)+1));
+  var lo=Math.max(dmin, Math.min.apply(null, vals));
+  var ymin=Math.min(lo, 0)-0.5, ymax=dmax+0.5;
+  function X(i){ return padL + pw*(i+1)/m.years; }
+  function Y(v){ return padT + ph*(1-(v-ymin)/(ymax-ymin)); }
+  ctx.strokeStyle="#e8ecf1"; ctx.lineWidth=1; ctx.font="11px PingFang SC"; ctx.fillStyle="#94a3b8"; ctx.textAlign="right";
+  niceTicks(ymin,ymax,6).forEach(function(v){
+    var y=Y(v); ctx.beginPath(); ctx.moveTo(padL,y); ctx.lineTo(W-padR,y); ctx.stroke();
+    ctx.fillText(v+"%", padL-6, y+4);
+  });
+  ctx.textAlign="center";
+  var xstep = Math.max(1, Math.ceil(m.years/13));
+  for(var i=1;i<=m.years;i+=xstep) ctx.fillText(i, X(i-1), H-10);
+  // 里程碑横线
+  [2,3,4,5,6,8].forEach(function(lv){
+    if(lv<ymin||lv>ymax) return;
+    var y=Y(lv), hit=milestoneYr(m.runIrr, lv/100)!==null;
+    ctx.strokeStyle=hit?"#f59e0b":"#cbd5e1"; ctx.setLineDash([5,4]); ctx.lineWidth=1.1;
+    ctx.beginPath(); ctx.moveTo(padL,y); ctx.lineTo(W-padR,y); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle=hit?"#b45309":"#94a3b8"; ctx.textAlign="left"; ctx.font="10.5px PingFang SC";
+    ctx.fillText(lv+"%", padL+4, y-3);
+  });
+  // 曲线
+  ctx.strokeStyle="#059669"; ctx.lineWidth=2.2; ctx.beginPath(); var started=false;
+  for(i=0;i<m.years;i++){
+    var v=vals[i]; if(v<ymin-0.01){ started=false; continue; }
+    var px=X(i), py=Y(Math.max(v,ymin));
+    if(!started){ ctx.moveTo(px,py); started=true; } else ctx.lineTo(px,py);
+  }
+  ctx.stroke();
+  ctx.fillStyle="#059669";
+  for(i=0;i<m.years;i++){ if(vals[i]>=ymin){ ctx.beginPath(); ctx.arc(X(i),Y(Math.max(vals[i],ymin)),2.4,0,7); ctx.fill(); } }
+  if(m.full!==null){
+    var ex=X(m.years-1), ey=Y(m.full*100);
+    ctx.fillStyle="#047857"; ctx.font="bold 12px PingFang SC"; ctx.textAlign="right";
+    ctx.fillText("期末 IRR "+(m.full*100).toFixed(2)+"%", Math.min(ex+30,W-8), ey-8);
+  }
+  ctx.textAlign="left"; ctx.font="11.5px PingFang SC"; ctx.fillStyle="#475569";
+  ctx.fillText("累积 IRR（截至第 N 年末）", padL+8, padT+12);
+}
+
+/* ---------- 事件绑定 ---------- */
+document.getElementById("go").addEventListener("click", recalc);
+
+// ▲▼ 调节器：每次点击 = 一个步长，自动刷新
+Array.prototype.forEach.call(document.querySelectorAll(".stepper button"), function(btn){
+  btn.addEventListener("click", function(){
+    var t=btn.getAttribute("data-t"), dir=parseInt(btn.getAttribute("data-d"),10);
+    var input=document.getElementById(IDS[t]);
+    var step=parseFloat(input.step)||1, min=parseFloat(input.min), max=parseFloat(input.max);
+    var v=(parseFloat(input.value)||0) + dir*step;
+    v=Math.min(max,Math.max(min,v));
+    var dec=(String(step).split(".")[1]||"").length;
+    input.value=v.toFixed(dec);
+    recalc();
+  });
+});
+
+// 输入框回车刷新
+Object.keys(IDS).forEach(function(k){
+  document.getElementById(IDS[k]).addEventListener("keydown", function(e){ if(e.key==="Enter"){ e.preventDefault(); recalc(); } });
+});
+
+// 窗口尺寸变化时重画
+var rsTimer=null;
+window.addEventListener("resize", function(){ clearTimeout(rsTimer); rsTimer=setTimeout(function(){ if(R){ drawFig1(R); drawFig2(R); } }, 200); });
+
+recalc();
+</script>
+</body>
+</html>
