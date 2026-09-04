@@ -240,6 +240,9 @@ function recalc(){
   R = compute(p);
   var m = R;
 
+  var cvEl = document.getElementById("composite-val");
+  if(cvEl) cvEl.textContent = p.price.toFixed(2)+" 元/kWh";
+
   document.getElementById("r-irr").textContent   = m.full===null ? "无法达成" : (m.full*100).toFixed(2)+"%";
   document.getElementById("r-irr-n").textContent = m.years+" 年口径，无杠杆";
   document.getElementById("r-pb").textContent    = m.pb===null ? "无法回本" : m.pb.toFixed(1)+" 年";
