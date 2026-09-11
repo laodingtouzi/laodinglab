@@ -629,11 +629,17 @@ function renderResult(r){
           let mh = '<div style="' + cardStyle + '">' + cardTitle('宏观事件')
             + '<div>板块主题 <b>' + esc(mc.theme) + '</b> ｜ 状态 <b style="color:' + stColor + '">' + esc(mc.sector_status) + '</b> ｜ 倾斜 <b>' + (mc.tilt > 0 ? '+' : '') + mc.tilt + '</b> 分</div>';
           if (mc.drivers && mc.drivers.length) {
-            mh += '<div style="margin-top:4px"><span style="color:var(--text-muted)">驱动因子</span> ';
-            mc.drivers.forEach((d, i) => {
-              mh += (i > 0 ? '、' : '') + '<code style="background:var(--bg-card2);padding:1px 5px;border-radius:3px;font-size:11.5px">' + esc(d) + '</code>';
-            });
-            mh += '</div>';
+            // drivers 后端可能返回字符串（顿号分隔）或字符串数组，统一归一为数组再渲染
+            // （2026-09-11 修：原代码 .forEach 假设数组，遇字符串直接 TypeError → 整段渲染静默崩）
+            const driverArr = Array.isArray(mc.drivers) ? mc.drivers
+              : String(mc.drivers).split(/[、，,]/).map(s => s.trim()).filter(Boolean);
+            if (driverArr.length) {
+              mh += '<div style="margin-top:4px"><span style="color:var(--text-muted)">驱动因子</span> ';
+              driverArr.forEach((d, i) => {
+                mh += (i > 0 ? '、' : '') + '<code style="background:var(--bg-card2);padding:1px 5px;border-radius:3px;font-size:11.5px">' + esc(d) + '</code>';
+              });
+              mh += '</div>';
+            }
           }
           if (mc.snapshot && Object.keys(mc.snapshot).length) {
             mh += '<div style="margin-top:4px"><span style="color:var(--text-muted)">市场快照</span> '
