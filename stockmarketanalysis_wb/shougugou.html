@@ -317,6 +317,12 @@ function switchMkt(mkt){
 
 function renderResult(r){
   const area = document.getElementById('result-area');
+  // ===== 防御层（2026-09-11 修复：result 任一字段缺失导致整段渲染静默崩） =====
+  // renderResult 400+ 行嵌套字段访问，过去只要任何一个字段是 null/undefined
+  // 整个函数抛 TypeError、UI 卡"请稍候"且无任何错误提示。
+  // 现在把全部渲染包在 try 里，崩的时候显示具体错误位置与 result 顶层键，
+  // 让问题可见、可定位、可补字段。正常路径行为完全不变。
+  try {
   if (!r || !r.ok) {
     let errMsg = r && r.error;
     // 兜底：顶层 error 为空时，收集各子市场 error
@@ -739,6 +745,20 @@ function renderResult(r){
 
   area.innerHTML = html;
   area.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch(err) {
+    // 崩的时候把异常位置 + result 顶层键显示出来，方便定位
+    console.error('[手搓股 renderResult 崩溃]', err, '\nresult 顶层键:', r && Object.keys(r || {}));
+    const stack1 = (err && err.stack || '').split('\n').slice(1, 4).join(' | ');
+    area.innerHTML = '<div class="note-box" style="border-color:var(--sell);margin-top:14px">'
+      + '<b>⚠️ 渲染异常（result 已生成，但页面渲染崩了）</b>'
+      + '<div style="margin-top:8px;font-size:12.5px;line-height:1.8">'
+      + '<b>错误信息：</b><code style="background:var(--bg-card2);padding:1px 5px">' + esc(err && err.message || String(err)) + '</code><br>'
+      + '<b>出错位置：</b><code style="background:var(--bg-card2);padding:1px 5px;font-size:11px">' + esc(stack1) + '</code><br>'
+      + '<b>result 顶层键：</b>' + esc(r ? Object.keys(r).join(', ') : '(无)')
+      + '</div>'
+      + '<div style="margin-top:8px;font-size:12px;color:var(--text-muted)">提示：完整堆栈请打开浏览器开发者工具 Console 截屏；告诉阿岩错误信息与出错位置即可精准补字段。</div>'
+      + '</div>';
+  }
 }
 function ov(k, v){ return '<div class="ov-item"><div class="k">' + k + '</div><div class="v">' + v + '</div></div>'; }
 
