@@ -537,113 +537,114 @@ function renderResult(r){
 
       const parts = a.summary_parts;
       const cumColor = (v) => (typeof v === 'number' && v >= 0) ? 'var(--buy)' : 'var(--sell)';
-      const cardStyle = 'margin-top:8px;padding:8px 10px;background:var(--bg-card);border-radius:4px;font-size:12.5px;line-height:1.7';
-      const cardTitle = (t) => '<div style="font-weight:600;color:var(--accent);font-size:11.5px;margin-bottom:4px">▎ ' + t + '</div>';
+      const colCard = 'padding:8px 10px;background:var(--bg-card);border-radius:4px;font-size:12px;line-height:1.7';
+      const colTitle = '<div style="font-weight:600;color:var(--accent);font-size:11.5px;margin-bottom:5px">▎ ';
 
-      // ── 阈值状态 ──
-      if (parts && parts.threshold) {
-        html += '<div style="' + cardStyle + '">' + cardTitle('阈值状态') + esc(parts.threshold) + '</div>';
-      }
-
-      // ── 回测表现（结构化：数字 + 最优/最差/Z 对照） ──
+      // ── 顶部三栏：回测表现 / 因子诊断 / 阈值状态 ──
       const pf = parts && parts.perf;
+      const fc = parts && parts.factors;
+      const th = parts && parts.threshold;
+
+      let perfHtml = '';
       if (pf) {
         if (pf.text) {
-          html += '<div style="' + cardStyle + '">' + cardTitle('回测表现') + esc(pf.text) + '</div>';
+          perfHtml = esc(pf.text);
         } else {
-          let perfHtml = '<div style="' + cardStyle + '">'
-            + cardTitle('回测表现（' + (a.dynamic_buy_threshold ? '动态阈值' : '正常阈值') + '）')
-            + '<div style="display:flex;gap:18px;flex-wrap:wrap;font-size:12px">'
-            + '<span><b>' + pf.trades + '</b> 笔平仓</span>'
-            + '<span>平均收益 <b style="color:' + cumColor(pf.avg_cum) + '">' + fmt(pf.avg_cum, 1) + '%</b></span>'
-            + '<span>平均胜率 <b>' + pf.avg_win + '%</b></span>'
+          perfHtml = '<div style="margin-bottom:5px;padding-bottom:5px;border-bottom:1px dashed var(--bg-card2)">'
+            + '<b>' + pf.trades + '</b> 笔平仓 ｜ 平均收益 <b style="color:' + cumColor(pf.avg_cum) + '">' + fmt(pf.avg_cum, 1) + '%</b> ｜ 胜率 <b>' + pf.avg_win + '%</b>'
             + '</div>'
-            + '<div style="margin-top:4px;display:grid;grid-template-columns:auto 1fr;gap:3px 10px;font-size:12px">'
-            + '<span style="color:var(--text-muted)">最优</span><span><b>' + esc(pf.best_id) + '</b> <b style="color:' + cumColor(pf.best_cum) + '">' + fmt(pf.best_cum, 1) + '%</b></span>'
-            + '<span style="color:var(--text-muted)">最差</span><span><b>' + esc(pf.worst_id) + '</b> <b style="color:' + cumColor(pf.worst_cum) + '">' + fmt(pf.worst_cum, 1) + '%</b></span>';
+            + '<div style="font-size:11.5px;color:var(--text-muted);line-height:1.65">'
+            + '<div>最优 <b style="color:var(--text)">' + esc(pf.best_id) + '</b> <b style="color:' + cumColor(pf.best_cum) + '">' + fmt(pf.best_cum, 1) + '%</b></div>'
+            + '<div>最差 <b style="color:var(--text)">' + esc(pf.worst_id) + '</b> <b style="color:' + cumColor(pf.worst_cum) + '">' + fmt(pf.worst_cum, 1) + '%</b></div>';
           if (pf.z) {
-            perfHtml += '<span style="color:var(--text-muted)">Z 对照</span><span><b style="color:' + cumColor(pf.z.cum) + '">' + fmt(pf.z.cum, 1) + '%</b>（' + pf.z.trades + ' 笔平仓，仅研究对照）</span>';
+            perfHtml += '<div>Z 对照 <b style="color:' + cumColor(pf.z.cum) + '">' + fmt(pf.z.cum, 1) + '%</b>（' + pf.z.trades + ' 笔，研究对照）</div>';
           }
-          perfHtml += '</div></div>';
-          html += perfHtml;
+          perfHtml += '</div>';
         }
       } else if (a.best_strategy && a.best_strategy !== '—') {
-        // 兜底（无 summary_parts 时用旧字段）
-        html += '<div style="' + cardStyle + '">'
-          + cardTitle('回测表现')
-          + '<div style="font-size:12px">最优 <b>' + esc(a.best_strategy) + '</b> ｜ 最差 <b>' + esc(a.worst_strategy) + '</b> ｜ 平均收益 <b>' + fmt(a.avg_cum_return, 1) + '%</b> ｜ 胜率 <b>' + fmt(a.avg_win_rate, 0) + '%</b> ｜ <b>' + a.total_trades + '</b> 笔</div>'
-          + '</div>';
+        perfHtml = '<div style="margin-bottom:4px">最优 <b>' + esc(a.best_strategy) + '</b>｜最差 <b>' + esc(a.worst_strategy) + '</b></div>'
+          + '<div>平均收益 <b>' + fmt(a.avg_cum_return, 1) + '%</b>｜胜率 <b>' + fmt(a.avg_win_rate, 0) + '%</b>｜' + a.total_trades + ' 笔</div>';
       }
 
-      // ── 因子诊断 ──
-      const fc = parts && parts.factors;
+      let factHtml = '';
       if (fc && (fc.strongest || fc.weakest)) {
-        html += '<div style="' + cardStyle + '">' + cardTitle('因子诊断')
-          + '<span style="color:var(--text-muted)">最强</span> <b style="color:var(--buy)">' + esc(fc.strongest || '—') + '</b>'
-          + '　　<span style="color:var(--text-muted)">最弱</span> <b style="color:var(--sell)">' + esc(fc.weakest || '—') + '</b>'
-          + '</div>';
+        factHtml = '<div style="margin-bottom:4px"><span style="color:var(--text-muted)">最强</span>　<b style="color:var(--buy)">' + esc(fc.strongest || '—') + '</b></div>'
+          + '<div><span style="color:var(--text-muted)">最弱</span>　<b style="color:var(--sell)">' + esc(fc.weakest || '—') + '</b></div>';
       } else if (a.weakest_factors || a.strongest_factors) {
-        html += '<div style="' + cardStyle + '">' + cardTitle('因子诊断')
-          + '<span style="color:var(--text-muted)">最强</span> <b>' + esc(a.strongest_factors || '—') + '</b>'
-          + '　　<span style="color:var(--text-muted)">最弱</span> <b>' + esc(a.weakest_factors || '—') + '</b>'
-          + '</div>';
+        factHtml = '<div style="margin-bottom:4px"><span style="color:var(--text-muted)">最强</span>　<b>' + esc(a.strongest_factors || '—') + '</b></div>'
+          + '<div><span style="color:var(--text-muted)">最弱</span>　<b>' + esc(a.weakest_factors || '—') + '</b></div>';
+      } else {
+        factHtml = '<span style="color:var(--text-muted)">—</span>';
       }
 
-      // ── 趋势 / 突破路径 / 评分趋势（三栏并列） ──
-      const trendItems = [];
-      if (parts && parts.trend) trendItems.push({ t: '趋势信号', b: parts.trend });
-      if (parts && parts.breakthrough) trendItems.push({ t: '突破路径', b: parts.breakthrough });
-      if (parts && parts.score_trend) trendItems.push({ t: '评分趋势', b: parts.score_trend });
-      if (trendItems.length) {
-        html += '<div style="margin-top:8px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:6px">';
-        trendItems.forEach(it => {
-          html += '<div style="padding:8px 10px;background:var(--bg-card);border-radius:4px;font-size:12px;line-height:1.6">'
-            + '<div style="font-weight:600;color:var(--accent);font-size:11.5px;margin-bottom:3px">' + esc(it.t) + '</div>'
-            + esc(it.b) + '</div>';
-        });
-        html += '</div>';
-      }
+      const threshHtml = th ? esc(th) : '<span style="color:var(--text-muted)">—</span>';
 
-      // ── 突破路径详细列表 ──
+      html += '<div style="margin-top:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px">'
+        + '<div style="' + colCard + '">' + colTitle + '回测表现' + (pf && !pf.text && a.dynamic_buy_threshold ? '（动态阈值）' : '') + '</div>' + perfHtml + '</div>'
+        + '<div style="' + colCard + '">' + colTitle + '因子诊断</div>' + factHtml + '</div>'
+        + '<div style="' + colCard + '">' + colTitle + '阈值状态</div>' + threshHtml + '</div>'
+        + '</div>';
+
+      // ── 信号解读：趋势 / 突破路径 / 评分趋势 / 突破路径详情（合并单卡，内部虚线分隔） ──
+      const signalItems = [];
+      if (parts && parts.trend) signalItems.push({ t: '趋势信号', b: parts.trend });
+      if (parts && parts.breakthrough) signalItems.push({ t: '突破路径', b: parts.breakthrough });
+      if (parts && parts.score_trend) signalItems.push({ t: '评分趋势', b: parts.score_trend });
       const bp = a.breakthrough_path;
       if (bp && !bp.reached && bp.paths && bp.paths.length) {
-        html += '<div style="margin-top:8px;padding:8px 10px;background:var(--bg-card);border-radius:4px;font-size:12px;line-height:1.7">'
-          + '<div style="font-weight:600;color:var(--accent);font-size:11.5px;margin-bottom:4px">▎ 突破路径详情（距买入阈值 ' + bp.gap + ' 分）</div>';
+        let bpList = '';
         bp.paths.slice(0, 3).forEach(p => {
           const tag = p.feasible ? '<b style="color:var(--buy)">✅ 可行</b>' : '<b style="color:var(--sell)">⚠️ 难</b>';
-          html += '<div style="margin-top:3px">' + tag + ' <b>' + esc(p.factor) + '</b> ' + p.current + '→'
-            + (p.current + p.needed).toFixed(0) + '（需 +' + p.needed + '，权重 ' + p.weight_pct + '%）</div>';
+          bpList += '<div style="margin-top:3px">' + tag + ' <b>' + esc(p.factor) + '</b> ' + p.current + '→' + (p.current + p.needed).toFixed(0) + '（需 +' + p.needed + '，权重 ' + p.weight_pct + '%）</div>';
+        });
+        signalItems.push({ t: '突破路径详情（距入阈值 ' + bp.gap + ' 分）', b: bpList });
+      }
+      if (signalItems.length) {
+        html += '<div style="margin-top:10px;padding:10px 12px;background:var(--bg-card);border-radius:4px;font-size:12.5px;line-height:1.7">'
+          + '<div style="font-weight:600;color:var(--accent);font-size:11.5px;margin-bottom:8px">▎ 信号解读</div>';
+        signalItems.forEach((it, i) => {
+          if (i > 0) html += '<div style="margin-top:7px;padding-top:7px;border-top:1px dashed var(--bg-card2)"></div>';
+          html += '<div style="font-weight:600;color:var(--text-muted);font-size:11.5px;margin-bottom:3px">' + esc(it.t) + '</div>'
+            + '<div>' + it.b + '</div>';
         });
         html += '</div>';
       }
 
-      // ── 宏观事件 ──
+      // ── 宏观事件（板块主题一行 + 驱动因子 flex 标签 + 市场快照行） ──
       const mc = parts && parts.macro;
       if (mc) {
         if (mc.text) {
-          html += '<div style="' + cardStyle + '">' + cardTitle('宏观/情绪') + esc(mc.text) + '</div>';
+          html += '<div style="margin-top:10px;padding:10px 12px;background:var(--bg-card);border-radius:4px;font-size:12.5px;line-height:1.7">'
+            + '<div style="font-weight:600;color:var(--accent);font-size:11.5px;margin-bottom:4px">▎ 宏观/情绪</div>'
+            + esc(mc.text) + '</div>';
         } else if (mc.theme) {
           const stColor = mc.sector_status && (mc.sector_status.includes('积极') || mc.sector_status.includes('乐观') || mc.sector_status.includes('强势')) ? 'var(--buy)'
                        : mc.sector_status && (mc.sector_status.includes('观望') || mc.sector_status.includes('中性')) ? 'var(--text-muted)'
                        : 'var(--sell)';
-          let mh = '<div style="' + cardStyle + '">' + cardTitle('宏观事件')
-            + '<div>板块主题 <b>' + esc(mc.theme) + '</b> ｜ 状态 <b style="color:' + stColor + '">' + esc(mc.sector_status) + '</b> ｜ 倾斜 <b>' + (mc.tilt > 0 ? '+' : '') + mc.tilt + '</b> 分</div>';
+          let mh = '<div style="margin-top:10px;padding:10px 12px;background:var(--bg-card);border-radius:4px;font-size:12.5px;line-height:1.7">'
+            + '<div style="font-weight:600;color:var(--accent);font-size:11.5px;margin-bottom:6px">▎ 宏观事件</div>'
+            + '<div style="padding-bottom:6px;border-bottom:1px dashed var(--bg-card2)">'
+            + '板块主题 <b>' + esc(mc.theme) + '</b> ｜ 状态 <b style="color:' + stColor + '">' + esc(mc.sector_status) + '</b> ｜ 倾斜 <b>' + (mc.tilt > 0 ? '+' : '') + mc.tilt + '</b> 分'
+            + '</div>';
+
           if (mc.drivers && mc.drivers.length) {
-            // drivers 后端可能返回字符串（顿号分隔）或字符串数组，统一归一为数组再渲染
-            // （2026-09-11 修：原代码 .forEach 假设数组，遇字符串直接 TypeError → 整段渲染静默崩）
             const driverArr = Array.isArray(mc.drivers) ? mc.drivers
               : String(mc.drivers).split(/[、，,]/).map(s => s.trim()).filter(Boolean);
             if (driverArr.length) {
-              mh += '<div style="margin-top:4px"><span style="color:var(--text-muted)">驱动因子</span> ';
-              driverArr.forEach((d, i) => {
-                mh += (i > 0 ? '、' : '') + '<code style="background:var(--bg-card2);padding:1px 5px;border-radius:3px;font-size:11.5px">' + esc(d) + '</code>';
+              mh += '<div style="margin-top:6px">'
+                + '<div style="color:var(--text-muted);font-size:11.5px;margin-bottom:5px">驱动因子（' + driverArr.length + '）</div>'
+                + '<div style="display:flex;flex-wrap:wrap;gap:4px">';
+              driverArr.forEach(d => {
+                mh += '<code style="background:var(--bg-card2);padding:2px 8px;border-radius:3px;font-size:11.5px;line-height:1.6;display:inline-block">' + esc(d) + '</code>';
               });
-              mh += '</div>';
+              mh += '</div></div>';
             }
           }
+
           if (mc.snapshot && Object.keys(mc.snapshot).length) {
-            mh += '<div style="margin-top:4px"><span style="color:var(--text-muted)">市场快照</span> '
-              + Object.entries(mc.snapshot).map(([k, v]) => k + ' <b>' + esc(String(v)) + '</b>').join(' / ')
+            mh += '<div style="margin-top:6px;padding-top:6px;border-top:1px dashed var(--bg-card2);font-size:11.5px;color:var(--text-muted)">'
+              + '<span>市场快照　</span>'
+              + Object.entries(mc.snapshot).map(([k, v]) => k + ' <b style="color:var(--text)">' + esc(String(v)) + '</b>').join('　/　')
               + '</div>';
           }
           mh += '</div>';
@@ -653,7 +654,7 @@ function renderResult(r){
 
       // 旧 summary 兜底（如服务端未升级）
       if (!parts && a.summary) {
-        html += '<div style="margin-top:8px;font-size:13px;line-height:1.8">' + esc(a.summary) + '</div>';
+        html += '<div style="margin-top:10px;font-size:13px;line-height:1.8">' + esc(a.summary) + '</div>';
       }
       html += '</div>';
     }
