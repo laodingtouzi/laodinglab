@@ -49,6 +49,17 @@ th{background:#f8fafc;border-bottom:2px solid #cbd5e1;padding:7px 5px;font-size:
 td{border-bottom:1px solid var(--line);padding:5.5px 5px;text-align:center;white-space:nowrap}
 tr.pos td{background:#f0fdf4}
 .tbl-wrap{overflow:auto;border:1px solid var(--line);border-radius:10px;max-height:430px}
+details.fold{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,.04);margin:30px 0 12px;overflow:hidden}
+details.fold>summary{list-style:none;display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;user-select:none;font-size:15.5px;font-weight:700;transition:background .12s}
+details.fold>summary::-webkit-details-marker{display:none}
+details.fold>summary::before{content:"\25B8";display:inline-block;color:var(--blue);font-size:14px;line-height:1;transition:transform .15s}
+details.fold[open]>summary{border-bottom:1px solid var(--line);background:#f8fafc}
+details.fold[open]>summary::before{transform:rotate(90deg)}
+details.fold>summary:hover{background:#f1f5f9}
+details.fold .fold-sum{margin-left:auto;font-weight:400;font-size:12px;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:760px){details.fold .fold-sum{display:none}}
+details.fold .fold-body{padding:14px 16px}
+details.fold .tbl-wrap{border-radius:9px;max-height:400px}
 canvas{width:100%;border:1px solid var(--line);border-radius:10px;background:#fff;display:block}
 #fig1{height:300px}
 #fig2{height:290px}
@@ -163,13 +174,17 @@ footer{color:var(--sub);font-size:12px;text-align:center;margin-top:34px}
 <canvas id="fig2" height="290" data-page-node-id="xjvJt2Ql5qkjRlHXrsZQIz"></canvas>
 <p class="chart-note" data-page-node-id="H7zGvgMWGZfmHJjTGAybN0">图2：累积 IRR 爬升曲线（"若只运营到第 N 年"的年化收益率）与各收益率里程碑。</p>
 
-<h2 data-page-node-id="DDlfrxeClmV8AJTAIxCIhc">逐年现金流与累积 IRR 明细</h2>
-<div class="tbl-wrap" data-page-node-id="g6ZImjQhf4oAevjL6B6azt">
+<details class="fold" id="fold-cf">
+<summary><span class="ft">逐年现金流与累积 IRR 明细</span><span class="fold-sum" id="cf-sum">—</span></summary>
+<div class="fold-body">
+<div class="tbl-wrap">
 <table id="tbl" data-page-node-id="AiR8Ct6ZX7TE9y1lYDsKKZ">
 <tr data-page-node-id="LQmThOJpXJPQsg3Wp8p3AZ"><th data-page-node-id="9Evt5d6JT7GLgKBQ4OwNq7">年份</th><th data-page-node-id="YMvGXgyXj9vRtucd3KB786">电费收入<br data-page-node-id="ydZGhzdzRUqwsZTkG8fRHy">(万)</th><th data-page-node-id="VbCbd5ZZqpH9CIOQUnIGi8">运维租金<br data-page-node-id="DPMAkKF5u7I4Gya6AKTNhF">(万)</th><th data-page-node-id="NMcqk4PQpDHvmEVQtzIk8B">增值税<br data-page-node-id="Iqp1BuPspAK8LqcsW1O9yA">(万)</th><th data-page-node-id="AMREvpnJESOMRd5XpvdFNH">附加税<br data-page-node-id="0iAOZN0KMiSw6AkPgbA3PJ">(万)</th><th>通道费<br>(万)</th><th data-page-node-id="nNU1nl5pclZKmA5e0SeJcs">折旧<br data-page-node-id="WDlCuN04WNBpakM8YG3D9X">(万)</th><th data-page-node-id="Sxs8aFaAv5IwwKdcamAtr1">利润总额<br data-page-node-id="BEeuHgEMMZNm5juMZWGuWC">(万)</th><th data-page-node-id="KvGSTZ68x91SSas6fvMq9n">所得税<br data-page-node-id="iWLYYEpZlMJbQ7WfEjwl4h">(万)</th><th data-page-node-id="g7geLJGkwIQmQyYYDlQx0i">净现金流<br data-page-node-id="b5PQN4iC7VfFKVFWNru6Ce">(万)</th><th data-page-node-id="asDAF1lIRlSTaeSDKScGcR">累计净现金流<br data-page-node-id="USowRjm3uRzEykDpCOXwFe">(万)</th><th data-page-node-id="bGKeoHIEwG3gzuW0FV0Wxp">累积IRR</th><th data-page-node-id="I4wwvzjeiAx3OuNmXnf8Te">IRR增量<br data-page-node-id="cRIByYBVd59fA26HoHZkhW">(pp)</th></tr>
 </table>
 </div>
 <p class="chart-note" data-page-node-id="J2I53t6pVCP9KgG1ZeUbvt">绿色行 = 累计现金流已转正（回本后）。所有年份参数恒定，故各年数字相同（IRR/累计列除外）。</p>
+</div>
+</details>
 <h2 id="eq-title">资本金视角：融资与投资人收益分配</h2>
 <div class="cards">
 <div class="card"><div class="k">资本金 IRR（杠杆后）</div><div class="v" style="color:var(--green)" id="e-irr">—</div><div class="n" id="e-irr-n">—</div></div>
@@ -205,8 +220,9 @@ footer{color:var(--sub);font-size:12px;text-align:center;margin-top:34px}
 <div class="chart-note" id="eq-struct-note"><b>年付</b> = 该层级当年现金流入（等额分派层级为恒定年金，浮动层级显示首年~末年）。<b>当年收益率</b> = 当年现金流入 ÷ 原始本金，与「年付」列<b>同基准</b>，两列可直接互相验证。<b>预计静态回收期</b> = 累计现金流入首次达到原始本金的年份（未折现，年内线性插值）。全周期 IRR 按各层级实际收到的现金流计算；次级优先若被克扣、劣后若为零分配，IRR 均按实际额计。<b>劣后</b>为剩余索取权，分配额逐年随融资利息税盾（前高后低）递减，故呈现为首高末低的区间。</div>
 </div>
 
-<div class="panel" style="margin-bottom:16px">
-<div style="font-weight:700;margin-bottom:8px">逐年股权分配明细（万）</div>
+<details class="fold" id="fold-eq" style="margin:18px 0 16px">
+<summary><span class="ft">逐年股权分配明细（万）</span><span class="fold-sum" id="eq-sum">—</span></summary>
+<div class="fold-body">
 <div class="tbl-wrap">
 <table id="eq-tbl">
 <tr><th>年份</th><th>净现金流<br>（税盾口径）</th><th>融资本息</th><th>优先级本息</th><th>次级本息</th><th>劣后分配</th><th>次级缺口</th></tr>
@@ -214,6 +230,7 @@ footer{color:var(--sub);font-size:12px;text-align:center;margin-top:34px}
 </div>
 <p class="chart-note">次级缺口 = 次级优先当年应付 − 实际分配（优先级优先受偿，不足部分由次级/劣后吸收）。25 年全周期分派口径下默认参数应无缺口。绿色行 = 劣后当年有分配。</p>
 </div>
+</details>
 
 </div>
 </div>
@@ -501,6 +518,10 @@ function fillEqSection(m, p){
     var cells = [i+1, fmtWan(w.ncf), fmtWan(w.debt), fmtWan(w.senior), fmtWan(w.mezz), fmtWan(w.sub), w.gap>1?("<span style='color:#b91c1c'>"+fmtWan(w.gap)+"</span>"):"—"];
     for(var c=0;c<cells.length;c++){ var td=tr.insertCell(-1); td.innerHTML = cells[c]; }
   }
+  var subCum=0, i2;
+  for(i2=0;i2<m.years;i2++) subCum += m.wRows[i2].sub;
+  var esum=document.getElementById("eq-sum");
+  if(esum) esum.textContent = "共 "+m.years+" 年 · 劣后 "+fmtWan(m.wRows[0].sub)+" \u2192 "+fmtWan(m.wRows[m.years-1].sub)+" 万/年 · 累计 "+fmtWan(subCum,0)+" 万 · 次级缺口 "+(m.mezzGapTotal>1?fmtWan(m.mezzGapTotal,0)+" 万":"无");
 }
 /* 估算令次级优先恰好拿满的优先级利率上限 */
 function srateBreakeven(m){
@@ -531,6 +552,8 @@ function fillTable(m){
     }
     prevIrr = ri;
   }
+  var se=document.getElementById("cf-sum");
+  if(se) se.textContent = "共 "+m.years+" 年 · 年净现金流 "+fmtWan(m.cf)+" 万 · 静态回收 "+(m.pb===null?"—":m.pb.toFixed(1)+" 年")+" · 期末累积 IRR "+(m.full===null?"—":(m.full*100).toFixed(2)+"%");
 }
 
 /* ---------- 画图（canvas，浅色） ---------- */
