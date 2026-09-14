@@ -71,6 +71,23 @@ canvas{width:100%;border:1px solid var(--line);border-radius:10px;background:#ff
 footer{color:var(--sub);font-size:12px;text-align:center;margin-top:34px}
 .chart-note{color:var(--sub);font-size:11.5px;margin:6px 2px 0}
 .warn{background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:10px 14px;font-size:12.5px;color:#991b1b;margin-bottom:16px;line-height:1.7}
+/* ===== 参数面板：停靠跟随 / 自由浮动 ===== */
+#param-col{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto;scrollbar-width:thin}
+@media(max-width:900px){#param-col{position:static;max-height:none;overflow:visible}}
+.phead{position:sticky;top:0;z-index:3;display:flex;align-items:center;gap:7px;margin:-16px -18px 8px;padding:9px 14px;background:#fff;border-bottom:1px solid var(--line);border-radius:11px 11px 0 0;cursor:grab;user-select:none;touch-action:none;transition:background .12s}
+.phead:hover{background:#f8fafc}
+.phead:active{cursor:grabbing}
+.ph-grip{color:#cbd5e1;font-size:14px;letter-spacing:-2px}
+.phead .pht{font-weight:700;font-size:14.5px}
+.phead .phg{margin-left:auto;display:flex;gap:5px}
+.phead .phb{border:1px solid var(--line);background:#fff;color:var(--sub);border-radius:7px;font-size:11.5px;padding:3px 9px;cursor:pointer;font-family:inherit;line-height:1.5;white-space:nowrap}
+.phead .phb:hover{border-color:#93c5fd;color:var(--blue);background:#eff6ff}
+.phead .phb.on{background:#eff6ff;border-color:#93c5fd;color:var(--blue);font-weight:700}
+#param-hint{font-size:11px;color:var(--sub);margin:-2px 0 10px;line-height:1.5}
+#param-panel.float{position:fixed;z-index:80;margin:0;max-height:88vh;overflow:auto;resize:both;min-width:300px;min-height:200px;box-shadow:0 12px 32px rgba(15,23,42,.18);border-color:#93c5fd}
+#param-panel.float .phead{cursor:move;background:linear-gradient(180deg,#eff6ff,#f8fafc)}
+#param-panel.dragging{box-shadow:0 18px 44px rgba(15,23,42,.26)}
+@media(max-width:900px){#param-panel.float{max-width:94vw}}
 </style>
 </head>
 <body data-page-node-id="Bqc5TGAFIi8NQlT6SrnY3o">
@@ -83,9 +100,9 @@ footer{color:var(--sub);font-size:12px;text-align:center;margin-top:34px}
 
 <div class="layout" data-page-node-id="8CTCpmhYLBZtRpVJLuz4q1">
 <!-- ============ 左侧：参数面板 ============ -->
-<div data-page-node-id="jx5Zj0Jvs6W2yAxTEaTt8R">
-<div class="panel" data-page-node-id="hEnxUpnXXechKIAmqSo2Uq">
-<div style="font-weight:700;margin-bottom:6px" data-page-node-id="7YRpzIUkrZqBem46j4GvUi">参数调节</div>
+<div id="param-col" data-page-node-id="jx5Zj0Jvs6W2yAxTEaTt8R">
+<div class="panel" id="param-panel" data-page-node-id="hEnxUpnXXechKIAmqSo2Uq">
+<div class="phead" id="param-head" title="拖动标题栏可自由浮动；双击标题栏切换 浮动/停靠"><span class="ph-grip">&#10303;</span><span class="pht">参数调节</span><span class="phg"><button class="phb" id="btn-dock" type="button">浮动</button><button class="phb" id="btn-reset" type="button" style="display:none">复位</button></span></div><div id="param-hint">默认随页面滚动跟随右侧内容；拖动标题栏即可自由浮动（拖右下角缩放，位置自动记忆），双击标题栏回到停靠。</div>
 
 <div class="param"><div class="lab">项目容量<small>总投资与发电量均随容量联动</small></div>
 <div class="stepper"><button data-t="mw" data-d="-1">−</button><input id="in-mw" type="number" step="1" min="1" max="2000" value="100"><div class="unit">MW</div><button data-t="mw" data-d="1">+</button></div></div>
@@ -695,6 +712,113 @@ Object.keys(IDS).forEach(function(k){
 // 窗口尺寸变化时重画
 var rsTimer=null;
 window.addEventListener("resize", function(){ clearTimeout(rsTimer); rsTimer=setTimeout(function(){ if(R){ drawFig1(R); drawFig2(R); } }, 200); });
+
+/* ---------- 参数面板：停靠跟随 / 自由浮动拖拽 ---------- */
+(function(){
+  var panel=document.getElementById("param-panel"),
+      col=document.getElementById("param-col"),
+      head=document.getElementById("param-head"),
+      btnDock=document.getElementById("btn-dock"),
+      btnReset=document.getElementById("btn-reset");
+  if(!panel||!head) return;
+  var KEY="pv_calc_panel_v1";
+  var st={mode:"dock",x:null,y:null,w:null,h:null};
+  try{ var raw=localStorage.getItem(KEY);
+    if(raw){ var o=JSON.parse(raw);
+      if(o&&typeof o==="object"){ st.mode=(o.mode==="float")?"float":"dock"; st.x=o.x; st.y=o.y; st.w=o.w; st.h=o.h; } } }catch(e){}
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(st)); }catch(e){} }
+  function clamp(v,a,b){ return Math.min(b, Math.max(a, v)); }
+  function isFloat(){ return panel.classList.contains("float"); }
+  function setFloat(on){
+    if(on){
+      var r=panel.getBoundingClientRect();
+      var defW=(col&&col.offsetWidth)?col.offsetWidth:330;
+      var w=Math.max(300, Math.min(st.w||r.width||defW, window.innerWidth-16));
+      var x=(typeof st.x==="number")?st.x:clamp(r.left,4,Math.max(4,window.innerWidth-w-4));
+      var y=(typeof st.y==="number")?st.y:clamp(r.top,4,Math.max(4,window.innerHeight-140));
+      panel.classList.add("float");
+      panel.style.width=w+"px";
+      if(st.h) panel.style.height=st.h+"px";
+      panel.style.left=x+"px"; panel.style.top=y+"px";
+      st.x=x; st.y=y; st.w=w; st.mode="float";
+      btnDock.textContent="停靠"; btnDock.classList.add("on"); btnDock.title="收回到左侧栏位";
+      btnReset.style.display="";
+    }else{
+      panel.classList.remove("float");
+      panel.style.left=panel.style.top=panel.style.width=panel.style.height="";
+      st.mode="dock";
+      btnDock.textContent="浮动"; btnDock.classList.remove("on"); btnDock.title="转为可拖动的浮动窗口";
+      btnReset.style.display="none";
+    }
+    save();
+  }
+  function clampIntoView(){
+    if(!isFloat()) return;
+    var w=panel.offsetWidth;
+    var x=clamp(parseFloat(panel.style.left)||0, 4, Math.max(4, window.innerWidth-w-4));
+    var y=clamp(parseFloat(panel.style.top)||0, 4, Math.max(4, window.innerHeight-40));
+    panel.style.left=x+"px"; panel.style.top=y+"px"; st.x=x; st.y=y;
+  }
+  /* 拖拽（鼠标 + 触屏统一用 pointer 事件） */
+  var dragging=false, moved=false, sx=0, sy=0, ox=0, oy=0;
+  head.addEventListener("pointerdown", function(e){
+    if(e.target && e.target.closest && e.target.closest(".phb")) return;
+    var r=panel.getBoundingClientRect();
+    sx=e.clientX; sy=e.clientY; ox=r.left; oy=r.top; moved=false; dragging=true;
+    try{ head.setPointerCapture(e.pointerId); }catch(err){}
+    e.preventDefault();
+  });
+  head.addEventListener("pointermove", function(e){
+    if(!dragging) return;
+    var dx=e.clientX-sx, dy=e.clientY-sy;
+    if(!moved && Math.abs(dx)+Math.abs(dy)<5) return;
+    if(!moved){
+      moved=true;
+      if(!isFloat()){ st.x=null; st.y=null; setFloat(true);
+        var r=panel.getBoundingClientRect(); ox=r.left; oy=r.top; }
+      panel.classList.add("dragging");
+    }
+    var w=panel.offsetWidth;
+    var nx=clamp(ox+dx, 4, Math.max(4, window.innerWidth-w-4));
+    var ny=clamp(oy+dy, 4, Math.max(4, window.innerHeight-40));
+    panel.style.left=nx+"px"; panel.style.top=ny+"px"; st.x=nx; st.y=ny;
+  });
+  function endDrag(e){
+    if(!dragging) return;
+    dragging=false; panel.classList.remove("dragging");
+    try{ head.releasePointerCapture(e.pointerId); }catch(err){}
+    if(moved){ st.w=panel.offsetWidth; st.h=panel.offsetHeight; save(); }
+  }
+  head.addEventListener("pointerup", endDrag);
+  head.addEventListener("pointercancel", endDrag);
+  head.addEventListener("dblclick", function(e){
+    if(e.target && e.target.closest && e.target.closest(".phb")) return;
+    setFloat(!isFloat());
+  });
+  btnDock.addEventListener("click", function(e){ e.stopPropagation(); setFloat(!isFloat()); });
+  btnReset.addEventListener("click", function(e){
+    e.stopPropagation();
+    var r=(col&&col.getBoundingClientRect)?col.getBoundingClientRect():{left:18,top:120};
+    st.x=clamp(r.left,4,Math.max(4,window.innerWidth-330-4));
+    st.y=clamp(r.top,4,Math.max(4,window.innerHeight-140));
+    var defW=(col&&col.offsetWidth)?col.offsetWidth:330;
+    st.w=defW; st.h=null;
+    panel.style.width=defW+"px"; panel.style.height="";
+    panel.style.left=st.x+"px"; panel.style.top=st.y+"px";
+    save();
+  });
+  /* 浮动时手动 resize 后记忆尺寸 */
+  var roTimer=null;
+  if(window.ResizeObserver){
+    try{ new ResizeObserver(function(){
+      if(!isFloat()) return;
+      clearTimeout(roTimer);
+      roTimer=setTimeout(function(){ st.w=panel.offsetWidth; st.h=panel.offsetHeight; save(); },300);
+    }).observe(panel); }catch(e){}
+  }
+  window.addEventListener("resize", clampIntoView);
+  if(st.mode==="float") setFloat(true); else { btnDock.textContent="浮动"; btnReset.style.display="none"; }
+})();
 
 recalc();
 </script>
