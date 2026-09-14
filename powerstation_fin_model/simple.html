@@ -3,7 +3,7 @@
 <head data-page-node-id="gpeV2UTWaqOCPwfIc6NUaU">
 <meta charset="UTF-8" data-page-node-id="5ZpDEteenDAUlTCzXCw3OU">
 <meta name="viewport" content="width=device-width,initial-scale=1" data-page-node-id="Z3GXEuKKBD6JARsRO7CSAt">
-<title>光伏电站 IRR 交互计算器</title>
+<title>光伏电站收益率交互计算器</title>
 <style>
 :root{--ink:#1e293b;--sub:#64748b;--line:#e2e8f0;--blue:#1d4ed8;--red:#b91c1c;--green:#047857;--amber:#b45309}
 *{box-sizing:border-box}
@@ -44,6 +44,12 @@ h2{font-size:17px;margin:30px 0 12px;padding-left:10px;border-left:4px solid var
 .card .k{color:var(--sub);font-size:12px}
 .card .v{font-size:21px;font-weight:700;margin-top:2px;white-space:nowrap}
 .card .n{color:var(--sub);font-size:11.5px;margin-top:2px}
+.card.multi>.k{color:var(--ink);font-weight:600}
+.card.multi .mi{display:grid;grid-template-columns:1fr auto;column-gap:10px;align-items:baseline;margin-top:9px}
+.card.multi .mi+.mi{border-top:1px solid var(--line);padding-top:9px}
+.card.multi .mi-k{color:var(--sub);font-size:12px}
+.card.multi .mi-v{font-size:18px;font-weight:700;white-space:nowrap;text-align:right}
+.card.multi .mi-n{grid-column:1/-1;color:var(--sub);font-size:11.5px;margin-top:1px;line-height:1.4;white-space:pre-line}
 table{border-collapse:collapse;width:100%;font-size:12.5px;background:#fff}
 th{background:#f8fafc;border-bottom:2px solid #cbd5e1;padding:7px 5px;font-size:12px;white-space:nowrap;position:sticky;top:0}
 td{border-bottom:1px solid var(--line);padding:5.5px 5px;text-align:center;white-space:nowrap}
@@ -94,7 +100,7 @@ footer{color:var(--sub);font-size:12px;text-align:center;margin-top:34px}
 <div class="wrap" data-page-node-id="AKHE4MaifCxlmMsFreve0T">
 
 <header data-page-node-id="vDFA8AzVARAvrEdGbnfgM1">
-<h1>光伏电站 IRR 交互计算器</h1>
+<h1>光伏电站收益率交互计算器</h1>
 <div class="meta" data-page-node-id="Rl5UfJ4aSqJOdDPDA4dSkR">口径：增值税 = 毛利额 × 增值税率（简化定率）· 附加税 = 增值税 × 附加税率 · 所得税 = 应纳税所得 × 税率 · 折旧 = 总投资 ÷ 运营期（直线、残值0）· 通道费 = 总投资 × 费率（按年、税前）· 发电量恒定无衰减。上半部分为<b>全投资视角</b>（无杠杆），下半部分为<b>资本金视角</b>（融资 + REITs 三层结构，贷款利息税前扣除）。输入框内回车或点击「重新计算」刷新；▲▼ 每点一次自动刷新。</div>
 </header>
 
@@ -170,11 +176,8 @@ footer{color:var(--sub);font-size:12px;text-align:center;margin-top:34px}
 <div data-page-node-id="J2OU2CZFHWesG2q9zWcyHz">
 <div class="cards" data-page-node-id="28kmzCHYY5HgaOudgQryID">
 <div class="card" data-page-node-id="t9HP97wmK8sToWxpjhTTVz"><div class="k" data-page-node-id="C70QiSV49mVH4PHdiSC2nL">全生命周期 IRR（全投资）</div><div class="v" style="color:var(--blue)" id="r-irr" data-page-node-id="PBxpavOgggbIAXZTvK1GM5">—</div><div class="n" id="r-irr-n" data-page-node-id="DEqLkIatFYcFwyjdDJxH3c">—</div></div>
-<div class="card" data-page-node-id="jLtpkASuyZtIVYqw74gcEo"><div class="k" data-page-node-id="jd3aWmyHL6iQz8zOqq3vZI">静态回收期</div><div class="v" style="color:var(--amber)" id="r-pb" data-page-node-id="ndK0oeUa3FyAjL88ESzNPS">—</div><div class="n" id="r-pb-n" data-page-node-id="WZgEL0J9Axey8WegV9vBma">—</div></div>
-<div class="card" data-page-node-id="pRzb2ST79reMFm1awQrvtP"><div class="k" data-page-node-id="bMDopBar6Yek7tHnAjHanr">年净现金流</div><div class="v" style="color:var(--blue)" id="r-cf" data-page-node-id="7mltWEsnUaetXmWeiccbha">—</div><div class="n" id="r-cf-n" data-page-node-id="Zv6MX1Ai6EKNGt37Rvovoy">—</div></div>
-<div class="card"><div class="k">融资现金流出（净额）</div><div class="v" style="color:var(--sub);font-size:18px" id="r-fin">—</div><div class="n" id="r-fin-n">—</div></div>
-<div class="card"><div class="k">资本金净现金流</div><div class="v" style="color:var(--blue);font-size:18px" id="r-eqcf">—</div><div class="n" id="r-eqcf-n">—</div></div>
-<div class="card" data-page-node-id="r3e1h0pKwRFqYlKDIwgDoV"><div class="k" data-page-node-id="9ljv0bgzCBXZLzZWZnLOiS">动态回收期 @4% / @5%</div><div class="v" style="color:var(--sub);font-size:18px" id="r-dpb" data-page-node-id="tPPf4fxVHC0ZvGPzXvMthG">—</div><div class="n" data-page-node-id="6ukRGKjKQOJfReilFbtCQr">按资金成本折现的回收年限</div></div>
+<div class="card multi" data-page-node-id="jLtpkASuyZtIVYqw74gcEo"><div class="k" data-page-node-id="jd3aWmyHL6iQz8zOqq3vZI">回收期（两项）</div><div class="mi"><span class="mi-k">静态回收期</span><span class="mi-v" style="color:var(--amber)" id="r-pb" data-page-node-id="ndK0oeUa3FyAjL88ESzNPS">—</span><span class="mi-n" id="r-pb-n" data-page-node-id="WZgEL0J9Axey8WegV9vBma">—</span></div><div class="mi" data-page-node-id="r3e1h0pKwRFqYlKDIwgDoV"><span class="mi-k" data-page-node-id="9ljv0bgzCBXZLzZWZnLOiS">动态回收期 @4% / @5%</span><span class="mi-v" style="color:var(--sub)" id="r-dpb" data-page-node-id="tPPf4fxVHC0ZvGPzXvMthG">—</span><span class="mi-n" data-page-node-id="6ukRGKjKQOJfReilFbtCQr">按资金成本折现的回收年限</span></div></div>
+<div class="card multi" data-page-node-id="pRzb2ST79reMFm1awQrvtP"><div class="k" data-page-node-id="bMDopBar6Yek7tHnAjHanr">现金流（三项）</div><div class="mi"><span class="mi-k">年净现金流</span><span class="mi-v" style="color:var(--blue)" id="r-cf" data-page-node-id="7mltWEsnUaetXmWeiccbha">—</span><span class="mi-n" id="r-cf-n" data-page-node-id="Zv6MX1Ai6EKNGt37Rvovoy">—</span></div><div class="mi"><span class="mi-k">融资现金流出（净额）</span><span class="mi-v" style="color:var(--sub)" id="r-fin">—</span><span class="mi-n" id="r-fin-n">—</span></div><div class="mi"><span class="mi-k">资本金净现金流</span><span class="mi-v" style="color:var(--blue)" id="r-eqcf">—</span><span class="mi-n" id="r-eqcf-n">—</span></div></div>
 <div class="card" data-page-node-id="gLt6VTZBTyZZuaH0OpByuG"><div class="k" data-page-node-id="O7ewcdijxVty2TkxPVAQSV">期末累计净现金流</div><div class="v" style="color:var(--red)" id="r-cum" data-page-node-id="9cvysCG7m8PeMuhhXIjBa1">—</div><div class="n" id="r-cum-n" data-page-node-id="kUAunoIoIyJAYKeWcEK2VA">—</div></div>
 <div class="card" data-page-node-id="XrlHT1tPqZjyqyiqRaKXYj"><div class="k" data-page-node-id="cpuXbp6plMYFKR7AS4zlPQ">总投资 / 年发电量</div><div class="v" style="font-size:17px" id="r-scale" data-page-node-id="EwR7DFfgEzLmsCWoUj7aML">—</div><div class="n" id="r-scale-n" data-page-node-id="IfOTvJlIq8GyBJ2r09RP3k">—</div></div>
 </div>
@@ -417,7 +420,7 @@ function recalc(){
   document.getElementById("r-scale").textContent = fmtWan(m.capex,0)+" 万 / "+(m.gen/1e8).toFixed(2)+" 亿kWh";
   document.getElementById("r-scale-n").textContent = Math.round(p.mw)+" MW × "+Math.round(p.hours)+"h · 通道费 "+fmtWan(m.fee,0)+" 万/年";
 
-  /* ---------- 融资现金流出（净额）与资本金净现金流 ---------- */
+  /* ---------- 融资现金流出（净额）与资本金净现金流：卡片主值=年均值，小字给生命周期高低限 ---------- */
   var finArr = [], shieldArr = [], eqArr = [], kk;
   for(kk=0;kk<m.years;kk++){
     var shK = m.wRows[kk].ncf - m.cf;    /* 利息税盾 = 有杠杆经营现金流 − 全投资净现金流 */
@@ -427,25 +430,30 @@ function recalc(){
   }
   var finR = rangeOf(finArr, m.loan), eqR = rangeOf(eqArr, m.eq), shR = rangeOf(shieldArr, m.loan);
   function rngTxt(r){ return fmtWan(r.a) + (r.single ? "" : "~" + fmtWan(r.b)); }
+  /* 年均值 = 全部运营年份的算术平均（非首末均值），与「年净现金流 − 融资流出」逐项恒等 */
+  function avgOf(arr){ var s = 0, j; for(j=0;j<arr.length;j++){ s += arr[j]; } return arr.length ? s/arr.length : 0; }
+  /* 小字首行：年均值口径 + 生命周期首末高低限 */
+  function spanTxt(r){
+    if(!r) return "生命周期内无正值";
+    if(r.single) return "年均 · 各年恒定 " + fmtWan(r.a) + " 万/年";
+    return "年均 · 首年 " + fmtWan(r.a) + " → 末年 " + fmtWan(r.b) + " 万/年";
+  }
   var finV = document.getElementById("r-fin"), finN = document.getElementById("r-fin-n");
   var eqV  = document.getElementById("r-eqcf"), eqN = document.getElementById("r-eqcf-n");
   if(m.loan > 0 && m.pay > 0 && finR){
-    finV.textContent = rngTxt(finR) + " 万/年";
-    finV.style.fontSize = finR.single ? "21px" : "18px";
-    finN.textContent = "还本付息 " + fmtWan(m.pay) + " − 利息税盾 " + (shR ? rngTxt(shR) : "0.0")
-                     + "（税盾 = 年利息 × 所得税 " + (p.cit*100).toFixed(0) + "%）";
+    finV.textContent = fmtWan(avgOf(finArr)) + " 万/年";
+    finN.textContent = spanTxt(finR) + "\n= 还本付息 " + fmtWan(m.pay) + " − 利息税盾 " + (shR ? rngTxt(shR) : "0.0");
   } else {
-    finV.textContent = "0.0 万/年"; finV.style.fontSize = "21px";
+    finV.textContent = "0.0 万/年";
     finN.textContent = "债务比例 0%，无融资现金流出";
   }
   if(eqR){
-    eqV.textContent = rngTxt(eqR) + " 万/年";
-    eqV.style.fontSize = eqR.single ? "21px" : "18px";
-    eqN.textContent = (m.loan > 0)
-      ? ("= 年净现金流 " + fmtWan(m.cf) + " − 融资现金流出；与总表「资本金合计」逐行一致")
-      : ("= 年净现金流 " + fmtWan(m.cf) + "（无融资，两者相等）");
+    eqV.textContent = fmtWan(avgOf(eqArr)) + " 万/年";
+    eqN.textContent = spanTxt(eqR) + "\n" + ((m.loan > 0)
+      ? "= 年净现金流 − 融资现金流出\n（同总表「资本金合计」）"
+      : "= 年净现金流（无融资，两者相等）");
   } else {
-    eqV.textContent = "—"; eqV.style.fontSize = "21px";
+    eqV.textContent = "—";
     eqN.textContent = "股权现金流非正，无分配";
   }
 
