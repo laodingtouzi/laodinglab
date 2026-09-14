@@ -105,7 +105,7 @@ footer{color:var(--sub);font-size:12px;text-align:center;margin-top:34px}
 <div class="phead" id="param-head" title="拖动标题栏可自由浮动；双击标题栏切换 浮动/停靠"><span class="ph-grip">&#10303;</span><span class="pht">参数调节</span><span class="phg"><button class="phb" id="btn-dock" type="button">浮动</button><button class="phb" id="btn-reset" type="button" style="display:none">复位</button></span></div><div id="param-hint">默认随页面滚动跟随右侧内容；拖动标题栏即可自由浮动（拖右下角缩放，位置自动记忆），双击标题栏回到停靠。</div>
 
 <div class="param"><div class="lab">项目容量<small>总投资与发电量均随容量联动</small></div>
-<div class="stepper"><button data-t="mw" data-d="-1">−</button><input id="in-mw" type="number" step="1" min="1" max="2000" value="100"><div class="unit">MW</div><button data-t="mw" data-d="1">+</button></div></div>
+<div class="stepper"><button data-t="mw" data-d="-1">−</button><input id="in-mw" type="number" step="1" min="1" max="2000" value="1000"><div class="unit">MW</div><button data-t="mw" data-d="1">+</button></div></div>
 
 <div class="param" data-page-node-id="XymE5s2ns7wgeohzhRHCyG"><div class="lab" data-page-node-id="Cv4O06WyyoMryYh7tMSHsW">造价（元/W）<small data-page-node-id="IqFvrlTsqayYfHCpSfaPHC">总投资 = 造价 × 容量 × 100万 W</small></div>
 <div class="stepper" data-page-node-id="RXt9FgsB5YNR6siSMnY9KJ"><button data-t="capex" data-d="-1" data-page-node-id="l2Qclba7r0pnBwMZGAZxAf">−</button><input id="in-capex" type="number" step="0.01" min="0.5" max="10" value="3" data-page-node-id="e0zVj2TH8CV602ODty4anm"><div class="unit" data-page-node-id="YgNoaHyH34qvVieFbjuidY">元/W</div><button data-t="capex" data-d="1" data-page-node-id="Qvon8e3flMMOMEWI6DI7xM">+</button></div></div>
@@ -860,6 +860,40 @@ window.addEventListener("resize", function(){ clearTimeout(rsTimer); rsTimer=set
   }
   window.addEventListener("resize", clampIntoView);
   if(st.mode==="float") setFloat(true); else { btnDock.textContent="浮动"; btnReset.style.display="none"; }
+})();
+
+/* ---------- 停靠态：左栏内容随主页面滚动同步展开（顶端↔底端映射） ---------- */
+(function(){
+  var col=document.getElementById("param-col"),
+      panel=document.getElementById("param-panel");
+  if(!col||!panel) return;
+  var hovering=false;
+  col.addEventListener("mouseenter", function(){ hovering=true; });
+  col.addEventListener("mouseleave", function(){ hovering=false; });
+  function maxDocScroll(){
+    var d=document.documentElement, b=document.body;
+    var docH=Math.max(d.scrollHeight||0, b.scrollHeight||0, d.offsetHeight||0);
+    return Math.max(1, docH - (window.innerHeight||d.clientHeight||1));
+  }
+  function sync(){
+    if(panel.classList.contains("float")) return;               /* 浮动态：位置由用户拖动决定，不干预 */
+    if(window.matchMedia && window.matchMedia("(max-width:900px)").matches) return;
+    var maxTop=col.scrollHeight - col.clientHeight;             /* 左栏自身可滚动行程 */
+    if(maxTop<=1){ if(col.scrollTop!==0) col.scrollTop=0; return; }
+    if(hovering) return;                                        /* 鼠标在左栏内：让位给手动滚动 */
+    var t=(window.pageYOffset||document.documentElement.scrollTop||0)/maxDocScroll();
+    t=t<0?0:(t>1?1:t);
+    var target=Math.round(t*maxTop);
+    if(Math.abs(col.scrollTop-target)>1) col.scrollTop=target;
+  }
+  window.addEventListener("scroll", sync, {passive:true});
+  window.addEventListener("resize", sync);
+  /* 浮动/停靠切换后重新同步一次 */
+  if(window.MutationObserver){
+    try{ new MutationObserver(sync).observe(panel,{attributes:true,attributeFilter:["class"]}); }catch(e){}
+  }
+  window.addEventListener("load", sync);
+  sync();
 })();
 
 recalc();
