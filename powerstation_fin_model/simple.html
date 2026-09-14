@@ -130,7 +130,7 @@ footer{color:var(--sub);font-size:12px;text-align:center;margin-top:34px}
 <div class="param"><div class="lab">优先级利率<small>REITs 优先级分派率，调整会影响劣后收益</small></div>
 <div class="stepper"><button data-t="srate" data-d="-1">−</button><input id="in-srate" type="number" step="0.1" min="0" max="15" value="6.0"><div class="unit">%</div><button data-t="srate" data-d="1">+</button></div></div>
 
-<div class="composite" style="background:#f0fdf4;border-color:#a7f3d0"><span class="ck" style="color:#047857">固定结构参数</span><span style="font-size:11.5px;color:#065f46;text-align:right;line-height:1.5">资本金结构 优先80% / 次级优先12.5% / 劣后7.5%<br>优先·次级按 <b>15年等额本息</b>摊还（租金率/分派率口径）<br>次级优先利率 = 资本金IRR（自动联动）</span></div>
+<div class="composite" style="background:#f0fdf4;border-color:#a7f3d0"><span class="ck" style="color:#047857">固定结构参数</span><span style="font-size:11.5px;color:#065f46;text-align:right;line-height:1.5">资本金结构 优先80% / 次级优先12.5% / 劣后7.5%<br>优先·次级按 <b>25年全周期分派率</b>口径等额年付（内含本息，目标 IRR 全周期兑现）<br>次级优先利率 = 资本金IRR（自动联动）</span></div>
 </fieldset>
 
 <button class="btn" id="go" data-page-node-id="sc3G6X04jV6AXuy5w2bNu4">重新计算</button>
@@ -179,13 +179,13 @@ footer{color:var(--sub);font-size:12px;text-align:center;margin-top:34px}
 <div class="warn" id="eq-warn" style="display:none"></div>
 
 <div class="panel" style="margin-bottom:16px">
-<div style="font-weight:700;margin-bottom:8px">年度现金流分配瀑布（投资款按 15 年租金率口径等额摊还本息）</div>
+<div style="font-weight:700;margin-bottom:8px">年度现金流分配瀑布（优先·次级投资款按 25 年全周期分派率口径等额年付）</div>
 <table class="mile" id="eq-wtable">
 <tr><th style="text-align:left">分配顺序与项目</th><th>首年（万/年）</th><th>末年（万/年）</th><th style="text-align:left">计算逻辑</th></tr>
 <tr><td style="text-align:left"><b>年净现金流（经营层，含税盾）</b></td><td id="w-ncf-1">—</td><td id="w-ncf-n">—</td><td style="text-align:left">收入 − 运维租金 − 增值税 − 附加 − 通道费 − 所得税（扣除贷款利息后计税）</td></tr>
 <tr><td style="text-align:left">① 融资本息（等额本息）</td><td id="w-debt-1">—</td><td id="w-debt-n">—</td><td style="text-align:left" id="w-debt-note">—</td></tr>
-<tr><td style="text-align:left">② 优先级本息（15年摊还）</td><td id="w-sen-1">—</td><td id="w-sen-n">—</td><td style="text-align:left" id="w-sen-note">—</td></tr>
-<tr><td style="text-align:left">③ 次级优先本息（15年摊还）</td><td id="w-mez-1">—</td><td id="w-mez-n">—</td><td style="text-align:left" id="w-mez-note">—</td></tr>
+<tr><td style="text-align:left">② 优先级本息（25年分派）</td><td id="w-sen-1">—</td><td id="w-sen-n">—</td><td style="text-align:left" id="w-sen-note">—</td></tr>
+<tr><td style="text-align:left">③ 次级优先本息（25年分派）</td><td id="w-mez-1">—</td><td id="w-mez-n">—</td><td style="text-align:left" id="w-mez-note">—</td></tr>
 <tr class="pos"><td style="text-align:left"><b>④ 劣后分配（剩余收益）</b></td><td id="w-sub-1">—</td><td id="w-sub-n">—</td><td style="text-align:left">股权现金流依次扣除 ①②③ 后的剩余，承担全部波动</td></tr>
 </table>
 </div>
@@ -212,7 +212,7 @@ footer{color:var(--sub);font-size:12px;text-align:center;margin-top:34px}
 <tr><th>年份</th><th>净现金流<br>（税盾口径）</th><th>融资本息</th><th>优先级本息</th><th>次级本息</th><th>劣后分配</th><th>次级缺口</th></tr>
 </table>
 </div>
-<p class="chart-note">次级缺口 = 次级优先当年应付 − 实际分配（优先级优先受偿，不足部分由次级/劣后吸收）。绿色行 = 劣后当年有分配。</p>
+<p class="chart-note">次级缺口 = 次级优先当年应付 − 实际分配（优先级优先受偿，不足部分由次级/劣后吸收）。25 年全周期分派口径下默认参数应无缺口。绿色行 = 劣后当年有分配。</p>
 </div>
 
 </div>
@@ -255,7 +255,7 @@ function milestoneYr(runIrr, t){
 }
 
 /* ---------- 模型 ---------- */
-var TRANCHE_TERM = 15; // 优先级/次级优先摊还年限（租金率/分派率口径），如需调整改此处
+var TRANCHE_TERM = 25; // 优先级/次级优先分派年限 = 整个投资周期（全周期分派率口径），2026-09-14 用户确认固化为25年
 function amort(P, r, n){ // 等额本息年付额
   if(n<=0) return 0;
   if(r<=0) return P/n;
@@ -299,7 +299,7 @@ function compute(p){
   }
   var eqirr = (eq>0) ? irrOf([-eq].concat(eqcf)) : null;
 
-  /* --- 资本结构：优先80% / 次级优先12.5% / 劣后7.5%，优先·次级按15年等额本息摊还 --- */
+  /* --- 资本结构：优先80% / 次级优先12.5% / 劣后7.5%，优先·次级按25年全周期分派率（等额年付，内含本息） --- */
   var tTerm  = Math.min(TRANCHE_TERM, p.years);
   var senior = eq * 0.80, mezz = eq * 0.125, sub = eq * 0.075;
   var ps = amort(senior, p.srate, tTerm);
@@ -408,7 +408,7 @@ function fillEqSection(m, p){
   if(m.mezzGapTotal > 1){
     var gapYears = 0; for(i=0;i<m.tTerm;i++) if(m.wRows[i].gap>1) gapYears++;
     warn.style.display = "block";
-    warn.innerHTML = "⚠️ <b>结构性缺口</b>：优先级+次级优先年付合计 "+fmtWan(m.ps+m.pm,0)+" 万，超过股权现金流（"+fmtWan(m.wRows[0].ncf-m.pay,0)+"~"+fmtWan(m.wRows[m.tTerm-1].ncf-m.pay,0)+" 万/年）。次级优先有 "+gapYears+" 年被克扣（累计缺口 "+fmtWan(m.mezzGapTotal,0)+" 万），劣后在前 "+m.tTerm+" 年无分配，第 "+(m.tTerm+1)+" 年起独享股权现金流。可将优先级利率调低至约 "+srateBreakeven(m)+"% 以下使结构自洽，或延长摊还年限。";
+    warn.innerHTML = "⚠️ <b>结构性缺口</b>：优先级+次级优先年付合计 "+fmtWan(m.ps+m.pm,0)+" 万，超过股权现金流（"+fmtWan(m.wRows[0].ncf-m.pay,0)+"~"+fmtWan(m.wRows[m.tTerm-1].ncf-m.pay,0)+" 万/年）。次级优先有 "+gapYears+" 年被克扣（累计缺口 "+fmtWan(m.mezzGapTotal,0)+" 万），劣后在前 "+m.tTerm+" 年无分配，第 "+(m.tTerm+1)+" 年起独享股权现金流。分派年限已与投资周期对齐，可将优先级利率调低至约 "+srateBreakeven(m)+"% 以下使结构自洽。";
   } else warn.style.display = "none";
 
   // 瀑布表（首年 / 末年）
@@ -420,10 +420,10 @@ function fillEqSection(m, p){
   document.getElementById("w-debt-note").textContent = "本金 "+fmtWan(m.loan,0)+" 万 @"+(p.lrate*100).toFixed(1)+"%，"+m.years+" 年等额本息（固定）";
   document.getElementById("w-sen-1").textContent = "−"+fmtWan(f.senior);
   document.getElementById("w-sen-n").textContent = last<m.tTerm ? ("−"+fmtWan(l.senior)) : "0";
-  document.getElementById("w-sen-note").textContent = "出资 "+fmtWan(m.senior,0)+" 万 @"+(p.srate*100).toFixed(1)+"% × "+m.tTerm+" 年等额本息 = "+fmtWan(m.ps,0)+" 万/年";
+  document.getElementById("w-sen-note").textContent = "出资 "+fmtWan(m.senior,0)+" 万 @分派率 "+(p.srate*100).toFixed(1)+"% × "+m.tTerm+" 年全周期分派（等额年付） = "+fmtWan(m.ps,0)+" 万/年";
   document.getElementById("w-mez-1").textContent = "−"+fmtWan(f.mezz)+(f.gap>1?"<span style='color:#b91c1c'>（缺口 "+fmtWan(f.gap,0)+"）</span>":"");
   document.getElementById("w-mez-n").textContent = last<m.tTerm ? ("−"+fmtWan(l.mezz)) : "0";
-  document.getElementById("w-mez-note").textContent = "出资 "+fmtWan(m.mezz,0)+" 万 @资本金IRR "+(m.eqirr===null?"—":pctS(m.eqirr))+" × "+m.tTerm+" 年等额本息 = "+fmtWan(m.pm,0)+" 万/年";
+  document.getElementById("w-mez-note").textContent = "出资 "+fmtWan(m.mezz,0)+" 万 @分派率 = 资本金IRR "+(m.eqirr===null?"—":pctS(m.eqirr))+" × "+m.tTerm+" 年全周期分派（等额年付） = "+fmtWan(m.pm,0)+" 万/年";
   document.getElementById("w-sub-1").textContent = (f.sub>0?"+":"")+fmtWan(f.sub);
   document.getElementById("w-sub-n").textContent = (l.sub>0?"+":"")+fmtWan(l.sub);
 
@@ -437,8 +437,8 @@ function fillEqSection(m, p){
     document.getElementById(pre+"-irr").innerHTML = irr;
   }
   row("s-debt", m.loan, "等额本息 "+(p.lrate*100).toFixed(1)+"%（可调），"+m.years+" 年", fmtWan(m.pay), (p.lrate*100).toFixed(1)+"%");
-  row("s-sen", m.senior, "分派率 "+(p.srate*100).toFixed(1)+"%（可调），"+m.tTerm+" 年等额摊还", fmtWan(m.ps), (p.srate*100).toFixed(1)+"%");
-  row("s-mez", m.mezz, "分派率 = 资本金IRR（联动），"+m.tTerm+" 年等额摊还", fmtWan(m.pm), m.mezzirr===null?"—":(pctS(m.mezzirr)+(m.mezzGapTotal>1?"<span style='color:#b91c1c'>（被克扣）</span>":"")));
+  row("s-sen", m.senior, "分派率 "+(p.srate*100).toFixed(1)+"%（可调），"+m.tTerm+" 年全周期分派", fmtWan(m.ps), (p.srate*100).toFixed(1)+"%");
+  row("s-mez", m.mezz, "分派率 = 资本金IRR（联动），"+m.tTerm+" 年全周期分派", fmtWan(m.pm), m.mezzirr===null?"—":(pctS(m.mezzirr)+(m.mezzGapTotal>1?"<span style='color:#b91c1c'>（被克扣）</span>":"")));
   var subAvg = 0; for(i=0;i<m.years;i++) subAvg += m.wRows[i].sub; subAvg /= m.years;
   row("s-sub", m.sub, "剩余收益（兜底波动）", fmtWan(subAvg), m.subirr===null?"—":pctS(m.subirr));
   document.getElementById("s-eq-amt").textContent = fmtWan(m.eq,0);
