@@ -202,7 +202,7 @@ footer{color:var(--sub);font-size:12px;text-align:center;margin-top:34px}
 <tr class="pos"><td style="text-align:left">资本金合计</td><td id="s-eq-amt">—</td><td id="s-eq-pct">—</td><td style="text-align:left" id="s-eq-mech">—</td><td id="s-eq-pay">—</td><td id="s-eq-ry">—</td><td id="s-eq-irr">—</td></tr>
 </table>
 </div>
-<div class="chart-note" id="eq-struct-note"><b>当年收益率</b> = 该层级当年现金流入 ÷ 原始本金（等额分派层级为恒定值，浮动层级显示首年~末年）。<b>预计静态回收期</b> = 累计现金流入首次达到原始本金的年份（未折现，年内线性插值）。全周期 IRR 按各层级实际收到的现金流计算；次级优先若被克扣、劣后若为零分配，IRR 均按实际额计。</div>
+<div class="chart-note" id="eq-struct-note"><b>年付</b> = 该层级当年现金流入（等额分派层级为恒定年金，浮动层级显示首年~末年）。<b>当年收益率</b> = 当年现金流入 ÷ 原始本金，与「年付」列<b>同基准</b>，两列可直接互相验证。<b>预计静态回收期</b> = 累计现金流入首次达到原始本金的年份（未折现，年内线性插值）。全周期 IRR 按各层级实际收到的现金流计算；次级优先若被克扣、劣后若为零分配，IRR 均按实际额计。<b>劣后</b>为剩余索取权，分配额逐年随融资利息税盾（前高后低）递减，故呈现为首高末低的区间。</div>
 </div>
 
 <div class="panel" style="margin-bottom:16px">
@@ -446,38 +446,49 @@ function fillEqSection(m, p){
     }
     return null;
   }
+  /* 取该层级"有效"现金流的首值与末值（过滤零分配年），供金额列与收益率列共用同一基准 */
+  function flowRange(principal, flows){
+    if(!(principal>0)) return null;
+    var vs=[], k;
+    for(k=0;k<flows.length;k++){ if(flows[k]>1e-9) vs.push(flows[k]); }
+    if(!vs.length) return null;
+    var a=vs[0], b=vs[vs.length-1];
+    return {a:a, b:b, single:(Math.abs(b-a)/principal)<5e-5};
+  }
   /* 当年收益率 = 当年现金流入 ÷ 原始本金；等额层级恒定值，浮动层级显示首年~末年 */
   function yieldText(principal, flows){
-    if(!(principal>0)) return "—";
-    var ys=[], k, y;
-    for(k=0;k<flows.length;k++){ y=flows[k]/principal; if(y>1e-9) ys.push(y); }
-    if(!ys.length) return "—";
-    var a=ys[0], b=ys[ys.length-1];
-    return (a*100).toFixed(2)+"%"+(Math.abs(b-a)<5e-5 ? "" : "~"+(b*100).toFixed(2)+"%");
+    var r = flowRange(principal, flows);
+    if(!r) return "—";
+    return (r.a/principal*100).toFixed(2)+"%"+(r.single ? "" : "~"+(r.b/principal*100).toFixed(2)+"%");
+  }
+  /* 年付：与「当年收益率」列同基准（等额层级单值，浮动层级首年~末年） */
+  function payText(principal, flows){
+    var r = flowRange(principal, flows);
+    if(!r) return "—";
+    return fmtWan(r.a) + (r.single ? "" : "~"+fmtWan(r.b));
   }
   function pbHtml(principal, flows){
     var v = staticPb(principal, flows);
     return v===null ? "" : "<span style='color:#64748b'>预计静态回收期 "+v.toFixed(1)+" 年</span>";
   }
-  function row(pre, amt, mech, pay, irr, flows){
+  function row(pre, amt, mech, irr, flows){
     document.getElementById(pre+"-amt").textContent = fmtWan(amt,0);
     document.getElementById(pre+"-pct").textContent = (amt/capexW*100).toFixed(0)+"%";
     var pb = pbHtml(amt, flows);
     document.getElementById(pre+"-mech").innerHTML = mech + (pb ? "<br>"+pb : "");
-    document.getElementById(pre+"-pay").textContent = pay;
+    document.getElementById(pre+"-pay").textContent = payText(amt, flows);
     document.getElementById(pre+"-ry").textContent = yieldText(amt, flows);
     document.getElementById(pre+"-irr").innerHTML = irr;
   }
-  row("s-debt", m.loan, "等额本息 "+(p.lrate*100).toFixed(1)+"%（可调），"+m.years+" 年", fmtWan(m.pay), (p.lrate*100).toFixed(1)+"%", dFlows);
-  row("s-sen", m.senior, "分派率 "+(p.srate*100).toFixed(1)+"%（可调），"+m.tTerm+" 年全周期分派", fmtWan(m.ps), (p.srate*100).toFixed(1)+"%", sFlows);
-  row("s-mez", m.mezz, "分派率 = 资本金IRR（联动），"+m.tTerm+" 年全周期分派", fmtWan(m.pm), m.mezzirr===null?"—":(pctS(m.mezzirr)+(m.mezzGapTotal>1?"<span style='color:#b91c1c'>（被克扣）</span>":"")), mFlows);
-  var subAvg = 0; for(i=0;i<m.years;i++) subAvg += m.wRows[i].sub; subAvg /= m.years;
-  row("s-sub", m.sub, "剩余收益（兜底波动）", fmtWan(subAvg), m.subirr===null?"—":pctS(m.subirr), jFlows);
+  row("s-debt", m.loan, "等额本息 "+(p.lrate*100).toFixed(1)+"%（可调），"+m.years+" 年", (p.lrate*100).toFixed(1)+"%", dFlows);
+  row("s-sen", m.senior, "分派率 "+(p.srate*100).toFixed(1)+"%（可调），"+m.tTerm+" 年全周期分派", (p.srate*100).toFixed(1)+"%", sFlows);
+  row("s-mez", m.mezz, "分派率 = 资本金IRR（联动），"+m.tTerm+" 年全周期分派", m.mezzirr===null?"—":(pctS(m.mezzirr)+(m.mezzGapTotal>1?"<span style='color:#b91c1c'>（被克扣）</span>":"")), mFlows);
+  row("s-sub", m.sub, "剩余收益（兜底波动）", m.subirr===null?"—":pctS(m.subirr), jFlows);
   document.getElementById("s-eq-amt").textContent = fmtWan(m.eq,0);
   document.getElementById("s-eq-pct").textContent = (m.eq/capexW*100).toFixed(0)+"%";
   var eqPb = pbHtml(m.eq, eFlows);
   document.getElementById("s-eq-mech").innerHTML = "—" + (eqPb ? "<br>"+eqPb : "");
-  document.getElementById("s-eq-pay").textContent = fmtWan(m.pay===0?0:(m.eqirr===null?0:m.wRows[0].ncf-m.pay),0)+"~"+fmtWan(m.wRows[last].ncf-m.pay,0);
+  document.getElementById("s-eq-pay").textContent = payText(m.eq, eFlows);
   document.getElementById("s-eq-ry").textContent = yieldText(m.eq, eFlows);
   document.getElementById("s-eq-irr").textContent = m.eqirr===null?"—":pctS(m.eqirr);
 
