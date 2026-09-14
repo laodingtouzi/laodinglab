@@ -194,15 +194,15 @@ footer{color:var(--sub);font-size:12px;text-align:center;margin-top:34px}
 <div style="font-weight:700;margin-bottom:8px">资本结构与投资人收益分配总表</div>
 <div class="tbl-wrap" style="max-height:none">
 <table id="eq-struct">
-<tr><th style="text-align:left">层级</th><th>出资额<br>（万）</th><th>占总投资</th><th style="text-align:left">定价机制</th><th>年付<br>（万/年）</th><th>全周期<br>IRR</th></tr>
-<tr><td style="text-align:left">债务融资</td><td id="s-debt-amt">—</td><td id="s-debt-pct">—</td><td style="text-align:left" id="s-debt-mech">—</td><td id="s-debt-pay">—</td><td id="s-debt-irr">—</td></tr>
-<tr><td style="text-align:left"><b>优先级</b>（REITs）</td><td id="s-sen-amt">—</td><td id="s-sen-pct">—</td><td style="text-align:left" id="s-sen-mech">—</td><td id="s-sen-pay">—</td><td id="s-sen-irr">—</td></tr>
-<tr><td style="text-align:left"><b>次级优先</b>（REITs）</td><td id="s-mez-amt">—</td><td id="s-mez-pct">—</td><td style="text-align:left" id="s-mez-mech">—</td><td id="s-mez-pay">—</td><td id="s-mez-irr">—</td></tr>
-<tr><td style="text-align:left"><b>劣后</b>（REITs）</td><td id="s-sub-amt">—</td><td id="s-sub-pct">—</td><td style="text-align:left" id="s-sub-mech">剩余收益（兜底波动）</td><td id="s-sub-pay">—</td><td id="s-sub-irr">—</td></tr>
-<tr class="pos"><td style="text-align:left">资本金合计</td><td id="s-eq-amt">—</td><td id="s-eq-pct">—</td><td style="text-align:left">—</td><td id="s-eq-pay">—</td><td id="s-eq-irr">—</td></tr>
+<tr><th style="text-align:left">层级</th><th>出资额<br>（万）</th><th>占总投资</th><th style="text-align:left">定价机制</th><th>年付<br>（万/年）</th><th>当年收益率<br>（现金流入÷本金）</th><th>全周期<br>IRR</th></tr>
+<tr><td style="text-align:left">债务融资</td><td id="s-debt-amt">—</td><td id="s-debt-pct">—</td><td style="text-align:left" id="s-debt-mech">—</td><td id="s-debt-pay">—</td><td id="s-debt-ry">—</td><td id="s-debt-irr">—</td></tr>
+<tr><td style="text-align:left"><b>优先级</b>（REITs）</td><td id="s-sen-amt">—</td><td id="s-sen-pct">—</td><td style="text-align:left" id="s-sen-mech">—</td><td id="s-sen-pay">—</td><td id="s-sen-ry">—</td><td id="s-sen-irr">—</td></tr>
+<tr><td style="text-align:left"><b>次级优先</b>（REITs）</td><td id="s-mez-amt">—</td><td id="s-mez-pct">—</td><td style="text-align:left" id="s-mez-mech">—</td><td id="s-mez-pay">—</td><td id="s-mez-ry">—</td><td id="s-mez-irr">—</td></tr>
+<tr><td style="text-align:left"><b>劣后</b>（REITs）</td><td id="s-sub-amt">—</td><td id="s-sub-pct">—</td><td style="text-align:left" id="s-sub-mech">剩余收益（兜底波动）</td><td id="s-sub-pay">—</td><td id="s-sub-ry">—</td><td id="s-sub-irr">—</td></tr>
+<tr class="pos"><td style="text-align:left">资本金合计</td><td id="s-eq-amt">—</td><td id="s-eq-pct">—</td><td style="text-align:left" id="s-eq-mech">—</td><td id="s-eq-pay">—</td><td id="s-eq-ry">—</td><td id="s-eq-irr">—</td></tr>
 </table>
 </div>
-<div class="chart-note" id="eq-struct-note">全周期 IRR 按各层级实际收到的现金流计算；次级优先若被克扣、劣后若为零分配，IRR 均按实际额计。</div>
+<div class="chart-note" id="eq-struct-note"><b>当年收益率</b> = 该层级当年现金流入 ÷ 原始本金（等额分派层级为恒定值，浮动层级显示首年~末年）。<b>预计静态回收期</b> = 累计现金流入首次达到原始本金的年份（未折现，年内线性插值）。全周期 IRR 按各层级实际收到的现金流计算；次级优先若被克扣、劣后若为零分配，IRR 均按实际额计。</div>
 </div>
 
 <div class="panel" style="margin-bottom:16px">
@@ -429,21 +429,56 @@ function fillEqSection(m, p){
 
   // 结构总表
   var capexW = m.capex;
-  function row(pre, amt, mech, pay, irr){
+  var dFlows=[], sFlows=[], mFlows=[], jFlows=[], eFlows=[];
+  for(i=0;i<m.years;i++){
+    dFlows.push(m.wRows[i].debt);   sFlows.push(m.wRows[i].senior);
+    mFlows.push(m.wRows[i].mezz);   jFlows.push(m.wRows[i].sub);
+    eFlows.push(m.wRows[i].ncf - m.pay);
+  }
+  /* 预计静态回收期：累计现金流入首次 ≥ 原始本金 的年份（未折现，年内线性插值） */
+  function staticPb(principal, flows){
+    if(!(principal>0)) return null;
+    var cum=0, prev, f, k;
+    for(k=0;k<flows.length;k++){
+      f=flows[k]; if(!(f>0)) continue;
+      prev=cum; cum+=f;
+      if(cum>=principal) return k + (principal-prev)/f;
+    }
+    return null;
+  }
+  /* 当年收益率 = 当年现金流入 ÷ 原始本金；等额层级恒定值，浮动层级显示首年~末年 */
+  function yieldText(principal, flows){
+    if(!(principal>0)) return "—";
+    var ys=[], k, y;
+    for(k=0;k<flows.length;k++){ y=flows[k]/principal; if(y>1e-9) ys.push(y); }
+    if(!ys.length) return "—";
+    var a=ys[0], b=ys[ys.length-1];
+    return (a*100).toFixed(2)+"%"+(Math.abs(b-a)<5e-5 ? "" : "~"+(b*100).toFixed(2)+"%");
+  }
+  function pbHtml(principal, flows){
+    var v = staticPb(principal, flows);
+    return v===null ? "" : "<span style='color:#64748b'>预计静态回收期 "+v.toFixed(1)+" 年</span>";
+  }
+  function row(pre, amt, mech, pay, irr, flows){
     document.getElementById(pre+"-amt").textContent = fmtWan(amt,0);
     document.getElementById(pre+"-pct").textContent = (amt/capexW*100).toFixed(0)+"%";
-    document.getElementById(pre+"-mech").textContent = mech;
+    var pb = pbHtml(amt, flows);
+    document.getElementById(pre+"-mech").innerHTML = mech + (pb ? "<br>"+pb : "");
     document.getElementById(pre+"-pay").textContent = pay;
+    document.getElementById(pre+"-ry").textContent = yieldText(amt, flows);
     document.getElementById(pre+"-irr").innerHTML = irr;
   }
-  row("s-debt", m.loan, "等额本息 "+(p.lrate*100).toFixed(1)+"%（可调），"+m.years+" 年", fmtWan(m.pay), (p.lrate*100).toFixed(1)+"%");
-  row("s-sen", m.senior, "分派率 "+(p.srate*100).toFixed(1)+"%（可调），"+m.tTerm+" 年全周期分派", fmtWan(m.ps), (p.srate*100).toFixed(1)+"%");
-  row("s-mez", m.mezz, "分派率 = 资本金IRR（联动），"+m.tTerm+" 年全周期分派", fmtWan(m.pm), m.mezzirr===null?"—":(pctS(m.mezzirr)+(m.mezzGapTotal>1?"<span style='color:#b91c1c'>（被克扣）</span>":"")));
+  row("s-debt", m.loan, "等额本息 "+(p.lrate*100).toFixed(1)+"%（可调），"+m.years+" 年", fmtWan(m.pay), (p.lrate*100).toFixed(1)+"%", dFlows);
+  row("s-sen", m.senior, "分派率 "+(p.srate*100).toFixed(1)+"%（可调），"+m.tTerm+" 年全周期分派", fmtWan(m.ps), (p.srate*100).toFixed(1)+"%", sFlows);
+  row("s-mez", m.mezz, "分派率 = 资本金IRR（联动），"+m.tTerm+" 年全周期分派", fmtWan(m.pm), m.mezzirr===null?"—":(pctS(m.mezzirr)+(m.mezzGapTotal>1?"<span style='color:#b91c1c'>（被克扣）</span>":"")), mFlows);
   var subAvg = 0; for(i=0;i<m.years;i++) subAvg += m.wRows[i].sub; subAvg /= m.years;
-  row("s-sub", m.sub, "剩余收益（兜底波动）", fmtWan(subAvg), m.subirr===null?"—":pctS(m.subirr));
+  row("s-sub", m.sub, "剩余收益（兜底波动）", fmtWan(subAvg), m.subirr===null?"—":pctS(m.subirr), jFlows);
   document.getElementById("s-eq-amt").textContent = fmtWan(m.eq,0);
   document.getElementById("s-eq-pct").textContent = (m.eq/capexW*100).toFixed(0)+"%";
+  var eqPb = pbHtml(m.eq, eFlows);
+  document.getElementById("s-eq-mech").innerHTML = "—" + (eqPb ? "<br>"+eqPb : "");
   document.getElementById("s-eq-pay").textContent = fmtWan(m.pay===0?0:(m.eqirr===null?0:m.wRows[0].ncf-m.pay),0)+"~"+fmtWan(m.wRows[last].ncf-m.pay,0);
+  document.getElementById("s-eq-ry").textContent = yieldText(m.eq, eFlows);
   document.getElementById("s-eq-irr").textContent = m.eqirr===null?"—":pctS(m.eqirr);
 
   // 逐年分配明细
