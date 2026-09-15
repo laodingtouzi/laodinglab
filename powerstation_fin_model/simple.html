@@ -8,58 +8,58 @@
 :root{--ink:#1e293b;--sub:#64748b;--line:#e2e8f0;--blue:#1d4ed8;--red:#b91c1c;--green:#047857;--amber:#b45309}
 *{box-sizing:border-box}
 body{margin:0;background:#f1f5f9;color:var(--ink);font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;font-size:14px;line-height:1.65}
-.wrap{max-width:1360px;margin:0 auto;padding:26px 18px 60px}
-header{background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:1px solid var(--line);border-radius:14px;padding:22px 28px;margin-bottom:18px}
-header h1{margin:0 0 6px;font-size:22px}
-header .meta{color:var(--sub);font-size:12.5px}
-h2{font-size:17px;margin:30px 0 12px;padding-left:10px;border-left:4px solid var(--blue)}
-.layout{display:grid;grid-template-columns:330px minmax(0,1fr);gap:16px;align-items:start}
+.wrap{max-width:1360px;margin:0 auto;padding:16px 18px 36px}
+header{background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:1px solid var(--line);border-radius:12px;padding:14px 22px;margin-bottom:12px}
+header h1{margin:0 0 3px;font-size:19px}
+header .meta{color:var(--sub);font-size:12px}
+h2{font-size:16px;margin:18px 0 8px;padding-left:10px;border-left:4px solid var(--blue)}
+.layout{display:grid;grid-template-columns:320px minmax(0,1fr);gap:12px;align-items:start}
 @media(max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
-.panel,.card{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,.04)}
-.panel{padding:16px 18px}
-.param{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px dashed var(--line)}
+.panel,.card{background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+.panel{padding:12px 14px}
+.param{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px dashed var(--line)}
 .param:last-of-type{border-bottom:none}
 .param .lab{font-size:13px}
 .param .lab small{display:block;color:var(--sub);font-size:11px}
-.price-group{border:1.5px dashed #93c5fd;border-radius:11px;padding:8px 14px 4px;margin:10px 0;background:linear-gradient(180deg,#f0f7ff,#fff)}
-.price-group legend{font-size:13.5px;font-weight:700;color:#1d4ed8;padding:0 8px;background:#dbeafe;border-radius:6px}
-.price-group legend small{display:block;font-weight:400;color:var(--sub);font-size:11px;margin-top:2px;background:transparent;padding:0}
-.composite{margin:6px 0 10px;padding:9px 12px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;display:flex;align-items:center;justify-content:space-between}
+.price-group{border:1.5px dashed #93c5fd;border-radius:10px;padding:6px 12px 3px;margin:8px 0;background:linear-gradient(180deg,#f0f7ff,#fff)}
+.price-group legend{font-size:13px;font-weight:700;color:#1d4ed8;padding:0 7px;background:#dbeafe;border-radius:5px}
+.price-group legend small{display:block;font-weight:400;color:var(--sub);font-size:11px;margin-top:1px;background:transparent;padding:0}
+.composite{margin:5px 0 8px;padding:7px 11px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:7px;display:flex;align-items:center;justify-content:space-between}
 .composite .ck{font-size:12.5px;color:#1e40af;font-weight:600}
 .composite .cv{font-size:15px;font-weight:700;color:#1d4ed8;font-family:ui-monospace,Menlo,Consolas,monospace}
 .stepper{display:flex;align-items:stretch;border:1px solid #cbd5e1;border-radius:8px;overflow:hidden;background:#fff}
 .stepper button{width:30px;border:none;background:#f8fafc;color:var(--blue);font-size:15px;cursor:pointer;user-select:none;transition:background .12s}
 .stepper button:hover{background:#e0e9ff}
 .stepper button:active{background:#c7d7fe}
-.stepper input{width:76px;border:none;text-align:center;font-size:13.5px;font-weight:600;color:var(--ink);padding:7px 2px;outline:none;font-family:inherit}
+.stepper input{width:72px;border:none;text-align:center;font-size:13px;font-weight:600;color:var(--ink);padding:5px 2px;outline:none;font-family:inherit}
 .stepper input:focus{background:#eff6ff}
 .stepper .unit{display:flex;align-items:center;padding:0 8px;background:#f8fafc;color:var(--sub);font-size:11.5px;border-left:1px solid var(--line);border-right:1px solid var(--line)}
-.btn{display:block;width:100%;margin-top:14px;padding:11px;border:none;border-radius:9px;background:var(--blue);color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+.btn{display:block;width:100%;margin-top:10px;padding:9px;border:none;border-radius:8px;background:var(--blue);color:#fff;font-size:14.5px;font-weight:700;cursor:pointer;font-family:inherit}
 .btn:hover{background:#1a49c0}
 .btn:active{transform:translateY(1px)}
-.tip{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:10px 14px;font-size:12.5px;color:#1e40af;margin-top:12px}
-.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px}
+.tip{background:#eff6ff;border:1px solid #bfdbfe;border-radius:9px;padding:8px 12px;font-size:12px;color:#1e40af;margin-top:9px;line-height:1.55}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px}
 @media(max-width:700px){.cards{grid-template-columns:1fr}}
-.card{padding:14px 16px;display:flex;flex-direction:column}
-.card .k{color:var(--sub);font-size:12px}
-.card .v{font-size:21px;font-weight:700;margin-top:2px;white-space:nowrap}
-.card .n{color:var(--sub);font-size:11.5px;margin-top:2px}
+.card{padding:11px 14px;display:flex;flex-direction:column}
+.card .k{color:var(--sub);font-size:11.5px;line-height:1.5}
+.card .v{font-size:21px;font-weight:700;margin-top:1px;white-space:nowrap;line-height:1.35}
+.card .n{color:var(--sub);font-size:11px;margin-top:1px;line-height:1.45}
 .card>.v{margin-top:auto}
 .card>.n{margin-bottom:auto}
 .card.multi>.k{color:var(--ink);font-weight:600}
-.card.multi .mi{display:grid;grid-template-columns:1fr auto;column-gap:10px;align-items:baseline;align-content:center;margin-top:9px;flex:1}
-.card.multi .mi+.mi{border-top:1px solid var(--line);padding-top:9px}
-.card.multi .mi-k{color:var(--sub);font-size:12px}
-.card.multi .mi-v{font-size:18px;font-weight:700;white-space:nowrap;text-align:right}
-.card.multi .mi-n{grid-column:1/-1;color:var(--sub);font-size:11.5px;margin-top:1px;line-height:1.4;white-space:pre-line}
+.card.multi .mi{display:grid;grid-template-columns:1fr auto;column-gap:10px;align-items:baseline;align-content:center;margin-top:5px;flex:1}
+.card.multi .mi+.mi{border-top:1px solid var(--line);padding-top:5px}
+.card.multi .mi-k{color:var(--sub);font-size:11.5px;line-height:1.5}
+.card.multi .mi-v{font-size:18px;font-weight:700;white-space:nowrap;text-align:right;line-height:1.35}
+.card.multi .mi-n{grid-column:1/-1;color:var(--sub);font-size:11px;margin-top:1px;line-height:1.35;white-space:pre-line}
 table{border-collapse:collapse;width:100%;font-size:12.5px;background:#fff}
-th{background:#f8fafc;border-bottom:2px solid #cbd5e1;padding:7px 5px;font-size:12px;white-space:nowrap;position:sticky;top:0}
-td{border-bottom:1px solid var(--line);padding:5.5px 5px;text-align:center;white-space:nowrap}
+th{background:#f8fafc;border-bottom:2px solid #cbd5e1;padding:6px 5px;font-size:12px;white-space:nowrap;position:sticky;top:0}
+td{border-bottom:1px solid var(--line);padding:4.5px 5px;text-align:center;white-space:nowrap}
 tr.pos td{background:#f0fdf4}
-.tbl-wrap{overflow:auto;border:1px solid var(--line);border-radius:10px;max-height:430px}
-.scroll-x{overflow-x:auto}
-details.fold{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,.04);margin:30px 0 12px;overflow:hidden}
-details.fold>summary{list-style:none;display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;user-select:none;font-size:15.5px;font-weight:700;transition:background .12s}
+.tbl-wrap{overflow:auto;border:1px solid var(--line);border-radius:9px;max-height:430px}
+.scroll-x{overflow-x:auto;border-radius:9px}
+details.fold{background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 1px 2px rgba(15,23,42,.04);margin:18px 0 9px;overflow:hidden}
+details.fold>summary{list-style:none;display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;user-select:none;font-size:15px;font-weight:700;transition:background .12s}
 details.fold>summary::-webkit-details-marker{display:none}
 details.fold>summary::before{content:"\25B8";display:inline-block;color:var(--blue);font-size:14px;line-height:1;transition:transform .15s}
 details.fold[open]>summary{border-bottom:1px solid var(--line);background:#f8fafc}
@@ -67,23 +67,23 @@ details.fold[open]>summary::before{transform:rotate(90deg)}
 details.fold>summary:hover{background:#f1f5f9}
 details.fold .fold-sum{margin-left:auto;font-weight:400;font-size:12px;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 @media(max-width:760px){details.fold .fold-sum{display:none}}
-details.fold .fold-body{padding:14px 16px}
+details.fold .fold-body{padding:11px 13px}
 details.fold .tbl-wrap{border-radius:9px;max-height:400px}
 canvas{width:100%;border:1px solid var(--line);border-radius:10px;background:#fff;display:block}
-#fig1{height:300px}
-#fig2{height:290px}
+#fig1{height:270px}
+#fig2{height:260px}
 .mile{width:100%;font-size:13px}
-.mile td,.mile th{padding:8px 6px;text-align:center}
+.mile td,.mile th{padding:6px 5px;text-align:center}
 .mile td:first-child{text-align:left;font-weight:600}
 .hit{color:var(--green);font-weight:700}
 .miss{color:var(--sub)}
-footer{color:var(--sub);font-size:12px;text-align:center;margin-top:34px}
-.chart-note{color:var(--sub);font-size:11.5px;margin:6px 2px 0}
-.warn{background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:10px 14px;font-size:12.5px;color:#991b1b;margin-bottom:16px;line-height:1.7}
+footer{color:var(--sub);font-size:12px;text-align:center;margin-top:22px}
+.chart-note{color:var(--sub);font-size:11.5px;margin:5px 2px 0}
+.warn{background:#fef2f2;border:1px solid #fecaca;border-radius:9px;padding:8px 12px;font-size:12px;color:#991b1b;margin-bottom:12px;line-height:1.6}
 /* ===== 参数面板：停靠跟随 / 自由浮动 ===== */
 #param-col{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto;scrollbar-width:thin}
 @media(max-width:900px){#param-col{position:static;max-height:none;overflow:visible}}
-.phead{position:sticky;top:0;z-index:3;display:flex;align-items:center;gap:7px;margin:-16px -18px 8px;padding:9px 14px;background:#fff;border-bottom:1px solid var(--line);border-radius:11px 11px 0 0;cursor:grab;user-select:none;touch-action:none;transition:background .12s}
+.phead{position:sticky;top:0;z-index:3;display:flex;align-items:center;gap:7px;margin:-12px -14px 7px;padding:7px 12px;background:#fff;border-bottom:1px solid var(--line);border-radius:9px 9px 0 0;cursor:grab;user-select:none;touch-action:none;transition:background .12s}
 .phead:hover{background:#f8fafc}
 .phead:active{cursor:grabbing}
 .ph-grip{color:#cbd5e1;font-size:14px;letter-spacing:-2px}
@@ -184,8 +184,8 @@ footer{color:var(--sub);font-size:12px;text-align:center;margin-top:34px}
 <div class="card multi" data-page-node-id="gLt6VTZBTyZZuaH0OpByuG"><div class="k" data-page-node-id="O7ewcdijxVty2TkxPVAQSV">期末累计与项目规模</div><div class="mi"><span class="mi-k">期末累计净现金流</span><span class="mi-v" style="color:var(--red)" id="r-cum" data-page-node-id="9cvysCG7m8PeMuhhXIjBa1">—</span><span class="mi-n" id="r-cum-n" data-page-node-id="kUAunoIoIyJAYKeWcEK2VA">—</span></div><div class="mi"><span class="mi-k">总投资 / 年发电量</span><span class="mi-v" style="font-size:17px" id="r-scale" data-page-node-id="EwR7DFfgEzLmsCWoUj7aML">—</span><span class="mi-n" id="r-scale-n" data-page-node-id="IfOTvJlIq8GyBJ2r09RP3k">—</span></div></div>
 </div>
 
-<div class="panel" style="margin-bottom:16px" data-page-node-id="0zwKIeTNdmAFIYgrXzIWvd">
-<div style="font-weight:700;margin-bottom:8px" data-page-node-id="edwMVBHR8AX9eH6KtimHc6">IRR 里程碑：达到各收益率水平的年份</div>
+<div class="panel" style="margin-bottom:12px" data-page-node-id="0zwKIeTNdmAFIYgrXzIWvd">
+<div style="font-weight:700;margin-bottom:6px" data-page-node-id="edwMVBHR8AX9eH6KtimHc6">IRR 里程碑：达到各收益率水平的年份</div>
 <div class="scroll-x">
 <table class="mile" data-page-node-id="rSP1h5LGU3bQdRfuCQGED4"><tr data-page-node-id="7i0TcDnBiqfGY5lZe0wTkH"><th style="text-align:left" data-page-node-id="2WHVfuu7vUSwVh7k4uIHyR">收益率水平</th><th data-page-node-id="TnBEUEm6A2GczOZfhhyTki">2%</th><th data-page-node-id="Hm2CqCVcFWl1XFGfE0M5t3">3%</th><th data-page-node-id="nPzQIZDn852sxrey1aeJpN">4%</th><th data-page-node-id="EnB47t4x8SZGdGh8hi3WXG">5%</th><th data-page-node-id="uBztVD6qhC1a0ShQ8YZ2F3">6%</th><th data-page-node-id="lKCkEZtF45JzySrayusVy8">8%</th></tr>
 <tr data-page-node-id="vOxH1vC8VFvpTrYr5PRejI"><td data-page-node-id="6Kd8l0eJuDQbaHnIDefMTV">达成年份</td><td id="m-2" data-page-node-id="sXEarwfpC86Uj5QxWCZyDF">—</td><td id="m-3" data-page-node-id="SNpJ8h5TYNUtRE4uOJhV98">—</td><td id="m-4" data-page-node-id="jca3I6Oe2QF4EdEIRaMJmj">—</td><td id="m-5" data-page-node-id="V6Upr030Ei5Q6vGuXPJnrC">—</td><td id="m-6" data-page-node-id="N72B1qYv61P3VM6QtbJVjy">—</td><td id="m-8" data-page-node-id="dFpULMbPCgWTSEhGXEvDyG">—</td></tr></table>
@@ -193,11 +193,11 @@ footer{color:var(--sub);font-size:12px;text-align:center;margin-top:34px}
 <div class="chart-note" id="mile-note" data-page-node-id="gNPdbBSNQ2bGxHTP5wSAXS">—</div>
 </div>
 
-<canvas id="fig1" height="300" data-page-node-id="DlxRDdSiyYF86QAcWJN2lh"></canvas>
+<canvas id="fig1" height="270" data-page-node-id="DlxRDdSiyYF86QAcWJN2lh"></canvas>
 <p class="chart-note" data-page-node-id="0Ox9MfBkhFOQwKV91rcgUp">图1：年度净现金流（柱）与累计净现金流（线，含期初投资）。金色虚线 = 静态回收点。</p>
 
 <div style="height:14px" data-page-node-id="WAz4ffhuhNzx0f3tCvdxup"></div>
-<canvas id="fig2" height="290" data-page-node-id="xjvJt2Ql5qkjRlHXrsZQIz"></canvas>
+<canvas id="fig2" height="260" data-page-node-id="xjvJt2Ql5qkjRlHXrsZQIz"></canvas>
 <p class="chart-note" data-page-node-id="H7zGvgMWGZfmHJjTGAybN0">图2：累积 IRR 爬升曲线（"若只运营到第 N 年"的年化收益率）与各收益率里程碑。</p>
 
 <details class="fold" id="fold-cf">
@@ -219,8 +219,8 @@ footer{color:var(--sub);font-size:12px;text-align:center;margin-top:34px}
 </div>
 <div class="warn" id="eq-warn" style="display:none"></div>
 
-<div class="panel" style="margin-bottom:16px">
-<div style="font-weight:700;margin-bottom:8px">年度现金流分配瀑布（优先·次级投资款按 25 年全周期分派率口径等额年付）</div>
+<div class="panel" style="margin-bottom:12px">
+<div style="font-weight:700;margin-bottom:6px">年度现金流分配瀑布（优先·次级投资款按 25 年全周期分派率口径等额年付）</div>
 <div class="scroll-x">
 <table class="mile" id="eq-wtable">
 <tr><th style="text-align:left">分配顺序与项目</th><th>首年（万/年）</th><th>末年（万/年）</th><th style="text-align:left">计算逻辑</th></tr>
@@ -233,8 +233,8 @@ footer{color:var(--sub);font-size:12px;text-align:center;margin-top:34px}
 </div>
 </div>
 
-<div class="panel" style="margin-bottom:16px">
-<div style="font-weight:700;margin-bottom:8px">资本结构与投资人收益分配总表</div>
+<div class="panel" style="margin-bottom:12px">
+<div style="font-weight:700;margin-bottom:6px">资本结构与投资人收益分配总表</div>
 <div class="tbl-wrap" style="max-height:none">
 <table id="eq-struct">
 <tr><th style="text-align:left">层级</th><th>出资额<br>（万）</th><th>占总投资</th><th style="text-align:left">定价机制</th><th>年付<br>（万/年）</th><th>当年收益率<br>（现金流入÷本金）</th><th>全周期<br>IRR</th></tr>
@@ -248,7 +248,7 @@ footer{color:var(--sub);font-size:12px;text-align:center;margin-top:34px}
 <div class="chart-note" id="eq-struct-note"><b>年付</b> = 该层级当年现金流入（等额分派层级为恒定年金，浮动层级显示首年~末年）。<b>当年收益率</b> = 当年现金流入 ÷ 原始本金，与「年付」列<b>同基准</b>，两列可直接互相验证。<b>预计静态回收期</b> = 累计现金流入首次达到原始本金的年份（未折现，年内线性插值）。全周期 IRR 按各层级实际收到的现金流计算；次级优先若被克扣、劣后若为零分配，IRR 均按实际额计。<b>劣后</b>为剩余索取权，分配额逐年随融资利息税盾（前高后低）递减，故呈现为首高末低的区间。</div>
 </div>
 
-<details class="fold" id="fold-eq" style="margin:18px 0 16px">
+<details class="fold" id="fold-eq" style="margin:16px 0 12px">
 <summary><span class="ft">逐年股权分配明细（万）</span><span class="fold-sum" id="eq-sum">—</span></summary>
 <div class="fold-body">
 <div class="tbl-wrap">
