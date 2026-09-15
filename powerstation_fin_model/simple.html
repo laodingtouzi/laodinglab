@@ -17,9 +17,9 @@ h2{font-size:16px;margin:18px 0 8px;padding-left:10px;border-left:4px solid var(
 @media(max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
 .panel,.card{background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 1px 2px rgba(15,23,42,.04)}
 .panel{padding:12px 14px}
-.param{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px dashed var(--line)}
+.param{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px dashed var(--line)}
 .param:last-of-type{border-bottom:none}
-.param .lab{font-size:13px}
+.param .lab{font-size:13px;min-width:0;flex:1 1 auto}
 .param .lab small{display:block;color:var(--sub);font-size:11px}
 .price-group{border:1.5px dashed #93c5fd;border-radius:10px;padding:6px 12px 3px;margin:8px 0;background:linear-gradient(180deg,#f0f7ff,#fff)}
 .price-group legend{font-size:13px;font-weight:700;color:#1d4ed8;padding:0 7px;background:#dbeafe;border-radius:5px}
@@ -27,13 +27,13 @@ h2{font-size:16px;margin:18px 0 8px;padding-left:10px;border-left:4px solid var(
 .composite{margin:5px 0 8px;padding:7px 11px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:7px;display:flex;align-items:center;justify-content:space-between}
 .composite .ck{font-size:12.5px;color:#1e40af;font-weight:600}
 .composite .cv{font-size:15px;font-weight:700;color:#1d4ed8;font-family:ui-monospace,Menlo,Consolas,monospace}
-.stepper{display:flex;align-items:stretch;border:1px solid #cbd5e1;border-radius:8px;overflow:hidden;background:#fff}
-.stepper button{width:30px;border:none;background:#f8fafc;color:var(--blue);font-size:15px;cursor:pointer;user-select:none;transition:background .12s}
+.stepper{display:flex;align-items:stretch;border:1px solid #cbd5e1;border-radius:8px;overflow:hidden;background:#fff;flex:0 0 auto}
+.stepper button{flex:0 0 26px;width:26px;border:none;background:#f8fafc;color:var(--blue);font-size:15px;cursor:pointer;user-select:none;transition:background .12s}
 .stepper button:hover{background:#e0e9ff}
 .stepper button:active{background:#c7d7fe}
-.stepper input{width:72px;border:none;text-align:center;font-size:13px;font-weight:600;color:var(--ink);padding:5px 2px;outline:none;font-family:inherit}
+.stepper input{flex:0 0 auto;width:58px;border:none;text-align:center;font-size:13px;font-weight:600;color:var(--ink);padding:5px 2px;outline:none;font-family:inherit}
 .stepper input:focus{background:#eff6ff}
-.stepper .unit{display:flex;align-items:center;padding:0 8px;background:#f8fafc;color:var(--sub);font-size:11.5px;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+.stepper .unit{display:flex;align-items:center;flex:0 0 auto;padding:0 6px;background:#f8fafc;color:var(--sub);font-size:11.5px;border-left:1px solid var(--line);border-right:1px solid var(--line)}
 .btn{display:block;width:100%;margin-top:10px;padding:9px;border:none;border-radius:8px;background:var(--blue);color:#fff;font-size:14.5px;font-weight:700;cursor:pointer;font-family:inherit}
 .btn:hover{background:#1a49c0}
 .btn:active{transform:translateY(1px)}
@@ -139,6 +139,8 @@ footer{color:var(--sub);font-size:12px;text-align:center;margin-top:22px}
 
 <div class="param" data-page-node-id="ySB2WNfQPAUqSnVoAatCO8"><div class="lab" data-page-node-id="7AuosrVze2HwF2IaAhHIiA">利用小时数（h/年）<small data-page-node-id="BvvzyKyyyc3Vcb7miI5ZJR">1000h ⇒ 1W 年发 1 度 · 步长 10h</small></div>
 <div class="stepper" data-page-node-id="AJuIrZnVhSpCC6OaEyI0dH"><button data-t="hours" data-d="-1" data-page-node-id="KVrGP5wUycFdKe7ET2fHCa">−</button><input id="in-hours" type="number" step="10" min="400" max="3000" value="1000" data-page-node-id="Gem950TWjE5fr32j7CIRzn"><div class="unit" data-page-node-id="SDeBXADtDFELGjgvBHLyE5">h</div><button data-t="hours" data-d="1" data-page-node-id="nV40rGxywRXiLow5R4bWJc">+</button></div></div>
+
+<div class="param"><div class="lab">平均限电率<small>实际发电小时数 = 利用小时数 ×（1 − 限电率）</small></div><div class="stepper"><button data-t="curt" data-d="-1">−</button><input id="in-curt" type="number" step="1" min="0" max="60" value="5"><div class="unit">%</div><button data-t="curt" data-d="1">+</button></div></div>
 
 <div class="param" data-page-node-id="eu7HuXXJBB8lzkiDRbVlCV"><div class="lab" data-page-node-id="E63coe3PYfwFojDb3WxaHy">运营期（年）<small data-page-node-id="cXITdCBXau3t2BE02a6A5f">折旧年限同此</small></div>
 <div class="stepper" data-page-node-id="ija4pI7c8q61YtQTiavIx6"><button data-t="years" data-d="-1" data-page-node-id="AdlJbJN1vvqYFEK4TRY9k6">−</button><input id="in-years" type="number" step="1" min="5" max="40" value="25" data-page-node-id="LRA67H71edEmEWlmHx8147"><div class="unit" data-page-node-id="Iu6aB8xoB6FjsojXySwVsu">年</div><button data-t="years" data-d="1" data-page-node-id="uwWnf19UHErBTOiFGIHQsZ">+</button></div></div>
@@ -310,7 +312,7 @@ function amort(P, r, n){ // 等额本息年付额
 
 function compute(p){
   var capex = p.mw * 1e6 * p.capex;             // 元（MW×100万W×元/W）
-  var gen   = p.mw * 1000 * p.hours;            // kWh
+  var gen   = p.mw * 1000 * p.hoursEff;         // kWh（按实际发电小时数）
   var rev   = gen * p.price;
   var cost  = gen * p.cost;
   var gross = rev - cost;
@@ -376,16 +378,17 @@ function compute(p){
 }
 
 /* ---------- 参数读取 ---------- */
-var IDS = {mw:"in-mw", capex:"in-capex", mech:"in-mech", ratio:"in-ratio", spot:"in-spot", cost:"in-cost", hours:"in-hours", years:"in-years", vat:"in-vat", surtax:"in-surtax", cit:"in-cit", fee:"in-fee", debt:"in-debt", lrate:"in-lrate", srate:"in-srate"};
+var IDS = {mw:"in-mw", capex:"in-capex", mech:"in-mech", ratio:"in-ratio", spot:"in-spot", cost:"in-cost", hours:"in-hours", curt:"in-curt", years:"in-years", vat:"in-vat", surtax:"in-surtax", cit:"in-cit", fee:"in-fee", debt:"in-debt", lrate:"in-lrate", srate:"in-srate"};
 function readParams(){
-  var p = {}, k, v, el, defs = {mw:100, capex:3, mech:0.35, ratio:80, spot:0.20, cost:0.08, hours:1000, years:25, vat:0.02, surtax:0.12, cit:0.25, fee:0.10, debt:60, lrate:3.0, srate:6.0};
+  var p = {}, k, v, el, defs = {mw:100, capex:3, mech:0.35, ratio:80, spot:0.20, cost:0.08, hours:1000, curt:5, years:25, vat:0.02, surtax:0.12, cit:0.25, fee:0.10, debt:60, lrate:3.0, srate:6.0};
   for(k in IDS){
     el = document.getElementById(IDS[k]);
     v = parseFloat(el.value);
     if(isNaN(v) || v < parseFloat(el.min) || v > parseFloat(el.max)) v = defs[k];
-    if(k==="vat" || k==="ratio" || k==="surtax" || k==="cit" || k==="fee" || k==="debt" || k==="lrate" || k==="srate") v = v/100;
+    if(k==="vat" || k==="ratio" || k==="surtax" || k==="cit" || k==="fee" || k==="debt" || k==="lrate" || k==="srate" || k==="curt") v = v/100;
     p[k]=v;
   }
+  p.hoursEff = p.hours * (1 - p.curt);   // 实际发电小时数（仅参与计算，不在报告展示）
   p.price = p.mech * p.ratio + p.spot * (1 - p.ratio);
   return p;
 }
@@ -424,7 +427,7 @@ function recalc(){
   document.getElementById("r-cum").textContent   = (cumEnd>=0?"+":"")+fmtWan(cumEnd,0)+" 万";
   document.getElementById("r-cum-n").textContent = "总流入 "+fmtWan(m.cf*m.years,0)+" 万 − 投资 "+fmtWan(m.capex,0)+" 万";
   document.getElementById("r-scale").textContent = fmtWan(m.capex,0)+" 万 / "+(m.gen/1e8).toFixed(2)+" 亿kWh";
-  document.getElementById("r-scale-n").textContent = Math.round(p.mw)+" MW × "+Math.round(p.hours)+"h · 通道费 "+fmtWan(m.fee,0)+" 万/年";
+  document.getElementById("r-scale-n").textContent = Math.round(p.mw)+" MW × "+Math.round(p.hours)+"h"+((p.curt>0)?(" · 限电 "+((p.curt*100).toFixed((p.curt*100)%1?1:0))+"%"):"")+" · 通道费 "+fmtWan(m.fee,0)+" 万/年";
 
   /* ---------- 融资现金流出（净额）与资本金净现金流：卡片主值=年均值，小字给生命周期高低限 ---------- */
   var finArr = [], shieldArr = [], eqArr = [], kk;
