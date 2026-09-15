@@ -438,25 +438,29 @@ function recalc(){
   function rngTxt(r){ return fmtWan(r.a) + (r.single ? "" : "~" + fmtWan(r.b)); }
   /* 年均值 = 全部运营年份的算术平均（非首末均值），与「年净现金流 − 融资流出」逐项恒等 */
   function avgOf(arr){ var s = 0, j; for(j=0;j<arr.length;j++){ s += arr[j]; } return arr.length ? s/arr.length : 0; }
-  /* 小字首行：年均值口径 + 生命周期首末高低限 */
-  function spanTxt(r){
+  /* 小字首行：年均值口径 + 生命周期首末高低限。neg=true 用于流出侧（与主值同取负号，保证同卡内数值方向一致） */
+  function spanTxt(r, neg){
+    var F = function(v){ return fmtWan(neg ? -v : v); };
     if(!r) return "生命周期内无正值";
-    if(r.single) return "年均 · 各年恒定 " + fmtWan(r.a) + " 万/年";
-    return "年均 · 首年 " + fmtWan(r.a) + " → 末年 " + fmtWan(r.b) + " 万/年";
+    if(r.single) return "年均 · 各年恒定 " + F(r.a) + " 万/年";
+    return "年均 · 首年 " + F(r.a) + " → 末年 " + F(r.b) + " 万/年";
   }
   var finV = document.getElementById("r-fin"), finN = document.getElementById("r-fin-n");
   var eqV  = document.getElementById("r-eqcf"), eqN = document.getElementById("r-eqcf-n");
   if(m.loan > 0 && m.pay > 0 && finR){
-    finV.textContent = fmtWan(avgOf(finArr)) + " 万/年";
-    finN.textContent = spanTxt(finR) + "\n= 还本付息 " + fmtWan(m.pay) + " − 利息税盾 " + (shR ? rngTxt(shR) : "0.0");
+    /* 现金流出口径：展示为负值（fmtWan 对负数自带半角负号），与「资本金净现金流」构成收支两侧 */
+    finV.textContent = fmtWan(-avgOf(finArr)) + " 万/年";
+    finN.textContent = spanTxt(finR, true) + "\n= 利息税盾 " + (shR ? rngTxt(shR) : "0.0") + " − 还本付息 " + fmtWan(m.pay);
   } else {
     finV.textContent = "0.0 万/年";
     finN.textContent = "债务比例 0%，无融资现金流出";
   }
   if(eqR){
     eqV.textContent = fmtWan(avgOf(eqArr)) + " 万/年";
+    /* 资本金口径展开税盾：资本金净现金流 = 全投资年净现金流 + 利息税盾（贷款利息×所得税率，随本金摊还递减）− 还本付息 */
     eqN.textContent = spanTxt(eqR) + "\n" + ((m.loan > 0)
-      ? "= 年净现金流 − 融资现金流出\n（同总表「资本金合计」）"
+      ? "= 年净现金流 + 利息税盾 " + (shR ? rngTxt(shR) : "0.0") + " − 还本付息 " + fmtWan(m.pay)
+        + "\n（利息税盾＝贷款利息 × 所得税率，随本金摊还递减）\n（同总表「资本金合计」）"
       : "= 年净现金流（无融资，两者相等）");
   } else {
     eqV.textContent = "—";
