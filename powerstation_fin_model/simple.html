@@ -38,14 +38,16 @@ h2{font-size:17px;margin:30px 0 12px;padding-left:10px;border-left:4px solid var
 .btn:hover{background:#1a49c0}
 .btn:active{transform:translateY(1px)}
 .tip{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:10px 14px;font-size:12.5px;color:#1e40af;margin-top:12px}
-.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px;align-items:start}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px}
 @media(max-width:700px){.cards{grid-template-columns:1fr}}
-.card{padding:14px 16px}
+.card{padding:14px 16px;display:flex;flex-direction:column}
 .card .k{color:var(--sub);font-size:12px}
 .card .v{font-size:21px;font-weight:700;margin-top:2px;white-space:nowrap}
 .card .n{color:var(--sub);font-size:11.5px;margin-top:2px}
+.card>.v{margin-top:auto}
+.card>.n{margin-bottom:auto}
 .card.multi>.k{color:var(--ink);font-weight:600}
-.card.multi .mi{display:grid;grid-template-columns:1fr auto;column-gap:10px;align-items:baseline;margin-top:9px}
+.card.multi .mi{display:grid;grid-template-columns:1fr auto;column-gap:10px;align-items:baseline;align-content:center;margin-top:9px;flex:1}
 .card.multi .mi+.mi{border-top:1px solid var(--line);padding-top:9px}
 .card.multi .mi-k{color:var(--sub);font-size:12px}
 .card.multi .mi-v{font-size:18px;font-weight:700;white-space:nowrap;text-align:right}
