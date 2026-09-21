@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>分省新能源（风光）市场化电价中长期预测模型 2026-2035</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#f5f6f8; --card:#ffffff; --line:#e3e6ec; --line2:#eef0f4;
+  --tx:#1c2026; --tx2:#5a6270; --tx3:#8b93a1;
+  --blue:#1a5fb4; --blue-l:#e8f0fb;
+  --pv:#c2690a; --wind:#0d7f72; --mech:#6b7280; --comp:#8b3fa8;
+  --red:#c0392b; --green:#1f7a4d;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1440px;margin:0 auto;padding:20px}
+header{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 24px;margin-bottom:16px}
+h1{font-size:20px;font-weight:600;margin-bottom:6px}
+.sub{color:var(--tx2);font-size:13px}
+.tag{display:inline-block;background:var(--blue-l);color:var(--blue);border-radius:5px;
+  padding:1px 7px;font-size:11px;margin-left:6px;vertical-align:middle}
+.grid{display:grid;grid-template-columns:320px 1fr;gap:16px;align-items:start}
+@media(max-width:1080px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:16px}
+.card h2{font-size:15px;font-weight:600;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.card h2 .n{width:20px;height:20px;border-radius:5px;background:var(--blue);color:#fff;
+  font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:500;flex:none}
+.hint{font-size:12px;color:var(--tx3);margin-bottom:12px;line-height:1.5}
+.scen{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px}
+.scen button{flex:1;min-width:88px;padding:8px 6px;border:1px solid var(--line);background:#fff;
+  border-radius:8px;cursor:pointer;font-size:13px;color:var(--tx2);font-family:inherit;transition:.15s}
+.scen button:hover{border-color:var(--blue);color:var(--blue)}
+.scen button.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:500}
+.pgrp{border-top:1px solid var(--line2);padding:12px 0 4px}
+.pgrp:first-of-type{border-top:none}
+.pgrp>.gt{font-size:12px;font-weight:600;color:var(--tx2);margin-bottom:8px;letter-spacing:.3px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px}
+.row label{font-size:12px;color:var(--tx2);flex:1;line-height:1.35}
+.row .val{font-size:12px;font-weight:600;color:var(--blue);
+  font-variant-numeric:tabular-nums;min-width:52px;text-align:right}
+.row input[type=range]{width:100%;accent-color:var(--blue);height:3px}
+.row .rw{display:flex;flex-direction:column;gap:2px;flex:1}
+.prov{display:flex;flex-wrap:wrap;gap:6px}
+.prov button{padding:5px 10px;border:1px solid var(--line);background:#fff;border-radius:7px;
+  cursor:pointer;font-size:12.5px;color:var(--tx2);font-family:inherit;transition:.15s}
+.prov button:hover{border-color:var(--blue);color:var(--blue)}
+.prov button.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:500}
+table{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums}
+th,td{padding:6px 8px;text-align:right;border-bottom:1px solid var(--line2);white-space:nowrap}
+th{color:var(--tx2);font-weight:600;background:#fafbfc;position:sticky;top:0;font-size:12px}
+td:first-child,th:first-child{text-align:left;font-weight:600}
+tbody tr:hover{background:#fafbfc}
+.tbl-wrap{max-height:420px;overflow:auto;border:1px solid var(--line2);border-radius:8px}
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:10px;margin-bottom:14px}
+.kpi div{background:#fafbfc;border:1px solid var(--line2);border-radius:9px;padding:10px 12px}
+.kpi .k{font-size:11px;color:var(--tx3);margin-bottom:3px}
+.kpi .v{font-size:18px;font-weight:600;font-variant-numeric:tabular-nums}
+.kpi .u{font-size:11px;color:var(--tx3);font-weight:400}
+.kpi .d{font-size:11px;margin-top:2px}
+.dn{color:var(--green)}.up{color:var(--red)}
+.chart-box{position:relative;height:330px;margin-top:6px}
+.chart-box.tall{height:400px}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--tx2);margin:8px 0 2px}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.note{background:#fbfbfc;border-left:3px solid var(--blue);padding:10px 13px;border-radius:0 7px 7px 0;
+  font-size:12.5px;color:var(--tx2);line-height:1.65;margin-top:10px}
+.note b{color:var(--tx)}
+.warn{background:#fdf8f0;border-left:3px solid #d97706}
+.src{font-size:11.5px;color:var(--tx3);line-height:1.7;margin-top:10px}
+.src b{color:var(--tx2)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:820px){.two{grid-template-columns:1fr}}
+details summary{cursor:pointer;font-size:13px;color:var(--blue);padding:4px 0;user-select:none}
+details summary:hover{text-decoration:underline}
+code{background:#f0f2f5;padding:1px 5px;border-radius:4px;font-size:12px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.fml{background:#fafbfc;border:1px solid var(--line2);border-radius:8px;padding:11px 13px;
+  font-size:12.5px;color:var(--tx2);line-height:1.8;margin:9px 0;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto}
+.chk{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--tx2);
+  cursor:pointer;font-weight:500;padding:2px 0}
+.chk input{accent-color:var(--blue);cursor:pointer}
+td.basis{text-align:left!important;white-space:normal!important;font-weight:400!important;
+  color:var(--tx2);min-width:300px;line-height:1.55;font-size:12px}
+td.src{text-align:left!important;white-space:normal!important;font-weight:400!important;
+  color:var(--tx3);min-width:130px;line-height:1.5;font-size:11.5px}
+details summary.csum{font-size:15px;font-weight:600;color:var(--tx);display:flex;align-items:center;
+  gap:8px;padding:2px 0;list-style:none;cursor:pointer}
+details summary.csum::-webkit-details-marker{display:none}
+details summary.csum .n{width:20px;height:20px;border-radius:5px;background:var(--blue);color:#fff;
+  font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:500;flex:none}
+.ver{display:inline-block;background:#eef2f7;color:var(--tx2);border-radius:5px;
+  padding:1px 7px;font-size:10.5px;font-weight:400;letter-spacing:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>分省新能源（风光）市场化交易电价中长期预测模型 <span class="tag">2026–2035</span></h1>
+  <div class="sub">
+    基于 136 号文「全量入市 + 机制电价差价结算」框架 · 火电边际运行成本锚定 × 捕获率衰减 · 31 个省级行政区全覆盖
+  </div>
+  <div style="margin-top:6px"><a href="https://laodinglab.com/" style="color:#1a5fb4;font-size:12px;text-decoration:none">← 返回老丁实验室</a></div>
+</header>
+
+<div class="grid">
+  <!-- 左栏 -->
+  <div>
+    <div class="card">
+      <h2><span class="n">1</span>情景与省份</h2>
+      <div class="hint">切换情景＝切换一套<b>已标定</b>的参数包（悲观/基准/乐观）；切换省份只换展示对象。</div>
+      <div class="scen" id="scenBar">
+        <button data-s="pess">悲观</button>
+        <button data-s="base" class="on">基准</button>
+        <button data-s="opt">乐观</button>
+      </div>
+      <div class="pgrp">
+        <div class="gt">选择省份</div>
+        <div class="prov" id="provBar"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><span class="n">2</span>内置参数 <span class="ver" id="verTag"></span></h2>
+      <div class="hint">全部参数由外部数据与政策口径标定，<b>不开放手动调节</b>——取值依据、数据来源与刷新机制见文末第 10 节附录，随外部信息定期刷新。</div>
+      <div id="paramView"></div>
+      <div class="pgrp">
+        <div class="gt">机制电价与机制电量（可自定义）</div>
+        <div id="g_mech"></div>
+        <div class="hint" style="margin:3px 0 0">步长 0.1%（0.001），默认值为基准情景标定值。</div>
+      </div>
+      <div class="pgrp">
+        <label class="chk"><input type="checkbox" id="calibChk"> 高级校准模式</label>
+        <div class="hint" style="margin:4px 0 0">仅用于拿本省实际现货结算价反向标定捕获率等技术参数，日常使用请勿开启。</div>
+      </div>
+      <div id="calibPanel" style="display:none">
+        <div class="pgrp"><div class="gt">煤炭价格路径（秦皇岛 5500 大卡）</div><div id="g_coal"></div></div>
+        <div class="pgrp"><div class="gt">电力需求</div><div id="g_dem"></div></div>
+        <div class="pgrp"><div class="gt">装机增速（十五五 / 十六五）</div><div id="g_cap"></div></div>
+        <div class="pgrp"><div class="gt">火电成本与价格锚</div><div id="g_th"></div></div>
+        <div class="pgrp"><div class="gt">捕获率 capture rate 曲线</div><div id="g_cr"></div></div>
+        <div class="pgrp"><div class="gt">系统调节（储能 / 电网 / 绿证）</div><div id="g_sys"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 右栏 -->
+  <div>
+    <div class="card">
+      <h2><span class="n">3</span><span id="pTitle">山东省</span> · 电价预测总览</h2>
+      <div class="hint" id="pHint"></div>
+      <div class="kpi" id="kpi"></div>
+      <div class="legend">
+        <span><i style="background:#c2690a"></i>光伏市场化均价</span>
+        <span><i style="background:#0d7f72"></i>风电市场化均价</span>
+        <span><i style="background:#8b3fa8"></i>光伏综合上网电价</span>
+        <span><i style="background:#1a5fb4"></i>风电综合上网电价</span>
+        <span><i style="background:#9aa1ac"></i>机制电价（托底）</span>
+      </div>
+      <div class="chart-box tall"><canvas id="c1"></canvas></div>
+      <div class="note" id="n1"></div>
+    </div>
+
+    <div class="two">
+      <div class="card">
+        <h2><span class="n">4</span>渗透率与捕获率</h2>
+        <div class="hint">渗透率上升如何通过「同类相食」压低捕获率——这是价格下行的主通道。</div>
+        <div class="chart-box"><canvas id="c2"></canvas></div>
+      </div>
+      <div class="card">
+        <h2><span class="n">5</span>价格锚拆解</h2>
+        <div class="hint">火电边际运行成本的构成与演化。</div>
+        <div class="chart-box"><canvas id="c3"></canvas></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><span class="n">6</span>分省横向对比（光伏综合上网电价）</h2>
+      <div class="hint">同一年份下 31 个省级行政区的价格梯度，反映资源禀赋、消纳能力与政策取向差异。</div>
+      <div class="scen" id="yrBar" style="margin-bottom:10px">
+        <button data-y="2026">2026</button>
+        <button data-y="2030" class="on">2030</button>
+        <button data-y="2035">2035</button>
+      </div>
+      <div class="chart-box" style="height:680px"><canvas id="c4"></canvas></div>
+      <div class="note" id="n4"></div>
+    </div>
+
+    <div class="card">
+      <h2><span class="n">7</span>敏感性分析</h2>
+      <div class="hint">以当前省份 <b id="sensYr">2030</b> 年光伏综合上网电价为基准，单变量扰动的弹性。
+      <b>读法</b>：其它条件不变，只把某一个参数扰动一档，看电价变多少——<b>柱越长＝该假设越敏感，越值得花力气去核实</b>；
+      向右（绿）抬升电价，向左（红）压低电价。它衡量的是「不确定性贡献度」，<b>不是预测情景</b>：真实世界里这些变量会同时变化。</div>
+      <div class="chart-box"><canvas id="c5"></canvas></div>
+      <div class="note" id="n5"></div>
+    </div>
+
+    <div class="card">
+      <h2><span class="n">8</span>逐年明细表</h2>
+      <div class="hint">单位：元/千瓦时（含税）。机制电价为该省当年增量项目竞价水平。</div>
+      <div class="tbl-wrap"><table id="tbl"></table></div>
+    </div>
+
+    <div class="card">
+      <details>
+      <summary class="csum"><span class="n">9</span>模型方法与数据说明 <span class="ver">点击展开</span></summary>
+      <div class="hint" style="margin-top:8px">推导链与参数标定依据。</div>
+      <div class="fml">
+P_mkt(风光) = P_base × CR(σ_eff) × F_storage × F_grid × F_load × F_curtail × F_export + P_green<br><br>
+P_base   = MC_thermal × (1 + margin₀ − γ·σ_total) × (1 − k_h·水电占比)<br>
+MC_thermal = P_coal × 7000/5500 × (1+运费) × HR/1e6 + VOM<br><br>
+σ_eff(光伏) = σ_光伏 + λ₁·σ_风电　｜　σ_eff(风电) = σ_风电 + λ₂·σ_光伏<br>
+CR(σ_eff) = CR_min + (CR_max − CR_min) / (1 + exp((σ_eff − σ_mid)/w))<br><br>
+α(t) = 存量机制电量比例 × 存量装机占比(t) × (1 − 衰减)^t<br>
+P_综合 = α(t) × P_机制 + (1 − α(t)) × P_mkt
+      </div>
+      <details>
+        <summary>展开：七类要素如何映射到模型</summary>
+        <div class="src" style="margin-top:8px">
+          <b>① GDP 与增速</b> → 电力需求：D(t)=D₀×Π(1+g<sub>GDP</sub>(k)×ε(k)+b(k))，<b>增速、弹性、电气化增量三项均逐年演化</b>（十六五增速回落 0.8pp、弹性每年衰减 1.2‰、电气化增量 2029–2030 达峰后回落），逐年路径见第 10 节。<br>
+          <b>② 经济结构</b> → F_load 负荷形状系数：二产占比高 → 负荷曲线平坦 → 光伏午间出力与负荷匹配度较好 → 系数 &gt;1；三产/居民占比高 → 峰谷差拉大 → 光伏更吃亏。<br>
+          <b>③ 电源结构与输入输出</b> → 自给率决定本省发电量口径；外送比例 F_export 送端省享受外送需求支撑、受端省承受外来低价电冲击（本模型以外购比例反向作用于本地渗透率）。<br>
+          <b>④ 煤价与火电成本</b> → 价格锚 MC_thermal，是整个模型地基；煤价按 2026/2030/2035 三锚点插值成逐年路径（月度–季度刷新）。<br>
+          <b>⑤ 装机规划</b> → 渗透率 σ =（风电+光伏实际发电量）/本省发电量，是捕获率衰减的唯一驱动。<br>
+          <b>⑥ 电网改造与储能</b> → F_grid（网架灵活性）与 F_storage（储能/风光装机比），配储按英国经验可提振有效捕获率最多约 20pp。<br>
+          <b>⑦ 政策与国际经验</b> → 机制电量比例 α 的衰减、绿证溢价、容量补偿；捕获率曲线以德国（光伏 CR 由 2022 年 0.98 降至 2025 年约 0.54）、西班牙（0.70→0.36）为标定。
+        </div>
+      </details>
+      <div class="src" style="margin-top:12px">
+        <b>数据来源</b>：国家发改委/能源局 136 号文（发改价格〔2025〕136 号）及 30 省市实施细则；《可再生能源发展"十五五"规划》（2026.07）；各省 2026 年机制电价竞价公告（山东、山西、贵州、新疆、上海等）；2025 年底各省装机（中国电力知库/北极星）；CCTD 秦皇岛动力煤价格（2026-09-04 综合交易价 741、现货 912、年度长协 704 元/吨）；IRENA《24/7 renewables》(2026)、IEA《Electricity Mid-Year Update》关于 capture rate 的实证。参数包 <b>v1.2</b>，数据截至 2026-09-17。
+      </div>
+      <div class="note warn">
+        <b>数据可信度提示</b>：装机、煤电基准价、机制电价为<b>公开实测值</b>；全社会用电量、储能比例、网架灵活性指数、部分省份 2026 机制电价（尚未公布或来源不一）为<b>工程估算</b>，已在省份卡片中标注，可在源码 <code>PROV</code> 中修正。捕获率曲线为跨国经验移植，属模型最大不确定源，建议用本省实际现货结算价反向校准后用于投资决策。
+        <br><b>全局参数不开放手动调节</b>（「机制电价与机制电量」两组除外）——所有外生参数由外部数据与政策口径标定，取值依据、数据来源与刷新机制见第 10 节附录。
+        <br><b>到厂煤价修正系数 ct</b>：原 15 省基于运输成本的先验取值（偏差 ≤8%，构成独立校验）；新增省份中基年偏差超过 8% 的 11 个，由「2026 年系统基准电价 = 该省煤电基准价」反算标定，隐含到厂标煤价落在 894–1356 元/吨（西藏 1922 为极端值），已做合理性检查。
+        <br><b>31 个省级行政区中，新增的 16 个（尤其是西藏、青海、北京）估算成分高于原 15 省</b>，西藏尚未发布 136 号文实施细则、机制电价为按基准价的推算值。其 ct 由基年校准反算，隐含到厂标煤价 1922 元/吨（全国极端值，与其全国最高的 0.4993 标杆价自洽），结论仅供趋势参考，不宜用于投资决策。
+      </div>
+      </details>
+    </div>
+
+    <div class="card">
+      <details>
+      <summary class="csum"><span class="n">10</span>内置参数清单与更新机制 <span class="ver">点击展开</span></summary>
+      <div id="appendix"></div>
+      </details>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+// ============ 省份基础数据 ============
+// cap单位:万千瓦 | demand:亿千瓦时 | gdp:万亿元 | price:元/千瓦时
+// est:true 表示该字段含估算成分
+const PROV = {
+"山东":{wind:3013,pv:9485,thermal:12266,hydro:100,demand:8300,gdp:10.3,gg:0.050,
+  bm:0.3949,mPv:0.261,mWd:0.310,hW:2100,hP:1250,ct:0.05,st:0.06,gf:0.70,ex:0.03,
+  ind:0.66,cur:0.03,a0:0.80,self:0.95,est:false,
+  note:"全国光伏装机第一、现货市场最成熟。光伏严重过剩，2026 机制电价光伏 0.261（仅为煤电基准价 66%）、风电 0.310。2027 年起户用非自然人分布式退出竞价。"},
+"江苏":{wind:2503,pv:8968,thermal:12003,hydro:300,demand:8400,gdp:14.2,gg:0.048,
+  bm:0.391,mPv:0.330,mWd:0.360,hW:2200,hP:1150,ct:0.06,st:0.08,gf:0.80,ex:0.08,
+  ind:0.62,cur:0.01,a0:0.90,self:0.92,est:true,
+  note:"经济与负荷大省，分布式工商业光伏活跃。竞价上限 0.391（陆上风光）/0.30–0.391（海上风电），实际出清价尚未公布，此处取区间中值估算。"},
+"浙江":{wind:670,pv:6429,thermal:7975,hydro:1720,demand:6800,gdp:9.5,gg:0.052,
+  bm:0.4153,mPv:0.3929,mWd:0.380,hW:2100,hP:1100,ct:0.08,st:0.07,gf:0.82,ex:0.10,
+  ind:0.60,cur:0.01,a0:0.90,self:0.88,est:true,
+  note:"存量机制电价 0.4153（全国较高）。分布式超 44 万户、4943 万千瓦，以价格接受者身份按现货同类月度均价结算。"},
+"广东":{wind:1853,pv:6248,thermal:13911,hydro:2022,demand:8500,gdp:14.5,gg:0.048,
+  bm:0.453,mPv:0.360,mWd:0.380,hW:2200,hP:1050,ct:0.10,st:0.06,gf:0.80,ex:0.12,
+  ind:0.55,cur:0.01,a0:0.70,self:0.85,est:true,
+  note:"全国煤电基准价最高 0.453。分布式光伏竞价出清 0.36（上限 0.4），海上风电竞价上限执行基准价、执行期 14 年。"},
+"内蒙古":{wind:10878,pv:6065,thermal:12608,hydro:245,demand:5484,gdp:2.8,gg:0.055,
+  bm:0.2829,mPv:0.2829,mWd:0.2829,hW:2218,hP:1239,ct:-0.22,st:0.12,gf:0.55,ex:0.35,
+  ind:0.75,cur:0.05,a0:0.85,self:1.65,est:false,
+  note:"风光装机全国第一、外送第一（2025 外送 3565 亿千瓦时）。蒙东蒙西均明确增量项目暂不安排机制电量——全量裸露于市场，α 最低。2025 风光发电量占比已达 31.8%。"},
+"新疆":{wind:7724,pv:9145,thermal:8327,hydro:1119,demand:4000,gdp:2.1,gg:0.055,
+  bm:0.2500,mPv:0.150,mWd:0.210,hW:2200,hP:1400,ct:-0.26,st:0.10,gf:0.50,ex:0.30,
+  ind:0.70,cur:0.08,a0:0.40,self:1.30,est:false,
+  note:"全国电价洼地。2026 光伏机制电价 0.15、风电 0.21，分别为全国最低。坑口煤价极低使价格锚本身就很低。"},
+"甘肃":{wind:4094,pv:4309,thermal:2600,hydro:972,demand:1800,gdp:1.4,gg:0.055,
+  bm:0.3078,mPv:0.1954,mWd:0.1950,hW:2100,hP:1450,ct:-0.05,st:0.15,gf:0.50,ex:0.35,
+  ind:0.68,cur:0.06,a0:0.85,self:1.35,est:false,
+  note:"风光同场项目机制电价 0.1954，较煤电基准价低约 37%，是全国降幅最大的省份之一。高渗透 + 外送通道约束。"},
+"山西":{wind:2833,pv:4951,thermal:8405,hydro:226,demand:3000,gdp:2.7,gg:0.045,
+  bm:0.3320,mPv:0.3168,mWd:0.2770,hW:2100,hP:1300,ct:-0.12,st:0.08,gf:0.60,ex:0.18,
+  ind:0.72,cur:0.04,a0:0.80,self:1.15,est:false,
+  note:"2026 年光伏机制电价 0.3168 反超风电 0.277——全国罕见，反映山西光伏以分布式为主、竞争烈度低于集中式风电大基地。"},
+"河北":{wind:4840,pv:8463,thermal:8404,hydro:230,demand:4900,gdp:5.0,gg:0.048,
+  bm:0.3644,mPv:0.340,mWd:0.350,hW:2100,hP:1250,ct:-0.02,st:0.09,gf:0.65,ex:0.02,
+  ind:0.70,cur:0.04,a0:0.55,self:0.95,est:true,
+  note:"冀北与河北南网分策：竞价上限均不高于煤电基准价，「电量充裕 + 价格有吸引力」组合鼓励投资。风电装机全国第三。"},
+"河南":{wind:2618,pv:5566,thermal:7377,hydro:408,demand:4300,gdp:6.6,gg:0.050,
+  bm:0.3779,mPv:0.310,mWd:0.330,hW:2050,hP:1200,ct:0.02,st:0.07,gf:0.65,ex:0.03,
+  ind:0.60,cur:0.03,a0:0.80,self:0.98,est:true,
+  note:"中部负荷中心，风光装机均居全国前十。竞价区间 0.2–0.3779，出清价取中值估算。"},
+"四川":{wind:930,pv:1980,thermal:2600,hydro:10112,demand:3900,gdp:6.8,gg:0.052,
+  bm:0.4012,mPv:0.350,mWd:0.360,hW:2200,hP:1100,ct:0.05,st:0.06,gf:0.60,ex:0.25,
+  ind:0.55,cur:0.03,a0:0.85,self:1.15,est:true,
+  note:"水电装机全国第一（1.01 亿千瓦）。丰枯期价格分化剧烈：丰水期水电近乎零边际成本挤压全部电源，枯水期紧张。竞价上限 0.4012。"},
+"云南":{wind:1763,pv:5486,thermal:1552,hydro:8319,demand:2600,gdp:3.3,gg:0.050,
+  bm:0.3358,mPv:0.330,mWd:0.332,hW:2400,hP:1350,ct:0.05,st:0.08,gf:0.60,ex:0.35,
+  ind:0.62,cur:0.04,a0:0.60,self:1.45,est:false,
+  note:"水电占比超 70%，西电东送主力。2025 年机制电价风电 0.332、光伏 0.330，几乎与煤电基准价持平——水电省份新能源相对稀缺。"},
+"宁夏":{wind:1500,pv:3915,thermal:3500,hydro:50,demand:1300,gdp:0.6,gg:0.055,
+  bm:0.2595,mPv:0.2595,mWd:0.250,hW:2050,hP:1450,ct:-0.26,st:0.12,gf:0.55,ex:0.30,
+  ind:0.78,cur:0.05,a0:0.30,self:1.40,est:true,
+  note:"煤电基准价全国倒数第二，新能源外送为主。存量统一执行 0.2595；增量竞价上限即基准价，实际出清贴近上限。"},
+"安徽":{wind:900,pv:5625,thermal:6635,hydro:620,demand:3600,gdp:5.4,gg:0.053,
+  bm:0.3844,mPv:0.330,mWd:0.340,hW:2100,hP:1150,ct:0.03,st:0.07,gf:0.70,ex:0.08,
+  ind:0.58,cur:0.02,a0:0.85,self:1.05,est:true,
+  note:"光伏制造大省、装机全国第八。分布式机制电量比例 100%、集中式扣减中长期绿电量，保障程度高。"},
+"上海":{wind:100,pv:625,thermal:2000,hydro:0,demand:2000,gdp:5.7,gg:0.050,
+  bm:0.4155,mPv:0.4155,mWd:0.4155,hW:2300,hP:1050,ct:0.10,st:0.05,gf:0.85,ex:0.35,
+  ind:0.45,cur:0.00,a0:1.00,self:0.65,est:false,
+  note:"本地新能源稀缺、外购比例高，机制电价 0.4155 = 竞价上限（0.42）几乎贴顶，风光统一出清。是全国价格高地，但资源体量小。"},
+"北京":{wind:24,pv:210,thermal:1150,hydro:100,demand:1448,gdp:5.21,gg:0.050,
+  bm:0.3598,mPv:0.3598,mWd:0.3598,hW:2000,hP:1450,ct:-0.122,st:0.05,gf:0.75,ex:0.00,
+  ind:0.30,cur:0.041,a0:0.20,self:0.301,est:true,
+  note:"纯受端城市电网。本地新能源极少（光伏 210、风电 24 万千瓦），约七成电量依赖外购。机制电价执行煤电基准价 0.3598，2025 年机制电量完成率仅 20.1%，故 a₀ 取 0.20。"},
+"天津":{wind:375,pv:1028,thermal:1889,hydro:1,demand:1148,gdp:1.85,gg:0.045,
+  bm:0.3655,mPv:0.3196,mWd:0.3196,hW:1800,hP:1300,ct:0.05,st:0.06,gf:0.60,ex:0.00,
+  ind:0.60,cur:0.028,a0:0.30,self:0.672,est:true,
+  note:"受端港口城市，风电以海上为主。表中 0.3196 为 2025—2026 年度机制电价，2026 年度竞价 2026 年 9 月才启动，需跟踪更新。"},
+"重庆":{wind:301,pv:585,thermal:2106,hydro:619,demand:1668,gdp:3.38,gg:0.050,
+  bm:0.3964,mPv:0.3963,mWd:0.3961,hW:2112,hP:834,ct:0.02,st:0.05,gf:0.55,ex:0.00,
+  ind:0.55,cur:0.000,a0:0.35,self:0.680,est:true,
+  note:"光伏利用小时仅 834 小时，为全国最低梯队（日照条件差），单位装机产出远低于西北。机制电价几乎贴齐煤电基准价 0.3964。"},
+"福建":{wind:844,pv:1734,thermal:4151,hydro:1714,demand:3547,gdp:6.02,gg:0.050,
+  bm:0.3922,mPv:0.350,mWd:0.350,hW:3140,hP:1070,ct:0.08,st:0.06,gf:0.65,ex:0.00,
+  ind:0.62,cur:0.000,a0:0.35,self:0.970,est:true,
+  note:"核电与海上风电大省，风电利用小时 3140 小时居全国前列。风电 2026 机制电价未见公开出清价，此处暂按光伏同等水平 0.350 处理，待竞价结果公布后更新。"},
+"江西":{wind:707,pv:2872,thermal:3325,hydro:681,demand:2303,gdp:3.60,gg:0.050,
+  bm:0.4143,mPv:0.379,mWd:0.365,hW:2300,hP:970,ct:0.143,st:0.06,gf:0.55,ex:0.00,
+  ind:0.60,cur:0.008,a0:0.35,self:0.781,est:true,
+  note:"中部受端省份，光伏装机 2872 万千瓦、户用光伏活跃。2026 机制电价光伏 0.379、风电 0.365，均接近煤电基准价 0.4143。"},
+"湖北":{wind:1059,pv:4485,thermal:4543,hydro:3815,demand:3113,gdp:6.27,gg:0.055,
+  bm:0.4161,mPv:0.333,mWd:0.387,hW:2100,hP:1050,ct:0.160,st:0.07,gf:0.60,ex:0.065,
+  ind:0.55,cur:0.025,a0:0.40,self:1.070,est:true,
+  note:"水电大省（含三峡口径争议），水电装机 3815 万千瓦全国第三。2026 机制电价风电 0.387 明显高于光伏 0.333。煤电基准价两源冲突（0.4161 / 0.4261），此处取 0.4161。"},
+"湖南":{wind:1317,pv:2744,thermal:2700,hydro:1655,demand:2455,gdp:5.53,gg:0.050,
+  bm:0.4500,mPv:0.375,mWd:0.330,hW:2158,hP:975,ct:0.332,st:0.07,gf:0.55,ex:0.00,
+  ind:0.47,cur:0.043,a0:0.40,self:0.683,est:true,
+  note:"煤电基准价 0.45 为全国第二高（仅次于广东 0.453）。二产用电占比仅 47%，负荷曲线峰谷差大，光伏吃亏。2026 机制电价光伏 0.375、风电 0.330。"},
+"广西":{wind:2462,pv:3274,thermal:3537,hydro:2027,demand:2748,gdp:2.97,gg:0.050,
+  bm:0.4207,mPv:0.310,mWd:0.310,hW:1831,hP:963,ct:0.215,st:0.08,gf:0.50,ex:0.00,
+  ind:0.62,cur:0.037,a0:0.40,self:0.912,est:true,
+  note:"风电装机 2462 万千瓦全国第九。2026 光伏机制电价 0.310，风电出清价未见公开披露，暂按光伏同水平处理。"},
+"海南":{wind:218,pv:960,thermal:905,hydro:153,demand:545,gdp:0.81,gg:0.060,
+  bm:0.4298,mPv:0.3998,mWd:0.3998,hW:2324,hP:1285,ct:0.253,st:0.08,gf:0.45,ex:0.00,
+  ind:0.40,cur:0.032,a0:0.40,self:0.870,est:true,
+  note:"独立电网、最小体量省份（用电量 545 亿千瓦时），昌江核电为基荷。机制电价 0.3998 接近煤电基准价 0.4298，自贸港负荷增长快。"},
+"贵州":{wind:955,pv:2872,thermal:4136,hydro:2298,demand:2049,gdp:2.36,gg:0.050,
+  bm:0.3515,mPv:0.345,mWd:0.335,hW:1967,hP:1019,ct:-0.10,st:0.08,gf:0.50,ex:0.202,
+  ind:0.60,cur:0.024,a0:0.40,self:1.253,est:true,
+  note:"西电东送主力（外送占发电量 20%），水火互济。2026 机制电价风电 0.335、光伏 0.345，光伏略反超——与山西同类的结构性特征。"},
+"陕西":{wind:1733,pv:4193,thermal:6378,hydro:507,demand:2693,gdp:3.66,gg:0.050,
+  bm:0.3545,mPv:0.350,mWd:0.350,hW:1799,hP:1148,ct:-0.059,st:0.08,gf:0.55,ex:0.181,
+  ind:0.68,cur:0.069,a0:0.40,self:1.222,est:true,
+  note:"陕北风光大基地 + 坑口煤电，外送比例 18%。限电率 6.9% 已偏高。风电机制电价 0.350 为区间推定值（未查到明确出清价），需核实。"},
+"青海":{wind:1500,pv:4258,thermal:580,hydro:1641,demand:1068,gdp:0.41,gg:0.045,
+  bm:0.3247,mPv:0.227,mWd:0.240,hW:1509,hP:1222,ct:0.140,st:0.12,gf:0.40,ex:0.00,
+  ind:0.75,cur:0.119,a0:0.40,self:0.995,est:true,
+  note:"全国新能源渗透率最高、消纳最紧张：限电率 11.9%，网架灵活性全国最低（gf=0.40）。存量机制电价按 0.2277 执行，绿电外送通道是关键变量。"},
+"吉林":{wind:1883,pv:725,thermal:1894,hydro:649,demand:1012,gdp:1.50,gg:0.050,
+  bm:0.3731,mPv:0.334,mWd:0.250,hW:2280,hP:1491,ct:0.132,st:0.08,gf:0.45,ex:0.080,
+  ind:0.55,cur:0.058,a0:0.40,self:1.087,est:true,
+  note:"风电利用小时 2280、光伏 1491，资源条件东北最优。2026 机制电价风电 0.250 显著低于光伏 0.334——风电大基地竞争烈度高。存量机制电量首年比例 40%。"},
+"辽宁":{wind:2203,pv:1555,thermal:4225,hydro:486,demand:2899,gdp:3.32,gg:0.045,
+  bm:0.3749,mPv:0.330,mWd:0.330,hW:2377,hP:1363,ct:0.04,st:0.07,gf:0.45,ex:0.00,
+  ind:0.68,cur:0.053,a0:0.40,self:0.807,est:true,
+  note:"风电装机 2203 万千瓦全国第十，核电占比高（671 万千瓦）。2026 光伏机制电价 0.330，风电为区间推定值，需核实。"},
+"黑龙江":{wind:1875,pv:917,thermal:2584,hydro:235,demand:1261,gdp:1.69,gg:0.050,
+  bm:0.3740,mPv:0.2281,mWd:0.2281,hW:2485,hP:1517,ct:0.096,st:0.07,gf:0.45,ex:0.076,
+  ind:0.55,cur:0.056,a0:0.40,self:1.083,est:true,
+  note:"风电利用小时 2485 为全国最高梯队，但限电率 5.6%、外送通道受限。2026 光伏机制电价 0.2281，风电按同水平处理。"},
+"西藏":{wind:83,pv:575,thermal:50,hydro:1700,demand:176,gdp:0.30,gg:0.070,
+  bm:0.4993,mPv:0.449,mWd:0.449,hW:2000,hP:1700,ct:0.888,st:0.10,gf:0.30,ex:0.00,
+  ind:0.45,cur:0.333,a0:0.10,self:0.924,est:true,
+  note:"全国煤电基准价最高（0.4993），但限电率 33.3% 全国最高、网架最弱。尚未发布 136 号文实施细则，机制电价按基准价 0.9 倍估算，水电与外送口径存疑——结论仅供趋势参考，不宜用于投资决策。"}
+};
+const YEARS=[2026,2027,2028,2029,2030,2031,2032,2033,2034,2035];
+
+// ============ 全局参数 ============
+const DEF={
+  coal26:800, coal30:760, coal35:700,       // 秦皇岛5500 元/吨
+  elas:0.85, structB:0.006,                  // 电力弹性系数、结构性电气化增量
+  ggDrop:0.008,                              // 各省 GDP 增速：十五五→十六五回落幅度
+  elasDec:0.012,                             // 弹性系数逐年衰减
+  stPeak:4.5, stW:6.0,                       // 电气化增量峰形：达峰年序、峰宽(年)
+  gw:0.075, gp:0.095,                        // 风电/光伏装机年均增速(十五五)
+  gw2:0.045, gp2:0.055,                      // 十六五增速
+  hr0:300, hrDec:0.004,                      // 供电煤耗 g/kWh 及年降
+  vom:0.035,                                 // 火电变动运维+环保 元/kWh
+  margin0:0.25, gamma:0.60,                  // 基准溢价、渗透率侵蚀系数
+  pvMin:0.25, pvMax:0.98, pvMid:10, pvW:6,
+  wdMin:0.42, wdMax:0.92, wdMid:10, wdW:9,
+  mechDecay:0.020,                           // 机制电价年降
+  aDecay:0.040,                              // 机制电量比例年衰减
+  stGain:0.20, stRef:0.35,                   // 储能提振捕获率上限、参照配比
+  gfBase:0.75, gfSpan:0.50,                  // 网架灵活性系数(gf=0.5 时为1.0)
+  kHydro:0.12, xPv:0.40, xWd:0.25,           // 水电压制、风光交叉挤压系数
+  hHydro:3500,                               // 水电利用小时
+  green:0.015,                               // 绿证/环境溢价 元/kWh
+  capUplift:0.0                              // 容量补偿直通加项
+};
+const SCEN={
+  pess:{coal26:900,coal30:820,coal35:720,elas:0.70,structB:0.003,gw:0.095,gp:0.125,
+    gw2:0.060,gp2:0.075,margin0:0.20,gamma:0.70,pvMin:0.20,pvMax:0.95,pvMid:8,pvW:5.5,
+    wdMin:0.38,wdMax:0.88,wdMid:8,wdW:8,mechDecay:0.030,aDecay:0.055,stGain:0.15,green:0.010,
+    kHydro:0.18,xPv:0.55,xWd:0.35,gfBase:0.68,gfSpan:0.55,
+    ggDrop:0.012,elasDec:0.018,stPeak:4.0,stW:5.0},
+  base:{},
+  opt:{coal26:740,coal30:700,coal35:640,elas:0.95,structB:0.009,gw:0.060,gp:0.075,
+    gw2:0.035,gp2:0.040,margin0:0.30,gamma:0.50,pvMin:0.30,pvMax:1.00,pvMid:12,pvW:6.5,
+    wdMin:0.46,wdMax:0.96,wdMid:12,wdW:10,mechDecay:0.012,aDecay:0.025,stGain:0.25,green:0.022,
+    kHydro:0.08,xPv:0.28,xWd:0.18,gfBase:0.80,gfSpan:0.45,
+    ggDrop:0.005,elasDec:0.006,stPeak:5.0,stW:7.0}
+};
+let P={...DEF}, curP="山东", curS="base", curY=2030;
+
+// ============ 计算核心 ============
+function coalPrice(y){
+  if(y<=2026) return P.coal26;
+  if(y<=2030){const t=(y-2026)/4; return P.coal26+(P.coal30-P.coal26)*t;}
+  const t=(y-2030)/5; return P.coal30+(P.coal35-P.coal30)*t;
+}
+function growth(y){ return y<=2030?1:2; } // 阶段
+function crLogistic(s,min,max,mid,w){ return min+(max-min)/(1+Math.exp((s-mid)/w)); }
+
+// ---- 需求侧时变路径（k = 年序，1=2026 … 10=2035）----
+// GDP 增速：十五五用省级规划目标，十六五回落 ggDrop（下限 3.0%）
+function gdpG(p,k){ return k<=5 ? p.gg : Math.max(0.030, p.gg-P.ggDrop); }
+// 电力消费弹性：随经济体成熟逐年衰减（下限 0.45）
+function elasAt(k){ return Math.max(0.45, P.elas-P.elasDec*(k-1)); }
+// 结构性电气化增量：峰形路径，stPeak 处达峰后回落
+function structAt(k){ return P.structB*Math.exp(-Math.pow((k-P.stPeak)/P.stW,2)/2); }
+function demRate(p,k){ return gdpG(p,k)*elasAt(k)+structAt(k); }
+function demMult(p,t){ let m=1; for(let k=1;k<=t;k++) m*=(1+demRate(p,k)); return m; }
+
+function calc(name,y){
+  const p=PROV[name], t=y-2025;
+  // 1 需求 D(t)=D0*Π(1+g_GDP(k)*ε(k)+b(k))——增速/弹性/电气化增量均逐年演化
+  const gDem=demRate(p,t);
+  const demand=p.demand*demMult(p,t);
+  const localGen=demand*p.self;                    // 本省发电量(含外送/外购)
+  // 2 装机：十五五/十六五两段复利
+  const wCap = y<=2030 ? p.wind*Math.pow(1+P.gw,t) : p.wind*Math.pow(1+P.gw,5)*Math.pow(1+P.gw2,t-5);
+  const pCap = y<=2030 ? p.pv*Math.pow(1+P.gp,t)   : p.pv*Math.pow(1+P.gp,5)*Math.pow(1+P.gp2,t-5);
+  const shareOld=Math.min(1,(p.wind+p.pv)/(wCap+pCap));  // 存量装机占比→决定机制电量覆盖面
+  // 3 发电量(亿kWh)
+  const wGenRaw=wCap*1e4*p.hW/1e8, pGenRaw=pCap*1e4*p.hP/1e8;
+  const hGen=p.hydro*1e4*P.hHydro/1e8;
+  const sigRaw=(wGenRaw+pGenRaw)/localGen;
+  const cur=Math.min(0.22, p.cur+Math.max(0,(sigRaw-0.25))*0.55);  // 限电率随渗透率抬升
+  const wGen=wGenRaw*(1-cur), pGen=pGenRaw*(1-cur);
+  // 4 火电边际运行成本 = 价格锚
+  const stdCoal=coalPrice(y)*7000/5500*(1+p.ct);   // 到厂标煤价 元/吨
+  const hrY=300*Math.pow(1-P.hrDec,t);             // 供电煤耗 g/kWh
+  const mc=stdCoal*hrY/1e6+P.vom;
+  // 5 渗透率与电源结构
+  const sPv=pGen/localGen*100, sWd=wGen/localGen*100, sTot=(wGen+pGen)/localGen;
+  const hShare=Math.min(0.85,hGen/localGen);       // 水电发电量占比
+  // 6 系统基准电价：火电边际成本 ×(1+溢价-渗透侵蚀) × 水电压制
+  const margin=P.margin0-P.gamma*sTot;
+  const fHydro=1-P.kHydro*hShare;
+  const pBase=mc*(1+margin)*fHydro+P.capUplift;
+  // 7 捕获率：有效渗透率 = 自身渗透率 + 交叉挤压
+  const ePv=sPv+P.xPv*sWd, eWd=sWd+P.xWd*sPv;
+  const crPv=crLogistic(ePv,P.pvMin,P.pvMax,P.pvMid,P.pvW);
+  const crWd=crLogistic(eWd,P.wdMin,P.wdMax,P.wdMid,P.wdW);
+  // 8 修正因子：均以 1.0 为中性基准
+  const stRatio=p.st*(1+0.15*t);
+  const fSt=1+P.stGain*Math.min(1,stRatio/P.stRef);
+  const fGf=P.gfBase+P.gfSpan*p.gf;                // 网架灵活性
+  const fLd=0.90+0.16*p.ind;                       // 负荷形状(仅光伏)
+  const fCu=0.98+0.55*cur;                         // 限电抬升残余电量均价
+  const fEx=0.97+0.18*p.ex;                        // 外送支撑/受入冲击
+  const pMktPv=pBase*crPv*fSt*fGf*fLd*fCu*fEx+P.green;
+  const pMktWd=pBase*crWd*fSt*fGf*fCu*fEx+P.green;
+  // 9 机制电价(逐年竞价衰减) 与 综合上网电价
+  const mechPv=p.mPv*Math.pow(1-P.mechDecay,t-1);
+  const mechWd=p.mWd*Math.pow(1-P.mechDecay,t-1);
+  // α = 存量机制电量比例 × 存量装机占比 × 政策衰减：新增装机稀释托底覆盖
+  const a=Math.max(0.03, Math.min(1, p.a0*shareOld*Math.pow(1-P.aDecay,t-1)));
+  const compPv=a*mechPv+(1-a)*pMktPv;
+  const compWd=a*mechWd+(1-a)*pMktWd;
+  return {y,demand,gDem,localGen,wCap,pCap,shareOld,wGen,pGen,hShare,cur,sPv,sWd,sTot:sTot*100,
+    mc,hrY,stdCoal,margin,fHydro,pBase,ePv,eWd,crPv,crWd,fSt,fGf,fLd,fCu,fEx,
+    pMktPv,pMktWd,mechPv,mechWd,a,compPv,compWd};
+}
+function series(name){ return YEARS.map(y=>calc(name,y)); }
+
+// ============ 参数控件 ============
+const GRP={
+  g_coal:"煤炭价格路径（秦皇岛 5500 大卡）",
+  g_dem:"电力需求",
+  g_cap:"装机增速",
+  g_th:"火电成本与价格锚",
+  g_cr:"捕获率 capture rate 曲线",
+  g_mech:"机制电价与机制电量",
+  g_sys:"系统调节（储能 / 电网 / 绿证）"
+};
+// [分组, 键, 名称, 下限, 上限, 步长, 格式化, 口径与标定依据, 数据来源, 刷新频率]
+const PARAM=[
+["g_coal","coal26","煤价 2026 中枢（元/吨）",600,1000,10,v=>v.toFixed(0),
+ "2026 年中枢。CCTD 秦皇岛 5500 大卡：2026-09-04 综合交易价 741、现货 912、年度长协 704；2025 全年均价 693。按现货溢价延续 + 安监限产支撑取 800。","CCTD 中国煤炭市场网","月度"],
+["g_coal","coal30","煤价 2030（元/吨）",550,950,10,v=>v.toFixed(0),
+ "十五五中后期新增先进产能释放、新能源替代加速，中枢较 2026 年小幅回落；下方受煤炭产能储备制度与长协基准价托底。","产能投放节奏 / 长协政策","季度"],
+["g_coal","coal35","煤价 2035（元/吨）",500,900,10,v=>v.toFixed(0),
+ "长期：电煤需求随新能源渗透达峰回落，但容量电价与产能储备制度限制下方空间，中枢不低于 650。","IEA Coal 中长期供需平衡","半年"],
+
+["g_dem","elas","电力消费弹性系数 ε₀",0.5,1.3,0.01,v=>v.toFixed(2),
+ "十四五实测弹性 >1（2023 约 1.3，数据中心 + 电动车 + 电能替代驱动）；十五五服务业占比上升、节能改造推进，取 0.85 起算。","中电联《电力供需形势分析》","年度"],
+["g_dem","structB","结构性电气化增量 b₀",0,0.02,0.001,v=>(v*1000).toFixed(1)+"‰",
+ "不含在 GDP 弹性内的额外用电增长：工业电锅炉、交通电动化、算力负荷。按峰形路径 2029–2030 达峰后回落。","国家能源局 / 工信部电能替代方案","年度"],
+["g_dem","ggDrop","GDP 增速 十六五回落",0,0.02,0.001,v=>(v*1000).toFixed(1)+"‰",
+ "各省 GDP 增速由十五五（省级规划目标）到十六五的回落幅度，下限 3.0%。反映经济体基数扩大后增速自然下台阶。","各省政府工作报告 / 五年规划纲要","年度"],
+["g_dem","elasDec","弹性系数年衰减",0,0.03,0.001,v=>(v*1000).toFixed(1)+"‰",
+ "弹性系数随经济成熟逐年衰减，基准情景下由 0.85 降至 2035 年约 0.74。","跨国弹性系数演变经验","年度"],
+["g_dem","stPeak","电气化达峰年序",1,10,0.5,v=>(2025+v).toFixed(1),
+ "电气化增量达峰时点（2029.5），对应充电桩与电能替代建设高峰。","充电基础设施 / 电能替代规划","年度"],
+["g_dem","stW","电气化峰宽（年）",2,12,0.5,v=>v.toFixed(1),
+ "峰形宽度，越大表示电气化红利释放越平缓、回落越慢。","同上","年度"],
+
+["g_cap","gw","风电增速 十五五",0.02,0.15,0.005,v=>(v*100).toFixed(1)+"%",
+ "按《可再生能源发展「十五五」规划》年均新增 2 亿千瓦以上分解，风电略低于光伏。","《可再生能源发展「十五五」规划》(2026.07)","半年"],
+["g_cap","gp","光伏增速 十五五",0.02,0.18,0.005,v=>(v*100).toFixed(1)+"%",
+ "沙戈荒大基地 + 分布式并重，光伏为新增装机主体，增速高于风电。","同上","半年"],
+["g_cap","gw2","风电增速 十六五",0.01,0.10,0.005,v=>(v*100).toFixed(1)+"%",
+ "高基数下自然回落，海上风电与老旧机组改造为主要增量。","十六五规划展望 / 行业共识","年度"],
+["g_cap","gp2","光伏增速 十六五",0.01,0.12,0.005,v=>(v*100).toFixed(1)+"%",
+ "基数效应回落，但仍为新增装机主体。","同上","年度"],
+
+["g_th","hrDec","供电煤耗年降",0,0.012,0.001,v=>(v*1000).toFixed(1)+"‰",
+ "2025 全国平均约 300 g/kWh，煤电「三改联动」与超超临界改造持续推进。","中电联能耗对标","年度"],
+["g_th","vom","火电变动运维（元/kWh）",0.01,0.07,0.005,v=>v.toFixed(3),
+ "变动运维 + 环保耗材（脱硫脱硝等），行业典型区间 0.03–0.04 元/kWh。","行业典型值","年度"],
+["g_th","margin0","基准溢价 margin₀",0.05,0.45,0.01,v=>(v*100).toFixed(0)+"%",
+ "系统基准电价相对火电边际成本的加成。用各省 2026 年煤电基准价反算标定（原 15 省偏差已收窄至 ±7.6% 内）。","各省煤电基准价（发改委）","年度"],
+["g_th","gamma","渗透率侵蚀系数 γ",0.2,1.0,0.05,v=>v.toFixed(2),
+ "风光渗透率每上升 100%，市场溢价被侵蚀 0.60。由各省系统基准价与煤电基准价偏差回归标定。","同上","年度"],
+
+["g_cr","pvMin","光伏 CR 下限",0.10,0.45,0.01,v=>v.toFixed(2),
+ "渗透率极高时的长期稳态。西班牙 2025 年已降至 0.36、德国约 0.54，取更长期底部 0.25。","IRENA《24/7 Renewables》、IEA Electricity Mid-Year","半年"],
+["g_cr","pvMax","光伏 CR 上限",0.70,1.10,0.01,v=>v.toFixed(2),
+ "渗透率趋零时的捕获率。德国 2022 年为 0.98。","同上","半年"],
+["g_cr","pvMid","光伏 CR 拐点 σ(%)",4,24,0.5,v=>v.toFixed(1),
+ "logistic 拐点：光伏渗透率 10% 处捕获率下降最快。","同上","半年"],
+["g_cr","pvW","光伏 CR 陡峭度 w",3,12,0.5,v=>v.toFixed(1),
+ "曲线陡峭度，越小衰减越急促。","同上","半年"],
+["g_cr","wdMin","风电 CR 下限",0.25,0.65,0.01,v=>v.toFixed(2),
+ "风电出力更分散、与负荷相关性优于光伏，底部高于光伏。","同上","半年"],
+["g_cr","wdMax","风电 CR 上限",0.70,1.10,0.01,v=>v.toFixed(2),
+ "渗透率趋零时的风电捕获率。","同上","半年"],
+["g_cr","wdMid","风电 CR 拐点 σ(%)",6,28,0.5,v=>v.toFixed(1),
+ "风电 logistic 拐点（与光伏同取 10%）。","同上","半年"],
+["g_cr","wdW","风电 CR 陡峭度 w",4,16,0.5,v=>v.toFixed(1),
+ "风电曲线陡峭度，比光伏平缓（w=9 对 6）。","同上","半年"],
+["g_cr","xPv","风→光 交叉挤压 λ₁",0,0.80,0.05,v=>v.toFixed(2),
+ "系统整体低价时段重叠，风电出力对光伏捕获率的挤压强度。","模型结构假设（可用本省现货价校准）","按需"],
+["g_cr","xWd","光→风 交叉挤压 λ₂",0,0.60,0.05,v=>v.toFixed(2),
+ "弱于反向——风电夜间出力与光伏午间高峰错开。","同上","按需"],
+
+["g_mech","mechDecay","机制电价年降",0,0.06,0.001,v=>(v*100).toFixed(1)+"%",
+ "增量项目竞价逐年压降。山东 2026 光伏 0.261 已较上限 0.3949 低 34%，随造价下降与竞争加剧继续小幅走低。","各省 2026 机制电价竞价公告","半年"],
+["g_mech","aDecay","机制电量比例年衰减",0,0.10,0.001,v=>(v*100).toFixed(1)+"%",
+ "新增装机不享受机制电量，逐年稀释托底覆盖（与存量装机占比共同作用）。","136 号文及各省实施细则","半年"],
+
+["g_sys","stGain","储能捕获率提振上限",0,0.40,0.01,v=>(v*100).toFixed(0)+"pp",
+ "配储对有效捕获率的提振上限，风光装机比达 stRef 时饱和。","英国 / 德国配储实证","年度"],
+["g_sys","stRef","储能饱和配比",0.15,0.60,0.05,v=>(v*100).toFixed(0)+"%",
+ "储能/风光装机比达到该值后提振效应饱和（当前各省 5%–15%，按 15%/年 提升）。","同上","年度"],
+["g_sys","gfBase","网架系数基准",0.60,0.95,0.01,v=>v.toFixed(2),
+ "0.75 + 0.50 × 省份网架灵活性指数（指数 0.5 时为 1.0 中性）。","各省十五五电网规划 / 消纳能力评估","半年"],
+["g_sys","gfSpan","网架系数跨度",0.20,0.70,0.01,v=>v.toFixed(2),
+ "网架灵活性指数的离散跨度。","同上","半年"],
+["g_sys","kHydro","水电压制系数",0,0.35,0.01,v=>(v*100).toFixed(0)+"%",
+ "水电发电量占比每 100% 压低系统基准电价 12%——丰水期近零边际成本挤压全部电源。","四川 / 云南丰枯期现货价差","年度"],
+["g_sys","green","绿证环境溢价（元/kWh）",0,0.05,0.001,v=>v.toFixed(3),
+ "绿证 / 环境权益折合度电约 0.01–0.02 元。","绿证交易平台成交价","季度"]
+];
+// 固定常量（不随情景变化）
+const CONSTS=[
+ ["hr0",300,"供电煤耗基准（g/kWh）",v=>v.toFixed(0),"2025 年全国火电平均供电煤耗。","中电联统计"],
+ ["hHydro",3500,"水电利用小时",v=>v.toFixed(0),"全国水电平均利用小时，丰枯年份 3200–3800。","中电联统计"],
+ ["capUplift",0.0,"容量补偿加项（元/kWh）",v=>v.toFixed(3),"当前容量电价仅覆盖煤电，新能源未享受，取 0。","发改委容量电价机制"]
+];
+const PARAM_VER={ver:"v1.3",asof:"2026-09-19",next:"2026-10-10"};
+// 参数更新日志：每次外部数据刷新后在此顶部追加一条（版本 / 日期 / 变更内容 / 对结论的影响）
+const CHANGELOG=[
+ {ver:"v1.3",date:"2026-09-19",items:[
+   "省份由 15 个扩至 31 个省级行政区全覆盖，新增北京/天津/重庆/福建/江西/湖北/湖南/广西/海南/贵州/陕西/青海/吉林/辽宁/黑龙江/西藏",
+   "上海光伏装机按国家能源局《2025 年光伏发电建设一览表》由 585 修正为 625 万千瓦",
+   "板块 3 KPI 由单年度改为 2026 / 2030 / 2035 三个年度并列展示（光伏与风电综合电价、市场化价、机制电价、渗透率、限电率、α）",
+   "「机制电价与机制电量」两组改为开放手动调节，步长 0.1%（0.001），默认值保留原标定值",
+   "板块 9、10 改为默认折叠；敏感性分析补充读法说明",
+   "分省对比图画布高度增至 680px 以容纳 31 个行政区",
+   "新增 16 省中基年偏差超 8% 的 11 个（北京/江西/湖北/湖南/广西/海南/陕西/青海/吉林/黑龙江/西藏）重新标定到厂煤价修正系数 ct"],
+  impact:"新增 16 个行政区中，西藏（限电率 33.3%、网架最弱、机制电价未开展）、青海（限电率 11.9%）、北京（self=0.30 纯受端）为极端样本，其估算成分已在省份卡片标注；原 15 省结论不受影响"},
+ {ver:"v1.2",date:"2026-09-17",items:[
+   "需求侧三项参数改为逐年演化：GDP 增速十六五回落 8‰（下限 3.0%）、电力弹性每年衰减 1.2‰（下限 0.45）、电气化增量按峰形路径 2029.5 达峰后回落",
+   "需求模型由 D₀×(1+g)^t 改为逐年累乘 D₀×Π(1+g(k))",
+   "35 项全局参数固化为内置常量：左栏改为只读参数视图 + 版本标签，新增默认关闭的「高级校准模式」；新增 stRef 参数",
+   "新增第 10 节：参数清单附录（取值 / 标定依据 / 数据来源 / 刷新频率）+ 时变函数 + 逐年需求路径表 + 更新机制"],
+  impact:"山东 2035 年用电量由 13,246 降至 12,529 亿 kWh（原恒定增速高估 5.4%）；需求下修抬升渗透率、加快捕获率衰减，15 省光伏综合电价十年跌幅由 −31.1% 加深至 −32.2%，风电由 −17.6% 至 −18.6%。基年校准未受影响（平均绝对偏差 2.84%）"},
+ {ver:"v1.1",date:"2026-09-17",items:[
+   "新增水电压制因子 k_h=12%：水电大省（四川/云南）系统基准电价不再被高估",
+   "捕获率引入风光交叉挤压（λ₁=0.40 光伏受风电挤压 / λ₂=0.25 反向）",
+   "五项修正因子（储能/网架/负荷/限电/外送）重新以 1.0 为中性基准，消除连乘系统性上偏",
+   "机制电量比例 α 引入存量装机占比，随装机扩张加速稀释",
+   "坑口省份（蒙西/新疆/宁夏）到厂煤价运费系数调至 −0.22~−0.26"],
+  impact:"15 省系统基准电价与各省实测煤电基准价偏差由最大 13.8% 收窄至 ±7.6% 以内（平均 2.84%）"},
+ {ver:"v1.0",date:"2026-09-17",items:[
+   "首版：15 省 × 2026–2035 双口径预测（市场化交易均价 / 含机制电量加权的综合上网电价）",
+   "核心推导链：火电边际成本锚 × 捕获率 logistic 衰减 × 六项系统修正",
+   "三档情景（悲观 / 基准 / 乐观）"],
+  impact:"2026 年 15 省光伏综合均价 0.269、风电 0.300 元/kWh，与公开报道的全国新能源综合上网电价约 0.30 元/kWh 吻合"}
+];
+function buildSliders(){
+  document.querySelectorAll(".pgrp > div[id^=g_]").forEach(d=>d.innerHTML="");
+  PARAM.forEach(([grp,key,lab,mn,mx,st,f])=>{
+    const box=document.getElementById(grp); if(!box) return;
+    const row=document.createElement("div"); row.className="row";
+    const rw=document.createElement("div"); rw.className="rw";
+    const lb=document.createElement("label"); lb.textContent=lab;
+    const inp=document.createElement("input");
+    inp.type="range"; inp.min=mn; inp.max=mx; inp.step=st; inp.value=P[key];
+    const vl=document.createElement("div"); vl.className="val";
+    vl.textContent=f(P[key]);
+    inp.oninput=()=>{P[key]=parseFloat(inp.value);vl.textContent=f(P[key]);render();};
+    rw.appendChild(lb); rw.appendChild(inp); row.appendChild(rw); row.appendChild(vl);
+    box.appendChild(row);
+  });
+}
+// 机制电价/机制电量：默认可见可调
+function buildMechSliders(){
+  const box=document.getElementById("g_mech"); if(!box) return;
+  box.innerHTML="";
+  PARAM.filter(x=>x[0]==="g_mech").forEach(([grp,key,lab,mn,mx,st,f])=>{
+    const row=document.createElement("div"); row.className="row";
+    const rw=document.createElement("div"); rw.className="rw";
+    const lb=document.createElement("label"); lb.textContent=lab;
+    const inp=document.createElement("input");
+    inp.type="range"; inp.min=mn; inp.max=mx; inp.step=st; inp.value=P[key];
+    const vl=document.createElement("div"); vl.className="val"; vl.textContent=f(P[key]);
+    inp.oninput=()=>{P[key]=parseFloat(inp.value);vl.textContent=f(P[key]);render();};
+    rw.appendChild(lb); rw.appendChild(inp); row.appendChild(rw); row.appendChild(vl);
+    box.appendChild(row);
+  });
+}
+// 只读参数视图（默认形态）
+function buildParamView(){
+  document.getElementById("verTag").textContent=
+    PARAM_VER.ver+" · 数据截至 "+PARAM_VER.asof+" · 建议 "+PARAM_VER.next+" 前刷新";
+  const host=document.getElementById("paramView"); host.innerHTML="";
+  Object.entries(GRP).forEach(([g,gt])=>{
+    const d=document.createElement("div"); d.className="pgrp";
+    const t=document.createElement("div"); t.className="gt"; t.textContent=gt; d.appendChild(t);
+    PARAM.filter(x=>x[0]===g && g!=="g_mech").forEach(([g,key,lab,mn,mx,st,f])=>{
+      const r=document.createElement("div"); r.className="row";
+      const lb=document.createElement("label"); lb.textContent=lab;
+      const vl=document.createElement("div"); vl.className="val"; vl.textContent=f(P[key]);
+      r.appendChild(lb); r.appendChild(vl); d.appendChild(r);
+    });
+    host.appendChild(d);
+  });
+}
+function refreshParams(){
+  buildParamView(); buildMechSliders();
+  if(document.getElementById("calibChk").checked) buildSliders();
+}
+// 文末附录：参数清单 + 更新机制
+function buildAppendix(){
+  const sv=(sc,k)=>({...DEF,...(SCEN[sc]||{})})[k];
+  let h=`<div class="hint">全部 ${PARAM.length} 项全局参数均由外部数据与政策口径标定。<b>仅「机制电价与机制电量」两组开放手动调节</b>（左栏滑块，步长 0.1%，默认值为基准情景标定值），其余参数不开放手动调节、随外部信息定期刷新。下表列出取值、标定依据与刷新机制。</div>
+  <div class="tbl-wrap" style="max-height:none"><table>
+  <thead><tr><th>参数</th><th>基准</th><th>悲观</th><th>乐观</th><th>口径与标定依据</th><th>数据来源</th><th>刷新频率</th></tr></thead><tbody>`;
+  Object.entries(GRP).forEach(([g,gt])=>{
+    h+=`<tr><td colspan="7" style="text-align:left;background:#fafbfc;color:#5a6270">${gt}</td></tr>`;
+    PARAM.filter(x=>x[0]===g).forEach(([g,key,lab,mn,mx,st,f,basis,src,freq])=>{
+      h+=`<tr><td>${lab}</td><td style="color:#1a5fb4;font-weight:600">${f(sv("base",key))}</td>`+
+         `<td>${f(sv("pess",key))}</td><td>${f(sv("opt",key))}</td>`+
+         `<td class="basis">${basis}</td><td class="src">${src}</td><td class="src">${freq}</td></tr>`;
+    });
+  });
+  h+=`<tr><td colspan="7" style="text-align:left;background:#fafbfc;color:#5a6270">固定常量（不随情景变化）</td></tr>`;
+  CONSTS.forEach(([key,val,lab,f,basis,src])=>{
+    h+=`<tr><td>${lab}</td><td style="color:#1a5fb4;font-weight:600">${f(val)}</td><td>—</td><td>—</td>`+
+       `<td class="basis">${basis}</td><td class="src">${src}</td><td class="src">年度</td></tr>`;
+  });
+  h+="</tbody></table></div>";
+
+  h+=`<div class="gt" style="font-size:12px;font-weight:600;color:#5a6270;margin:4px 0 6px">参数更新日志</div>
+  <div class="tbl-wrap" style="max-height:none"><table>
+  <thead><tr><th>版本</th><th>日期</th><th>变更内容</th><th>对预测结论的影响</th></tr></thead><tbody>`;
+  CHANGELOG.forEach(c=>{
+    h+=`<tr><td style="color:#1a5fb4;font-weight:600">${c.ver}</td><td>${c.date}</td>`+
+       `<td class="basis">${c.items.map(x=>"• "+x).join("<br>")}</td><td class="basis">${c.impact}</td></tr>`;
+  });
+  h+="</tbody></table></div>";
+
+  h+=`<div class="gt" style="font-size:12px;font-weight:600;color:#5a6270;margin:16px 0 6px">需求侧三项参数的时变函数（关键：不是恒定值）</div>
+  <div class="fml">
+g(t) = g<sub>GDP</sub>(t) × ε(t) + b(t)　　　D(t) = D₀ × Π<sub>k=1..t</sub> (1 + g(k))<br><br>
+g<sub>GDP</sub>(t) = 省级规划目标（t ≤ 5，十五五）｜目标 − ${(DEF.ggDrop*1000).toFixed(0)}‰（t &gt; 5，十六五，下限 3.0%）<br>
+ε(t) = ε₀ − ${(DEF.elasDec*1000).toFixed(0)}‰ × (t − 1)　（下限 0.45）<br>
+b(t) = b₀ × exp( −((t − ${DEF.stPeak}) / ${DEF.stW})² / 2 )　（峰形，${(2025+DEF.stPeak).toFixed(1)} 年达峰后回落）
+  </div>
+  <div id="demPath"></div>
+  <div class="note">
+    <b>参数更新机制</b>：本模型的外生参数（煤价路径、GDP 增速、装机规划、机制电价）随外部信息变化，应由维护方按上表「刷新频率」定期重新标定并升级版本号（当前 ${PARAM_VER.ver}，数据截至 ${PARAM_VER.asof}）。
+    自动化安排：<b>每月 10 日 09:00 分级刷新</b>——每月必刷煤价三锚点并扫政策/竞价异动；1/4/7/10 月加做全量参数；<b>10 月</b>重点跟踪各省下一年度机制电价竞价（山东模式为前一年 10 月组织）；<b>3 月</b>重点更新各省 GDP 增速目标（两会政府工作报告）。无实质变化则只记录一行确认，不修改文件、不升版本号。
+    <br>触发即时刷新的事件包括：秦皇岛动力煤价格突破 700–950 元/吨区间、国家发改委调整电价或机制电价政策、各省公布新一轮竞价结果、十五五/十六五装机规划调整。
+    使用者如需用本省实际现货结算价做反向校准，开启左栏「高级校准模式」即可调参，但<b>校准后的参数不属于默认参数包</b>。
+  </div>`;
+  document.getElementById("appendix").innerHTML=h;
+}
+// 当前省份的需求演化路径
+function demPathHTML(name){
+  const p=PROV[name];
+  let h=`<div class="tbl-wrap" style="max-height:none;margin-top:8px"><table>
+  <thead><tr><th>年份</th><th>GDP 增速</th><th>电力弹性 ε</th><th>电气化增量 b</th><th>需求增速 g</th><th>全社会用电量（亿 kWh）</th></tr></thead><tbody>`;
+  YEARS.forEach(y=>{const k=y-2025, s=calc(name,y);
+    h+=`<tr><td>${y}</td><td>${(gdpG(p,k)*100).toFixed(1)}%</td><td>${elasAt(k).toFixed(3)}</td>`+
+       `<td>${(structAt(k)*1000).toFixed(2)}‰</td><td>${(demRate(p,k)*100).toFixed(2)}%</td>`+
+       `<td>${s.demand.toFixed(0)}</td></tr>`;});
+  return h+"</tbody></table></div>";
+}
+function setScen(s){
+  curS=s; P={...DEF,...(SCEN[s]||{})};
+  document.querySelectorAll("#scenBar button").forEach(b=>b.classList.toggle("on",b.dataset.s===s));
+  refreshParams(); render();
+}
+function buildProv(){
+  const bar=document.getElementById("provBar"); bar.innerHTML="";
+  Object.keys(PROV).forEach(n=>{
+    const b=document.createElement("button"); b.textContent=n;
+    if(n===curP) b.classList.add("on");
+    b.onclick=()=>{curP=n;document.querySelectorAll("#provBar button").forEach(x=>x.classList.toggle("on",x.textContent===n));render();};
+    bar.appendChild(b);
+  });
+}
+
+// ============ 图表 ============
+let CH={};
+function mk(id,cfg){ if(CH[id]) CH[id].destroy(); CH[id]=new Chart(document.getElementById(id),cfg); }
+const GRID={color:"#eef0f4"}, TICK={color:"#8b93a1",font:{size:11}};
+
+function render(){
+  const p=PROV[curP], S=series(curP), L=YEARS.map(y=>y+"");
+  document.getElementById("pTitle").textContent=curP+(p.est?"（部分参数估算）":"");
+  document.getElementById("pHint").innerHTML=p.note+
+    `　煤电基准价 <b>${p.bm.toFixed(4)}</b> 元/kWh · 2026 机制电价 光伏 <b>${p.mPv.toFixed(4)}</b> / 风电 <b>${p.mWd.toFixed(4)}</b>`;
+  document.getElementById("sensYr").textContent=curY;
+
+  // KPI
+  const i26=0, iY=YEARS.indexOf(curY), i35=YEARS.length-1;
+  const s26=S[i26], sY=S[iY], s35=S[i35];
+  const d=(a,b)=>{const r=(b/a-1)*100;return `<span class="${r<0?'dn':'up'}">${r>0?'+':''}${r.toFixed(1)}% vs 2026</span>`;};
+  document.getElementById("kpi").innerHTML=(function(){
+  const s26=S[0], s30=S[YEARS.indexOf(2030)], s35=S[YEARS.length-1];
+  const mk=(k,v,u,d,col)=>`<div><div class="k">${k}</div><div class="v" style="color:${col}">${v}<span class="u"> ${u}</span></div><div class="d">${d}</div></div>`;
+  const PV="#8b3fa8", WD="#1a5fb4", MKT="#c2690a", WDM="#0d7f72", NEU="#1c2026";
+  return ""
+   + mk("光伏综合 2026", s26.compPv.toFixed(3), "元", "市场化部分 "+s26.pMktPv.toFixed(3), PV)
+   + mk("光伏综合 2030", s30.compPv.toFixed(3), "元", d(s26.compPv,s30.compPv), PV)
+   + mk("光伏综合 2035", s35.compPv.toFixed(3), "元", "十年 "+((s35.compPv/s26.compPv-1)*100).toFixed(1)+"%", PV)
+   + mk("风电综合 2026", s26.compWd.toFixed(3), "元", "市场化部分 "+s26.pMktWd.toFixed(3), WD)
+   + mk("风电综合 2030", s30.compWd.toFixed(3), "元", d(s26.compWd,s30.compWd), WD)
+   + mk("风电综合 2035", s35.compWd.toFixed(3), "元", "十年 "+((s35.compWd/s26.compWd-1)*100).toFixed(1)+"%", WD)
+   + mk("光伏市场化 2035", s35.pMktPv.toFixed(3), "元", "捕获率 "+(s35.crPv*100).toFixed(0)+"%", MKT)
+   + mk("风电市场化 2035", s35.pMktWd.toFixed(3), "元", "捕获率 "+(s35.crWd*100).toFixed(0)+"%", WDM)
+   + mk("机制电价 2035（光）", s35.mechPv.toFixed(3), "元", "较 2026 "+((s35.mechPv/s26.mechPv-1)*100).toFixed(1)+"%", "#6b7280")
+   + mk("风光渗透率", s35.sTot.toFixed(1), "%", "2026 为 "+s26.sTot.toFixed(1)+"%", NEU)
+   + mk("限电率 2035", (s35.cur*100).toFixed(1), "%", "2026 为 "+(s26.cur*100).toFixed(1)+"%", NEU)
+   + mk("机制电量占比 α 2035", (s35.a*100).toFixed(0), "%", "2026 为 "+(s26.a*100).toFixed(0)+"%", NEU);
+ })();
+
+  // 图1 电价
+  mk("c1",{type:"line",data:{labels:L,datasets:[
+    {label:"光伏市场化",data:S.map(s=>+s.pMktPv.toFixed(4)),borderColor:"#c2690a",backgroundColor:"#c2690a",tension:.3,pointRadius:2.5,borderWidth:2},
+    {label:"风电市场化",data:S.map(s=>+s.pMktWd.toFixed(4)),borderColor:"#0d7f72",backgroundColor:"#0d7f72",tension:.3,pointRadius:2.5,borderWidth:2},
+    {label:"光伏综合",data:S.map(s=>+s.compPv.toFixed(4)),borderColor:"#8b3fa8",backgroundColor:"#8b3fa8",tension:.3,pointRadius:2.5,borderWidth:2.5},
+    {label:"风电综合",data:S.map(s=>+s.compWd.toFixed(4)),borderColor:"#1a5fb4",backgroundColor:"#1a5fb4",tension:.3,pointRadius:2.5,borderWidth:2.5},
+    {label:"机制电价(光伏)",data:S.map(s=>+s.mechPv.toFixed(4)),borderColor:"#9aa1ac",borderDash:[5,4],pointRadius:0,borderWidth:1.5}
+  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataset.label+": "+c.parsed.y.toFixed(4)+" 元/kWh"}}},
+    scales:{y:{grid:GRID,ticks:{...TICK,callback:v=>v.toFixed(2)},title:{display:true,text:"元 / 千瓦时",color:"#8b93a1",font:{size:11}}},
+      x:{grid:{display:false},ticks:TICK}}}});
+
+  document.getElementById("n1").innerHTML=
+    `<b>读图</b>：${curP}光伏综合电价由 2026 年 <b>${s26.compPv.toFixed(3)}</b> 元/kWh 降至 2035 年 <b>${s35.compPv.toFixed(3)}</b> 元/kWh（${((s35.compPv/s26.compPv-1)*100).toFixed(1)}%）；
+    风电由 <b>${s26.compWd.toFixed(3)}</b> 至 <b>${s35.compWd.toFixed(3)}</b>（${((s35.compWd/s26.compWd-1)*100).toFixed(1)}%）。
+    下行由两条通道叠加：<b>捕获率衰减</b>（渗透率 ${s26.sTot.toFixed(0)}%→${s35.sTot.toFixed(0)}%，光伏 CR ${(s26.crPv*100).toFixed(0)}%→${(s35.crPv*100).toFixed(0)}%）与<b>机制电量稀释</b>（α ${(s26.a*100).toFixed(0)}%→${(s35.a*100).toFixed(0)}%）。
+    同期火电边际成本锚由 ${s26.mc.toFixed(3)} 变至 ${s35.mc.toFixed(3)} 元/kWh，${s35.mc>s26.mc?"对电价构成上行支撑":"进一步压低价格中枢"}。`;
+
+  // 图2 渗透率/捕获率
+  mk("c2",{type:"line",data:{labels:L,datasets:[
+    {label:"风光渗透率 %",data:S.map(s=>+s.sTot.toFixed(1)),borderColor:"#8b93a1",backgroundColor:"rgba(139,147,161,.10)",fill:true,tension:.3,pointRadius:2,yAxisID:"y"},
+    {label:"光伏有效渗透率(含挤压) %",data:S.map(s=>+s.ePv.toFixed(1)),borderColor:"#e0a458",borderDash:[3,3],pointRadius:0,borderWidth:1.5,yAxisID:"y"},
+    {label:"光伏捕获率",data:S.map(s=>+(s.crPv*s.fSt*s.fGf*s.fLd*s.fCu*s.fEx).toFixed(3)),borderColor:"#c2690a",tension:.3,pointRadius:2.5,borderWidth:2,yAxisID:"y1"},
+    {label:"风电捕获率",data:S.map(s=>+(s.crWd*s.fSt*s.fGf*s.fCu*s.fEx).toFixed(3)),borderColor:"#0d7f72",tension:.3,pointRadius:2.5,borderWidth:2,yAxisID:"y1"},
+    {label:"限电率 %",data:S.map(s=>+(s.cur*100).toFixed(1)),borderColor:"#c0392b",borderDash:[4,3],pointRadius:0,borderWidth:1.5,yAxisID:"y"}
+  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},
+    plugins:{legend:{labels:{boxWidth:10,font:{size:11},color:"#5a6270"}},tooltip:{callbacks:{label:c=>c.dataset.label+": "+(c.dataset.yAxisID==="y"?c.parsed.y.toFixed(1)+"%":c.parsed.y.toFixed(3))}}},
+    scales:{y:{grid:GRID,ticks:{...TICK,callback:v=>v+"%"},title:{display:true,text:"占比 %",color:"#8b93a1",font:{size:11}}},
+      y1:{position:"right",grid:{display:false},ticks:{...TICK},min:0,max:1.1,title:{display:true,text:"捕获率",color:"#8b93a1",font:{size:11}}},
+      x:{grid:{display:false},ticks:TICK}}}});
+
+  // 图3 价格锚
+  mk("c3",{type:"bar",data:{labels:L,
+    datasets:[
+      {label:"度电燃料成本",data:S.map(s=>+(s.stdCoal*s.hrY/1e6).toFixed(4)),backgroundColor:"#7f95b5",stack:"a"},
+      {label:"变动运维",data:S.map(s=>+P.vom.toFixed(4)),backgroundColor:"#b8c4d4",stack:"a"},
+      {label:"市场溢价",data:S.map(s=>+(s.mc*s.margin).toFixed(4)),backgroundColor:"#1a5fb4",stack:"a"},
+      {label:"系统基准电价",data:S.map(s=>+s.pBase.toFixed(4)),type:"line",borderColor:"#c2690a",pointRadius:2.5,borderWidth:2,tension:.3}
+    ]},options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{boxWidth:10,font:{size:11},color:"#5a6270"}},tooltip:{callbacks:{label:c=>c.dataset.label+": "+c.parsed.y.toFixed(4)+" 元/kWh"}}},
+    scales:{x:{stacked:true,grid:{display:false},ticks:TICK},
+      y:{stacked:true,grid:GRID,ticks:{...TICK,callback:v=>v.toFixed(2)},title:{display:true,text:"元 / 千瓦时",color:"#8b93a1",font:{size:11}}}}}});
+
+  // 图4 分省对比
+  const names=Object.keys(PROV);
+  const rows=names.map(n=>{const s=calc(n,curY);return{n,pv:s.compPv,wd:s.compWd,m:s.pMktPv,sig:s.sTot};})
+    .sort((a,b)=>b.pv-a.pv);
+  mk("c4",{type:"bar",data:{labels:rows.map(r=>r.n),datasets:[
+    {label:"综合上网电价",data:rows.map(r=>+r.pv.toFixed(4)),backgroundColor:rows.map(r=>r.n===curP?"#8b3fa8":"#b39ddb")},
+    {label:"其中市场化部分",data:rows.map(r=>+r.m.toFixed(4)),backgroundColor:rows.map(r=>r.n===curP?"#c2690a":"#e8c39a")}
+  ]},options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{boxWidth:10,font:{size:11},color:"#5a6270"}},tooltip:{callbacks:{label:c=>c.dataset.label+": "+c.parsed.x.toFixed(4)+" 元/kWh"}}},
+    scales:{x:{grid:GRID,ticks:{...TICK,callback:v=>v.toFixed(2)},title:{display:true,text:"元 / 千瓦时",color:"#8b93a1",font:{size:11}}},
+      y:{grid:{display:false},ticks:{...TICK,font:{size:11}}}}}});
+  const hi=rows[0],lo=rows[rows.length-1];
+  document.getElementById("n4").innerHTML=
+    `<b>${curY} 年极差</b>：最高 ${hi.n} <b>${hi.pv.toFixed(3)}</b> 元/kWh，最低 ${lo.n} <b>${lo.pv.toFixed(3)}</b> 元/kWh，价差 <b>${(hi.pv/lo.pv).toFixed(2)} 倍</b>。
+    价格梯度主要由三件事决定：①<b>煤电基准价</b>（资源与运输成本，决定了机制电价与价格锚的绝对水平）；②<b>风光渗透率</b>（${lo.n} ${lo.sig.toFixed(0)}% vs ${hi.n} ${hi.sig.toFixed(0)}%，决定捕获率衰减深度）；③<b>机制电量比例 α</b>（蒙西增量暂不安排机制电量，α 最低，价格最裸露）。`;
+
+  // 图5 敏感性
+  const baseV=calc(curP,curY).compPv;
+  const tests=[
+    ["煤价 −20%","coal26",0.8,"coal30",0.8,"coal35",0.8],
+    ["煤价 +20%","coal26",1.2,"coal30",1.2,"coal35",1.2],
+    ["光伏装机 +5pp","gp",null,null,null,null,0.05],
+    ["光伏装机 −3pp","gp",null,null,null,null,-0.03],
+    ["机制电量 α −20pp","aDecay",null,null,null,null,0.12],
+    ["捕获率下限 −0.05","pvMin",null,null,null,null,-0.05],
+    ["储能提振 +10pp","stGain",null,null,null,null,0.10],
+    ["绿证 +0.02 元","green",null,null,null,null,0.02]
+  ];
+  const sv=[],svL=[];
+  tests.forEach(([lab,...a])=>{
+    const bak={};
+    if(a[1]!=null){["coal26","coal30","coal35"].forEach((k,i)=>{bak[k]=P[k];P[k]*=a[1];});}
+    else{bak[a[0]]=P[a[0]];P[a[0]]=P[a[0]]+a[5];}
+    const v=calc(curP,curY).compPv;
+    Object.keys(bak).forEach(k=>P[k]=bak[k]);
+    svL.push(lab); sv.push(+(v-baseV).toFixed(4));
+  });
+  mk("c5",{type:"bar",data:{labels:svL,datasets:[{label:"电价变化",data:sv,
+    backgroundColor:sv.map(v=>v>=0?"#1f7a4d":"#c0392b")}]},
+    options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>(c.parsed.x>=0?"+":"")+c.parsed.x.toFixed(4)+" 元/kWh"}}},
+    scales:{x:{grid:GRID,ticks:{...TICK,callback:v=>(v>=0?"+":"")+v.toFixed(3)},title:{display:true,text:"相对基准变化 元/kWh",color:"#8b93a1",font:{size:11}}},
+      y:{grid:{display:false},ticks:{...TICK,font:{size:11}}}}}});
+  const mx=svL[sv.map(Math.abs).indexOf(Math.max(...sv.map(Math.abs)))];
+  document.getElementById("n5").innerHTML=
+    `<b>基准值</b>：${curP} ${curY} 年光伏综合上网电价 <b>${baseV.toFixed(4)}</b> 元/kWh。
+    影响最大的单一变量是 <b>${mx}</b>。整体看，<b>煤价</b>决定价格中枢的绝对水平（线性传导），<b>装机增速与机制电量比例</b>决定下行的斜率，<b>捕获率参数</b>是最敏感也最不确定的建模假设——建议用本省实际现货结算价反向校准后再用于投资决策。`;
+
+  // 表
+  let h="<thead><tr><th>年份</th><th>风光渗透率</th><th>光伏CR</th><th>风电CR</th><th>火电边际成本</th><th>系统基准电价</th><th>光伏市场化</th><th>风电市场化</th><th>机制电价(光)</th><th>机制电量α</th><th>光伏综合</th><th>风电综合</th></tr></thead><tbody>";
+  S.forEach(s=>{h+=`<tr><td>${s.y}</td><td>${s.sTot.toFixed(1)}%</td><td>${(s.crPv*100).toFixed(0)}%</td><td>${(s.crWd*100).toFixed(0)}%</td>
+    <td>${s.mc.toFixed(4)}</td><td>${s.pBase.toFixed(4)}</td>
+    <td style="color:#c2690a">${s.pMktPv.toFixed(4)}</td><td style="color:#0d7f72">${s.pMktWd.toFixed(4)}</td>
+    <td>${s.mechPv.toFixed(4)}</td><td>${(s.a*100).toFixed(0)}%</td>
+    <td style="color:#8b3fa8;font-weight:600">${s.compPv.toFixed(4)}</td>
+    <td style="color:#1a5fb4;font-weight:600">${s.compWd.toFixed(4)}</td></tr>`;});
+  document.getElementById("tbl").innerHTML=h+"</tbody>";
+
+  const dp=document.getElementById("demPath");
+  if(dp) dp.innerHTML=demPathHTML(curP);
+}
+
+// ============ 启动 ============
+buildProv();
+buildParamView();
+buildMechSliders();
+buildAppendix();
+document.getElementById("calibChk").onchange=function(){
+  const pn=document.getElementById("calibPanel");
+  pn.style.display=this.checked?"":"none";
+  if(this.checked) buildSliders();
+};
+document.querySelectorAll("#scenBar button").forEach(b=>b.onclick=()=>setScen(b.dataset.s));
+document.querySelectorAll("#yrBar button").forEach(b=>b.onclick=()=>{
+  curY=+b.dataset.y;
+  document.querySelectorAll("#yrBar button").forEach(x=>x.classList.toggle("on",x.dataset.y==curY));
+  render();
+});
+render();
+</script>
+<div style="max-width:1440px;margin:0 auto;padding:0 20px 24px">
+  <div style="background:#fff;border:1px solid #e3e6ec;border-radius:12px;padding:14px 18px;
+    font-size:12px;color:#8b93a1;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px">
+    <span>老丁实验室 · 分省新能源（风光）市场化电价预测模型 v1.3 · 数据截至 2026-09-17</span>
+    <a href="https://laodinglab.com/" style="color:#1a5fb4;text-decoration:none">← 返回老丁实验室</a>
+  </div>
+</div>
+</body>
+</html>
