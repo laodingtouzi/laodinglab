@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>光储行业市场分析 · 老丁实验室</title>
+<meta name="description" content="老丁实验室光储行业市场分析栏目 — 户用光伏、储能等细分市场的头部玩家数据与竞争格局追踪">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* 莫兰迪商务风配色 */
+  --bg: #edeae6;
+  --bg-surface: #f7f6f4;
+  --bg-dark: #2d3a4f;
+  --bg-dark-light: #364765;
+
+  --text: #2a3445;
+  --text-secondary: #5c6b80;
+  --text-muted: #9a9a9e;
+  --text-on-dark: #e1dad8;
+  --text-on-dark-muted: #a8a4a0;
+
+  --border: #d0cbc5;
+  --border-hover: #b8b2aa;
+  --border-dark: rgba(225, 218, 216, 0.12);
+
+  --accent: #B69C91;
+  --accent-light: #e8ddd5;
+  --accent-2: #76819C;
+  --accent-2-light: #e0e3e8;
+  --accent-3: #9a8a80;
+  --accent-4: #5c6b80;
+
+  --shadow: rgba(42, 52, 69, 0.06);
+  --shadow-hover: rgba(42, 52, 69, 0.12);
+  --shadow-dark: rgba(0, 0, 0, 0.15);
+
+  --sans: 'Inter', 'Noto Sans SC', 'PingFang SC', sans-serif;
+  --serif: 'Noto Serif SC', Georgia, serif;
+  --mono: 'Roboto Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── HEADER ── */
+.site-header {
+  background: var(--bg-dark);
+  border-bottom: 1px solid var(--border-dark);
+  padding: 14px 24px;
+}
+.header-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 8px;
+}
+.logo-group { display: flex; align-items: center; gap: 8px; }
+.logo-mark {
+  width: 28px; height: 28px; border-radius: 6px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-3));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.site-name { font-size: 15px; font-weight: 600; letter-spacing: .02em; color: var(--text-on-dark); line-height: 1.2; }
+.site-name-en {
+  font-family: var(--mono); font-size: 9px; font-weight: 400;
+  color: var(--text-on-dark-muted); letter-spacing: .12em;
+  text-transform: uppercase; display: block; margin-top: 1px;
+}
+.site-nav { display: flex; gap: 20px; align-items: center; }
+.site-nav a {
+  font-size: 13px; font-weight: 400; color: var(--text-on-dark-muted);
+  text-decoration: none; transition: color .2s; position: relative; padding-bottom: 2px;
+}
+.site-nav a::after {
+  content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transition: width .2s; border-radius: 1px;
+}
+.site-nav a:hover { color: var(--text-on-dark); }
+.site-nav a:hover::after { width: 100%; }
+.site-nav a.active { color: var(--text-on-dark); }
+.site-nav a.active::after { width: 100%; }
+
+/* ── PAGE HERO ── */
+.page-hero {
+  background: linear-gradient(135deg, #2a3445 0%, #364765 50%, #3d4f6b 100%);
+  padding: 40px 24px 36px; text-align: center; border-bottom: 1px solid var(--border-dark);
+  position: relative; overflow: hidden;
+}
+.page-hero::before {
+  content: ''; position: absolute; top: 50%; right: 10%;
+  width: 220px; height: 220px;
+  background: radial-gradient(circle, rgba(182, 156, 145, 0.08) 0%, transparent 70%);
+  transform: translateY(-50%); pointer-events: none;
+}
+.page-hero::after {
+  content: ''; position: absolute; top: 20%; left: 8%;
+  width: 180px; height: 180px;
+  background: radial-gradient(circle, rgba(118, 129, 156, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.page-hero-inner { max-width: 620px; margin: 0 auto; position: relative; z-index: 1; }
+.page-hero-eyebrow {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--text-on-dark-muted); margin-bottom: 8px;
+}
+.page-hero-title {
+  font-size: 32px; font-weight: 700; color: var(--text-on-dark);
+  font-family: var(--serif); line-height: 1.2; margin-bottom: 8px;
+}
+.page-hero-desc {
+  font-size: 13px; color: var(--text-on-dark-muted); line-height: 1.7;
+  font-weight: 300; max-width: 460px; margin: 0 auto;
+}
+
+/* MAIN */
+.main { flex: 1; max-width: 900px; margin: 0 auto; padding: 40px 24px 56px; width: 100%; }
+.section-label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: 24px;
+  display: flex; align-items: center; gap: 8px;
+}
+.section-label::before {
+  content: ''; display: block; width: 12px; height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2)); border-radius: 1px;
+}
+
+/* REPORT LIST */
+.report-list { display: flex; flex-direction: column; gap: 18px; }
+.report-item {
+  background: var(--bg-surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 28px 32px; text-decoration: none; color: inherit;
+  display: flex; align-items: flex-start; gap: 20px; transition: all .25s ease;
+  position: relative; overflow: hidden; box-shadow: 0 1px 3px var(--shadow);
+}
+.report-item::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--item-gradient, linear-gradient(90deg, var(--accent), var(--accent-2)));
+  opacity: 0; transition: opacity .25s;
+}
+.report-item:hover {
+  border-color: var(--border-hover); transform: translateY(-2px);
+  box-shadow: 0 8px 24px -4px var(--shadow-hover);
+}
+.report-item:hover::before { opacity: 1; }
+.report-item-1 { --item-gradient: linear-gradient(90deg, #76819C, #5c6b80); }
+.report-item-2 { --item-gradient: linear-gradient(90deg, #B69C91, #9a8a80); }
+.report-item-3 { --item-gradient: linear-gradient(90deg, #6b8e6b, #4a7a5a); }
+
+.report-icon {
+  width: 48px; height: 48px; border-radius: 10px; background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; flex-shrink: 0; border: 1px solid var(--border);
+  transition: transform .2s, border-color .2s;
+}
+.report-item:hover .report-icon { transform: scale(1.05); border-color: var(--border-hover); }
+
+.report-body { flex: 1; }
+.report-tag {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px;
+}
+.report-title { font-size: 18px; font-weight: 600; line-height: 1.3; margin-bottom: 8px; color: var(--text); }
+.report-desc {
+  font-size: 13px; color: var(--text-secondary); line-height: 1.7; font-weight: 300;
+  margin-bottom: 14px;
+}
+.report-meta {
+  font-family: var(--mono); font-size: 11px; color: var(--text-muted);
+  letter-spacing: .04em; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+}
+.report-meta span { display: flex; align-items: center; gap: 4px; }
+.report-cta {
+  font-size: 13px; font-weight: 500; color: var(--accent-4); letter-spacing: .04em;
+  display: flex; align-items: center; gap: 6px; transition: color .2s;
+  flex-shrink: 0; align-self: center; white-space: nowrap;
+}
+.report-item:hover .report-cta { color: var(--accent); }
+.report-cta::after { content: '→'; transition: transform .2s; font-weight: 400; }
+.report-item:hover .report-cta::after { transform: translateX(4px); }
+
+/* PLACEHOLDER（尚未上线的报告） */
+.report-item-empty {
+  background: transparent; border: 1px dashed var(--border-hover);
+  box-shadow: none; opacity: .72; cursor: default;
+}
+.report-item-empty::before { display: none; }
+.report-item-empty:hover { transform: none; box-shadow: none; border-color: var(--border-hover); }
+.report-item-empty .report-icon { background: rgba(208,203,197,0.35); opacity: .6; }
+.report-item-empty .report-title { color: var(--text-muted); }
+.report-item-empty .report-desc { color: var(--text-muted); font-style: italic; }
+.report-item-empty:hover .report-icon { transform: none; border-color: var(--border); }
+.report-cta-empty {
+  font-size: 12px; color: var(--text-muted); letter-spacing: .08em;
+  flex-shrink: 0; align-self: center; white-space: nowrap;
+  font-family: var(--mono); font-size: 10px;
+}
+
+.badge-new {
+  display: inline-block; font-family: var(--mono); font-size: 8px; letter-spacing: .1em;
+  background: var(--accent-light); color: #7a5e53; padding: 2px 6px;
+  border-radius: 3px; vertical-align: middle; margin-left: 4px; font-weight: 500;
+}
+.badge-weekly {
+  display: inline-block; font-family: var(--mono); font-size: 8px; letter-spacing: .1em;
+  background: #d8e8d8; color: #3a6a3a; padding: 2px 6px;
+  border-radius: 3px; vertical-align: middle; margin-left: 4px; font-weight: 500;
+}
+.badge-soon {
+  display: inline-block; font-family: var(--mono); font-size: 8px; letter-spacing: .1em;
+  background: #ebe7e3; color: #8a8580; padding: 2px 6px;
+  border-radius: 3px; vertical-align: middle; margin-left: 4px; font-weight: 500;
+}
+
+/* ABOUT */
+.about { padding: 28px 0; border-top: 1px solid var(--border); margin-top: 40px; }
+.about-title { font-family: var(--serif); font-size: 15px; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+.about-text { font-size: 13px; color: var(--text-secondary); line-height: 1.8; max-width: 640px; font-weight: 300; }
+
+/* FOOTER */
+.site-footer { padding: 16px 24px; border-top: 1px solid var(--border-dark); background: var(--bg-dark); }
+.footer-inner {
+  max-width: 1200px; margin: 0 auto; display: flex;
+  justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
+}
+.footer-brand { font-size: 13px; font-weight: 600; color: var(--text-on-dark-muted); }
+.footer-note { font-family: var(--mono); font-size: 10px; color: var(--text-on-dark-muted); letter-spacing: .08em; text-transform: uppercase; }
+.footer-hidden-links { display: flex; align-items: center; gap: 4px; margin-left: 8px; }
+.footer-hidden-links a { color: inherit; text-decoration: none; transition: opacity .2s; line-height: 1; }
+
+@media (max-width: 768px) {
+  .site-header, .page-hero, .main { padding-left: 20px; padding-right: 20px; }
+  .header-inner { justify-content: center; text-align: center; }
+  .site-nav { display: none; }
+  .page-hero { padding: 28px 20px 24px; }
+  .page-hero-title { font-size: 22px; }
+  .report-item { flex-direction: column; gap: 14px; padding: 24px; }
+  .report-cta, .report-cta-empty { align-self: flex-start; }
+  .about-text { font-size: 14px; }
+  .footer-inner { justify-content: center; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" style="text-decoration:none;">
+      <div class="logo-group">
+        <div class="logo-mark">L</div>
+        <div>
+          <div class="site-name">老丁实验室</div>
+          <div class="site-name-en">Laodinglab</div>
+        </div>
+      </div>
+    </a>
+    <nav class="site-nav">
+      <a href="/newenergynews">每日简报</a>
+      <a href="/globalnewenergydata">全球数据</a>
+      <a href="/chinapowermarket">市场研究</a>
+      <a href="/powerstation_fin_model">投资模型</a>
+      <a href="/solarstoragemarket/" class="active">光储行业市场分析</a>
+    </nav>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-hero-eyebrow">Solar &amp; Storage Market</div>
+    <h1 class="page-hero-title">光储行业市场分析</h1>
+    <p class="page-hero-desc">聚焦光伏与储能细分市场的头部玩家数据追踪，覆盖并网量、市占率、资本运作与竞争格局，按周 / 按月持续更新。</p>
+  </div>
+</section>
+
+<main class="main">
+  <div class="section-label">报告清单 · Report List</div>
+
+  <div class="report-list">
+
+    <!-- 1. 中国户用光伏头部玩家市场数据调研（已上线） -->
+    <a href="/solarstoragemarket/residentialpv/" class="report-item report-item-3">
+      <div class="report-icon">☀️</div>
+      <div class="report-body">
+        <div class="report-tag">Residential PV <span class="badge-weekly">WEEKLY</span></div>
+        <div class="report-title">中国户用光伏头部玩家市场数据调研</div>
+        <p class="report-desc">按周追踪天合富家、正泰安能、创维光伏、美的光伏、TCL 光伏、阳光新能源、海尔新能源七家头部玩家的并网量、历年装机、市占率估算、REITs / 资产证券化进展与竞争格局变化。</p>
+        <div class="report-meta">
+          <span>📅 第 7 期 · 2026-09-21</span>
+          <span>🏢 7 家玩家</span>
+          <span>🔄 每周一更新</span>
+          <span>⚡ 户用 H1 新增 21.831GW</span>
+        </div>
+      </div>
+      <div class="report-cta">阅读报告</div>
+    </a>
+
+    <!-- 2. 储能市场（规划中） -->
+    <div class="report-item report-item-1 report-item-empty">
+      <div class="report-icon">🔋</div>
+      <div class="report-body">
+        <div class="report-tag">Energy Storage <span class="badge-soon">PLANNED</span></div>
+        <div class="report-title">中国储能市场头部玩家调研</div>
+        <p class="report-desc">规划中 —— 拟覆盖储能系统集成、电芯、PCS 等环节的头部玩家出货量、装机量与竞争格局，敬请期待。</p>
+        <div class="report-meta"><span>📋 栏目规划中</span></div>
+      </div>
+      <div class="report-cta-empty">敬请期待</div>
+    </div>
+
+    <!-- 3. 预留位（规划中） -->
+    <div class="report-item report-item-2 report-item-empty">
+      <div class="report-icon">📊</div>
+      <div class="report-body">
+        <div class="report-tag">To Be Announced <span class="badge-soon">PLANNED</span></div>
+        <div class="report-title">其他光储专题（待定）</div>
+        <p class="report-desc">规划中 —— 本栏目后续将陆续加入光储产业链其他细分主题的专题报告。</p>
+        <div class="report-meta"><span>📋 栏目规划中</span></div>
+      </div>
+      <div class="report-cta-empty">敬请期待</div>
+    </div>
+
+  </div>
+
+  <div class="about">
+    <div class="about-title">关于本栏目</div>
+    <p class="about-text">本栏目聚焦光储行业的市场侧数据追踪，区别于「全球风光储充装机数据」的行业总量视角，这里关注<b>企业层面的竞争格局</b>——谁在扩张、谁在收缩、谁拿到了资本通道。所有数据均标注来源与可靠性分级，严格区分官方数据、企业披露与推算值。</p>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span class="footer-brand">老丁实验室 · Laodinglab</span>
+    <span class="footer-note">laodinglab.com · 独立研究 · 持续更新</span>
+    <span class="footer-hidden-links">
+      <a href="/trinasolarnews" style="opacity:.5;color:#B69C91;font-size:18px;" onmouseover="this.style.opacity='.95'" onmouseout="this.style.opacity='.5'">●</a>
+      <a href="/stockmarketanalysis" style="opacity:.4;color:#B69C91;font-size:15px;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='.4'">📈</a>
+    </span>
+  </div>
+</footer>
+
+</body>
+</html>
