@@ -260,7 +260,29 @@ td strong { font-weight: 600; }
   .chart-box { height: 280px; }
   .about-text { font-size: 14px; }
   .footer-inner { justify-content: center; text-align: center; }
+  .hl-grid { grid-template-columns: 1fr; }
 }
+
+/* ── 市场热点与要闻：结构化卡片 ── */
+.hl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 14px; margin-bottom: 6px; }
+.hl-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; box-shadow: 0 1px 3px var(--shadow); display: flex; flex-direction: column; }
+.hl-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+.hl-no { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; color: #fff; background: var(--accent-2); border-radius: 4px; padding: 2px 7px; }
+.hl-date { font-family: var(--mono); font-size: 11px; color: var(--text-muted); }
+.hl-title { font-family: var(--serif); font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.55; margin-bottom: 10px; }
+.hl-metric { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.hl-metric span { font-family: var(--mono); font-size: 11px; background: var(--accent-2-light); color: var(--text-secondary); border-radius: 4px; padding: 3px 8px; letter-spacing: .02em; }
+.hl-pts { list-style: none; margin: 0 0 12px; padding: 0; font-size: 12.5px; line-height: 1.78; color: var(--text-secondary); font-weight: 300; }
+.hl-pts li { position: relative; padding-left: 13px; margin-bottom: 5px; }
+.hl-pts li::before { content: ''; position: absolute; left: 0; top: 9px; width: 5px; height: 5px; border-radius: 50%; background: var(--accent-3); }
+.hl-impl { font-size: 12.5px; line-height: 1.75; color: var(--text-secondary); background: #f2f0ed; border-left: 2px solid var(--accent-3); border-radius: 0 6px 6px 0; padding: 8px 12px; margin-top: auto; }
+.hl-impl b { color: var(--text); font-weight: 600; }
+
+/* ── 附录 ── */
+.appendix { border-top: 1px dashed var(--border); padding-top: 22px; margin-top: 8px; }
+.appendix .doc-title { font-size: 17px; }
+.appendix .doc-title .idx { background: var(--bg-surface); color: var(--text-muted); }
+.appendix .callout { font-size: 12.5px; background: #faf8f6; margin-bottom: 0; }
 </style>
 </head>
 <body>
@@ -302,21 +324,80 @@ td strong { font-weight: 600; }
 
   <main class="main">
 
-  <div class="section-label">本期摘要 · Executive Summary</div>
+  <div class="section-label">市场热点与要闻 · Market Highlights</div>
 
-  <div class="callout info">
-    <b>本周最重要的三件事：</b>
-    ① <b>广东机制电价竞价规则落地（10-10）：户用 / 分布式进入 0.20-0.40 元/kWh 竞价时代</b><span class="badge b-official">官方</span> 广东省发改委 / 能源局《关于开展 2026 年新能源项目机制电价竞价工作有关事项的通知》（粤发改价格函〔2026〕1805 号）：分布式光伏竞价<b>上限 0.40 元/kWh、下限 0.20 元/kWh</b>；机制电量初始规模 <b>79.34 亿 kWh</b>（较 2025 年广东实际纳入机制规模涨约 59%），执行期限 <b>12 年</b>；110kV 以下分布式申报比例上限 <b>80%</b>、其他 <b>70%</b>；登记窗口 10-13 截止。<b>2027 年广东新并网分布式光伏的收益锚点将在该区间内竞价形成，未纳入机制的电量全部进现货市场</b>——对照山东 5 月光伏机制电价结算参考价仅约 0.051 元/度。
-    ② <b>美的 / 合康给户用光伏继续加杠杆（10-09）</b><span class="badge b-official">公告</span>：担保额度拟由 40 亿元增至 <b>50 亿元</b>（占净资产 274.52%）；向特定对象发行股票问询函回复明确 <b>16.5158 亿元定增由美的集团全额认购</b>，募投项目含「分布式光伏标杆电站建设及研发项目」；董事 / 财务总监换防。<b>实际担保余额仍为 32.214 亿元 / 净资产 176.87%，额度扩容不等于新增放款，更不等于并网量</b>。这与阳光走「基金 + 渠道」的轻资产路线形成鲜明对比——<b>美的系选择把户用业务留在上市公司表内强化</b>。
-    ③ <b>国家能源局 9 月调度会把「价格结算机制」定为四季度政策主线（10-08）</b><span class="badge b-official">官方</span>：1-8 月可再生能源发电装机 <b>24.96 亿千瓦</b>（占全国电力总装机 60.8%）、新增 <b>1.59 亿千瓦</b>（占全部新增 71.6%）、发电量 <b>2.77 万亿千瓦时</b>（占全国 41.6%）；风光累计 19.92 亿千瓦（占 48.5%），其中光伏 <b>12.97 亿千瓦</b>。会议强调「健全完善新能源可持续发展价格结算机制」「跟踪指导地方科学组织 2027 年增量项目机制竞价」——<b>政策主线已从「装多少」转向「怎么定价、怎么结算」</b>。
-  </div>
+  <div class="hl-grid">
 
-  <div class="callout warn">
-    <b>数据缺口提示：</b>    ① <b>户用分项仍未更新</b>——1-8 月「光伏发电建设情况」详细版（含户用 / 分布式分项）截至 <b>10-12 仍未发布</b>；1-9 月全国电力工业统计亦未发布。<b>官方户用最新数据仍停留在 H1（新增 21.831GW / 累计 233.666GW）</b>，7-8 月户用走势仍是黑箱。
-    ② <b>七家公司 9 月 / 10 月初当月并网量继续全部无量化披露</b>。国庆假期后交易所披露已恢复（合康、天合、阳光、TCL 均有公告），但内容集中在担保、回购、定增问询函回复、股东大会表决——<b>没有一家披露装机或并网数字</b>。
-    ③ <b>创维光伏、TCL 光伏、海尔新能源三家均未递表，不存在招股书</b>：创维分拆先决条件 (b) 仍未达成；TCL 10-09 股东特别大会 99.99% 通过的是<b>空调资产收购</b>而非光伏分拆；海尔 10-11 仅披露第三期辅导工作进展报告。
-    ④ <b>广东竞价结果尚未出清</b>——10-10 发布的是竞价<b>规则与参数</b>，最终出清价格由省发改委 / 能源局另行公布，本期只能用区间，不能用结果。
-    ⑤ <b>本期新增信息中商业数据库与媒体指征占比高于往期</b>，已在第 07 节可靠性表中逐条降级标注；10 月组件排产（Mysteel 37-38GW vs 银河期货 44GW）两机构口径相反，<b>并列呈现不做取舍</b>。
+    <article class="hl-card">
+      <div class="hl-head">
+        <span class="hl-no">01</span>
+        <span class="hl-date">2026-10-10</span>
+        <span class="badge b-official">官方</span>
+      </div>
+      <div class="hl-title">广东机制电价竞价规则落地：户用 / 分布式进入 0.20–0.40 元/kWh 竞价时代</div>
+      <div class="hl-metric">
+        <span>竞价 0.20–0.40 元/kWh</span>
+        <span>机制电量 79.34 亿 kWh</span>
+        <span>执行期 12 年</span>
+      </div>
+      <ul class="hl-pts">
+        <li>发布主体：广东省发改委 / 能源局；文号 <b>粤发改价格函〔2026〕1805 号</b>《关于开展 2026 年新能源项目机制电价竞价工作有关事项的通知》</li>
+        <li>竞价上下限：分布式光伏 <b>上限 0.40 元/kWh、下限 0.20 元/kWh</b></li>
+        <li>机制电量初始规模 <b>79.34 亿 kWh</b>，较 2025 年广东实际纳入机制规模涨约 <b>59%</b></li>
+        <li>申报比例上限：110kV 以下分布式 <b>80%</b>、其他 <b>70%</b>；登记窗口 <b>10-13 截止</b></li>
+      </ul>
+      <div class="hl-impl">
+        <b>判读：</b>2027 年广东新并网分布式光伏的收益锚点将在该区间内竞价形成，<b>未纳入机制的电量全部进现货市场</b>——对照山东 5 月光伏机制电价结算参考价仅约 0.051 元/度。
+      </div>
+    </article>
+
+    <article class="hl-card">
+      <div class="hl-head">
+        <span class="hl-no">02</span>
+        <span class="hl-date">2026-10-09</span>
+        <span class="badge b-official">公告</span>
+      </div>
+      <div class="hl-title">美的 / 合康继续为户用光伏加杠杆：担保额度 40 亿提至 50 亿</div>
+      <div class="hl-metric">
+        <span>担保额度 40 → 50 亿元</span>
+        <span>定增 16.5158 亿元</span>
+        <span>担保余额 32.214 亿元</span>
+      </div>
+      <ul class="hl-pts">
+        <li>担保额度拟由 40 亿元增至 <b>50 亿元</b>，占净资产 <b>274.52%</b></li>
+        <li>向特定对象发行股票问询函回复明确：<b>16.5158 亿元定增由美的集团全额认购</b>，募投项目含「分布式光伏标杆电站建设及研发项目」</li>
+        <li>实际担保余额 <b>32.214 亿元</b>，占净资产 <b>176.87%</b></li>
+        <li>同期董事 / 财务总监换防</li>
+      </ul>
+      <div class="hl-impl">
+        <b>判读：</b>额度扩容 ≠ 新增放款，更 ≠ 并网量。与阳光新能源走「基金 + 渠道」轻资产路线相反，<b>美的系选择把户用业务留在上市公司表内强化</b>。
+      </div>
+    </article>
+
+    <article class="hl-card">
+      <div class="hl-head">
+        <span class="hl-no">03</span>
+        <span class="hl-date">2026-10-08</span>
+        <span class="badge b-official">官方</span>
+      </div>
+      <div class="hl-title">国家能源局 9 月调度会：把「价格结算机制」定为四季度政策主线</div>
+      <div class="hl-metric">
+        <span>可再生能源装机 24.96 亿 kW</span>
+        <span>占比 60.8%</span>
+        <span>光伏 12.97 亿 kW</span>
+      </div>
+      <ul class="hl-pts">
+        <li>1-8 月可再生能源发电装机 <b>24.96 亿千瓦</b>，占全国电力总装机 <b>60.8%</b></li>
+        <li>新增 <b>1.59 亿千瓦</b>，占全部新增装机 <b>71.6%</b></li>
+        <li>发电量 <b>2.77 万亿千瓦时</b>，占全国 <b>41.6%</b></li>
+        <li>风光累计 19.92 亿千瓦（占 48.5%），其中光伏 <b>12.97 亿千瓦</b></li>
+        <li>会议要求「健全完善新能源可持续发展价格结算机制」「跟踪指导地方科学组织 2027 年增量项目机制竞价」</li>
+      </ul>
+      <div class="hl-impl">
+        <b>判读：</b>政策主线已从「装多少」转向<b>「怎么定价、怎么结算」</b>——竞价规则与结算机制将取代装机目标，成为影响户用收益的核心变量。
+      </div>
+    </article>
+
   </div>
 
   <!-- 1. 行业大盘 -->
@@ -1028,6 +1109,21 @@ td strong { font-weight: 600; }
           <tr><td style="color:#7a8a7a">● 低</td><td>创维光伏智慧产业园投产进度</td><td>10 月</td><td>5GW N 型 BC 组件产能</td></tr>
         </tbody>
       </table>
+    </div>
+  </div>
+
+  <!-- 附录 A：本期数据缺口（原「数据缺口提示」，移至文末作附注） -->
+  <div class="doc-section appendix">
+    <div class="doc-title"><span class="idx">A</span>附注：本期数据缺口与使用限制</div>
+    <div class="doc-sub">以下为阅读正文时需注意的数据空白，不影响前述结论的成立条件</div>
+
+    <div class="callout warn">
+      <b>五项数据缺口：</b>
+      ① <b>户用分项仍未更新</b>——1-8 月「光伏发电建设情况」详细版（含户用 / 分布式分项）截至 <b>10-12 仍未发布</b>；1-9 月全国电力工业统计亦未发布。<b>官方户用最新数据仍停留在 H1（新增 21.831GW / 累计 233.666GW）</b>，7-8 月户用走势仍是黑箱。
+      ② <b>七家公司 9 月 / 10 月初当月并网量继续全部无量化披露</b>。国庆假期后交易所披露已恢复（合康、天合、阳光、TCL 均有公告），但内容集中在担保、回购、定增问询函回复、股东大会表决——<b>没有一家披露装机或并网数字</b>。
+      ③ <b>创维光伏、TCL 光伏、海尔新能源三家均未递表，不存在招股书</b>：创维分拆先决条件 (b) 仍未达成；TCL 10-09 股东特别大会 99.99% 通过的是<b>空调资产收购</b>而非光伏分拆；海尔 10-11 仅披露第三期辅导工作进展报告。
+      ④ <b>广东竞价结果尚未出清</b>——10-10 发布的是竞价<b>规则与参数</b>，最终出清价格由省发改委 / 能源局另行公布，本期只能用区间，不能用结果。
+      ⑤ <b>本期新增信息中商业数据库与媒体指征占比高于往期</b>，已在第 07 节可靠性表中逐条降级标注；10 月组件排产（Mysteel 37-38GW vs 银河期货 44GW）两机构口径相反，<b>并列呈现不做取舍</b>。
     </div>
   </div>
 
