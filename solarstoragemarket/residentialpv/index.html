@@ -283,6 +283,31 @@ td strong { font-weight: 600; }
 .appendix .doc-title { font-size: 17px; }
 .appendix .doc-title .idx { background: var(--bg-surface); color: var(--text-muted); }
 .appendix .callout { font-size: 12.5px; background: #faf8f6; margin-bottom: 0; }
+
+/* ── 折叠面板（附录用） ── */
+details.fold { border: 1px solid var(--border); border-radius: 8px; background: var(--bg-surface); overflow: hidden; }
+details.fold > summary {
+  cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px;
+  padding: 12px 16px; font-size: 13px; font-weight: 600; color: var(--text);
+  background: #f4f2ef; user-select: none; border-bottom: 1px solid transparent;
+}
+details.fold > summary::-webkit-details-marker { display: none; }
+details.fold > summary::before {
+  content: '▸'; font-size: 11px; color: var(--text-muted); transition: transform .2s;
+}
+details.fold[open] > summary::before { transform: rotate(90deg); }
+details.fold > summary::after {
+  content: '展开'; margin-left: auto; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .1em; color: var(--text-muted);
+}
+details.fold[open] > summary::after { content: '收起'; }
+details.fold[open] > summary { border-bottom-color: var(--border); }
+details.fold .fold-body { padding: 2px 18px 14px; }
+details.fold .callout { border: none; background: transparent; padding: 10px 0 0; margin: 0; }
+.gap-list { margin: 0; padding-left: 20px; }
+.gap-list li { margin-bottom: 8px; line-height: 1.8; }
+.gap-list li:last-child { margin-bottom: 0; }
+.gap-list li::marker { color: var(--accent-3); font-family: var(--mono); font-size: 12px; }
 </style>
 </head>
 <body>
@@ -1073,14 +1098,8 @@ td strong { font-weight: 600; }
       </table>
     </div>
 
-    <div class="callout warn" style="margin-top:16px;">
-      <b>六项核心局限：</b>
-      ① <b>月度并网量黑箱未解</b>——除合康披露 Q1/Q2 外，七家均不披露月度装机；本期合康担保额度扩容（40→50 亿）、天合 9 月新增担保 20.99 亿，<b>均为财务动作，担保额≠并网量</b>，不能换算为 GW；
-      ② <b>口径差异</b>——"累计并网"（创维）、"户用自持"（正泰）、"累计管理"（天合）互不可比；<b>阳光新能源的 61GW 为全品类含集中式 / 风电 / 储能，已剔除出户用对比</b>；<b>TCL 的 113.88 亿港元为光伏业务合并收入（含工商业与海外），无户用拆分，不能当户用规模用</b>；
-      ③ <b>两套官方口径并存</b>——月度"电力工业统计"（9-24，只有光伏总量）与"光伏发电建设情况"（半年度，含户用分项）不同源，<b>1-8 月户用分项仍未发布</b>；
-      ④ <b>三家资本运作均未递表</b>——创维光伏、TCL 光伏、海尔新能源均无招股书，披露频率受限于母公司定期报告；
-      ⑤ <b>广东竞价结果尚未出清</b>——10-10 发布的是竞价<b>规则</b>（0.20-0.40 元/kWh 区间、79.34 亿 kWh），<b>最终出清电价未公布</b>，本报告不得用区间端点代替实际执行价；
-      ⑥ <b>假期后遗症</b>——10 月 1-7 日全国放假，官方统计与上市公司公告均暂停，本期窗口（10/06-10/12）实际只有 3 个交易日，可获取的新增信号自然稀疏。
+    <div class="callout info" style="margin-top:16px;">
+      本期数据缺口与使用限制（口径不可比、官方分项未发布、未递表等）已合并至文末 <b>附录 A</b>，点击可展开；此处仅保留逐条数据的可靠性评级。
     </div>
   </div>
 
@@ -1115,16 +1134,24 @@ td strong { font-weight: 600; }
   <!-- 附录 A：本期数据缺口（原「数据缺口提示」，移至文末作附注） -->
   <div class="doc-section appendix">
     <div class="doc-title"><span class="idx">A</span>附注：本期数据缺口与使用限制</div>
-    <div class="doc-sub">以下为阅读正文时需注意的数据空白，不影响前述结论的成立条件</div>
+    <div class="doc-sub">原分散于第 07 节与开篇的两份清单已去重合并为下列 7 条，默认收起</div>
 
-    <div class="callout warn">
-      <b>五项数据缺口：</b>
-      ① <b>户用分项仍未更新</b>——1-8 月「光伏发电建设情况」详细版（含户用 / 分布式分项）截至 <b>10-12 仍未发布</b>；1-9 月全国电力工业统计亦未发布。<b>官方户用最新数据仍停留在 H1（新增 21.831GW / 累计 233.666GW）</b>，7-8 月户用走势仍是黑箱。
-      ② <b>七家公司 9 月 / 10 月初当月并网量继续全部无量化披露</b>。国庆假期后交易所披露已恢复（合康、天合、阳光、TCL 均有公告），但内容集中在担保、回购、定增问询函回复、股东大会表决——<b>没有一家披露装机或并网数字</b>。
-      ③ <b>创维光伏、TCL 光伏、海尔新能源三家均未递表，不存在招股书</b>：创维分拆先决条件 (b) 仍未达成；TCL 10-09 股东特别大会 99.99% 通过的是<b>空调资产收购</b>而非光伏分拆；海尔 10-11 仅披露第三期辅导工作进展报告。
-      ④ <b>广东竞价结果尚未出清</b>——10-10 发布的是竞价<b>规则与参数</b>，最终出清价格由省发改委 / 能源局另行公布，本期只能用区间，不能用结果。
-      ⑤ <b>本期新增信息中商业数据库与媒体指征占比高于往期</b>，已在第 07 节可靠性表中逐条降级标注；10 月组件排产（Mysteel 37-38GW vs 银河期货 44GW）两机构口径相反，<b>并列呈现不做取舍</b>。
-    </div>
+    <details class="fold">
+      <summary>数据缺口与使用限制（7 条）· 点击展开</summary>
+      <div class="fold-body">
+        <div class="callout warn">
+          <ol class="gap-list">
+            <li><b>户用月度数据仍是黑箱</b>——1-8 月「光伏发电建设情况」详细版（含户用 / 分布式分项）截至 <b>10-12 仍未发布</b>，1-9 月全国电力工业统计亦未发布，官方户用最新数据仍停留在 H1（新增 21.831GW / 累计 233.666GW），<b>7-8 月户用走势无法观测</b>。</li>
+            <li><b>七家公司当月并网量全部无量化披露</b>——除合康披露 Q1/Q2 外，七家均不披露月度装机；假期后交易所披露虽已恢复，但新增公告集中在担保、回购、定增问询函回复、股东大会表决四类，<b>无一家给出装机或并网数字</b>。本期合康担保额度扩容（40→50 亿）、天合 9 月新增担保 20.99 亿<b>均为财务动作，担保额 ≠ 放款 ≠ 并网量</b>，不能换算为 GW。</li>
+            <li><b>两套官方口径并存且不同源</b>——月度「电力工业统计」（9-24，只有光伏总量）与「光伏发电建设情况」（半年度，含户用分项）不可互相代入。</li>
+            <li><b>各家口径互不可比</b>——「累计并网」（创维）、「户用自持」（正泰）、「累计管理」（天合）不同源；<b>阳光新能源 61GW 为全品类（含集中式 / 风电 / 储能），已剔除出户用对比</b>；<b>TCL 的 113.88 亿港元为光伏业务合并收入（含工商业与海外），无户用拆分，不能当户用规模用</b>。</li>
+            <li><b>三家资本运作均未递表，不存在招股书</b>——创维光伏（分拆先决条件 b 未达成）、TCL 光伏（仍处初期研讨，尚未向联交所提出申请）、海尔新能源（10-11 仅披露第三期辅导进展），披露频率受限于母公司定期报告。TCL 10-09 股东特别大会 99.99% 通过的是<b>空调资产收购</b>，与光伏分拆无关。</li>
+            <li><b>广东竞价结果尚未出清</b>——10-10 发布的是竞价<b>规则与参数</b>（0.20-0.40 元/kWh、79.34 亿 kWh），最终出清电价由省发改委 / 能源局另行公布，<b>不得用区间端点代替实际执行价</b>。</li>
+            <li><b>本期媒体与商业数据库指征占比高于往期</b>，已在第 07 节可靠性表中逐条降级标注；10 月组件排产（Mysteel 37-38GW vs 银河期货 44GW）两机构口径相反，<b>并列呈现不做取舍</b>。另：10 月 1-7 日全国放假，本期窗口（10/06-10/12）实际仅 3 个交易日，可获取的新增信号自然稀疏。</li>
+          </ol>
+        </div>
+      </div>
+    </details>
   </div>
 
   <div class="about">
