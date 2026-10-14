@@ -261,6 +261,8 @@ td strong { font-weight: 600; }
   .about-text { font-size: 14px; }
   .footer-inner { justify-content: center; text-align: center; }
   .hl-grid { grid-template-columns: 1fr; }
+  .callout { overflow-x: auto; }
+  .tbl-fixed { min-width: 560px; }
 }
 
 /* ── 市场热点与要闻：结构化卡片 ── */
@@ -308,6 +310,11 @@ details.fold .callout { border: none; background: transparent; padding: 10px 0 0
 .gap-list li { margin-bottom: 8px; line-height: 1.8; }
 .gap-list li:last-child { margin-bottom: 0; }
 .gap-list li::marker { color: var(--accent-3); font-family: var(--mono); font-size: 12px; }
+
+/* ── 数据表列宽修复（2026-10-14）：固定布局 + 数值列可折行 ── */
+.tbl-fixed { table-layout: fixed; }
+.tbl-fixed th, .tbl-fixed td { vertical-align: top; overflow-wrap: break-word; }
+.tbl-fixed td.num, .tbl-fixed td[colspan] { white-space: normal; line-height: 1.75; }
 </style>
 </head>
 <body>
@@ -499,7 +506,8 @@ details.fold .callout { border: none; background: transparent; padding: 10px 0 0
 
     <div class="callout" style="margin-top:16px;">
       <b>本期新增宏观信号（官方 / 第三方）：</b>
-      <table style="margin-top:10px;font-size:13px;">
+      <table class="tbl-fixed" style="margin-top:10px;font-size:13px;">
+        <colgroup><col style="width:17%"><col style="width:46%"><col style="width:76px"><col style="width:28%"></colgroup>
         <thead><tr><th>指标</th><th>数值</th><th>时间</th><th>口径</th></tr></thead>
         <tbody>
           <tr><td><strong>NEA 9 月调度会：1-8 月可再生能源装机</strong></td><td class="num"><strong>24.96 亿千瓦</strong>（占全国电力总装机 <strong>60.8%</strong>）；新增 <strong>1.59 亿千瓦</strong>（占全部新增 <strong>71.6%</strong>）；发电量 <strong>2.77 万亿千瓦时</strong>（占全国 <strong>41.6%</strong>）</td><td class="num">10-08</td><td><span class="badge b-official">官方</span> 国家能源局全国可再生能源电力开发建设月度（9 月）调度视频会</td></tr>
@@ -697,7 +705,8 @@ details.fold .callout { border: none; background: transparent; padding: 10px 0 0
     </div>
 
     <div class="table-wrap">
-      <table>
+      <table class="tbl-fixed">
+        <colgroup><col style="width:19%"><col style="width:11%"><col style="width:11%"><col style="width:11%"><col style="width:20%"><col style="width:28%"></colgroup>
         <thead>
           <tr><th>公司</th><th>2022</th><th>2023</th><th>2024</th><th>2025</th><th>趋势</th></tr>
         </thead>
