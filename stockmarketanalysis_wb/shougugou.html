@@ -162,9 +162,10 @@ summary { cursor: pointer; font-size: 13px; color: var(--accent); font-weight: 5
     <div id="service-badge" class="service-badge service-off">● 本地分析服务：检测中...</div>
     <div class="progress-box" id="progress-box"></div>
     <div class="guide-box" id="guide-box">
-      <b>本地分析服务未启动。</b>本站为静态站点，全面分析需在本地执行（与定时任务同一套代码）。启动方法（无需终端）：
-      <div style="margin-top:8px">打开 Finder → 进入项目文件夹 <code>tri_market_stock_model_wb</code> → 双击 <b>「手搓股服务.app」</b>（图标会出现在程序坞，显示即运行中），然后回到本页重试。</div>
-      <div style="margin-top:4px;color:#93800f;font-size:12px">提示：在「系统设置 → 通用 → 登录项」中添加该 App，即可开机自动启动，今后无需任何操作。程序坞中退出该 App 即停止服务。</div>
+      <b>分析服务未连接。</b>全面分析需在 MN 主机上执行（与定时任务同一套代码）。
+      <div style="margin-top:8px"><b>在 MN 主机上：</b>打开 Finder → 进入项目文件夹 <code>tri_market_stock_model_wb</code> → 双击 <b>「手搓股服务(WB).app」</b>（图标出现在程序坞即运行中）。</div>
+      <div style="margin-top:6px"><b>从 MBA / iPad 远程访问（家里、外地通用）：</b>确认 MN 主机开机已登录且服务 App 在运行、本设备 Tailscale 已连接，浏览器输入 <code>http://100.84.142.34:8787/shougugou</code>；未装 Tailscale 时，在家可用局域网地址 <code>http://192.168.3.162:8787/shougugou</code>。</div>
+      <div style="margin-top:4px;color:#93800f;font-size:12px">提示：在 MN 主机的「系统设置 → 通用 → 登录项」中添加该 App，即可开机自动启动。</div>
     </div>
   </div>
 
@@ -179,7 +180,9 @@ summary { cursor: pointer; font-size: 13px; color: var(--accent); font-weight: 5
 <div class="footer-note">老丁实验室 Laodinglab · 手搓股分析仅供研究参考，不构成投资建议</div>
 
 <script>
-const API_BASE = 'http://localhost:8787';
+// 页面就在服务端口上打开（本机 / 局域网 / Tailscale 访问）→ 相对路径直连当前服务；
+// 页面从其他来源打开（如 GitHub Pages 静态页）→ 回退 localhost（仅浏览器跑在主机上时有效）
+const API_BASE = (location.port === '8787') ? '' : 'http://localhost:8787';
 let pollTimer = null;
 
 // 页面加载：探测本地服务（未启动时每5秒自动重试，双击 App 后页面自动连接，无需刷新）
@@ -195,7 +198,7 @@ function setBadge(ok){
     b.className = 'service-badge service-ok'; b.textContent = '● 本地分析服务：已连接（可实时评估）';
     if (serviceWatchTimer) { clearInterval(serviceWatchTimer); serviceWatchTimer = null; }
   } else {
-    b.className = 'service-badge service-off'; b.textContent = '● 本地分析服务：未启动 — 双击项目文件夹中的「手搓股服务.app」后自动连接';
+    b.className = 'service-badge service-off'; b.textContent = '● 分析服务未连接 — 远程请访问 100.84.142.34:8787/shougugou；本机请启动「手搓股服务(WB).app」';
     if (!serviceWatchTimer) serviceWatchTimer = setInterval(() => {
       fetch(API_BASE + '/health', { mode: 'cors' })
         .then(r => { if (r.ok) setBadge(true); })
