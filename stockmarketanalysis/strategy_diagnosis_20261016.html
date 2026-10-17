@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>策略改善专项诊断报告 · 2026-10-16</title>
+<style>
+:root {
+  --bg: #F7F2E9;
+  --paper: #FDFBF6;
+  --ink: #2E2A26;
+  --ink-soft: #6B6157;
+  --accent: #8B3A3A;
+  --accent-deep: #6E2C2C;
+  --accent-light: #F0E2DD;
+  --line: #DCD2C2;
+  --gold: #A67C2E;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  line-height: 1.85;
+  font-size: 16px;
+}
+.page {
+  max-width: 860px;
+  margin: 0 auto;
+  background: var(--paper);
+  min-height: 100vh;
+  box-shadow: 0 0 40px rgba(90, 70, 40, 0.08);
+}
+header.masthead {
+  padding: 56px 28px 32px;
+  border-bottom: 1px solid var(--line);
+  text-align: center;
+}
+header.masthead .kicker {
+  font-size: 12px;
+  letter-spacing: 0.35em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+header.masthead h1 {
+  font-family: Georgia, "Songti SC", "STSong", "Noto Serif CJK SC", serif;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+}
+header.masthead .sub {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+header.masthead .rule {
+  width: 56px; height: 2px;
+  background: var(--accent);
+  margin: 22px auto 0;
+}
+main { padding: 12px 28px 56px; }
+section { padding: 34px 0 8px; border-bottom: 1px dashed var(--line); }
+section:last-of-type { border-bottom: none; }
+h2 {
+  font-family: Georgia, "Songti SC", "STSong", "Noto Serif CJK SC", serif;
+  font-size: 22px;
+  color: var(--accent);
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+h2 .no {
+  display: inline-block;
+  min-width: 30px;
+  color: var(--gold);
+  font-size: 15px;
+  vertical-align: 2px;
+  margin-right: 4px;
+}
+h3 {
+  font-family: Georgia, "Songti SC", "STSong", "Noto Serif CJK SC", serif;
+  font-size: 17px;
+  color: var(--ink);
+  margin: 26px 0 8px;
+  padding-left: 12px;
+  border-left: 3px solid var(--accent);
+}
+p { margin: 10px 0; }
+.lead {
+  background: var(--accent-light);
+  border-radius: 6px;
+  padding: 18px 20px;
+  margin: 18px 0;
+  color: var(--accent-deep);
+  font-size: 15px;
+}
+.lead strong { color: var(--accent); }
+.tbl-wrap { overflow-x: auto; margin: 16px 0; -webkit-overflow-scrolling: touch; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  min-width: 560px;
+}
+th {
+  font-family: Georgia, "Songti SC", serif;
+  background: #F2EADB;
+  color: var(--accent-deep);
+  font-weight: 600;
+  padding: 9px 10px;
+  text-align: left;
+  border-bottom: 2px solid var(--accent);
+  white-space: nowrap;
+}
+td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+tr:nth-child(even) td { background: #FAF6EE; }
+.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.neg { color: var(--accent); font-weight: 600; }
+.pos { color: #4A6B3A; font-weight: 600; }
+ul, ol { padding-left: 22px; margin: 10px 0; }
+li { margin: 6px 0; }
+.tag {
+  display: inline-block;
+  font-size: 11.5px;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 3px;
+  padding: 0 6px;
+  margin-right: 4px;
+  line-height: 1.7;
+  vertical-align: 1px;
+  white-space: nowrap;
+}
+blockquote.note {
+  border-left: 3px solid var(--gold);
+  background: #F8F1E2;
+  padding: 12px 16px;
+  margin: 14px 0;
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+footer {
+  padding: 28px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  text-align: center;
+}
+@media (max-width: 640px) {
+  body { font-size: 15px; }
+  header.masthead { padding: 40px 18px 24px; }
+  header.masthead h1 { font-size: 23px; }
+  main { padding: 8px 18px 40px; }
+  h2 { font-size: 19px; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="masthead">
+  <div class="kicker">TRI-MARKET MODEL v5.3 · STRATEGY REVIEW</div>
+  <h1>策略改善专项诊断报告</h1>
+  <div class="sub">全球三市场（CN/HK/US）量化选股模型 · 2026-10-16 · 只读分析，未修改任何策略、持仓或数据库文件</div>
+  <div class="rule"></div>
+</header>
+
+<main>
+
+<div class="lead">
+  <strong>总体结论：</strong>三池反馈闭环 overall_health = critical 已持续 41 天（9/5–10/15 共 31 份反馈全部为 critical）。本次诊断发现更根本的问题——<strong>评分体系本身的 H/M 区分度在实盘数据中已失效</strong>（M 类股票期后收益反而高于 H 类 +1.56 个百分点）。M 积压、卖出胜率低、盯盘池失效均为该根因的不同症状。本报告所有改善建议均为 <strong>【待确认】</strong> 项，需模型所有者批准后实施。
+</div>
+
+<!-- 〇 -->
+<section>
+  <h2><span class="no">〇</span>根本问题：评分排序的实盘有效性为负</h2>
+  <p>在分解三大症状之前，必须先指出支撑所有规则的底层假设已经动摇：<strong>“评分高 = 未来收益好”在实盘跟踪中不成立</strong>（数据来源：有效性验证报告，数据截止 2026-09-19，跟踪样本 9,176 只）。</p>
+
+  <h3>数据证据</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>指标</th><th>数值</th><th>解读</th></tr>
+    <tr><td>入选后 7 天平均收益</td><td class="num neg">-0.1%</td><td>正收益比例 46.4%，买入信号无正向超额</td></tr>
+    <tr><td>入选后 14 天平均收益</td><td class="num neg">-0.54%</td><td>44.1% 正收益，越拿越差</td></tr>
+    <tr><td>入选后 30 天平均收益</td><td class="num neg">-1.53%</td><td>40.3% 正收益；60 天 -1.42%（30.7%）</td></tr>
+    <tr><td>卖出后 7 天平均走势</td><td class="num pos">+0.23%</td><td>下跌比例仅 52.3%，卖出无避损效果</td></tr>
+    <tr><td>M 类期后平均收益</td><td class="num pos">+1.75%</td><td class="neg">跑赢 H 类（+0.19%）1.56pp</td></tr>
+    <tr><td>H 类正收益比例</td><td class="num">43.5%</td><td>低于随机</td></tr>
+  </table></div>
+
+  <h3>根因分析</h3>
+  <ul>
+    <li><strong>分数分布高度压缩在 M 带。</strong>10-15 全部 2,484 只股票中，≥65 分仅 65 只（2.6%），<span class="neg">45–65 区间高达 2,031 只（81.8%）</span>；该结构在 9/1（86.6%）、9/15（70.7%）、10/2（80.4%）均稳定存在。98% 的股票评不到 65 分——跌出 H 是大概率事件，M 与“卖出”之间 20 分的缓冲区使绝大多数股票永远碰不到 45 分卖出线。</li>
+    <li><strong>H/M 排序方向反了。</strong>M 类期后收益高于 H 类，评分对横截面收益的排序能力为负或近零。买卖规则修得再细，也只是在一个无效排序上做更频繁的轮动。</li>
+    <li><strong>回测与实盘背离。</strong>回测 B 策略（2025-04→2026-07）+13.5%、夏普 1.5；Z 策略 +18.31%、夏普 1.65——但同一套逻辑实盘 2 个月，入选后 30 天平均 -1.53%。回测区间有效性不能外推，实盘反馈闭环才是可信数据源。</li>
+  </ul>
+
+  <h3>改善建议</h3>
+  <ul>
+    <li><span class="tag">待确认</span>将“评分排序有效性”（分档期后收益 IC、H-M 超额）列为每周强制体检指标；连续 4 周 H-M 超额 ≤ 0，触发因子权重/打分函数重估流程，而不是继续微调买卖阈值。</li>
+    <li><span class="tag">待确认</span>优先排查打分函数压缩来源（quality 25–35%、估值、技术分实际分布），对 final_score 做分市场<b>分位数化</b>或 z-score 标准化，让 H 阈值对应“前 X% 分位”而非绝对分 65。</li>
+    <li><span class="tag">待确认</span>重估完成前，对 H 阈值与买入确认机制采取保守姿态，不轻易加仓新 H 信号。</li>
+  </ul>
+</section>
+
+<!-- 一 -->
+<section>
+  <h2><span class="no">壹</span>M 状态积压（CN 58% / HK 64% / US 100%）</h2>
+
+  <h3>数据证据</h3>
+  <ul>
+    <li><strong>趋势单向淤积：</strong>M 占比从 9/5 的 CN 8.8% / HK 48.1% / US 50.0% 攀升至 10-15 的 <span class="neg">CN 58.2% / HK 64.1% / US 100%</span>，41 天未回落；US 自 9/24 连续 16 天 ≥ 91%。</li>
+  </ul>
+  <div class="tbl-wrap"><table>
+    <tr><th>市场</th><th>M 只数</th><th>M 评分中位数</th><th>持有天数中位数</th><th>M 中亏损占比</th><th>M 平均浮盈亏</th></tr>
+    <tr><td>CN</td><td class="num">57</td><td class="num">59.9</td><td class="num">38 天</td><td class="num neg">65%（37/57）</td><td class="num neg">-1.55%</td></tr>
+    <tr><td>HK</td><td class="num">41</td><td class="num">59.5</td><td class="num">48 天</td><td class="num">49%（20/41）</td><td class="num pos">+0.63%</td></tr>
+    <tr><td>US</td><td class="num">36</td><td class="num">63.0</td><td class="num neg">88 天</td><td class="num">19%（7/36）</td><td class="num pos">+10.53%</td></tr>
+  </table></div>
+  <ul>
+    <li><strong>滞留量化：</strong>当前 M 持仓近期连续低于 H 阈值天数，CN 中位 9 天（≥20 天者 11 只）、HK 中位 9 天（≥20 天者 13 只）、<span class="neg">US 中位 26 天（≥20 天者 26/36）</span>。自 9/1 以来，CN/HK 的 M 持仓<span class="neg">没有一只</span>评分跌破 45（0/57、0/41），US 仅 2/36——<strong>M→卖出这条出路由几乎从未被走过</strong>，绝大多数 M 的最终去向是无限期滞留。</li>
+    <li><strong>盈利结构倒挂：</strong>H 池平均收益 CN +4.03% / HK +5.98%，M 池 CN 平均 -1.55%——资金实质压在低分档。</li>
+  </ul>
+
+  <h3>根因分析</h3>
+  <ul>
+    <li><strong>统计结构性</strong>（见第〇节）：81.8% 股票日常处于 45–65 带，H 阈值只有全市场前 2–3% 能达到，M 只进不出。</li>
+    <li><strong>机制性</strong>：状态每日由当日分数直接重算，M 没有任何时间维度出口；唯一的僵尸清退（M + 浮亏 &gt;5% + 持有 &gt;15 天，9/24 上线）覆盖不了 CN M 池“65% 亏损但平均仅 -1.55%”的主体。</li>
+    <li><strong>US 特例</strong>：36 只全 M、0 只 H，老持仓利润垫厚（平均 +10.53%），分数停在 53–69，既回不去 70 也跌不到 50，永久滞留。</li>
+    <li><strong>M 无实际后果</strong>：M 与 H 只差仓位上限（m_limit = h_limit × 0.5），且只影响新建仓股数，存量股数每日沿用记录不重算——状态降级 = 无操作，堆积没有痛感。</li>
+  </ul>
+
+  <h3>改善建议</h3>
+  <ul>
+    <li><span class="tag">待确认</span><b>M 滞留强制评审</b>：M 持续 N 天（建议 CN/HK 20 天、US 30 天）未回升 H，强制进入卖出观察/评审清单，每周复核一次，打破无限滞留。</li>
+    <li><span class="tag">待确认</span><b>放宽僵尸清退</b>：浮亏 &gt;5% 收紧为 &gt;3%，或新增“评分 &lt;55 且持有 &gt;20 天”视同跌破阈值。</li>
+    <li><span class="tag">待确认</span><b>M 降仓落地</b>：M 降级当日按 m_limit 卖出超出部分（可分 2–3 日执行），让 M 有真实后果，资金自然向 H 集中。</li>
+    <li><span class="tag">待确认</span>评分分位数化（同第〇节），从源头降低淤积速度。</li>
+    <li><span class="tag">待确认</span>US 池逐只复核：持有 &gt;60 天且评分 &lt;70 的老持仓逐一给出“继续持有 / 止盈退出”结论。</li>
+  </ul>
+</section>
+
+<!-- 二 -->
+<section>
+  <h2><span class="no">贰</span>卖出胜率低、“卖亏”与割肉</h2>
+
+  <h3>数据证据</h3>
+  <blockquote class="note"><b>口径澄清：</b>用户所指“CN 卖出胜率仅 44%”对应反馈文件中的<b>持仓胜率</b>（盈利持仓占比 CN 43.9%，10-15），而非沽后卖出正确率。沽后口径的实际数字分三层，更能说明问题。</blockquote>
+  <div class="tbl-wrap"><table>
+    <tr><th>市场</th><th>沽后样本</th><th>卖后上涨(&gt;0.5%)比例</th><th>平均沽后涨跌</th><th>亏损时卖出占比</th><th>深割（≤-15%）</th></tr>
+    <tr><td>CN</td><td class="num">698</td><td class="num">17.8%</td><td class="num neg">-9.67%</td><td class="num">19.3%</td><td class="num">3 只（0.4%）</td></tr>
+    <tr><td>HK</td><td class="num">319</td><td class="num">20.1%</td><td class="num neg">-9.55%</td><td class="num">33.5%</td><td class="num">5 只（1.6%）</td></tr>
+    <tr><td>US</td><td class="num">177</td><td class="num neg">45.2%</td><td class="num">+0.26%</td><td class="num neg">49.2%</td><td class="num">2 只（1.1%）</td></tr>
+  </table></div>
+  <div class="tbl-wrap"><table>
+    <tr><th>市场</th><th>卖出类型</th><th>只数</th><th>卖出时亏损占比</th><th>卖后上涨比例</th><th>平均沽后涨跌</th><th>持有天数中位</th></tr>
+    <tr><td>CN</td><td>normal（跌破阈值）</td><td class="num">603</td><td class="num">13%</td><td class="num">18%</td><td class="num neg">-10.28%</td><td class="num neg">0 天</td></tr>
+    <tr><td>CN</td><td>capital_limit（超限强卖）</td><td class="num">69</td><td class="num neg">49%</td><td class="num">20%</td><td class="num neg">-4.57%</td><td class="num">8 天</td></tr>
+    <tr><td>HK</td><td>normal</td><td class="num">296</td><td class="num">28%</td><td class="num">19%</td><td class="num neg">-10.08%</td><td class="num neg">0 天</td></tr>
+    <tr><td>US</td><td>normal</td><td class="num">86</td><td class="num neg">53%</td><td class="num neg">40%</td><td class="num">+0.20%</td><td class="num">1 天</td></tr>
+    <tr><td>US</td><td>capital_limit</td><td class="num">35</td><td class="num neg">74%</td><td class="num neg">49%</td><td class="num">0.00%</td><td class="num">3 天</td></tr>
+    <tr><td>US</td><td>stop_loss</td><td class="num">14</td><td class="num">100%</td><td class="num neg">36%</td><td class="num neg">-1.38%</td><td class="num neg">59 天</td></tr>
+  </table></div>
+  <ul>
+    <li><strong>短炒特征</strong>：卖出时持有 ≤5 天的比例 CN 14% / HK 20% / <span class="neg">US 45%</span>；CN/HK 的 normal 卖出持有天数<b>中位数 = 0 天</b>——昨日入选、今日即被卖出，买入确认与卖出确认互相打架，典型 whipsaw（拉锯损耗）。</li>
+    <li><strong>“亏损 15%+ 才卖”的现状</strong>：深割仅 10 只/1,194，-10% 硬止损在起作用；新症状是 <b>US 浅亏高频卖出</b>（49.2% 亏卖，capital_limit 强卖 74% 亏卖）。US 硬止损的 14 只 median 持有 59 天后割肉，36% 卖后反弹。割肉后又涨 &gt;5% 的：CN 15 例、HK 10 例、US 20 例。</li>
+  </ul>
+
+  <h3>根因分析</h3>
+  <ul>
+    <li><strong>有效性报告直接印证</strong>：卖出后 7 天平均 +0.23%、下跌比例仅 52.3%——卖出决策整体没有避损能力（与第〇节评分失效同源）。CN/HK 卖后平均 -9.67%/-9.55% 主要是 9 月初高 churn 期甩掉弱票的存量结果。</li>
+    <li><strong>US 重灾区</strong>：normal 卖出 40% 卖后上涨、平均 +0.20%，等于抛硬币；capital_limit 强卖 74% 亏卖是“池子超支→卖低分→低分=已亏”的恶性循环，根因是 US 仓位口径失真（见第伍节）。</li>
+    <li><strong>whipsaw 机制</strong>：买入要求连续 3 天 ≥65，卖出只要求连续 2 天 &lt;45，带宽不对称，高波动票反复穿越。</li>
+    <li><strong>回应 9/8 质疑</strong>：“不少是亏损 15%+ 才卖”——当前数据已不支持（深割仅 10 只）；真正的问题是浅亏高频率卖出 + 卖出信号本身无正向期望。</li>
+  </ul>
+
+  <h3>改善建议</h3>
+  <ul>
+    <li><span class="tag">待确认</span><b>卖出确认对称化</b>：连续 2 天收紧为 3 天（与买入对称）；“入选 ≤10 天内”豁免评分卖出（保留硬止损），消除 0 天往返。</li>
+    <li><span class="tag">待确认</span><b>US 卖出改分位/联动口径</b>：US 45/50 阈值位于该市场评分噪声区；优先修复 US 仓位口径以消除 capital_limit 亏卖循环。</li>
+    <li><span class="tag">待确认</span><b>capital_limit 强卖排序优化</b>：叠加“优先卖浮盈者、保留浮亏者”约束，减少规则性亏卖。</li>
+    <li><span class="tag">待确认</span><b>长持亏损票止损优化</b>：持有 &gt;30 天的硬止损与“自最低点反弹力度”联动（反弹乏力才执行），减少底部机械卖出。</li>
+    <li><span class="tag">待确认</span>评分排序有效性修复前，卖出阈值只做小幅、单变量、可回滚修改。</li>
+  </ul>
+</section>
+
+<!-- 三 -->
+<section>
+  <h2><span class="no">叁</span>盯盘池失效（平均差额 -8.98%）</h2>
+
+  <h3>数据证据</h3>
+  <ul>
+    <li><strong>入选标准</strong>（rotation_watch_manager.py，P1-1 版）：宏观周报板块<b>加配</b> + 持仓 <b>H 状态</b> + 评分 <b>≥68</b> + 持有 <b>≥3 天</b> + <b>评分动量 &gt; 0</b>，按评分降序每市场取 Top N（CN 12 / HK 8 / US 5）。</li>
+    <li><strong>当前 13 只</strong>（report 2026-10-10）：持有期平均 <span class="pos">+13.75%</span>（平均持有 57 天）vs 盯盘期平均 <span class="pos">+4.77%</span>（平均盯盘仅 8 天），差额 <span class="neg">-8.98%</span>，仅 1/13 只盯盘期跑赢。</li>
+    <li><strong>全生命周期口径</strong>（累计退出的 200 只）：盯盘期 +0.17% vs 持有期 +0.24%，<b>差额仅 -0.06%</b>，44% 退出样本盯盘期跑赢——“-8.98%”主要被当前 13 只中的少数长期高盈利老持仓放大（MPC.N 持有 +55.12% / 盯盘 +17.15%，差额 -37.97pp；APA.O -28.74pp；601919.SH -15.50pp）。</li>
+    <li><strong>退出原因</strong>（200 只）：板块信号消失 102、同步卖出 88、满 30 交易日自动退出仅 10——盯盘池实际由周报信号驱动，平均盯盘 14 天。</li>
+  </ul>
+
+  <h3>根因分析</h3>
+  <ul>
+    <li><strong>入选即高位（追高型入选）</strong>：“评分 ≥68 + 动量为正”等价于在评分曲线右尾、动量最热时刻入场；代码注释引用的事件研究（n=348）已显示确认日附近均值回归极强——同一逻辑在盯盘池复现，入选后均值回归，盯盘期自然跑输。</li>
+    <li><strong>对比口径错位</strong>：holding_pnl 从建仓价算到当前（平均 57 天），watch_pnl 只从盯盘基准日算（平均 8 天）。对已有 +20%~+55% 浮盈的老持仓，盯盘期在数学上几乎不可能追上持有期——<b>-8.98% 度量的是时间窗错位，不是选优能力</b>。全生命周期 -0.06% 才是盯盘池真实水平。</li>
+    <li><strong>信号源与个股逻辑脱节</strong>：板块加配信号与个股评分为两套体系，叠加无协同证据（200 只中 44% 跑赢 = 零效）。</li>
+  </ul>
+
+  <h3>改善建议</h3>
+  <ul>
+    <li><span class="tag">待确认</span><b>修正考核口径</b>：diff 改为“盯盘期收益 vs 同期持有池平均收益”同时间窗比较；现有“盯盘期 vs 全持有期”口径建议弃用。</li>
+    <li><span class="tag">待确认</span><b>入选去追高</b>：取消“评分动量 &gt; 0”或加“入选日涨幅 &lt;3%”约束；增加“距 60 日高点回撤 &gt;5%”的回踩条件。</li>
+    <li><span class="tag">待确认</span><b>盯盘池必须有退出动作</b>：满 10 个交易日未创新高即移出，让盯盘池成为调仓触发器而非观察名单。</li>
+    <li><span class="tag">待确认</span>口径修正前，暂缓依据 -8.98% 头条数字做参数收紧；先用修正口径积累 4 周数据再决策。</li>
+  </ul>
+</section>
+
+<!-- 四 -->
+<section>
+  <h2><span class="no">肆</span>买卖频繁与交易成本</h2>
+
+  <h3>数据证据与成本估算</h3>
+  <ul>
+    <li>status_changes（live）：2026-09 单月 BUY 266 / SELL 275；峰值日 9/7 买 97 + 卖 59 = <b>156 条</b>、9/5 134 条——“单日 119 条”量级属实；9/18 确认机制上线后峰值降至 ≤38 条，机制有效。</li>
+    <li>沽后池累计 <b>1,194 笔卖出</b>（7 月中–10-15）：CN 698（8 月单月 537）/ HK 319 / US 177；每笔中位成本约 10 万 CNY，合计卖出成本 9,845 万。</li>
+    <li>8 月异常冲高（单月 BUY 3,456 / SELL 3,393，8/23 单日 1,070 条）为回测回放/持仓重建期（BACKFILL_REPLAY），但回放期卖出真实落进了 post_sell 档案，<b>污染了沽后统计口径</b>。</li>
+  </ul>
+  <div class="tbl-wrap"><table>
+    <tr><th>成本项</th><th>假设</th><th>测算结果</th></tr>
+    <tr><td>单次往返成本率</td><td class="num">佣金 0.025%×2 + 滑点 0.3%×2</td><td class="num">≈ 0.65%</td></tr>
+    <tr><td>累计 1,194 笔总成本</td><td class="num">× 平均成本 8.2 万</td><td class="num neg">≈ 64 万 CNY（≈ 本金 2.1%，单池年化拖累 ≈8% 量级）</td></tr>
+    <tr><td>仅 9 月以来（约 330 笔）</td><td class="num">—</td><td class="num neg">≈ 17 万 CNY / 0.57%，相对同期 CN +0.26%、HK +2.16% 的持有盈亏是显著拖累</td></tr>
+  </table></div>
+
+  <h3>根因分析与建议</h3>
+  <ul>
+    <li>9/18 后高 churn 已通过 P0-1/P0-4 确认机制缓解，但评分日间高波动未解决——确认机制只是把频率从“日”推到“周”，whipsaw 仍在。</li>
+    <li><span class="tag">待确认</span><b>换手率预算</b>：每市场每周买入上限（如 CN 10 / HK 6 / US 4），超出排队至下周。</li>
+    <li><span class="tag">待确认</span><b>冷却期动态化</b>：cooldown_normal 3 天 → 5–10 天，stop_loss 保持 7 天。</li>
+    <li><span class="tag">待确认</span><b>数据清洗</b>：2026-08 回放期（8/8–8/23）post_sell 记录打标/剔除，避免污染卖出胜率指标。</li>
+    <li><span class="tag">待确认</span><b>滑点校准</b>：0.3% 假设对 HK/US 小盘股可能偏低，用实际成交价回填校准并纳入每日反馈报告。</li>
+  </ul>
+</section>
+
+<!-- 五 -->
+<section>
+  <h2><span class="no">伍</span>附带发现</h2>
+  <ul>
+    <li><span class="tag">待确认</span><b>US 池仓位口径失真</b>：配置意图单票上限 ≈ $13.9k（10 万 CNY 等值），实际每只约 $74.7k、合计 $269 万，<span class="neg">为池上限 1.9 倍、单票配置上限 5.4 倍</span>。capital_limit 强卖高频触发（US 35 笔）与此直接相关。需核对建仓时配置版本，决定追认或减仓回归。</li>
+    <li><span class="tag">待确认</span><b>配置注册表与执行代码不一致</b>：strategy_config 注册表 B_v2.1 sell_threshold=40/42/42、hard_stop_loss=-12/-20/-12；selector v5.3 硬编码 45/50、-10（全局）。实际执行以代码为准，注册表沦为误导性文档；建议统一单一事实源。</li>
+    <li><b>CN/HK 资金利用率仅 57%/38%</b>：M 积压占用名义仓位但资金大量闲置；M 降仓落地后需配套再投入规则，否则收益率进一步稀释。</li>
+    <li><b>回应 9/8 五点质疑</b>：①“97% 持仓率 +0.7% 收益”→ 当前 CN 利用率 57%、盈亏 +0.26%，核心矛盾转化为评分排序无效（第〇节）；②“亏损 15%+ 才卖”→ 数据上已解决（深割仅 10 笔）；③“与主观选手无差异”→ 有效性显示略差于随机（入选 30 天 -1.53%），<b>该质疑目前成立</b>，修复路径在评分层而非规则层。</li>
+  </ul>
+</section>
+
+<!-- 六 -->
+<section>
+  <h2><span class="no">陆</span>建议清单汇总（全部待确认，按优先级）</h2>
+  <div class="tbl-wrap"><table>
+    <tr><th>#</th><th>建议</th><th>针对问题</th><th>预期效果</th></tr>
+    <tr><td class="num">1</td><td>评分排序有效性列为周度体检，连续 4 周 H-M 超额 ≤0 触发因子重估</td><td>根因</td><td>决定是否动因子层</td></tr>
+    <tr><td class="num">2</td><td>final_score 分市场分位数化，H 阈值改分位口径</td><td>根因 + M 积压</td><td>H 可达、M 带收窄</td></tr>
+    <tr><td class="num">3</td><td>M 滞留 20/30 天强制评审；放宽僵尸清退（浮亏 &gt;3% 或评分 &lt;55 + &gt;20 天）</td><td>M 积压</td><td>M 池有出口</td></tr>
+    <tr><td class="num">4</td><td>M 降级按 m_limit 对存量降仓（可分 2–3 日执行）</td><td>M 积压 + 资金效率</td><td>M 有真实后果</td></tr>
+    <tr><td class="num">5</td><td>卖出确认 2→3 天；新入选 ≤10 天豁免评分卖出（保留硬止损）</td><td>卖出胜率 / whipsaw</td><td>消除 0 天往返</td></tr>
+    <tr><td class="num">6</td><td>US 卖出改分位/联动口径；优先修复 US 仓位口径（5.4× 超配）</td><td>US 卖亏</td><td>消除 capital_limit 亏卖循环</td></tr>
+    <tr><td class="num">7</td><td>capital_limit 强卖排序加“优先卖盈”约束</td><td>亏卖</td><td>减少规则性亏卖</td></tr>
+    <tr><td class="num">8</td><td>长持（&gt;30 天）亏损票止损与反弹力度联动，替代机械 -10%</td><td>割肉后反弹</td><td>减少底部卖出</td></tr>
+    <tr><td class="num">9</td><td>盯盘池考核口径改同时间窗；入选去追高；满 10 天未新高即退出</td><td>盯盘池</td><td>指标可解释、池子可执行</td></tr>
+    <tr><td class="num">10</td><td>每周换手率预算 + cooldown_normal 3→5–10 天</td><td>交易成本</td><td>降摩擦损耗</td></tr>
+    <tr><td class="num">11</td><td>8 月回放期 post_sell 打标/剔除；滑点假设实盘校准</td><td>数据质量</td><td>指标可信</td></tr>
+    <tr><td class="num">12</td><td>strategy_config 注册表与 selector 硬编码统一为单一事实源</td><td>治理</td><td>消除误导</td></tr>
+  </table></div>
+</section>
+
+<!-- 附录 -->
+<section>
+  <h2><span class="no">附</span>数据口径说明</h2>
+  <ul style="font-size:14px;color:var(--ink-soft)">
+    <li>三池反馈趋势：data/portfolio/pool_feedback_2026-09-05.json 至 pool_feedback_2026-10-15.json（31 份）</li>
+    <li>持仓快照：data/portfolio/holdings_{CN,HK,US}.json（2026-10-15 23:29）</li>
+    <li>沽后池：data/portfolio/post_sell_{CN,HK,US}.json（1,194 笔，含 sell_type / post_sell_return）</li>
+    <li>盯盘池：data/rotation_watch.json（当前 13 只 + 退出 200 只全明细）</li>
+    <li>评分与状态变更：data/baseline_v5.db（daily_scores 159,640 行：live 147,220 / backfill 12,420；status_changes BUY 4,854 / SELL 4,456，2026-08 为回放期）</li>
+    <li>代码逻辑：tri_market_selector_v5.3.py（状态分配 1128–1136、冷却 1171–1193、卖出确认 1254–1306、硬止损 1326–1375、排名强卖 1377–1413）、rotation_watch_manager.py（入选标准 219–265）、portfolio_tracker_v5.py（状态/股数规则 436–499）、strategy_config.py（策略注册表）</li>
+    <li>有效性：reports/effectiveness_report.html（数据截止 2026-09-19）；回测：backtest_b_result.json（+13.5% / 夏普 1.5）、backtest_z_result.json（+18.31% / 夏普 1.65）</li>
+    <li>本报告为只读分析，未修改任何 .py 策略文件、持仓 JSON 或数据库。</li>
+  </ul>
+</section>
+
+</main>
+
+<footer>
+  策略改善专项诊断 · 全球三市场选股模型 v5.3 · 2026-10-16<br>
+  所有改善建议均为【待确认】项，经模型所有者批准后实施
+</footer>
+
+</div>
+</body>
+</html>
