@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>策略改善定稿清单 2026-10-16</title>
+<style>
+  body { background: #F7F2E9; color: #33302A; font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+         font-size: 15px; line-height: 1.75; max-width: 960px; margin: 0 auto; padding: 40px 28px 80px; }
+  h1 { color: #8B3A3A; font-size: 26px; border-bottom: 3px solid #8B3A3A; padding-bottom: 12px; }
+  h2 { color: #8B3A3A; font-size: 20px; margin-top: 36px; }
+  h3 { color: #8B3A3A; font-size: 17px; margin-top: 24px; }
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; background: #FFFDF8; font-size: 14px; }
+  th, td { border: 1px solid #D8CDB8; padding: 8px 10px; text-align: left; }
+  th { background: #EFE6D2; color: #8B3A3A; }
+  blockquote { border-left: 4px solid #8B3A3A; margin: 12px 0; padding: 6px 16px; color: #6B6355; background: #FBF8F0; }
+  code { background: #EFE6D2; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+  hr { border: none; border-top: 1px solid #D8CDB8; margin: 28px 0; }
+  strong { color: #6E2F2F; }
+</style>
+</head>
+<body>
+<h1>策略改善定稿清单</h1>
+<blockquote>
+<p>定稿时间：2026-10-16
+来源：《策略改善专项诊断_20261016》12 条建议 + 本次对话逐条讨论新增/修订
+状态：全部经用户逐条确认；实施纪律——先备份、分步实施、步步验证、策略类改动经回放验证再切生产
+诊断报告：reports/策略改善专项诊断_20261016.md / .html</p>
+</blockquote>
+<h2>用户确认记录（逐条）</h2>
+<p>| 条目 | 用户决定 |
+|---|---|
+| 1 评分有效性周度体检 | 同意 |
+| 2 分位数化 | 同意，分两步（4 周并跑对照后再切换） |
+| 3 重估完成前保守姿态 | 同意 |
+| 4 M 滞留强制评审 | 同意（CN/HK 20 天、US 30 天） |
+| 5 僵尸清退收紧 | 同意 |
+| 6 M 状态降仓落地 | 同意，但延后——先做 4+5，观察 2 周 M 池变化后再定 |
+| 7 US 池老持仓逐只复核 | 同意，一次性动作，与分位数化绑定阈值调整 |
+| 8 沽后池瘦身 | 同意，60 天窗口；&quot;可见性与可分析性分离&quot;——活跃层瘦身、DB 全量分析 |
+| 9 卖出确认期 | <strong>修订</strong>：维持 2 天不变（测算：延长 1 天仅多挽救 2.0% whipsaw，意义小）；只做新入选 ≤15 天豁免评分卖出（硬止损除外） |
+| 10 US 卖出规则修复 | 同意（capital_limit 强卖优先卖盈立即做；阈值调整并入第 2 项） |
+| 11 长持亏损票止损联动 | 同意，优先级排后（8/9 见效后再评估） |
+| 12 盯盘池重设计 | 同意试行：收益速度考核（盯盘速度 ≥ 2 倍持有速度为达标线）+ 七条件新遴选 + <strong>周度宏观报告&quot;加减仓&quot;驱动因子联动</strong>（加仓板块 +5 分、减仓板块剔除、驱动因子留痕）；开发模式 2 周历史回放验证后切生产 |
+| 13 盯盘池强制退出 | 同意（满 10 交易日未新高或跑输即退，与新遴选绑定实施） |
+| 14 换手率预算 + 冷却期 | 同意（单池周换手 ≤25% 预算、按低分优先执行；cooldown 3→5 天） |
+| 15 回放期打标 + 滑点校准 | 同意（回放期 source='replay' 打标；真实费率随月度复盘校准） |
+| 附 A 配置单一事实源 | 同意（注册表为唯一事实源，selector 硬编码清除） |
+| 附 B 评分压缩技术排查 | 随第 2 项一起执行 |
+| 附 C 回测-实盘背离监控 | 并入第 1 项周度体检 |</p>
+<h2>定稿条目明细</h2>
+<h3>第〇节 根因（治本层）</h3>
+<p><strong>1. 评分有效性周度体检</strong>【同意】
+分档期后收益 IC、H-M 超额纳入每周六有效性报告；连续 4 周 H-M 超额 ≤0 触发因子权重/打分函数重估；同报告增加&quot;回测年化 vs 实盘年化&quot;偏离度监控（偏离 &gt;50% 触发回测假设审查，附 C 并入）。</p>
+<p><strong>2. final_score 分位数化</strong>【同意·两步走】</p>
+<ul>
+<li>第一步（并跑 4 周）：分位数口径与绝对分口径并行计算，周度报告展示对照（IC、H-M 超额、入选 30 天收益）</li>
+<li>第二步：第 4 周输出《口径切换评估报告》，用户拍板后切换；期间顺带排查评分压缩来源（quality 财务分占比等，附 B）</li>
+<li>触达机制：周六报告自动积累 → 月度复盘汇总标注&quot;对照期第 N/4 周&quot; → 第 4 周结束主动提醒用户并出评估报告；中途极端情况提前提醒</li>
+</ul>
+<p><strong>3. 保守姿态</strong>【同意】
+第 2 项对照期结束前，新增 H 买入信号不加仓（维持现有持仓只做规则内卖出）。</p>
+<h3>第一节 M 状态积压</h3>
+<p><strong>4. M 滞留强制评审</strong>【同意】
+M 持续未回升 H：CN/HK 20 天、US 30 天，强制列入评审清单；评分 &lt;55 卖出、55–60 观察、≥60 保留，每周至少清一轮。</p>
+<p><strong>5. 僵尸清退收紧</strong>【同意】
+放宽为&quot;浮亏 &gt;3% 或 评分 &lt;55 且持有 &gt;20 天&quot;；新增&quot;评分 &lt;50 持续 10 天&quot;视同跌破卖出线。</p>
+<p><strong>6. M 状态降仓落地</strong>【同意·延后】
+先做 4+5，观察 2 周 M 池变化后再决定是否实施 m_limit 存量降仓。</p>
+<p><strong>7. US 池老持仓复核</strong>【同意】
+US 持有 &gt;60 天且评分 &lt;70 的持仓逐只给出&quot;继续持有/止盈退出&quot;结论（一次性）；US 阈值问题随第 2 项分位数化一并解决。</p>
+<h3>第二节 沽后池瘦身</h3>
+<p><strong>8. 观察期窗口制</strong>【同意·60 天】</p>
+<ul>
+<li>活跃池只保留卖出后 60 个自然日内的样本；到期生成退出总结（最终沽后收益率+卖对/卖亏+主因），状态&quot;已退出-观察期满&quot;</li>
+<li>记录不删：完整历史在 DB post_sell_watch（分析史），JSON 归档 post_sell_archive_YYYYMM.json 双保险；分析报表全走 DB</li>
+<li>弹性：沽后涨跌绝对值 &gt;15% 且近期重大事件/剧烈波动，自动续观 30 天</li>
+<li>再入选持仓的移出活跃池转&quot;已再入选&quot;，不受窗口影响</li>
+<li>立即效果：1,219 → 约 810 只；稳态 400–700 只</li>
+<li>原则：可见性与可分析性分离（用户明确认可）</li>
+</ul>
+<h3>第三节 卖出规则</h3>
+<p><strong>9. 新入选豁免</strong>【同意·修订版】
+维持 2 天确认期；新入选 ≤15 天豁免评分卖出（硬止损除外）。依据：确认期延长 1 天仅能多挽救 2.0% whipsaw（剔除回放期 1.2%），而 58% 的短持秒卖平均沽后 -10.5% 是正确决策，不应被拖累。</p>
+<p><strong>10. US 卖出修复</strong>【同意】
+capital_limit 强卖加&quot;优先卖盈利持仓&quot;约束（立即）；US 卖出阈值随第 2 项分位数化评估。</p>
+<p><strong>11. 长持亏损票止损联动</strong>【同意·排后】
+持有 &gt;30 天且浮亏的持仓触发止损时，若反弹动能转正给 3–5 天宽限；在第 9/10 条见效后评估实施。</p>
+<h3>第四节 盯盘池重设计</h3>
+<p><strong>12. 考核口径 + 新遴选策略</strong>【同意·试行，含宏观联动】</p>
+<ul>
+<li>考核：盯盘收益速度（盯盘收益率÷盯盘天数）≥ 2 倍持有收益速度为达标；报告展示每只股票速度倍数与池级达标率 KPI</li>
+<li>新遴选七条件：板块加配（保留）；H + 评分 ≥65；距 20 日新高 &lt;8%；近 5 日涨幅 &lt;12%（防追高）；score_momentum &gt;0 非 crashing；质量 A/S 档；近 10 日无负面事件</li>
+<li><strong>宏观联动</strong>：最近一期周报&quot;加仓&quot;板块候选 +5 分、&quot;中性&quot;不加、&quot;减仓&quot;板块剔除；入选留痕驱动因子（如&quot;加仓：美联储降息周期→创新药&quot;）</li>
+<li>验证：开发模式 2 周历史回放，达标线&quot;速度 2 倍&quot;，通过切生产；不通过调条件再验</li>
+</ul>
+<p><strong>13. 强制退出</strong>【同意】
+满 10 个交易日未新高，或盯盘期收益转负且跑输持有池同期，自动退出；与新遴选绑定实施。</p>
+<h3>第五节 交易成本与数据治理</h3>
+<p><strong>14. 换手率预算 + 冷却期</strong>【同意】
+单池周换手 ≤25% 预算，跌破线股票排队按低分优先执行；同一股票卖出后 5 天内不因评分回升重买（cooldown 3→5 天）。</p>
+<p><strong>15. 回放期打标 + 滑点校准</strong>【同意】
+回放期记录 source='replay' 打标（同 daily_scores backfill 机制），统计可剔除；分市场真实费率（印花税/佣金）随月度复盘校准。</p>
+<h3>附：数据治理</h3>
+<p><strong>附 A. 配置单一事实源</strong>【同意】
+strategy_config 注册表为唯一事实源；selector 硬编码阈值（45/50、-10）清除改为读配置（注册表 40/42/42、-12/-20/-12 需用户确认采用哪套数值——实施时提出）。</p>
+<h2>实施顺序（经用户知悉）</h2>
+<ol>
+<li><strong>阶段一（零策略风险）</strong>：全量备份 → 回放期打标（15）→ 沽后池瘦身（8）→ 附 A 单一事实源</li>
+<li><strong>阶段二（卖出/池规则）</strong>：9 → 10 立即部分 → 4 → 5 → 14</li>
+<li><strong>阶段三（盯盘池）</strong>：12 回放验证 → 13 绑定切换</li>
+<li><strong>阶段四（治本）</strong>：1 体检上线 → 2 并跑启动 → 3 保守姿态生效；7 US 复核一次性执行</li>
+<li>延后项：6（观察 2 周后）、11（9/10 见效后）</li>
+</ol>
+<blockquote>
+<p>每阶段完成即验证并汇报，不跨阶段；任何一步失败立即回滚该步（备份机制保障）。</p>
+</blockquote>
+
+</body>
+</html>
