@@ -120,11 +120,11 @@ footer a { color: var(--primary); text-decoration: none; }
 <header data-page-node-id="b3OWmpBBCLM9aBBZ9O4aJD">
   <h1 data-page-node-id="uyuxts2raScKWuPVaetsc3">全球选股模型 v5 <span class="wb-tag" data-page-node-id="zUfSd4hodhAk3xUulbPiDp">WB</span> · 有效性验证报告</h1>
   <div class="meta" data-page-node-id="0JG7shAxcXzjtHEBQGCmtE">
-    <span data-page-node-id="znIr0BHz1jMejOfAHGsRXq">数据截止: 2026-10-10</span>
-    <span data-page-node-id="0clanVpWlqG8UrXwRGrNQF">下次更新: 2026-10-17</span>
-    <span data-page-node-id="DZuUWvLVzEkBe4HC04c69L">跟踪样本: 4091 只</span>
+    <span data-page-node-id="znIr0BHz1jMejOfAHGsRXq">数据截止: 2026-10-17</span>
+    <span data-page-node-id="0clanVpWlqG8UrXwRGrNQF">下次更新: 2026-10-24</span>
+    <span data-page-node-id="DZuUWvLVzEkBe4HC04c69L">跟踪样本: 4160 只</span>
   </div>
-  <div style="margin:12px 0;padding:12px 16px;border-left:4px solid #d97706;background:#fffbeb;border-radius:6px;font-size:13px;line-height:1.7;color:#78350f"><b>⚠️ 数据污染期声明 · P0-2026-09-16-kline-freeze</b><br>2026-08-25 ~ 2026-09-16（K线主源冻结导致技术指标失真）期间，market_history.db 自 2026-08-24 后未再被增量更新写入，daily_scores 的 ma20/ma60/rsi14/动量/质量等技术面因子在此期间使用冻结数据计算，约 50-60% 评分权重失真。<br><b>处理方式</b>：不重算历史评分，该区间已从前瞻收益类统计中排除；涉及此区间的归因结论不可用于策略评价。<a href="docs/事故复盘_K线主源冻结_20260916.md" style="color:#b45309">查看事故复盘</a></div><div style="margin:12px 0;padding:12px 16px;border-left:4px solid #d97706;background:#fffbeb;border-radius:6px;font-size:13px;line-height:1.7;color:#78350f"><b>⚠️ 数据污染期声明 · P1-2026-09-24-kline-freeze-residual</b><br>2026-09-17 ~ 2026-09-24（K线冻结残留期：9/17–9/24 评分系用陈旧 K线计算）期间，P0 窗口(8/25–9/16)结束后 K线并未真正恢复：history CSV 中约 1178 个文件冻结在 9/15、425 个 9/16、246 个 9/17，直至 2026-10-06 才由 westock 批量补齐。故 9/18、9/19、9/20、9/22、9/24 五天的 daily_scores 是用陈旧 K线算出的。实测 60 只 A股样本（冻结快照 vs 补齐快照同法算分）：技术面 77%、动量 88%、质量 83% 偏差>1 分，动量最大偏 44 分，三因子等权合成平均 -1.82、最大绝对 15.23。涉及约 5 天 x 2039 只 = 1 万条。<br><b>处理方式</b>：不重算历史评分，该区间已从前瞻收益类统计中排除；涉及此区间的归因结论不可用于策略评价。<a href="" style="color:#b45309">查看事故复盘</a></div>
+  <div style="margin:12px 0;padding:12px 16px;border-left:4px solid #d97706;background:#fffbeb;border-radius:6px;font-size:13px;line-height:1.7;color:#78350f"><b>⚠️ 数据污染期声明 · P0-2026-09-16-kline-freeze</b><br>2026-08-25 ~ 2026-09-16（K线主源冻结导致技术指标失真）期间，market_history.db 自 2026-08-24 后未再被增量更新写入，daily_scores 的 ma20/ma60/rsi14/动量/质量等技术面因子在此期间使用冻结数据计算，约 50-60% 评分权重失真。<br><b>处理方式</b>：不重算历史评分，该区间已从前瞻收益类统计中排除；涉及此区间的归因结论不可用于策略评价。<a href="docs/事故复盘_K线主源冻结_20260916.md" style="color:#b45309">查看事故复盘</a></div><div style="margin:12px 0;padding:12px 16px;border-left:4px solid #d97706;background:#fffbeb;border-radius:6px;font-size:13px;line-height:1.7;color:#78350f"><b>⚠️ 数据污染期声明 · P1-2026-09-24-kline-freeze-residual</b><br>2026-09-17 ~ 2026-09-24（K线冻结残留期：9/17–9/24 评分系用陈旧 K线计算）期间，P0 窗口(8/25–9/16)结束后 K线并未真正恢复：history CSV 中约 1178 个文件冻结在 9/15、425 个 9/16、246 个 9/17，直至 2026-10-06 才由 westock 批量补齐。故 9/18、9/19、9/20、9/22、9/24 五天的 daily_scores 是用陈旧 K线算出的。实测 60 只 A股样本（冻结快照 vs 补齐快照同法算分）：技术面 77%、动量 88%、质量 83% 偏差>1 分，动量最大偏 44 分，三因子等权合成平均 -1.82、最大绝对 15.23。涉及约 5 天 x 2039 只 = 1 万条。<br><b>处理方式</b>：不重算历史评分，该区间已从前瞻收益类统计中排除；涉及此区间的归因结论不可用于策略评价。<a href="" style="color:#b45309">查看事故复盘</a></div><div style="margin:12px 0;padding:12px 16px;border-left:4px solid #d97706;background:#fffbeb;border-radius:6px;font-size:13px;line-height:1.7;color:#78350f"><b>⚠️ 数据污染期声明 · P2-2026-10-15-pool-only-refresh</b><br>2026-10-07 ~ 2026-10-15（每日刷新范围被收窄为「池内」导致池外 K线冻结）期间，run_daily.sh [0.5] 自 2026-08-23 起调用 update_history_incremental.py，只刷新持有池+沽后池+盯盘池约 752 只，而全库共 2589 只。实测 2026-10-15 修复前：CN 1267/1591 只(79.6%)冻结在 2026-09-30（缺 10-09~10-15 共 6 个交易日），HK 257/480 只、US 307/518 只冻结在 2026-10-06（缺 10-07~10-15）。池内股票每天都新鲜，故只看池内发现不了。后果是死循环：池外评分失真 → 永远选不进池 → 永远不被刷新。此窗口内的新入选标的（尤其 CN）是基于陈旧 K线的评分选出，前瞻收益归因须排除。<br><b>处理方式</b>：不重算历史评分，该区间已从前瞻收益类统计中排除；涉及此区间的归因结论不可用于策略评价。<a href="output/复盘_每日刷新收窄为池内_20261016.md" style="color:#b45309">查看事故复盘</a></div>
 </header>
 
 <!-- 0. MSAM 山姆先生策略建议 -->
@@ -163,12 +163,12 @@ footer a { color: var(--primary); text-decoration: none; }
 <div class="card" data-page-node-id="qk0YMGR7Qi51KbP0zgJXXp">
   <div class="card-header" data-page-node-id="UDkY2xEGHHstZJkJ9Qf3kl">
     <h2 data-page-node-id="D4jUNn6yVDD5Jr1TWH9I6M">一、入选决策有效性（赚钱效应）</h2>
-    <span class="badge" data-page-node-id="Ap1E1zlIR69IIi4JiofdyC">累计 1358 只入选</span>
+    <span class="badge" data-page-node-id="Ap1E1zlIR69IIi4JiofdyC">累计 1409 只入选</span>
   </div>
   <div class="card-body" data-page-node-id="kFF8EXjeAV9mqeP4vRZLgG">
     <div class="stat-grid" data-page-node-id="dVV188qPIty3DZefsXkQ0R">
       <div class="stat-item" data-page-node-id="qX2rUPLoO1crM2DX3Ijf7c">
-        <div class="value positive" data-page-node-id="Vec3Es5FTg6j1FMaf4W9XH">-0.1%</div>
+        <div class="value positive" data-page-node-id="Vec3Es5FTg6j1FMaf4W9XH">-0.13%</div>
         <div class="label" data-page-node-id="FGOWOY8COrxsbM41mErZxV">入选后7天平均收益</div>
       </div>
       <div class="stat-item" data-page-node-id="ugbafgyiQUHlZ3ILn6pCEg">
@@ -184,11 +184,11 @@ footer a { color: var(--primary); text-decoration: none; }
         <div class="label" data-page-node-id="mDxWlRfxkoBTRqKL24w3Xb">14天正收益比例</div>
       </div>
       <div class="stat-item" data-page-node-id="9Cji5if9AOoSKq4MWIkFEB">
-        <div class="value positive" data-page-node-id="16FVUf5djlwdzHEO1iMDHf">-0.13%</div>
+        <div class="value positive" data-page-node-id="16FVUf5djlwdzHEO1iMDHf">-0.15%</div>
         <div class="label" data-page-node-id="PCrrOveP9bXNtVKlaYcueE">入选后30天平均收益</div>
       </div>
       <div class="stat-item" data-page-node-id="ylUAFEkquY1AsVu3LWuEgx">
-        <div class="value" data-page-node-id="jCaVEmpZ3FrUlL5sS8eaV0">47.8%</div>
+        <div class="value" data-page-node-id="jCaVEmpZ3FrUlL5sS8eaV0">47.7%</div>
         <div class="label" data-page-node-id="CTxsfAsaBckiEyQhwVDDaw">30天正收益比例</div>
       </div>
     </div>
@@ -209,13 +209,13 @@ footer a { color: var(--primary); text-decoration: none; }
       <tbody data-page-node-id="vqapw9jgSuo04tsXy28CDD">
         <tr data-page-node-id="HUFY5QEDWf4RYLOAOMFffm">
           <td data-page-node-id="7EzQABLk4EKPQdjV0I5Num">入选后7天</td>
-          <td class="num" data-page-node-id="EHl2Vz6f2kZHYCMdnVSKYm">1048</td>
-          <td class="num" data-page-node-id="2k5GaxDahisczIwiqPCpV7">550</td>
+          <td class="num" data-page-node-id="EHl2Vz6f2kZHYCMdnVSKYm">1083</td>
+          <td class="num" data-page-node-id="2k5GaxDahisczIwiqPCpV7">569</td>
           <td class="num" data-page-node-id="tkcFzlT1kEr2KCGbhvKgB0">52.5%</td>
-          <td class="num negative" data-page-node-id="pUylKEzNMtDc1sP7t41rQZ">-0.1%</td>
+          <td class="num negative" data-page-node-id="pUylKEzNMtDc1sP7t41rQZ">-0.13%</td>
           <td class="num" data-page-node-id="ECTvKaBNR4NErIFL0J6mhk">0.32%</td>
           <td class="num positive" data-page-node-id="CkC62hIkDCau8dTBRMhQpF">28.3%</td>
-          <td class="num negative" data-page-node-id="W2HFwEiPPm8IjrAUU1K6w7">-28.53%</td>
+          <td class="num negative" data-page-node-id="W2HFwEiPPm8IjrAUU1K6w7">-38.85%</td>
         </tr>
         <tr data-page-node-id="qI3jonUF4a3pLt9GznxOwr">
           <td data-page-node-id="HBMetDT5sYDcswAdVOMRSW">入选后14天</td>
@@ -229,21 +229,21 @@ footer a { color: var(--primary); text-decoration: none; }
         </tr>
         <tr data-page-node-id="SUQxCU2ufmUyGXyiC2338b">
           <td data-page-node-id="0GXU9ArZkL9WN1iPeylRlX">入选后30天</td>
-          <td class="num" data-page-node-id="TDjijTxMrmpIR17aH13cZ3">1030</td>
-          <td class="num" data-page-node-id="lD2paZuCmVfjqQpvRmMtgx">492</td>
-          <td class="num" data-page-node-id="AmY58ZAVg3PJwK8Wygnbec">47.8%</td>
-          <td class="num negative" data-page-node-id="sIJthM2imhYolEMZa9JRan">-0.13%</td>
-          <td class="num" data-page-node-id="kpqvsKhE2suAELAVF53Lme">-0.34%</td>
+          <td class="num" data-page-node-id="TDjijTxMrmpIR17aH13cZ3">1043</td>
+          <td class="num" data-page-node-id="lD2paZuCmVfjqQpvRmMtgx">497</td>
+          <td class="num" data-page-node-id="AmY58ZAVg3PJwK8Wygnbec">47.7%</td>
+          <td class="num negative" data-page-node-id="sIJthM2imhYolEMZa9JRan">-0.15%</td>
+          <td class="num" data-page-node-id="kpqvsKhE2suAELAVF53Lme">-0.39%</td>
           <td class="num positive" data-page-node-id="FyERwamFpBfIfWWpNAxr2s">36.54%</td>
           <td class="num negative" data-page-node-id="wNqvU11GfvMUOyfy9T75Vs">-34.77%</td>
         </tr>
         <tr data-page-node-id="YeGz9fCfiCH6zluBqb0anD">
           <td data-page-node-id="nYcDlRvfkxEjVRWhtYiOCT">入选后60天</td>
-          <td class="num" data-page-node-id="TIhJcgh1cNHWlmpjl5mlfW">589</td>
-          <td class="num" data-page-node-id="L6fvRrBO2XFS7Z7paEblCc">202</td>
-          <td class="num" data-page-node-id="Y6GCjL7hzjAkCJBcsK22Ca">34.3%</td>
-          <td class="num negative" data-page-node-id="Zx8w9euFPnC49hsXV9zlLj">-3.1%</td>
-          <td class="num" data-page-node-id="vKZCFsGJFrYDGs6WbEln4T">-4.1%</td>
+          <td class="num" data-page-node-id="TIhJcgh1cNHWlmpjl5mlfW">613</td>
+          <td class="num" data-page-node-id="L6fvRrBO2XFS7Z7paEblCc">219</td>
+          <td class="num" data-page-node-id="Y6GCjL7hzjAkCJBcsK22Ca">35.7%</td>
+          <td class="num negative" data-page-node-id="Zx8w9euFPnC49hsXV9zlLj">-2.78%</td>
+          <td class="num" data-page-node-id="vKZCFsGJFrYDGs6WbEln4T">-3.98%</td>
           <td class="num positive" data-page-node-id="IMsSHJZ6ISnE8UipZqFcV6">68.71%</td>
           <td class="num negative" data-page-node-id="QSU8qciJmAiEGChcjaqffL">-41.65%</td>
         </tr>
@@ -256,24 +256,24 @@ footer a { color: var(--primary); text-decoration: none; }
 <div class="card">
   <div class="card-header">
     <h2>二、持有分析（持有池成效）</h2>
-    <span class="badge">228 只在持有 · 截至 2026-10-09</span>
+    <span class="badge">231 只在持有 · 截至 2026-10-16</span>
   </div>
   <div class="card-body">
     <div class="stat-grid">
       <div class="stat-item">
-        <div class="value">121 / 87 / 20</div>
+        <div class="value">122 / 109 / 0</div>
         <div class="label">市场分布 (CN / HK / US)</div>
       </div>
       <div class="stat-item">
-        <div class="value">49.2 天</div>
+        <div class="value">40.8 天</div>
         <div class="label">平均持有天数</div>
       </div>
       <div class="stat-item">
-        <div class="value positive">4.31%</div>
+        <div class="value positive">1.4%</div>
         <div class="label">平均持有收益</div>
       </div>
       <div class="stat-item">
-        <div class="value">67.1%</div>
+        <div class="value">55.4%</div>
         <div class="label">H类占比</div>
       </div>
     </div>
@@ -293,13 +293,13 @@ footer a { color: var(--primary); text-decoration: none; }
         </tr>
       </thead>
       <tbody>
-        <tr><td><span class="grade-badge grade-A">A</span></td><td class="num">3968</td><td class="num">1537</td><td class="num">38.7%</td><td class="num negative">-0.61%</td><td class="num">-0.74%</td><td class="num positive">28.3%</td><td class="num negative">-25.09%</td></tr>
-<tr><td><span class="grade-badge grade-B">B</span></td><td class="num">5200</td><td class="num">2350</td><td class="num">45.2%</td><td class="num positive">0.01%</td><td class="num">-0.13%</td><td class="num positive">28.75%</td><td class="num negative">-40.64%</td></tr>
-<tr><td><span class="grade-badge grade-C">C</span></td><td class="num">2609</td><td class="num">1128</td><td class="num">43.2%</td><td class="num negative">-0.08%</td><td class="num">-0.46%</td><td class="num positive">39.43%</td><td class="num negative">-25.47%</td></tr>
+        <tr><td><span class="grade-badge grade-A">A</span></td><td class="num">4063</td><td class="num">1577</td><td class="num">38.8%</td><td class="num negative">-0.63%</td><td class="num">-0.75%</td><td class="num positive">28.3%</td><td class="num negative">-25.09%</td></tr>
+<tr><td><span class="grade-badge grade-B">B</span></td><td class="num">5397</td><td class="num">2448</td><td class="num">45.4%</td><td class="num negative">-0.01%</td><td class="num">-0.13%</td><td class="num positive">28.75%</td><td class="num negative">-40.64%</td></tr>
+<tr><td><span class="grade-badge grade-C">C</span></td><td class="num">2704</td><td class="num">1162</td><td class="num">43.0%</td><td class="num negative">-0.12%</td><td class="num">-0.48%</td><td class="num positive">39.43%</td><td class="num negative">-25.47%</td></tr>
 <tr><td><span class="grade-badge grade-D">D</span></td><td colspan="7" class="empty-cell">暂无样本</td></tr>
       </tbody>
     </table>
-    <p class="note">⚠️ 检验结果：等级与未来7天收益未呈单调关系（A=-0.61 / B=0.01 / C=-0.08 / D=None），分级前瞻力不足，需复核权重。 方法：对每个交易日每只持仓的等级打分，取 7 天后持有收益差值（total_return 前后差），按等级分组汇总。</p>
+    <p class="note">⚠️ 检验结果：等级与未来7天收益未呈单调关系（A=-0.63 / B=-0.01 / C=-0.12 / D=None），分级前瞻力不足，需复核权重。 方法：对每个交易日每只持仓的等级打分，取 7 天后持有收益差值（total_return 前后差），按等级分组汇总。</p>
 
     <div class="sub-title">② 持有时长与收益（当前持有池）</div>
     <table>
@@ -312,10 +312,10 @@ footer a { color: var(--primary); text-decoration: none; }
         </tr>
       </thead>
       <tbody>
-        <tr><td>0-15天</td><td class="num">40</td><td class="num positive">0.41%</td><td class="num">37.5%</td></tr>
-<tr><td>16-30天</td><td class="num">36</td><td class="num positive">0.83%</td><td class="num">58.3%</td></tr>
-<tr><td>31-60天</td><td class="num">46</td><td class="num positive">0.34%</td><td class="num">43.5%</td></tr>
-<tr><td>60天以上</td><td class="num">106</td><td class="num positive">8.69%</td><td class="num">80.2%</td></tr>
+        <tr><td>0-15天</td><td class="num">82</td><td class="num positive">0.4%</td><td class="num">41.5%</td></tr>
+<tr><td>16-30天</td><td class="num">34</td><td class="num negative">-1.05%</td><td class="num">47.1%</td></tr>
+<tr><td>31-60天</td><td class="num">40</td><td class="num negative">-1.69%</td><td class="num">42.5%</td></tr>
+<tr><td>60天以上</td><td class="num">75</td><td class="num positive">5.26%</td><td class="num">69.3%</td></tr>
       </tbody>
     </table>
 
@@ -333,9 +333,9 @@ footer a { color: var(--primary); text-decoration: none; }
         </tr>
       </thead>
       <tbody>
-        <tr><td>A股池</td><td>2026-10-09</td><td class="num">103.07</td><td class="num positive">3.07%</td><td class="num">20.75%</td><td class="num negative">-3.76%</td><td class="num">121</td></tr>
-<tr><td>港股池</td><td>2026-10-09</td><td class="num">104.4</td><td class="num positive">4.4%</td><td class="num">16.0%</td><td class="num negative">-3.26%</td><td class="num">87</td></tr>
-<tr><td>美股池</td><td>2026-10-09</td><td class="num">113.53</td><td class="num positive">13.53%</td><td class="num">30.65%</td><td class="num negative">-2.74%</td><td class="num">20</td></tr>
+        <tr><td>A股池</td><td>2026-10-16</td><td class="num">101.57</td><td class="num positive">1.57%</td><td class="num">20.59%</td><td class="num negative">-3.76%</td><td class="num">122</td></tr>
+<tr><td>港股池</td><td>2026-10-16</td><td class="num">101.84</td><td class="num positive">1.84%</td><td class="num">17.15%</td><td class="num negative">-3.26%</td><td class="num">109</td></tr>
+<tr><td>美股池</td><td>2026-10-16</td><td class="num">100.0</td><td class="num negative">0.0%</td><td class="num">31.09%</td><td class="num negative">-2.74%</td><td class="num">0</td></tr>
       </tbody>
     </table>
     <div class="gap-note">⚠️ 数据断档提示：组合级 NAV 序列存在断档（2026-08-01 → 2026-09-04；2026-09-24 → 2026-10-08）（原每日计算调用随旧版归档而断链，2026-09-05 已修复补链，自下一交易日起恢复每日写入）。断档期间的最大回撤/波动率基于不连续 NAV 序列计算，仅供参考。</div>
@@ -346,24 +346,24 @@ footer a { color: var(--primary); text-decoration: none; }
 <div class="card">
   <div class="card-header">
     <h2>三、沽后分析（卖出后走势追踪）</h2>
-    <span class="badge">759 只沽后样本</span>
+    <span class="badge">763 只沽后样本</span>
   </div>
   <div class="card-body">
     <div class="stat-grid">
       <div class="stat-item">
-        <div class="value negative">-1.25%</div>
+        <div class="value negative">-3.21%</div>
         <div class="label">沽后至今平均收益</div>
       </div>
       <div class="stat-item">
-        <div class="value">29.1%</div>
+        <div class="value">36.2%</div>
         <div class="label">沽后上涨比例</div>
       </div>
       <div class="stat-item">
-        <div class="value negative">16.8%</div>
+        <div class="value negative">18.2%</div>
         <div class="label">卖飞率（沽后涨超5%）</div>
       </div>
       <div class="stat-item">
-        <div class="value positive">23.0%</div>
+        <div class="value positive">34.5%</div>
         <div class="label">卖对率（沽后跌超5%）</div>
       </div>
     </div>
@@ -383,9 +383,9 @@ footer a { color: var(--primary); text-decoration: none; }
         </tr>
       </thead>
       <tbody>
-        <tr><td>A股</td><td class="num">326</td><td class="num negative">-2.17%</td><td class="num">0.0%</td><td class="num negative">-0.69%</td><td class="num negative">-1.47%</td><td class="num negative">59</td><td class="num positive">96</td></tr>
-<tr><td>港股</td><td class="num">205</td><td class="num negative">-0.68%</td><td class="num">0.0%</td><td class="num positive">1.34%</td><td class="num positive">2.06%</td><td class="num negative">34</td><td class="num positive">40</td></tr>
-<tr><td>美股</td><td class="num">70</td><td class="num positive">1.37%</td><td class="num">0.0%</td><td class="num positive">0.28%</td><td class="num negative">-0.07%</td><td class="num negative">8</td><td class="num positive">2</td></tr>
+        <tr><td>A股</td><td class="num">329</td><td class="num negative">-4.77%</td><td class="num">-2.95%</td><td class="num negative">-1.43%</td><td class="num negative">-1.53%</td><td class="num negative">55</td><td class="num positive">137</td></tr>
+<tr><td>港股</td><td class="num">206</td><td class="num negative">-1.2%</td><td class="num">-0.69%</td><td class="num positive">0.36%</td><td class="num positive">1.85%</td><td class="num negative">39</td><td class="num positive">52</td></tr>
+<tr><td>美股</td><td class="num">15</td><td class="num positive">3.24%</td><td class="num">2.2%</td><td class="num negative">-0.5%</td><td class="num negative">-3.3%</td><td class="num negative">6</td><td class="num positive">1</td></tr>
       </tbody>
     </table>
 
@@ -402,12 +402,12 @@ footer a { color: var(--primary); text-decoration: none; }
         </tr>
       </thead>
       <tbody>
-        <tr><td>持有 0-15 天卖出</td><td class="num">340</td><td class="num negative">-2.93%</td><td class="num">-1.52%</td><td class="num negative">22.1%</td><td class="num positive">37.9%</td></tr>
-<tr><td>持有 16-30 天卖出</td><td class="num">74</td><td class="num positive">3.14%</td><td class="num">0.0%</td><td class="num negative">28.4%</td><td class="num positive">5.4%</td></tr>
-<tr><td>持有 31-60 天卖出</td><td class="num">148</td><td class="num positive">0.1%</td><td class="num">0.0%</td><td class="num negative">3.4%</td><td class="num positive">3.4%</td></tr>
-<tr><td>持有 60 天以上卖出</td><td class="num">39</td><td class="num negative">-0.03%</td><td class="num">0.0%</td><td class="num negative">0.0%</td><td class="num positive">0.0%</td></tr>
-<tr><td>卖出时盈利（tr>0）</td><td class="num">130</td><td class="num positive">0.76%</td><td class="num">0.0%</td><td class="num negative">26.2%</td><td class="num positive">20.0%</td></tr>
-<tr><td>卖出时亏损（tr≤0）</td><td class="num">471</td><td class="num negative">-1.8%</td><td class="num">0.0%</td><td class="num negative">14.2%</td><td class="num positive">23.8%</td></tr>
+        <tr><td>持有 0-15 天卖出</td><td class="num">335</td><td class="num negative">-4.85%</td><td class="num">-3.13%</td><td class="num negative">20.0%</td><td class="num positive">43.6%</td></tr>
+<tr><td>持有 16-30 天卖出</td><td class="num">60</td><td class="num positive">2.11%</td><td class="num">1.63%</td><td class="num negative">33.3%</td><td class="num positive">15.0%</td></tr>
+<tr><td>持有 31-60 天卖出</td><td class="num">122</td><td class="num negative">-1.77%</td><td class="num">-1.28%</td><td class="num negative">10.7%</td><td class="num positive">26.2%</td></tr>
+<tr><td>持有 60 天以上卖出</td><td class="num">33</td><td class="num negative">-1.63%</td><td class="num">-1.56%</td><td class="num negative">0.0%</td><td class="num positive">9.1%</td></tr>
+<tr><td>卖出时盈利（tr>0）</td><td class="num">120</td><td class="num negative">-0.18%</td><td class="num">-0.75%</td><td class="num negative">24.2%</td><td class="num positive">26.7%</td></tr>
+<tr><td>卖出时亏损（tr≤0）</td><td class="num">430</td><td class="num negative">-4.06%</td><td class="num">-1.85%</td><td class="num negative">16.5%</td><td class="num positive">36.7%</td></tr>
       </tbody>
     </table>
     <p class="note">「按卖出时盈亏」检验模型是在止盈还是止损上更准确：盈利卖组沽后仍涨 → 止盈过早（卖飞）；亏损卖组沽后继续跌 → 止损正确（卖对）。</p>
@@ -427,16 +427,16 @@ footer a { color: var(--primary); text-decoration: none; }
         </tr>
       </thead>
       <tbody>
-        <tr><td><span class="grade-badge grade-D">卖飞</span></td><td>600641.SH</td><td>万业企业</td><td>CN</td><td>2026-08-03</td><td class="num">2</td><td class="num negative">-9.17%</td><td class="num positive">90.77%</td></tr>
-<tr><td><span class="grade-badge grade-D">卖飞</span></td><td>02285.HK</td><td>泉峰控股</td><td>HK</td><td>2026-08-14</td><td class="num">15</td><td class="num positive">10.49%</td><td class="num positive">49.22%</td></tr>
-<tr><td><span class="grade-badge grade-D">卖飞</span></td><td>601872.SH</td><td>招商轮船</td><td>CN</td><td>2026-07-15</td><td class="num">0</td><td class="num negative">0.0%</td><td class="num positive">44.63%</td></tr>
-<tr><td><span class="grade-badge grade-D">卖飞</span></td><td>MPC.N</td><td>Marathon Petroleum</td><td>US</td><td>2026-08-14</td><td class="num">22</td><td class="num negative">-4.61%</td><td class="num positive">30.02%</td></tr>
-<tr><td><span class="grade-badge grade-D">卖飞</span></td><td>600657.SH</td><td>信达地产</td><td>CN</td><td>2026-08-04</td><td class="num">0</td><td class="num negative">-0.37%</td><td class="num positive">27.97%</td></tr>
-<tr><td><span class="grade-badge grade-A">卖对</span></td><td>03660.HK</td><td>奇富科技-S</td><td>HK</td><td>2026-07-27</td><td class="num">0</td><td class="num negative">0.0%</td><td class="num negative">-52.22%</td></tr>
-<tr><td><span class="grade-badge grade-A">卖对</span></td><td>001309.SZ</td><td>德明利</td><td>CN</td><td>2026-07-15</td><td class="num">0</td><td class="num negative">0.0%</td><td class="num negative">-49.14%</td></tr>
-<tr><td><span class="grade-badge grade-A">卖对</span></td><td>002851.SZ</td><td>麦格米特</td><td>CN</td><td>2026-07-15</td><td class="num">0</td><td class="num negative">0.0%</td><td class="num negative">-39.04%</td></tr>
-<tr><td><span class="grade-badge grade-A">卖对</span></td><td>300475.SZ</td><td>香农芯创</td><td>CN</td><td>2026-07-15</td><td class="num">0</td><td class="num negative">0.0%</td><td class="num negative">-38.93%</td></tr>
-<tr><td><span class="grade-badge grade-A">卖对</span></td><td>002409.SZ</td><td>雅克科技</td><td>CN</td><td>2026-07-15</td><td class="num">0</td><td class="num negative">0.0%</td><td class="num negative">-34.58%</td></tr>
+        <tr><td><span class="grade-badge grade-D">卖飞</span></td><td>600641.SH</td><td>万业企业</td><td>CN</td><td>2026-08-03</td><td class="num">2</td><td class="num negative">-9.17%</td><td class="num positive">72.15%</td></tr>
+<tr><td><span class="grade-badge grade-D">卖飞</span></td><td>02285.HK</td><td>泉峰控股</td><td>HK</td><td>2026-08-14</td><td class="num">15</td><td class="num positive">10.49%</td><td class="num positive">58.45%</td></tr>
+<tr><td><span class="grade-badge grade-D">卖飞</span></td><td>000498.SZ</td><td>山东路桥</td><td>CN</td><td>2026-08-04</td><td class="num">0</td><td class="num positive">0.19%</td><td class="num positive">28.65%</td></tr>
+<tr><td><span class="grade-badge grade-D">卖飞</span></td><td>01199.HK</td><td>中远海运港口</td><td>HK</td><td>2026-08-14</td><td class="num">20</td><td class="num negative">-1.83%</td><td class="num positive">27.63%</td></tr>
+<tr><td><span class="grade-badge grade-D">卖飞</span></td><td>688192.SH</td><td>迪哲医药</td><td>CN</td><td>2026-08-03</td><td class="num">2</td><td class="num negative">-6.62%</td><td class="num positive">27.03%</td></tr>
+<tr><td><span class="grade-badge grade-A">卖对</span></td><td>03660.HK</td><td>奇富科技-S</td><td>HK</td><td>2026-07-27</td><td class="num">0</td><td class="num negative">0.0%</td><td class="num negative">-52.45%</td></tr>
+<tr><td><span class="grade-badge grade-A">卖对</span></td><td>300475.SZ</td><td>香农芯创</td><td>CN</td><td>2026-07-15</td><td class="num">0</td><td class="num negative">0.0%</td><td class="num negative">-49.5%</td></tr>
+<tr><td><span class="grade-badge grade-A">卖对</span></td><td>002851.SZ</td><td>麦格米特</td><td>CN</td><td>2026-07-15</td><td class="num">0</td><td class="num negative">0.0%</td><td class="num negative">-43.94%</td></tr>
+<tr><td><span class="grade-badge grade-A">卖对</span></td><td>002384.SZ</td><td>东山精密</td><td>CN</td><td>2026-07-20</td><td class="num">2</td><td class="num negative">-17.05%</td><td class="num negative">-43.66%</td></tr>
+<tr><td><span class="grade-badge grade-A">卖对</span></td><td>002409.SZ</td><td>雅克科技</td><td>CN</td><td>2026-07-15</td><td class="num">0</td><td class="num negative">0.0%</td><td class="num negative">-42.78%</td></tr>
       </tbody>
     </table>
   </div>
@@ -446,16 +446,16 @@ footer a { color: var(--primary); text-decoration: none; }
 <div class="card" data-page-node-id="0UlJeIXdGnVs55mSv46xMW">
   <div class="card-header" data-page-node-id="4D6lLTVJ9aZA11YS4f9z61">
     <h2 data-page-node-id="k8EXOqy2FEPSFBLxnESDDe">四、卖出决策避损效果</h2>
-    <span class="badge" data-page-node-id="KDbEHQ43qT2T6CPayrVAPv">累计 2733 只卖出</span>
+    <span class="badge" data-page-node-id="KDbEHQ43qT2T6CPayrVAPv">累计 2751 只卖出</span>
   </div>
   <div class="card-body" data-page-node-id="edv3WU42TIituX09hwKEb4">
     <div class="stat-grid" data-page-node-id="kPYi2ofDIHj2vHwYLPwXKQ">
       <div class="stat-item" data-page-node-id="S2SJoBoInzeXA7pvRGFvlQ">
-        <div class="value positive" data-page-node-id="njjHotm4SNzj9f1dG0KeTs">51.4%</div>
+        <div class="value positive" data-page-node-id="njjHotm4SNzj9f1dG0KeTs">53.2%</div>
         <div class="label" data-page-node-id="BPeUfREtuP1As5O1MBYNkV">卖出后7天下跌比例</div>
       </div>
       <div class="stat-item" data-page-node-id="Aw604s7vlhohKISPFDbiXy">
-        <div class="value" data-page-node-id="XUeOTU6Sg1TbIbWow1phEH">0.34%</div>
+        <div class="value" data-page-node-id="XUeOTU6Sg1TbIbWow1phEH">0.07%</div>
         <div class="label" data-page-node-id="Z9PCeGKtGlVNjt0MjF5Hdh">卖出后7天平均走势</div>
       </div>
       <div class="stat-item" data-page-node-id="OvGSA4FlsMrZrxak2HHvHt">
@@ -484,11 +484,11 @@ footer a { color: var(--primary); text-decoration: none; }
       <tbody data-page-node-id="JdI1mzBhJFR3SVoYEFMgE1">
         <tr data-page-node-id="UoyUF24nwQljfaSAye9bH5">
           <td data-page-node-id="QvjICdGAHaK5QIXsi3vYZG">卖出后7天</td>
-          <td class="num" data-page-node-id="n2MNTCZKAEwBEHy4LhD454">1663</td>
-          <td class="num" data-page-node-id="IfL6mBnsGyzQsGRLdBRlBF">854</td>
-          <td class="num" data-page-node-id="Nsdiuqfi55Ym5nLFaEdxte">51.4%</td>
-          <td class="num positive" data-page-node-id="ajufS5LpqHwW0oHld0fVuc">0.34%</td>
-          <td class="num" data-page-node-id="J7SoQX6B5DFuW9PsM6rU5T">-0.2%</td>
+          <td class="num" data-page-node-id="n2MNTCZKAEwBEHy4LhD454">1943</td>
+          <td class="num" data-page-node-id="IfL6mBnsGyzQsGRLdBRlBF">1033</td>
+          <td class="num" data-page-node-id="Nsdiuqfi55Ym5nLFaEdxte">53.2%</td>
+          <td class="num positive" data-page-node-id="ajufS5LpqHwW0oHld0fVuc">0.07%</td>
+          <td class="num" data-page-node-id="J7SoQX6B5DFuW9PsM6rU5T">-0.36%</td>
           <td class="num positive" data-page-node-id="fs8T7zmnaFAyeonoW0Cbhv">46.99%</td>
           <td class="num negative" data-page-node-id="KlFJEZkVnSV57djt26R1Lq">-26.25%</td>
         </tr>
@@ -504,11 +504,11 @@ footer a { color: var(--primary); text-decoration: none; }
         </tr>
         <tr data-page-node-id="As0anyus2zCF7dCuYWzDJB">
           <td data-page-node-id="Y2AS4XnelL25gPhcjyRBBB">卖出后30天</td>
-          <td class="num" data-page-node-id="tYR8HYbKkY3rXDbnBBlZLw">1159</td>
-          <td class="num" data-page-node-id="xRMmyAQrTOPhUSK97LpRCr">614</td>
-          <td class="num" data-page-node-id="61FG4Gb4ale3VBpESrIdY4">53.0%</td>
-          <td class="num positive" data-page-node-id="mHx4B3eXjZ6UxBzpe5BY4q">0.01%</td>
-          <td class="num" data-page-node-id="DEDHC1OQFLZlc5YRl7kZiU">-0.59%</td>
+          <td class="num" data-page-node-id="tYR8HYbKkY3rXDbnBBlZLw">1364</td>
+          <td class="num" data-page-node-id="xRMmyAQrTOPhUSK97LpRCr">728</td>
+          <td class="num" data-page-node-id="61FG4Gb4ale3VBpESrIdY4">53.4%</td>
+          <td class="num negative" data-page-node-id="mHx4B3eXjZ6UxBzpe5BY4q">-0.24%</td>
+          <td class="num" data-page-node-id="DEDHC1OQFLZlc5YRl7kZiU">-0.64%</td>
           <td class="num positive" data-page-node-id="YjLcEngwZd4vEAjMFuS1rd">46.1%</td>
           <td class="num negative" data-page-node-id="3itfYKRpSuF5zdGuYt7Cur">-32.68%</td>
         </tr>
@@ -566,10 +566,10 @@ footer a { color: var(--primary); text-decoration: none; }
         <!-- 动态填充：按 change_reason 分类统计 -->
         <tr data-page-node-id="2YkuYtFC2SCcF18HVlgivL">
           <td data-page-node-id="VJAGHBRQ6vfZVII9xTmtHM">基本面稳健，业绩支撑</td>
-          <td class="num" data-page-node-id="xtXPSEhvGOELAozUkGB44R">1048</td>
-          <td class="num" data-page-node-id="m7Vj3ulIaEZ2Y7yHDy9U8S">550</td>
+          <td class="num" data-page-node-id="xtXPSEhvGOELAozUkGB44R">1083</td>
+          <td class="num" data-page-node-id="m7Vj3ulIaEZ2Y7yHDy9U8S">569</td>
           <td class="num" data-page-node-id="4jdYJB3ERHAMEbuSPbww0e">52.5%</td>
-          <td class="num positive" data-page-node-id="EEwkL9L99rv2FJpLzNbeHH">-0.1%</td>
+          <td class="num positive" data-page-node-id="EEwkL9L99rv2FJpLzNbeHH">-0.13%</td>
         </tr>
         <tr data-page-node-id="wwofjsWnEuhbkyX9h9X39G">
           <td data-page-node-id="uKpxDLvffB9xKwKvvOCfQN">基本面走弱</td>
@@ -615,7 +615,7 @@ footer a { color: var(--primary); text-decoration: none; }
 <div class="card" data-page-node-id="HP0tED4dXDTf7sDwHzbjwN">
   <div class="card-header" data-page-node-id="xOwQntBYetlXA0XW0fr8cp">
     <h2 data-page-node-id="BVttP0L7Ej5LCkIBGzcBGk">七、最新跟踪明细</h2>
-    <span class="badge" data-page-node-id="VEdoa2OelosZNknVa7UdFC">4091 只</span>
+    <span class="badge" data-page-node-id="VEdoa2OelosZNknVa7UdFC">4160 只</span>
   </div>
   <div class="card-body" data-page-node-id="IVtWgBSi1rTp5wO5gLQrIy">
     <div class="collapsible" data-page-node-id="P66qsbrItZaOyXW5uosIZn">
@@ -642,58 +642,7 @@ footer a { color: var(--primary); text-decoration: none; }
           </thead>
           <tbody data-page-node-id="IEooYokBiXDZW6lM0aaInE">
             <!-- 动态填充：遍历所有 entries 和 exits -->
-            <tr><td>02196.HK</td><td>复星医药</td><td>HK</td><td>2026-09-10</td><td class="num">16.57</td><td class="num">68.2</td><td class="num positive">3.86%</td><td class="num positive">6.16%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>03306.HK</td><td>江南布衣</td><td>HK</td><td>2026-09-10</td><td class="num">20.84</td><td class="num">74.8</td><td class="num positive">3.84%</td><td class="num positive">6.43%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>09911.HK</td><td>赤子城科技</td><td>HK</td><td>2026-09-10</td><td class="num">9.335</td><td class="num">72.9</td><td class="num positive">1.71%</td><td class="num negative">-1.55%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>00636.HK</td><td>KLN</td><td>HK</td><td>2026-09-11</td><td class="num">6.08</td><td class="num">70.3</td><td class="num negative">-3.7%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>00780.HK</td><td>同程旅行</td><td>HK</td><td>2026-09-11</td><td class="num">10.55</td><td class="num">72.2</td><td class="num positive">1.61%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>002064.SZ</td><td>华峰化学</td><td>CN</td><td>2026-09-13</td><td class="num">10.0</td><td class="num">69.0</td><td class="num negative">-0.8%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>02380.HK</td><td>中国电力</td><td>HK</td><td>2026-09-13</td><td class="num">2.71</td><td class="num">70.5</td><td class="num negative">-3.32%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>06031.HK</td><td>三一重工</td><td>HK</td><td>2026-09-14</td><td class="num">19.91</td><td class="num">70.8</td><td class="num negative">-11.6%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>600908.SH</td><td>无锡银行</td><td>CN</td><td>2026-09-14</td><td class="num">5.97</td><td class="num">74.4</td><td class="num negative">-3.35%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>00175.HK</td><td>吉利汽车</td><td>HK</td><td>2026-09-16</td><td class="num">16.12</td><td class="num">69.0</td><td class="num negative">-2.17%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>601898.SH</td><td>中煤能源</td><td>CN</td><td>2026-09-16</td><td class="num">14.29</td><td class="num">73.9</td><td class="num negative">-1.96%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>000166.SZ</td><td>申万宏源</td><td>CN</td><td>2026-09-17</td><td class="num">4.37</td><td class="num">75.7</td><td class="num positive">0.46%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>000301.SZ</td><td>东方盛虹</td><td>CN</td><td>2026-09-17</td><td class="num">13.42</td><td class="num">69.7</td><td class="num negative">-0.45%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>000600.SZ</td><td>建投能源</td><td>CN</td><td>2026-09-17</td><td class="num">7.21</td><td class="num">71.1</td><td class="num negative">-1.8%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>000703.SZ</td><td>恒逸石化</td><td>CN</td><td>2026-09-17</td><td class="num">17.73</td><td class="num">66.7</td><td class="num negative">-2.76%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>000728.SZ</td><td>国元证券</td><td>CN</td><td>2026-09-17</td><td class="num">7.44</td><td class="num">69.9</td><td class="num negative">-2.02%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>000975.SZ</td><td>山金国际</td><td>CN</td><td>2026-09-17</td><td class="num">25.02</td><td class="num">75.0</td><td class="num negative">-7.39%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>00135.HK</td><td>昆仑能源</td><td>HK</td><td>2026-09-17</td><td class="num">7.62</td><td class="num">67.2</td><td class="num negative">-0.2%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>002074.SZ</td><td>国轩高科</td><td>CN</td><td>2026-09-17</td><td class="num">25.85</td><td class="num">74.9</td><td class="num positive">3.52%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>00363.HK</td><td>上海实业控股</td><td>HK</td><td>2026-09-17</td><td class="num">13.39</td><td class="num">66.0</td><td class="num negative">-3.73%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>00883.HK</td><td>中国海洋石油</td><td>HK</td><td>2026-09-17</td><td class="num">23.84</td><td class="num">65.0</td><td class="num negative">0.0%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>00941.HK</td><td>中国移动</td><td>HK</td><td>2026-09-17</td><td class="num">79.2</td><td class="num">66.6</td><td class="num negative">-0.44%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>00998.HK</td><td>中信银行</td><td>HK</td><td>2026-09-17</td><td class="num">8.375</td><td class="num">70.5</td><td class="num positive">1.25%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>01117.HK</td><td>现代牧业</td><td>HK</td><td>2026-09-17</td><td class="num">1.595</td><td class="num">67.0</td><td class="num negative">-2.82%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>01361.HK</td><td>361度</td><td>HK</td><td>2026-09-17</td><td class="num">4.375</td><td class="num">68.6</td><td class="num positive">1.94%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>02020.HK</td><td>安踏体育</td><td>HK</td><td>2026-09-17</td><td class="num">72.1</td><td class="num">67.3</td><td class="num negative">-0.28%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>02600.HK</td><td>中国铝业</td><td>HK</td><td>2026-09-17</td><td class="num">8.025</td><td class="num">69.9</td><td class="num negative">-2.55%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>02666.HK</td><td>环球医疗</td><td>HK</td><td>2026-09-17</td><td class="num">4.495</td><td class="num">68.5</td><td class="num negative">-0.67%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>03360.HK</td><td>远东宏信</td><td>HK</td><td>2026-09-17</td><td class="num">6.425</td><td class="num">66.4</td><td class="num positive">0.16%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>03808.HK</td><td>中国重汽</td><td>HK</td><td>2026-09-17</td><td class="num">37.88</td><td class="num">65.0</td><td class="num negative">-5.97%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>600415.SH</td><td>小商品城</td><td>CN</td><td>2026-09-17</td><td class="num">11.62</td><td class="num">74.6</td><td class="num negative">-6.71%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>600546.SH</td><td>山煤国际</td><td>CN</td><td>2026-09-17</td><td class="num">13.17</td><td class="num">73.8</td><td class="num positive">1.44%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>600686.SH</td><td>金龙汽车</td><td>CN</td><td>2026-09-17</td><td class="num">10.79</td><td class="num">71.4</td><td class="num positive">0.83%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>600710.SH</td><td>苏美达</td><td>CN</td><td>2026-09-17</td><td class="num">11.2</td><td class="num">71.2</td><td class="num positive">0.8%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>600901.SH</td><td>江苏租赁</td><td>CN</td><td>2026-09-17</td><td class="num">6.72</td><td class="num">70.8</td><td class="num positive">1.04%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>600958.SH</td><td>东方证券</td><td>CN</td><td>2026-09-17</td><td class="num">8.74</td><td class="num">74.6</td><td class="num negative">-0.34%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>601169.SH</td><td>北京银行</td><td>CN</td><td>2026-09-17</td><td class="num">5.54</td><td class="num">70.6</td><td class="num negative">-0.9%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>601326.SH</td><td>秦港股份</td><td>CN</td><td>2026-09-17</td><td class="num">3.57</td><td class="num">69.6</td><td class="num negative">-2.8%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>601377.SH</td><td>兴业证券</td><td>CN</td><td>2026-09-17</td><td class="num">5.85</td><td class="num">71.4</td><td class="num positive">0.34%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>601555.SH</td><td>东吴证券</td><td>CN</td><td>2026-09-17</td><td class="num">8.28</td><td class="num">76.1</td><td class="num negative">-1.33%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>601600.SH</td><td>中国铝业</td><td>CN</td><td>2026-09-17</td><td class="num">9.16</td><td class="num">76.4</td><td class="num negative">-3.06%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>601878.SH</td><td>浙商证券</td><td>CN</td><td>2026-09-17</td><td class="num">8.98</td><td class="num">72.0</td><td class="num positive">0.45%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>601901.SH</td><td>方正证券</td><td>CN</td><td>2026-09-17</td><td class="num">6.75</td><td class="num">71.6</td><td class="num negative">-0.15%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>603259.SH</td><td>药明康德</td><td>CN</td><td>2026-09-17</td><td class="num">160.49</td><td class="num">70.7</td><td class="num positive">1.19%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>603323.SH</td><td>吴江银行</td><td>CN</td><td>2026-09-17</td><td class="num">4.46</td><td class="num">79.8</td><td class="num negative">-1.12%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>00152.HK</td><td>深圳国际</td><td>HK</td><td>2026-09-18</td><td class="num">5.35</td><td class="num">68.2</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>00322.HK</td><td>康师傅控股</td><td>HK</td><td>2026-09-18</td><td class="num">11.72</td><td class="num">68.5</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>00762.HK</td><td>中国联通</td><td>HK</td><td>2026-09-18</td><td class="num">5.75</td><td class="num">71.4</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>00916.HK</td><td>龙源电力</td><td>HK</td><td>2026-09-18</td><td class="num">5.265</td><td class="num">67.7</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>01024.HK</td><td>快手-W</td><td>HK</td><td>2026-09-18</td><td class="num">30.64</td><td class="num">68.3</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>02331.HK</td><td>李宁</td><td>HK</td><td>2026-09-18</td><td class="num">12.59</td><td class="num">68.3</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>02688.HK</td><td>新奥能源</td><td>HK</td><td>2026-09-18</td><td class="num">49.6</td><td class="num">68.0</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+            <tr><td>02688.HK</td><td>新奥能源</td><td>HK</td><td>2026-09-18</td><td class="num">49.6</td><td class="num">68.0</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
 <tr><td>02714.HK</td><td>牧原股份</td><td>HK</td><td>2026-09-18</td><td class="num">37.3</td><td class="num">68.7</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
 <tr><td>03606.HK</td><td>福耀玻璃</td><td>HK</td><td>2026-09-18</td><td class="num">55.2</td><td class="num">69.8</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
 <tr><td>09688.HK</td><td>再鼎医药</td><td>HK</td><td>2026-09-18</td><td class="num">20.62</td><td class="num">65.2</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
@@ -707,74 +656,107 @@ footer a { color: var(--primary); text-decoration: none; }
 <tr><td>01359.HK</td><td>中国信达</td><td>HK</td><td>2026-09-24</td><td class="num">0.895</td><td class="num">68.5</td><td class="num neutral-num">—</td><td class="num negative">-1.68%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
 <tr><td>01378.HK</td><td>中国宏桥</td><td>HK</td><td>2026-09-24</td><td class="num">20.8</td><td class="num">67.1</td><td class="num neutral-num">—</td><td class="num positive">0.77%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
 <tr><td>01828.HK</td><td>富卫集团</td><td>HK</td><td>2026-09-24</td><td class="num">33.98</td><td class="num">69.7</td><td class="num neutral-num">—</td><td class="num negative">-4.41%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>000498.SZ</td><td>山东路桥</td><td>CN</td><td>2026-10-08</td><td class="num">6.12</td><td class="num">79.2</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>000513.SZ</td><td>丽珠集团</td><td>CN</td><td>2026-10-08</td><td class="num">29.61</td><td class="num">73.1</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>000776.SZ</td><td>广发证券</td><td>CN</td><td>2026-10-08</td><td class="num">19.32</td><td class="num">72.4</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>00189.HK</td><td>东岳集团</td><td>HK</td><td>2026-10-08</td><td class="num">10.64</td><td class="num">67.7</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>002608.SZ</td><td>江苏国信</td><td>CN</td><td>2026-10-08</td><td class="num">7.54</td><td class="num">72.9</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>00506.HK</td><td>中国食品</td><td>HK</td><td>2026-10-08</td><td class="num">3.74</td><td class="num">66.4</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>00857.HK</td><td>中国石油股份</td><td>HK</td><td>2026-10-08</td><td class="num">9.83</td><td class="num">65.5</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>00934.HK</td><td>中石化冠德</td><td>HK</td><td>2026-10-08</td><td class="num">3.765</td><td class="num">67.4</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>03996.HK</td><td>中国能源建设</td><td>HK</td><td>2026-10-08</td><td class="num">1.04</td><td class="num">65.6</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>600039.SH</td><td>四川路桥</td><td>CN</td><td>2026-10-08</td><td class="num">8.89</td><td class="num">76.9</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>600938.SH</td><td>中国海油</td><td>CN</td><td>2026-10-08</td><td class="num">34.17</td><td class="num">79.6</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>601006.SH</td><td>大秦铁路</td><td>CN</td><td>2026-10-08</td><td class="num">4.84</td><td class="num">73.5</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>601225.SH</td><td>陕西煤业</td><td>CN</td><td>2026-10-08</td><td class="num">26.6</td><td class="num">77.5</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>601528.SH</td><td>瑞丰银行</td><td>CN</td><td>2026-10-08</td><td class="num">5.15</td><td class="num">72.5</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>601800.SH</td><td>中国交建</td><td>CN</td><td>2026-10-08</td><td class="num">6.05</td><td class="num">80.0</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>601857.SH</td><td>中国石油</td><td>CN</td><td>2026-10-08</td><td class="num">11.59</td><td class="num">74.3</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>603393.SH</td><td>新天然气</td><td>CN</td><td>2026-10-08</td><td class="num">25.46</td><td class="num">72.8</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>001309.SZ</td><td>德明利</td><td>CN</td><td>2026-10-09</td><td class="num">336.91</td><td class="num">70.3</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>00177.HK</td><td>江苏宁沪高速公路</td><td>HK</td><td>2026-10-09</td><td class="num">11.13</td><td class="num">66.6</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>00297.HK</td><td>中化化肥</td><td>HK</td><td>2026-10-09</td><td class="num">1.24</td><td class="num">66.9</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>00576.HK</td><td>浙江沪杭甬</td><td>HK</td><td>2026-10-09</td><td class="num">6.065</td><td class="num">65.7</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>00728.HK</td><td>中国电信</td><td>HK</td><td>2026-10-09</td><td class="num">4.685</td><td class="num">65.6</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>01179.HK</td><td>华住集团-S</td><td>HK</td><td>2026-10-09</td><td class="num">34.28</td><td class="num">67.7</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>02588.HK</td><td>中银航空租赁</td><td>HK</td><td>2026-10-09</td><td class="num">69.15</td><td class="num">65.5</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>03393.HK</td><td>威胜控股</td><td>HK</td><td>2026-10-09</td><td class="num">12.43</td><td class="num">65.9</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>03898.HK</td><td>时代电气</td><td>HK</td><td>2026-10-09</td><td class="num">28.1</td><td class="num">69.6</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>09901.HK</td><td>新东方-S</td><td>HK</td><td>2026-10-09</td><td class="num">45.54</td><td class="num">68.0</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>09987.HK</td><td>百胜中国</td><td>HK</td><td>2026-10-09</td><td class="num">340.4</td><td class="num">67.5</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>300770.SZ</td><td>新媒股份</td><td>CN</td><td>2026-10-09</td><td class="num">37.22</td><td class="num">74.0</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>600008.SH</td><td>首创股份</td><td>CN</td><td>2026-10-09</td><td class="num">2.77</td><td class="num">74.2</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>600050.SH</td><td>中国联通</td><td>CN</td><td>2026-10-09</td><td class="num">4.3</td><td class="num">74.0</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>600233.SH</td><td>圆通速递</td><td>CN</td><td>2026-10-09</td><td class="num">18.21</td><td class="num">74.0</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>600970.SH</td><td>中材国际</td><td>CN</td><td>2026-10-09</td><td class="num">7.76</td><td class="num">79.4</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>603588.SH</td><td>高能环境</td><td>CN</td><td>2026-10-09</td><td class="num">16.59</td><td class="num">73.9</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>603816.SH</td><td>顾家家居</td><td>CN</td><td>2026-10-09</td><td class="num">23.53</td><td class="num">73.7</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
-<tr><td>688538.SH</td><td>和辉光电</td><td>CN</td><td>2026-10-09</td><td class="num">2.1</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
-<tr><td>688599.SH</td><td>天合光能</td><td>CN</td><td>2026-10-09</td><td class="num">11.17</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
-<tr><td>688702.SH</td><td>盛科通信-U</td><td>CN</td><td>2026-10-09</td><td class="num">265.1</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
-<tr><td>AFL.N</td><td>Aflac</td><td>US</td><td>2026-10-09</td><td class="num">114.94</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
-<tr><td>AIZ.N</td><td>Assurant</td><td>US</td><td>2026-10-09</td><td class="num">272.86</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
-<tr><td>ALL.N</td><td>Allstate</td><td>US</td><td>2026-10-09</td><td class="num">230.63</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
-<tr><td>AMP.N</td><td>Ameriprise Financial</td><td>US</td><td>2026-10-09</td><td class="num">499.08</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
-<tr><td>AMZN.O</td><td>亚马逊</td><td>US</td><td>2026-10-09</td><td class="num">254.06</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
-<tr><td>AON.N</td><td>Aon plc</td><td>US</td><td>2026-10-09</td><td class="num">277.12</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
-<tr><td>AXP.N</td><td>American Express</td><td>US</td><td>2026-10-09</td><td class="num">308.1</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
-<tr><td>CCL.N</td><td>Carnival Corporation</td><td>US</td><td>2026-10-09</td><td class="num">26.13</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
-<tr><td>CINF.O</td><td>Cincinnati Financial</td><td>US</td><td>2026-10-09</td><td class="num">165.25</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
-<tr><td>CSX.O</td><td>CSX Corporation</td><td>US</td><td>2026-10-09</td><td class="num">47.34</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
-<tr><td>DAL.N</td><td>Delta Air Lines</td><td>US</td><td>2026-10-09</td><td class="num">82.14</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
-<tr><td>EIX.N</td><td>Edison International</td><td>US</td><td>2026-10-09</td><td class="num">54.3</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
-<tr><td>EXPE.O</td><td>Expedia Group</td><td>US</td><td>2026-10-09</td><td class="num">270.13</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
-<tr><td>GIS.N</td><td>General Mills</td><td>US</td><td>2026-10-09</td><td class="num">32.59</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
-<tr><td>GL.N</td><td>Globe Life</td><td>US</td><td>2026-10-09</td><td class="num">166.08</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
+<tr><td>000498.SZ</td><td>山东路桥</td><td>CN</td><td>2026-10-08</td><td class="num">6.12</td><td class="num">79.2</td><td class="num positive">3.27%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>000513.SZ</td><td>丽珠集团</td><td>CN</td><td>2026-10-08</td><td class="num">29.61</td><td class="num">73.1</td><td class="num negative">-5.34%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>000776.SZ</td><td>广发证券</td><td>CN</td><td>2026-10-08</td><td class="num">19.32</td><td class="num">72.4</td><td class="num positive">0.78%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>00189.HK</td><td>东岳集团</td><td>HK</td><td>2026-10-08</td><td class="num">10.64</td><td class="num">67.7</td><td class="num negative">-4.89%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>002608.SZ</td><td>江苏国信</td><td>CN</td><td>2026-10-08</td><td class="num">7.54</td><td class="num">72.9</td><td class="num negative">-2.12%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>00506.HK</td><td>中国食品</td><td>HK</td><td>2026-10-08</td><td class="num">3.74</td><td class="num">66.4</td><td class="num negative">-0.4%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>00857.HK</td><td>中国石油股份</td><td>HK</td><td>2026-10-08</td><td class="num">9.83</td><td class="num">65.5</td><td class="num positive">2.54%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>00934.HK</td><td>中石化冠德</td><td>HK</td><td>2026-10-08</td><td class="num">3.765</td><td class="num">67.4</td><td class="num positive">3.05%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>03996.HK</td><td>中国能源建设</td><td>HK</td><td>2026-10-08</td><td class="num">1.04</td><td class="num">65.6</td><td class="num negative">-2.4%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>600039.SH</td><td>四川路桥</td><td>CN</td><td>2026-10-08</td><td class="num">8.89</td><td class="num">76.9</td><td class="num positive">1.46%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>600938.SH</td><td>中国海油</td><td>CN</td><td>2026-10-08</td><td class="num">34.17</td><td class="num">79.6</td><td class="num positive">1.79%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>601006.SH</td><td>大秦铁路</td><td>CN</td><td>2026-10-08</td><td class="num">4.84</td><td class="num">73.5</td><td class="num positive">3.1%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>601225.SH</td><td>陕西煤业</td><td>CN</td><td>2026-10-08</td><td class="num">26.6</td><td class="num">77.5</td><td class="num positive">5.64%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>601528.SH</td><td>瑞丰银行</td><td>CN</td><td>2026-10-08</td><td class="num">5.15</td><td class="num">72.5</td><td class="num negative">-0.78%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>601800.SH</td><td>中国交建</td><td>CN</td><td>2026-10-08</td><td class="num">6.05</td><td class="num">80.0</td><td class="num positive">0.66%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>601857.SH</td><td>中国石油</td><td>CN</td><td>2026-10-08</td><td class="num">11.59</td><td class="num">74.3</td><td class="num positive">8.63%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>603393.SH</td><td>新天然气</td><td>CN</td><td>2026-10-08</td><td class="num">25.46</td><td class="num">72.8</td><td class="num negative">-6.91%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>001309.SZ</td><td>德明利</td><td>CN</td><td>2026-10-09</td><td class="num">336.91</td><td class="num">70.3</td><td class="num negative">-38.85%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>00177.HK</td><td>江苏宁沪高速公路</td><td>HK</td><td>2026-10-09</td><td class="num">11.13</td><td class="num">66.6</td><td class="num positive">2.43%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>00297.HK</td><td>中化化肥</td><td>HK</td><td>2026-10-09</td><td class="num">1.24</td><td class="num">66.9</td><td class="num negative">-1.21%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>00576.HK</td><td>浙江沪杭甬</td><td>HK</td><td>2026-10-09</td><td class="num">6.065</td><td class="num">65.7</td><td class="num negative">-0.08%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>00728.HK</td><td>中国电信</td><td>HK</td><td>2026-10-09</td><td class="num">4.685</td><td class="num">65.6</td><td class="num negative">-0.64%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>01179.HK</td><td>华住集团-S</td><td>HK</td><td>2026-10-09</td><td class="num">34.28</td><td class="num">67.7</td><td class="num positive">5.6%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>02588.HK</td><td>中银航空租赁</td><td>HK</td><td>2026-10-09</td><td class="num">69.15</td><td class="num">65.5</td><td class="num negative">-2.24%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>03393.HK</td><td>威胜控股</td><td>HK</td><td>2026-10-09</td><td class="num">12.43</td><td class="num">65.9</td><td class="num negative">-1.37%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>03898.HK</td><td>时代电气</td><td>HK</td><td>2026-10-09</td><td class="num">28.1</td><td class="num">69.6</td><td class="num positive">0.07%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>09901.HK</td><td>新东方-S</td><td>HK</td><td>2026-10-09</td><td class="num">45.54</td><td class="num">68.0</td><td class="num positive">5.49%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>09987.HK</td><td>百胜中国</td><td>HK</td><td>2026-10-09</td><td class="num">340.4</td><td class="num">67.5</td><td class="num positive">3.58%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>300770.SZ</td><td>新媒股份</td><td>CN</td><td>2026-10-09</td><td class="num">37.22</td><td class="num">74.0</td><td class="num negative">-1.67%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>600008.SH</td><td>首创股份</td><td>CN</td><td>2026-10-09</td><td class="num">2.77</td><td class="num">74.2</td><td class="num positive">0.36%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>600050.SH</td><td>中国联通</td><td>CN</td><td>2026-10-09</td><td class="num">4.3</td><td class="num">74.0</td><td class="num positive">1.86%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>600233.SH</td><td>圆通速递</td><td>CN</td><td>2026-10-09</td><td class="num">18.21</td><td class="num">74.0</td><td class="num negative">-3.35%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>600970.SH</td><td>中材国际</td><td>CN</td><td>2026-10-09</td><td class="num">7.76</td><td class="num">79.4</td><td class="num positive">0.64%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>603588.SH</td><td>高能环境</td><td>CN</td><td>2026-10-09</td><td class="num">16.59</td><td class="num">73.9</td><td class="num negative">-22.72%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>603816.SH</td><td>顾家家居</td><td>CN</td><td>2026-10-09</td><td class="num">23.53</td><td class="num">73.7</td><td class="num positive">1.15%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>00316.HK</td><td>东方海外国际</td><td>HK</td><td>2026-10-11</td><td class="num">153.0</td><td class="num">66.3</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>00586.HK</td><td>海螺创业</td><td>HK</td><td>2026-10-11</td><td class="num">7.485</td><td class="num">65.0</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>00688.HK</td><td>中国海外发展</td><td>HK</td><td>2026-10-11</td><td class="num">13.27</td><td class="num">65.2</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>01113.HK</td><td>长实集团</td><td>HK</td><td>2026-10-11</td><td class="num">45.2</td><td class="num">66.5</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>01336.HK</td><td>新华保险</td><td>HK</td><td>2026-10-11</td><td class="num">44.84</td><td class="num">67.9</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>01800.HK</td><td>中国交通建设</td><td>HK</td><td>2026-10-11</td><td class="num">3.37</td><td class="num">71.6</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>01811.HK</td><td>中广核新能源</td><td>HK</td><td>2026-10-11</td><td class="num">2.095</td><td class="num">66.1</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>01816.HK</td><td>中广核电力</td><td>HK</td><td>2026-10-11</td><td class="num">3.2</td><td class="num">65.0</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>02076.HK</td><td>BOSS直聘-W</td><td>HK</td><td>2026-10-11</td><td class="num">60.0</td><td class="num">65.4</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>02232.HK</td><td>晶苑国际</td><td>HK</td><td>2026-10-11</td><td class="num">6.86</td><td class="num">67.0</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>03618.HK</td><td>重庆农村商业银行</td><td>HK</td><td>2026-10-11</td><td class="num">6.295</td><td class="num">65.7</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>06818.HK</td><td>中国光大银行</td><td>HK</td><td>2026-10-11</td><td class="num">2.83</td><td class="num">66.4</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>06963.HK</td><td>阳光保险</td><td>HK</td><td>2026-10-11</td><td class="num">3.515</td><td class="num">66.3</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>09898.HK</td><td>微博-SW</td><td>HK</td><td>2026-10-11</td><td class="num">50.4</td><td class="num">65.7</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>601098.SH</td><td>中南传媒</td><td>CN</td><td>2026-10-11</td><td class="num">10.79</td><td class="num">78.3</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>002043.SZ</td><td>兔宝宝</td><td>CN</td><td>2026-10-12</td><td class="num">12.29</td><td class="num">70.1</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>00636.HK</td><td>KLN</td><td>HK</td><td>2026-10-12</td><td class="num">5.935</td><td class="num">67.6</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>01114.HK</td><td>BRILLIANCE CHI</td><td>HK</td><td>2026-10-12</td><td class="num">1.815</td><td class="num">67.2</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>01186.HK</td><td>中国铁建</td><td>HK</td><td>2026-10-12</td><td class="num">4.385</td><td class="num">67.3</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>02378.HK</td><td>保诚</td><td>HK</td><td>2026-10-12</td><td class="num">93.4</td><td class="num">70.7</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>02400.HK</td><td>心动公司</td><td>HK</td><td>2026-10-12</td><td class="num">40.1</td><td class="num">66.8</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>02714.HK</td><td>牧原股份</td><td>HK</td><td>2026-10-12</td><td class="num">36.66</td><td class="num">66.7</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>06099.HK</td><td>招商证券</td><td>HK</td><td>2026-10-12</td><td class="num">14.01</td><td class="num">71.3</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>06862.HK</td><td>海底捞</td><td>HK</td><td>2026-10-12</td><td class="num">9.59</td><td class="num">67.6</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>600398.SH</td><td>海澜之家</td><td>CN</td><td>2026-10-14</td><td class="num">6.07</td><td class="num">78.3</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>600803.SH</td><td>新奥股份</td><td>CN</td><td>2026-10-14</td><td class="num">19.85</td><td class="num">77.4</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>000686.SZ</td><td>东北证券</td><td>CN</td><td>2026-10-15</td><td class="num">7.57</td><td class="num">71.8</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>00551.HK</td><td>裕元集团</td><td>HK</td><td>2026-10-15</td><td class="num">14.4</td><td class="num">68.9</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>01066.HK</td><td>威高股份</td><td>HK</td><td>2026-10-15</td><td class="num">3.35</td><td class="num">65.7</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>01368.HK</td><td>特步国际</td><td>HK</td><td>2026-10-15</td><td class="num">3.575</td><td class="num">67.6</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>01681.HK</td><td>康臣药业</td><td>HK</td><td>2026-10-15</td><td class="num">15.39</td><td class="num">66.8</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>02388.HK</td><td>中银香港</td><td>HK</td><td>2026-10-15</td><td class="num">50.45</td><td class="num">66.8</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>600803.SH</td><td>新奥股份</td><td>CN</td><td>2026-10-15</td><td class="num">19.74</td><td class="num">78.4</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>600999.SH</td><td>招商证券</td><td>CN</td><td>2026-10-15</td><td class="num">16.7</td><td class="num">71.6</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>601928.SH</td><td>凤凰传媒</td><td>CN</td><td>2026-10-15</td><td class="num">9.14</td><td class="num">71.5</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>603799.SH</td><td>华友钴业</td><td>CN</td><td>2026-10-15</td><td class="num">32.18</td><td class="num">73.9</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>00013.HK</td><td>和黄医药</td><td>HK</td><td>2026-10-16</td><td class="num">22.28</td><td class="num">75.0</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>002236.SZ</td><td>大华股份</td><td>CN</td><td>2026-10-16</td><td class="num">14.69</td><td class="num">72.1</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>002415.SZ</td><td>海康威视</td><td>CN</td><td>2026-10-16</td><td class="num">33.66</td><td class="num">71.9</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>002939.SZ</td><td>长城证券</td><td>CN</td><td>2026-10-16</td><td class="num">7.56</td><td class="num">72.2</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>00914.HK</td><td>海螺水泥</td><td>HK</td><td>2026-10-16</td><td class="num">16.62</td><td class="num">72.4</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>01910.HK</td><td>新秀丽</td><td>HK</td><td>2026-10-16</td><td class="num">13.0</td><td class="num">65.9</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>01919.HK</td><td>中远海控</td><td>HK</td><td>2026-10-16</td><td class="num">17.08</td><td class="num">67.3</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>01988.HK</td><td>民生银行</td><td>HK</td><td>2026-10-16</td><td class="num">3.315</td><td class="num">67.1</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>03988.HK</td><td>中国银行</td><td>HK</td><td>2026-10-16</td><td class="num">6.135</td><td class="num">69.2</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>300628.SZ</td><td>亿联网络</td><td>CN</td><td>2026-10-16</td><td class="num">35.91</td><td class="num">71.4</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>301308.SZ</td><td>江波龙</td><td>CN</td><td>2026-10-16</td><td class="num">241.65</td><td class="num">73.1</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>601216.SH</td><td>君正集团</td><td>CN</td><td>2026-10-16</td><td class="num">4.7</td><td class="num">76.2</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>601669.SH</td><td>中国电建</td><td>CN</td><td>2026-10-16</td><td class="num">4.56</td><td class="num">74.0</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>601688.SH</td><td>华泰证券</td><td>CN</td><td>2026-10-16</td><td class="num">17.84</td><td class="num">74.5</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
+<tr><td>603605.SH</td><td>珀莱雅</td><td>CN</td><td>2026-10-16</td><td class="num">57.79</td><td class="num">73.3</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td>H</td></tr>
 <tr><td>GS.N</td><td>Goldman Sachs</td><td>US</td><td>2026-10-09</td><td class="num">882.59</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
 <tr><td>HBAN.O</td><td>Huntington Bancshares</td><td>US</td><td>2026-10-09</td><td class="num">15.37</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
 <tr><td>HIG.N</td><td>Hartford (The)</td><td>US</td><td>2026-10-09</td><td class="num">129.48</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
 <tr><td>INCY.O</td><td>Incyte</td><td>US</td><td>2026-10-09</td><td class="num">112.75</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
 <tr><td>ITW.N</td><td>Illinois Tool Works</td><td>US</td><td>2026-10-09</td><td class="num">264.71</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
-<tr><td>JNJ.N</td><td>强生</td><td>US</td><td>2026-10-09</td><td class="num">256.48</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
-<tr><td>JPM.N</td><td>摩根大通</td><td>US</td><td>2026-10-09</td><td class="num">331.42</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
+<tr><td>JNJ.N</td><td>强生</td><td>US</td><td>2026-10-09</td><td class="num">256.48</td><td class="num">—</td><td class="num negative">-1.25%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
+<tr><td>JPM.N</td><td>摩根大通</td><td>US</td><td>2026-10-09</td><td class="num">331.42</td><td class="num">—</td><td class="num positive">1.24%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
 <tr><td>KMB.O</td><td>Kimberly-Clark</td><td>US</td><td>2026-10-09</td><td class="num">97.74</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
-<tr><td>LLY.N</td><td>礼来</td><td>US</td><td>2026-10-09</td><td class="num">1169.6</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
+<tr><td>LLY.N</td><td>礼来</td><td>US</td><td>2026-10-09</td><td class="num">1169.6</td><td class="num">—</td><td class="num positive">7.01%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
 <tr><td>LYV.N</td><td>Live Nation Entertainment</td><td>US</td><td>2026-10-09</td><td class="num">171.34</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
 <tr><td>MCO.N</td><td>Moody's Corporation</td><td>US</td><td>2026-10-09</td><td class="num">458.69</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
-<tr><td>META.O</td><td>Meta</td><td>US</td><td>2026-10-09</td><td class="num">720.89</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
+<tr><td>META.O</td><td>Meta</td><td>US</td><td>2026-10-09</td><td class="num">720.89</td><td class="num">—</td><td class="num positive">2.2%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
 <tr><td>NSC.N</td><td>Norfolk Southern</td><td>US</td><td>2026-10-09</td><td class="num">316.99</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
 <tr><td>PCG.N</td><td>PG&E Corporation</td><td>US</td><td>2026-10-09</td><td class="num">12.67</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
-<tr><td>PFE.N</td><td>辉瑞</td><td>US</td><td>2026-10-09</td><td class="num">27.82</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
+<tr><td>PFE.N</td><td>辉瑞</td><td>US</td><td>2026-10-09</td><td class="num">27.82</td><td class="num">—</td><td class="num positive">5.82%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
 <tr><td>PHM.N</td><td>PulteGroup</td><td>US</td><td>2026-10-09</td><td class="num">113.53</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
 <tr><td>PNC.N</td><td>PNC Financial Services</td><td>US</td><td>2026-10-09</td><td class="num">219.68</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
 <tr><td>PPG.N</td><td>PPG Industries</td><td>US</td><td>2026-10-09</td><td class="num">105.46</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
@@ -785,13 +767,31 @@ footer a { color: var(--primary); text-decoration: none; }
 <tr><td>TROW.O</td><td>T. Rowe Price</td><td>US</td><td>2026-10-09</td><td class="num">104.23</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
 <tr><td>TRV.N</td><td>Travelers Companies (The)</td><td>US</td><td>2026-10-09</td><td class="num">370.27</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
 <tr><td>UAL.O</td><td>United Airlines Holdings</td><td>US</td><td>2026-10-09</td><td class="num">107.44</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
-<tr><td>UNH.N</td><td>联合健康</td><td>US</td><td>2026-10-09</td><td class="num">370.95</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
+<tr><td>UNH.N</td><td>联合健康</td><td>US</td><td>2026-10-09</td><td class="num">370.95</td><td class="num">—</td><td class="num positive">9.63%</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
 <tr><td>UNP.N</td><td>Union Pacific Corporation</td><td>US</td><td>2026-10-09</td><td class="num">278.2</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
 <tr><td>URI.N</td><td>United Rentals</td><td>US</td><td>2026-10-09</td><td class="num">1050.15</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
 <tr><td>USB.N</td><td>U.S. Bancorp</td><td>US</td><td>2026-10-09</td><td class="num">57.03</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
 <tr><td>WM.N</td><td>Waste Management</td><td>US</td><td>2026-10-09</td><td class="num">210.1</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
 <tr><td>WRB.N</td><td>W. R. Berkley Corporation</td><td>US</td><td>2026-10-09</td><td class="num">72.05</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
 <tr><td>WSM.N</td><td>Williams-Sonoma, Inc.</td><td>US</td><td>2026-10-09</td><td class="num">239.0</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
+<tr><td>002174.SZ</td><td>游族网络</td><td>CN</td><td>2026-10-11</td><td class="num">12.6</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
+<tr><td>03339.HK</td><td>中国龙工</td><td>HK</td><td>2026-10-11</td><td class="num">3.05</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
+<tr><td>603588.SH</td><td>高能环境</td><td>CN</td><td>2026-10-12</td><td class="num">14.93</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
+<tr><td>001309.SZ</td><td>德明利</td><td>CN</td><td>2026-10-13</td><td class="num">233.78</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
+<tr><td>00916.HK</td><td>龙源电力</td><td>HK</td><td>2026-10-13</td><td class="num">5.215</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
+<tr><td>000703.SZ</td><td>恒逸石化</td><td>CN</td><td>2026-10-14</td><td class="num">14.71</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
+<tr><td>601038.SH</td><td>一拖股份</td><td>CN</td><td>2026-10-14</td><td class="num">12.7</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
+<tr><td>000703.SZ</td><td>恒逸石化</td><td>CN</td><td>2026-10-15</td><td class="num">13.9</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
+<tr><td>00144.HK</td><td>招商局港口</td><td>HK</td><td>2026-10-15</td><td class="num">17.17</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
+<tr><td>02510.HK</td><td>德翔海运</td><td>HK</td><td>2026-10-15</td><td class="num">13.58</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
+<tr><td>02628.HK</td><td>中国人寿</td><td>HK</td><td>2026-10-15</td><td class="num">24.32</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
+<tr><td>600403.SH</td><td>大有能源</td><td>CN</td><td>2026-10-15</td><td class="num">7.07</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
+<tr><td>601038.SH</td><td>一拖股份</td><td>CN</td><td>2026-10-15</td><td class="num">12.31</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
+<tr><td>601628.SH</td><td>中国人寿</td><td>CN</td><td>2026-10-15</td><td class="num">34.55</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
+<tr><td>000612.SZ</td><td>焦作万方</td><td>CN</td><td>2026-10-16</td><td class="num">9.71</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
+<tr><td>002532.SZ</td><td>天山铝业</td><td>CN</td><td>2026-10-16</td><td class="num">11.5</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
+<tr><td>600309.SH</td><td>万华化学</td><td>CN</td><td>2026-10-16</td><td class="num">66.24</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
+<tr><td>600971.SH</td><td>恒源煤电</td><td>CN</td><td>2026-10-16</td><td class="num">8.02</td><td class="num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num neutral-num">—</td><td class="num">—</td><td>卖出</td></tr>
           </tbody>
         </table>
       </div>
