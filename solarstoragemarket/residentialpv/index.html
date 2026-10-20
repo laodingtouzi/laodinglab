@@ -311,6 +311,25 @@ details.fold .callout { border: none; background: transparent; padding: 10px 0 0
 .gap-list li:last-child { margin-bottom: 0; }
 .gap-list li::marker { color: var(--accent-3); font-family: var(--mono); font-size: 12px; }
 
+/* ── 数据节奏说明（开篇） ── */
+.cadence {
+  background: var(--bg-surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 16px 18px; margin-bottom: 30px; box-shadow: 0 1px 3px var(--shadow);
+}
+.cadence-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+.cadence-title { font-family: var(--serif); font-size: 15px; font-weight: 700; color: var(--text); }
+.cadence-note { font-size: 12.5px; color: var(--text-muted); font-weight: 300; }
+.cadence-tbl { table-layout: fixed; font-size: 12.5px; }
+.cadence-tbl th { padding: 8px 10px; font-size: 10.5px; }
+.cadence-tbl td { padding: 9px 10px; line-height: 1.7; vertical-align: top; border-bottom: 1px solid var(--border); overflow-wrap: break-word; }
+.cadence-tbl td:first-child { text-align: center; white-space: nowrap; }
+.cadence-tbl tr:last-child td { border-bottom: none; }
+.cadence-foot {
+  font-size: 12.5px; line-height: 1.8; color: var(--text-secondary); font-weight: 300;
+  margin: 12px 0 0; padding-top: 12px; border-top: 1px dashed var(--border);
+}
+.cadence-foot b { color: var(--text); }
+
 /* ── 数据表列宽修复（2026-10-14）：固定布局 + 数值列可折行 ── */
 .tbl-fixed { table-layout: fixed; }
 .tbl-fixed th, .tbl-fixed td { vertical-align: top; overflow-wrap: break-word; }
@@ -355,6 +374,68 @@ details.fold .callout { border: none; background: transparent; padding: 10px 0 0
 </section>
 
   <main class="main">
+
+  <!-- 数据节奏说明：官方按月 / 半年发布，周度发布用于捕获非官方信息 -->
+  <div class="cadence">
+    <div class="cadence-head">
+      <span class="cadence-title">数据节奏说明 · Data Cadence</span>
+      <span class="cadence-note">官方数据按月或半年发布且滞后；本报告按周发布，用于在官方数据之间及时捕获非官方信息</span>
+    </div>
+    <table class="cadence-tbl">
+      <colgroup><col style="width:13%"><col style="width:29%"><col style="width:17%"><col style="width:41%"></colgroup>
+      <thead>
+        <tr><th>层级</th><th>来源</th><th>发布节奏</th><th>本期覆盖至 / 说明</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge b-official">官方</span></td>
+          <td>国家能源局 · 全国电力工业统计</td>
+          <td>次月下旬</td>
+          <td><b>1-8 月</b>（9-24 发布）：光伏新增 97.19GW；<b>9 月待发布</b>，预计 10-22~26</td>
+        </tr>
+        <tr>
+          <td><span class="badge b-official">官方</span></td>
+          <td>国家能源局 · 光伏发电建设情况（<b>含户用与分布式分项</b>）</td>
+          <td>半年度</td>
+          <td><b>2026 H1</b>（8-14 发布）：户用新增 21.831GW / 累计 233.666GW</td>
+        </tr>
+        <tr>
+          <td><span class="badge b-official">官方</span></td>
+          <td>国家能源局 · 可再生能源电力开发建设月度调度会</td>
+          <td>次月 8 日前后</td>
+          <td><b>9 月调度会</b>（10-08 召开）：口径为 1-8 月可再生能源</td>
+        </tr>
+        <tr>
+          <td><span class="badge b-official">官方</span></td>
+          <td>国家统计局 · 规模以上工业主要产品产量 / 能源生产情况</td>
+          <td>每月 15-20 日 10:00</td>
+          <td><b>9 月</b>（10-19 发布）：电池产量 7359 万千瓦、太阳能发电量 644 亿千瓦时</td>
+        </tr>
+        <tr>
+          <td><span class="badge b-official">官方</span></td>
+          <td>省级发改委 / 能源局 · 机制电价竞价文件</td>
+          <td>不定期</td>
+          <td><b>广东 2026 年竞价规则</b>（10-10，一手已核实）；<b>出清结果待发布</b></td>
+        </tr>
+        <tr>
+          <td><span class="badge b-estimate">周度抓取</span></td>
+          <td>上市公司公告（巨潮 / 上交所 / 深交所 / 港交所）、投资者关系活动记录、业绩说明会</td>
+          <td>实时 · 本周抓取</td>
+          <td>覆盖至采集时点 <b>2026-10-19 09:00</b>；本期抓取结果见 06 节</td>
+        </tr>
+        <tr>
+          <td><span class="badge b-estimate">周度抓取</span></td>
+          <td>企业官方通稿、行业与财经媒体、招投标及公共资源交易平台、商业数据库（企查查 / 天眼查）</td>
+          <td>实时 · 本周抓取</td>
+          <td>覆盖至采集时点 <b>2026-10-19 09:00</b>；媒体与商业数据库指征<b>仅作间接信号</b>，已在 07 节逐条降级标注</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="cadence-foot">
+      <b>为什么按周发布：</b>上表官方口径均为月度或半年度发布，且普遍滞后 20-40 天——按月更新会错失大量中间信息。本报告的周度价值在于，在官方数据的两次发布之间<b>及时捕获公告、资本运作、竞价文件、企业动态等非官方信号</b>。<b>官方数字不会因周度发布而变动，变动的是非官方信息</b>；官方数据一经发布即在当期并入。<br>
+      <b>阅读提示：</b>凡涉及装机量、户用分项的结论，请以「官方」层级为准；「周度抓取」层级只用于跟踪动向与时序，<b>不构成装机量口径的证据</b>。
+    </p>
+  </div>
 
   <div class="section-label">市场热点与要闻 · Market Highlights</div>
 
@@ -1185,7 +1266,7 @@ details.fold .callout { border: none; background: transparent; padding: 10px 0 0
     <div class="about-title">关于本报告</div>
     <p class="about-text">
       本报告由自动化调研任务生成（第 11 期），每周一 09:00（GMT+8）更新。数据来源：国家能源局（8-14 H1 光伏发电建设情况、9-24 1-8 月全国电力工业统计、10-08 全国可再生能源电力开发建设月度（9 月）调度会）、<b>广东省发改委官网（粤发改价格函〔2026〕1805 号，一手已核实）</b>、巨潮资讯网（合康新能 2026-079 / 2026-077、正泰电器临 2026-047）、港交所披露易（创维集团 00751.HK 10-16 每月更新、TCL 电子 01070.HK）、TCL 实业控股官方说明、深交所固定收益 / 公募 REITs 信息平台、上证路演中心（天合光能、正泰电器半年度业绩说明会）、湖北 / 重庆公共资源交易平台、开州区人民政府官网、企业官方通稿（正泰安能、TCL PV TECH、海尔新能源）、行业媒体（北极星太阳能光伏网、国际能源网 / 国际太阳能光伏网、索比光伏、SOLARZOOM、世纪新能源网、光伏资讯、Mysteel、DataBM 数字新能源）、财经媒体（新浪财经、证券时报系、同花顺、证券之星、搜狐财经、中财网、虎嗅）、商业数据库（企查查、天眼查，仅作间接指征）。
-      数据截止 2026 年 10 月 19 日 09:00（部分截面数据沿用至最近披露）。下次更新时间：2026 年 10 月 26 日（周一）09:00。<br><b>本期新增来源：</b>创维集团 00751.HK 10-16 每月更新公告（拟保密呈交联交所）、广东省发改委官网一手文件核实及补充参数（竞争有效性系数 1.2、申报单位 0.1%）、天合光能 10-15 半年度业绩说明会问答记录及同日百佳年代股权受让公告、合康新能 10-13 公告 2026-079（3000 万元担保进展）、阳光电源 10-15 公告 2026-074（曹仁贤解质押）、正泰电器 10-16 半年度业绩说明会、机构间 REITs 新规机构研报（中财网 10-15）、DataBM 光伏总包周统计、开州区发改委 Q4 备案容量、虎嗅天合富家 REITs 底层资产深度（媒体口径待核）。沿用来源见上文数据渠道清单。
+      数据节奏与来源分层见开篇「<b>数据节奏说明 · Data Cadence</b>」表；本报告采集时点为 2026 年 10 月 19 日 09:00，下次更新时间：2026 年 10 月 26 日（周一）09:00。<br><b>本期新增来源：</b>创维集团 00751.HK 10-16 每月更新公告（拟保密呈交联交所）、广东省发改委官网一手文件核实及补充参数（竞争有效性系数 1.2、申报单位 0.1%）、天合光能 10-15 半年度业绩说明会问答记录及同日百佳年代股权受让公告、合康新能 10-13 公告 2026-079（3000 万元担保进展）、阳光电源 10-15 公告 2026-074（曹仁贤解质押）、正泰电器 10-16 半年度业绩说明会、机构间 REITs 新规机构研报（中财网 10-15）、DataBM 光伏总包周统计、开州区发改委 Q4 备案容量、虎嗅天合富家 REITs 底层资产深度（媒体口径待核）。沿用来源见上文数据渠道清单。
     </p>
   </div>
 
