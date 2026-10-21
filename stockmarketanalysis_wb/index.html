@@ -407,6 +407,7 @@ tr:hover { background: #f1ebff; }
       <a href="/stockmarketanalysis_wb/backtest_report.html">📈 回测报告</a>
       <a href="/stockmarketanalysis_wb/diff.html">🔄 与Kimi对比</a>
       <a href="/stockmarketanalysis_wb/admin.html" style="margin-left:auto; color:#64748b; font-size:0.85rem;">🔒 管理员</a>
+      <span id="wbAlertSlot" style="margin-left:12px;"></span>
     </nav>
   </div>
 </header>
@@ -17864,6 +17865,16 @@ function sortTable(tableId, colIdx, thEl) {
     });
     rows.forEach(r => tbody.appendChild(r));
 }
+</script>
+
+<script>
+(function(){
+  // 告警通知栏：动态注入，避免 document.write 同步阻塞；复用 _WB_BASE 兼容 archive 路径
+  var _s = document.createElement('script');
+  _s.src = (typeof _WB_BASE !== 'undefined' ? _WB_BASE : '') + 'alert_banner.js';
+  _s.defer = true;
+  document.head.appendChild(_s);
+})();
 </script>
 </body>
 </html>
