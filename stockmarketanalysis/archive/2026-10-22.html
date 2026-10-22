@@ -358,6 +358,7 @@ tr:hover { background: #f1f5f9; }
       <a href="/stockmarketanalysis/effectiveness.html">📊 有效性验证</a>
       <a href="http://100.84.142.34:8788/shougugou">🔍 手搓股</a>
       <a href="/webadmin/admin.html" style="margin-left:auto; color:#64748b; font-size:0.85rem;">🔒 管理员</a>
+      <span id="wbAlertSlot" style="margin-left:12px;"></span>
     </nav>
   </div>
 </header>
@@ -62497,5 +62498,14 @@ document.addEventListener('keydown', function(e) {
 </script>
 
 <script src="report_enhance_script.js?v=20260811stable"></script>
+<!-- 告警通知栏动态注入（WB 4.5：禁 document.write，防前置脚本报错导致注入丢失） -->
+<script>
+(function(){
+  var _s = document.createElement('script');
+  _s.src = 'alert_banner.js';
+  _s.defer = true;
+  document.head.appendChild(_s);
+})();
+</script>
 </body>
 </html>
