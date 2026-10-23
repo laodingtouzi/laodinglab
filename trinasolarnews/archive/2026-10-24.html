@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>天合光能舆情监控 · 第72期 (2026-10-24)</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2c5f7c;
+  --primary-light: #e8f0f5;
+  --accent: #c9a227;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #1a1a2e;
+  --text-secondary: #4a5568;
+  --text-muted: #718096;
+  --border: #e2e8f0;
+  --shadow: 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-hover: 0 4px 16px rgba(0,0,0,0.1);
+  --radius: 12px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  font-size: 15px;
+}
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Header */
+header {
+  background: linear-gradient(135deg, var(--primary) 0%, #1a3a4f 100%);
+  color: white;
+  padding: 40px 30px;
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-hover);
+}
+header h1 {
+  font-family: 'Noto Serif SC', Georgia, serif;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+header .subtitle {
+  font-size: 14px;
+  opacity: 0.85;
+  margin-bottom: 16px;
+}
+header .meta-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 13px;
+  opacity: 0.8;
+}
+header .meta-bar span {
+  background: rgba(255,255,255,0.12);
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+/* Navigation */
+nav {
+  background: var(--card-bg);
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 10px;
+  z-index: 100;
+}
+nav .nav-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+nav .nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+nav a {
+  font-size: 13px;
+  color: var(--primary);
+  text-decoration: none;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: var(--primary-light);
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+nav a:hover {
+  background: var(--primary);
+  color: white;
+}
+
+/* Section */
+.section {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.section-title {
+  font-family: 'Noto Serif SC', Georgia, serif;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 18px 24px;
+  background: linear-gradient(90deg, var(--primary-light) 0%, transparent 100%);
+  border-left: 4px solid var(--primary);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-title .count {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-left: auto;
+}
+.section-content {
+  padding: 0 24px 24px;
+}
+
+/* News Item — Compact */
+.news-item {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.news-item:last-child {
+  border-bottom: none;
+}
+.news-title-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+.news-title-link {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--primary);
+  text-decoration: none;
+  line-height: 1.4;
+  flex: 1;
+}
+.news-title-link:hover {
+  text-decoration: underline;
+  color: #1a3a4f;
+}
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.news-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.meta-date { font-weight: 500; }
+.meta-source { font-style: italic; }
+.meta-link {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+.meta-link:hover { text-decoration: underline; }
+.news-summary {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.news-summary p {
+  text-align: justify;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Sentiment */
+.sentiment-card {
+  text-align: center;
+  padding: 24px;
+  border-radius: var(--radius);
+  margin-bottom: 20px;
+}
+.sentiment-card.sentiment-negative {
+  background: linear-gradient(135deg, #fee2e2 0%, #fef2f2 100%);
+  border: 1px solid #fca5a5;
+}
+.sentiment-card.sentiment-neutral {
+  background: linear-gradient(135deg, #fef3c7 0%, #fffbeb 100%);
+  border: 1px solid #fcd34d;
+}
+.sentiment-card.sentiment-positive {
+  background: linear-gradient(135deg, #d1fae5 0%, #ecfdf5 100%);
+  border: 1px solid #6ee7b7;
+}
+.sentiment-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+.sentiment-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+}
+.sentiment-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+.sentiment-col {
+  background: var(--bg);
+  padding: 16px;
+  border-radius: 8px;
+}
+.sentiment-col h4 {
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+.sentiment-col ul {
+  list-style: none;
+  font-size: 13px;
+}
+.sentiment-col li {
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--border);
+  line-height: 1.6;
+}
+.sentiment-col li:last-child { border-bottom: none; }
+.sentiment-col li.pos { color: #065f46; }
+.sentiment-col li.neg { color: #991b1b; }
+.sentiment-col li.watch { color: #5b21b6; }
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 30px 20px;
+  color: var(--text-muted);
+  font-size: 13px;
+  border-top: 1px solid var(--border);
+  margin-top: 20px;
+}
+footer .sources {
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+footer .disclaimer {
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  header h1 { font-size: 22px; }
+  header { padding: 24px 20px; }
+  .section-content { padding: 0 16px 16px; }
+  .news-title-link { font-size: 14px; }
+  nav { position: static; }
+}
+
+/* Smooth scroll */
+html { scroll-behavior: smooth; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>🔍 天合光能舆情监控报告</h1>
+  <div class="subtitle">监控对象：天合光能股份有限公司 &nbsp;|&nbsp; 共聚合 14 条资讯</div>
+  <div class="meta-bar">
+    <span>📅 报告日期：2026-10-24</span>
+    <span>📋 第 72 期</span>
+  </div>
+</header>
+
+<nav>
+  <div class="nav-title">📑 快速导航</div>
+  <div class="nav-links">
+    <a href="#company">🔴 🏢 公司动态</a>
+<a href="#personnel">🔴 👤 人事变动</a>
+<a href="#finance">🔴 💰 财务与股价</a>
+<a href="#storage">🔴 🔋 储能与技术</a>
+<a href="#policy">🔴 📜 政策与行业</a>
+<a href="#sentiment">📊 舆情综合研判</a>
+  </div>
+</nav>
+
+
+    <section class="section" id="company">
+      <h2 class="section-title">🔴 🏢 公司动态 <span class="count">(0条)</span></h2>
+      <div class="section-content">
+        
+      </div>
+    </section>
+    
+    <section class="section" id="personnel">
+      <h2 class="section-title">🔴 👤 人事变动 <span class="count">(0条)</span></h2>
+      <div class="section-content">
+        
+      </div>
+    </section>
+    
+    <section class="section" id="finance">
+      <h2 class="section-title">🔴 💰 财务与股价 <span class="count">(6条)</span></h2>
+      <div class="section-content">
+        
+    <div class="news-item" id="news-0">
+      <div class="news-title-row">
+        <a href="https://www.sse.com.cn/star/market/stocklist/info/overview/index.shtml?COMPANY_CODE=688599" target="_blank" class="news-title-link">天合光能10月23日收盘10.68元涨1.91%，总市值250.2亿元</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">股价行情</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-10-23</span>
+        <span class="meta-source">📰 上海证券交易所</span>
+        <a href="https://www.sse.com.cn/star/market/stocklist/info/overview/index.shtml?COMPANY_CODE=688599" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>10月23日天合光能收盘报10.68元，涨1.91%，最高10.71元、最低10.17元，成交额3.23亿元，总市值250.19亿元，连续站稳10元关口。</p></div>
+    </div>
+    
+    <div class="news-item" id="news-1">
+      <div class="news-title-row">
+        <a href="http://finance.eastmoney.com/a/202610223904450660.html" target="_blank" class="news-title-link">国晟科技卷入1.51亿元合同纠纷：年内18条法律纠纷公告，货币资金不足5500万</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">个股新闻</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-10-22</span>
+        <span class="meta-source">📰 时代周报</span>
+        <a href="http://finance.eastmoney.com/a/202610223904450660.html" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>公司披露，2025年光伏电池、组件产能利用率约27%，低于其列举的天合光能（688599.SH）、隆基绿能（601012.SH）、爱旭股份（600732.SH）等主流厂商约70%的平均水平。较低的产能利用率使单位产品分摊的制造费用上升，进一…</p></div>
+    </div>
+    
+    <div class="news-item" id="news-2">
+      <div class="news-title-row">
+        <a href="https://data.eastmoney.com/stockdata/688599.html" target="_blank" class="news-title-link">天合光能融资余额11.66亿元，10月20日融资净买入719万元</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">资金流向</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-10-20</span>
+        <span class="meta-source">📰 同花顺</span>
+        <a href="https://data.eastmoney.com/stockdata/688599.html" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>同花顺F10显示，截至10月20日天合光能融资余额11.66亿元，当日融资净买入719.0万元，杠杆资金小幅回流。</p></div>
+    </div>
+    
+    <div class="news-item" id="news-3">
+      <div class="news-title-row">
+        <a href="https://basic.10jqka.com.cn/688599/" target="_blank" class="news-title-link">天合光能将于10月30日披露2026年三季报</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">财务预告</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-10-20</span>
+        <span class="meta-source">📰 同花顺</span>
+        <a href="https://basic.10jqka.com.cn/688599/" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>同花顺F10显示，天合光能将于2026年10月30日披露《2026年三季报》；截至9月30日公司股东人数较上期（8月31日）增长1580户，幅度2.56%。</p></div>
+    </div>
+    
+    <div class="news-item" id="news-4">
+      <div class="news-title-row">
+        <a href="http://money.finance.sina.com.cn/corp/go.php/vCB_AllBulletin/stockid/688599.phtml" target="_blank" class="news-title-link">天合光能：不向下修正“天23转债”转股价格</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">公司公告</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-10-16</span>
+        <span class="meta-source">📰 新浪财经</span>
+        <a href="http://money.finance.sina.com.cn/corp/go.php/vCB_AllBulletin/stockid/688599.phtml" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>天合光能10月16日发布公告，决定不向下修正“天23转债”转股价格；此前公司曾于9月17日、8月27日多次作出同样决定，转债转股价格修正条件持续受到关注。</p></div>
+    </div>
+    
+    <div class="news-item" id="news-5">
+      <div class="news-title-row">
+        <a href="http://finance.eastmoney.com/a/202610153897017832.html" target="_blank" class="news-title-link">天合光能：拟4000万元受让百佳年代1.6%股权</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">个股新闻</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-10-15</span>
+        <span class="meta-source">📰 财联社</span>
+        <a href="http://finance.eastmoney.com/a/202610153897017832.html" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>天合光能688599.SH)公告称，公司拟以自有资金4000万元受让江苏百兴产业投资集团所持常州百佳年代薄膜科技股份有限公司327.4万股股份，占其总股本1.6%。因标的公司股东吴伟忠为公司实控人高纪凡配偶之弟，本次交易构成关联交易。</p></div>
+    </div>
+    
+      </div>
+    </section>
+    
+    <section class="section" id="storage">
+      <h2 class="section-title">🔴 🔋 储能与技术 <span class="count">(7条)</span></h2>
+      <div class="section-content">
+        
+    <div class="news-item" id="news-6">
+      <div class="news-title-row">
+        <a href="https://weibo.com/1969530267/P6Lj48XnU" target="_blank" class="news-title-link">西宁首个算电融合创新示范项目开工：中国联通/天合光能共建绿电智算微电网</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">微博</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-10-23</span>
+        <span class="meta-source">📰 微博·西宁晚报</span>
+        <a href="https://weibo.com/1969530267/P6Lj48XnU" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>中国联通/天合光能三江源绿电智算融合示范微电网项目在西宁开工，系全市首个“风光储充+算力中心负荷”协同调度项目，总装机约6兆瓦，年供近1000万千瓦时零碳电力，实现100%绿电消纳。</p></div>
+    </div>
+    
+    <div class="news-item" id="news-7">
+      <div class="news-title-row">
+        <a href="http://cnnes.cc/qiye/20250225/10152.html" target="_blank" class="news-title-link">天合储能签澳大利亚500MWh储能订单，助力南澳最大新能源园区之一</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">储能订单</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-10-22</span>
+        <span class="meta-source">📰 储能中国网</span>
+        <a href="http://cnnes.cc/qiye/20250225/10152.html" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>天合储能宣布与储能开发商Pacific Green达成合作，共同推进南澳Limestone Coast North Energy Park（250MW/500MWh）建设，天合储能担任储能电芯供应商和电池舱集成商，并提供产品质保及系统性能保…</p></div>
+    </div>
+    
+    <div class="news-item" id="news-8">
+      <div class="news-title-row">
+        <a href="https://www.energytrend.cn/news/20261019-148937.html" target="_blank" class="news-title-link">近1.3GWh，晶科/天合等5企披露最新储能订单动态</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">储能订单</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-10-19</span>
+        <span class="meta-source">📰 集邦新能源网</span>
+        <a href="https://www.energytrend.cn/news/20261019-148937.html" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>集邦光储观察：天合储能在英国与Clarke Energy、Temporis Capital深化合作，三个BESS项目总规模超145MW/290MWh；在日本入选大分县AEJ Nozu项目供应商，提供50MW/196MWh储能系统，预计202…</p></div>
+    </div>
+    
+    <div class="news-item" id="news-9">
+      <div class="news-title-row">
+        <a href="https://www.163.com/dy/article/L9JRUL9O05199S8A.html" target="_blank" class="news-title-link">天合光能获日本/英国486MWh储能订单</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">储能订单</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-10-19</span>
+        <span class="meta-source">📰 网易·集邦光储观察</span>
+        <a href="https://www.163.com/dy/article/L9JRUL9O05199S8A.html" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>天合储能在英国与Clarke Energy、Temporis Capital深化合作，三个BESS项目总规模超145MW/290MWh，Boat of Garten已并网、Bramley新签约预计2027年并网；在日本入选大分县AEJ No…</p></div>
+    </div>
+    
+    <div class="news-item" id="news-10">
+      <div class="news-title-row">
+        <a href="http://finance.eastmoney.com/a/202610153897096688.html" target="_blank" class="news-title-link">“一箭十星”成功入轨，太空算力提速，天合光能太阳阵产品计划年内“上天”</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">个股新闻</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-10-15</span>
+        <span class="meta-source">📰 时代财经</span>
+        <a href="http://finance.eastmoney.com/a/202610153897096688.html" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>据国星宇航此前披露的招股说明书及相关公开报道，天合光能（688599.SH）、晶科科技（601778.SH）均直接或间接持有国星宇航股份。</p></div>
+    </div>
+    
+    <div class="news-item" id="news-11">
+      <div class="news-title-row">
+        <a href="https://weibo.com/2/detail/5349134544143248" target="_blank" class="news-title-link">AI数据中心全球布局加速，天合光能李燕：算力扩张下电力成核心问题</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">微博</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-10-09</span>
+        <span class="meta-source">📰 微博·财新</span>
+        <a href="https://weibo.com/2/detail/5349134544143248" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>AI数据中心全球布局加速，区域竞争聚焦资源与基础设施。天合光能执行总裁李燕（Helena Li）在2026亚洲愿景论坛创新峰会表示，美国今年已宣布约7500亿美元相关投资，算力扩张下电力成为需要解决的核心问题之一。</p></div>
+    </div>
+    
+    <div class="news-item" id="news-12">
+      <div class="news-title-row">
+        <a href="http://finance.eastmoney.com/a/202609293886614440.html" target="_blank" class="news-title-link">中国光伏设备商在美开打专利战</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">个股新闻</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-09-29</span>
+        <span class="meta-source">📰 界面新闻</span>
+        <a href="http://finance.eastmoney.com/a/202609293886614440.html" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>目前公司客户还覆盖晶科能源(688223.SH)、通威股份(600438.SH)、晶澳科技(002459.SZ)、天合光能688599.SH)、双良节能(600481.SH)等硅片及电池头部企业。</p></div>
+    </div>
+    
+      </div>
+    </section>
+    
+    <section class="section" id="policy">
+      <h2 class="section-title">🔴 📜 政策与行业 <span class="count">(1条)</span></h2>
+      <div class="section-content">
+        
+    <div class="news-item" id="news-13">
+      <div class="news-title-row">
+        <a href="https://www.futunn.com/stock/688599-SH" target="_blank" class="news-title-link">光伏12项技术拟纳入出口管制</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">行业政策</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-10-21</span>
+        <span class="meta-source">📰 富途牛牛·久银控股</span>
+        <a href="https://www.futunn.com/stock/688599-SH" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>光伏12项技术拟纳入出口管制消息引发行业关注，涉及电池、组件等关键环节，头部组件企业海外出货与技术授权政策不确定性上升。</p></div>
+    </div>
+    
+      </div>
+    </section>
+    
+
+
+    <section class="section sentiment-section" id="sentiment">
+      <h2 class="section-title">📊 舆情综合研判</h2>
+      <div class="section-content">
+        <div class="sentiment-card sentiment-neutral">
+          <div class="sentiment-label">总体判断</div>
+          <div class="sentiment-value">储能出海订单持续落地，股价反弹站稳10元上方</div>
+        </div>
+        <div class="sentiment-grid">
+          <div class="sentiment-col">
+            <h4>🟢 利好因素</h4>
+            <ul><li class="pos">✅ 天合储能签澳大利亚500MWh订单，供货南澳250MW/500MWh旗舰园区</li><li class="pos">✅ 英国/日本累计486MWh储能订单落地，Bramley项目新签约、大分县项目入选供应商</li><li class="pos">✅ 10月23日收盘10.68元涨1.91%，总市值回升至250.2亿元</li><li class="pos">✅ 中国联通/天合光能三江源绿电智算融合微电网开工，算电协同场景落地</li><li class="pos">✅ 储能业务成第二增长曲线，欧洲在手订单规模显著提升</li></ul>
+          </div>
+          <div class="sentiment-col">
+            <h4>🔴 风险因素</h4>
+            <ul><li class="neg">⚠️ 组件价格仍有下调，DBM监测9月下旬TOPCon组件报价走弱</li><li class="neg">⚠️ 主流厂商产能利用率约70%，行业盈利修复仍缓慢</li><li class="neg">⚠️ 光伏12项技术拟纳入出口管制，海外政策不确定性上升</li><li class="neg">⚠️ 公司市盈率仍为负值，三季报业绩待10月30日披露验证</li></ul>
+          </div>
+          <div class="sentiment-col">
+            <h4>👁️ 关键观察点</h4>
+            <ul><li class="watch">👁️ 10月30日三季报披露：Q3能否延续减亏趋势</li><li class="watch">👁️ 储能海外订单交付节奏与2026年出货翻番目标进展</li><li class="watch">👁️ &quot;天23转债&quot;转股价格修正条件触发情况</li><li class="watch">👁️ 太空光伏、算电协同新场景商业化落地进度</li></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+
+<footer>
+  <div class="sources">📰 信息来源：东方财富个股新闻 (AkShare)、kimi_search_v2、微博</div>
+  <div>老丁实验室 · laodinglab.com/trinasolarnews</div>
+  <div class="disclaimer">⚠️ 免责声明：本报告由自动化系统聚合公开信息生成，仅提供标题与链接，内容需阅读原文了解。不构成投资建议。</div>
+</footer>
+
+</div>
+</body>
+</html>
