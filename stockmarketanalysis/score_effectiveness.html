@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全球选股模型 v5 · 评分有效性周度监控</title>
+<style>
+:root { --bg:#f8fafc; --card-bg:#fff; --border:#e2e8f0; --text:#1e293b; --text-secondary:#475569;
+  --text-muted:#94a3b8; --primary:#2563eb; --primary-light:#eff6ff;
+  --buy:#059669; --sell:#dc2626; --neutral:#64748b; --radius:8px; --shadow:0 1px 3px rgba(0,0,0,0.08); }
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  background:var(--bg); color:var(--text); line-height:1.6; padding:20px; }
+.container { max-width:1200px; margin:0 auto; }
+header { text-align:center; margin-bottom:30px; padding:25px 0; border-bottom:1px solid var(--border); }
+header h1 { font-size:1.6rem; margin-bottom:8px; }
+header .meta { font-size:0.85rem; color:var(--text-secondary); }
+.card { background:var(--card-bg); border-radius:var(--radius); box-shadow:var(--shadow); margin-bottom:24px; overflow:hidden; }
+.card-header { padding:16px 20px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+.card-header h2 { font-size:1.1rem; font-weight:600; }
+.card-header .badge { font-size:0.75rem; padding:3px 10px; border-radius:12px; background:var(--primary-light); color:var(--primary); font-weight:500; }
+.card-body { padding:20px; }
+table { width:100%; border-collapse:collapse; font-size:0.9rem; }
+th, td { padding:8px 10px; text-align:center; border-bottom:1px solid var(--border); }
+th { background:var(--bg); font-weight:600; font-size:0.8rem; color:var(--text-secondary); }
+td.num { font-family:'SF Mono',Monaco,monospace; text-align:right; }
+.positive { color:var(--buy); font-weight:600; }
+.negative { color:var(--sell); font-weight:600; }
+.neutral-num { color:var(--neutral); }
+.empty-cell { color:var(--text-muted); font-style:italic; }
+.stat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; margin-bottom:20px; }
+.stat-item { background:var(--bg); border-radius:var(--radius); padding:16px; text-align:center; }
+.stat-item .value { font-size:1.5rem; font-weight:700; margin-bottom:4px; }
+.stat-item .label { font-size:0.8rem; color:var(--text-secondary); }
+footer { text-align:center; padding:30px 0; font-size:0.8rem; color:var(--text-muted); border-top:1px solid var(--border); margin-top:20px; }
+.back-link { display:inline-block; margin-bottom:16px; font-size:0.85rem; color:var(--primary); text-decoration:none; }
+.note { font-size:0.78rem; color:var(--text-muted); line-height:1.8; }
+@media (max-width:768px) { .stat-grid { grid-template-columns:1fr 1fr; } th,td { padding:6px 4px; font-size:0.78rem; } body { padding:12px; } }
+</style>
+</head>
+<body>
+<div class="container">
+<a href="https://laodinglab.com/stockmarketanalysis" class="back-link">← 返回每日选股报告</a>
+<header>
+  <h1>🩺 全球选股模型 v5 · 评分有效性周度监控</h1>
+  <div class="meta"><span>生成时间: 2026-10-23 16:11</span><span>历史周数: 11</span></div>
+</header>
+
+<div class="card"><div class="card-header"><h2>一、本周概览</h2>
+<span class="badge">周锚: 2026-10-16</span></div>
+<div class="card-body">
+    <div class="stat-grid">
+      <div class="stat-item"><div class="value positive">0.189</div><div class="label">本周IC（全市场）</div></div>
+      <div class="stat-item"><div class="value negative">-0.34%</div><div class="label">本周H-M超额（全市场）</div></div>
+      <div class="stat-item"><div class="value">316 / 8078</div><div class="label">本周H数 / M数</div></div>
+      <div class="stat-item"><div class="value">2484</div><div class="label">覆盖股票数</div></div>
+    </div>
+    <div style="text-align:center;"><span class="badge">权重状态正常</span> <span class="badge" style="background:#fef2f2;color:#dc2626;">⚠️ 回测偏离报警</span></div></div></div>
+
+<div class="card"><div class="card-header"><h2>二、近11周 IC 与 H-M 趋势</h2>
+<span class="badge">H-M≤0 标红</span></div>
+<div class="card-body"><table><thead><tr>
+<th>周锚日</th><th>IC全市场</th><th>IC-CN</th><th>IC-HK</th><th>IC-US</th>
+<th>H-M超额</th><th>H数</th><th>M数</th><th>覆盖股票</th></tr></thead>
+<tbody><tr><td>2026-08-09</td><td class="num negative">-0.220</td><td class="num negative">-0.223</td><td class="num negative">-0.190</td><td class="num neutral-num">—</td><td class="num negative">-2.02%</td><td class="num">2876</td><td class="num">10982</td><td class="num">1984</td></tr>
+<tr><td>2026-08-15</td><td class="num positive">0.029</td><td class="num negative">-0.006</td><td class="num positive">0.050</td><td class="num neutral-num">—</td><td class="num negative">-0.20%</td><td class="num">2723</td><td class="num">9034</td><td class="num">1984</td></tr>
+<tr><td>2026-08-23</td><td class="num positive">0.012</td><td class="num positive">0.013</td><td class="num positive">0.028</td><td class="num neutral-num">—</td><td class="num positive">0.03%</td><td class="num">2467</td><td class="num">7369</td><td class="num">1984</td></tr>
+<tr><td>2026-08-30</td><td class="num positive">0.009</td><td class="num positive">0.019</td><td class="num positive">0.063</td><td class="num neutral-num">—</td><td class="num positive">0.13%</td><td class="num">3638</td><td class="num">8190</td><td class="num">1984</td></tr>
+<tr><td>2026-09-05</td><td class="num positive">0.039</td><td class="num positive">0.032</td><td class="num positive">0.083</td><td class="num negative">-0.032</td><td class="num positive">0.39%</td><td class="num">1003</td><td class="num">8775</td><td class="num">2484</td></tr>
+<tr><td>2026-09-13</td><td class="num negative">-0.210</td><td class="num negative">-0.328</td><td class="num positive">0.027</td><td class="num positive">0.015</td><td class="num negative">-0.69%</td><td class="num">457</td><td class="num">8839</td><td class="num">2484</td></tr>
+<tr><td>2026-09-20</td><td class="num negative">-0.067</td><td class="num negative">-0.026</td><td class="num positive">0.061</td><td class="num negative">-0.225</td><td class="num negative">-0.10%</td><td class="num">438</td><td class="num">11438</td><td class="num">2484</td></tr>
+<tr><td>2026-09-25</td><td class="num positive">0.279</td><td class="num positive">0.359</td><td class="num positive">0.280</td><td class="num negative">-0.066</td><td class="num positive">0.55%</td><td class="num">402</td><td class="num">10030</td><td class="num">2484</td></tr>
+<tr><td>2026-10-02</td><td class="num positive">0.117</td><td class="num positive">0.242</td><td class="num positive">0.030</td><td class="num negative">-0.044</td><td class="num positive">0.23%</td><td class="num">239</td><td class="num">9958</td><td class="num">2484</td></tr>
+<tr><td>2026-10-09</td><td class="num positive">0.314</td><td class="num positive">0.327</td><td class="num positive">0.356</td><td class="num positive">0.168</td><td class="num positive">0.58%</td><td class="num">304</td><td class="num">10223</td><td class="num">2484</td></tr>
+<tr><td>2026-10-16</td><td class="num positive">0.189</td><td class="num positive">0.123</td><td class="num positive">0.136</td><td class="num positive">0.217</td><td class="num negative">-0.34%</td><td class="num">316</td><td class="num">8078</td><td class="num">2484</td></tr></tbody></table></div></div>
+
+<div class="card"><div class="card-header"><h2>三、分市场明细（最近4周）</h2>
+<span class="badge">H-M 按市场</span></div>
+<div class="card-body"><table><thead><tr>
+<th>周锚日</th><th>市场</th><th>H-M超额</th><th>IC</th></tr></thead>
+<tbody><tr><td>2026-09-25</td><td>全市场</td><td class="num positive">0.55%</td><td class="num positive">0.279</td></tr>
+<tr><td>2026-09-25</td><td>CN</td><td class="num positive">0.48%</td><td class="num positive">0.359</td></tr>
+<tr><td>2026-09-25</td><td>HK</td><td class="num positive">0.73%</td><td class="num positive">0.280</td></tr>
+<tr><td>2026-09-25</td><td>US</td><td class="num negative">-0.41%</td><td class="num negative">-0.066</td></tr>
+<tr><td>2026-10-02</td><td>全市场</td><td class="num positive">0.23%</td><td class="num positive">0.117</td></tr>
+<tr><td>2026-10-02</td><td>CN</td><td class="num positive">0.46%</td><td class="num positive">0.242</td></tr>
+<tr><td>2026-10-02</td><td>HK</td><td class="num positive">0.52%</td><td class="num positive">0.030</td></tr>
+<tr><td>2026-10-02</td><td>US</td><td class="num positive">7.09%</td><td class="num negative">-0.044</td></tr>
+<tr><td>2026-10-09</td><td>全市场</td><td class="num positive">0.58%</td><td class="num positive">0.314</td></tr>
+<tr><td>2026-10-09</td><td>CN</td><td class="num positive">1.32%</td><td class="num positive">0.327</td></tr>
+<tr><td>2026-10-09</td><td>HK</td><td class="num positive">0.32%</td><td class="num positive">0.356</td></tr>
+<tr><td>2026-10-09</td><td>US</td><td class="num positive">4.29%</td><td class="num positive">0.168</td></tr>
+<tr><td>2026-10-16</td><td>全市场</td><td class="num negative">-0.34%</td><td class="num positive">0.189</td></tr>
+<tr><td>2026-10-16</td><td>CN</td><td class="num positive">0.39%</td><td class="num positive">0.123</td></tr>
+<tr><td>2026-10-16</td><td>HK</td><td class="num positive">0.67%</td><td class="num positive">0.136</td></tr>
+<tr><td>2026-10-16</td><td>US</td><td class="num negative">-2.28%</td><td class="num positive">0.217</td></tr></tbody></table></div></div>
+
+<div class="card"><div class="card-header"><h2>四、4周滚动触发状态（权重重估建议）</h2>
+<span class="badge ">未触发</span></div>
+<div class="card-body">
+    <p>最近 <b>4</b> 周 H-M（全市场）均值：
+       <span class="positive" style="font-weight:700;">0.256%</span>
+       </p>
+    <p>判定结果：<span class="positive" style="font-weight:700;">未触发</span>
+       （连续4周 H-M ≤ 0 → 建议权重重估；本模块只呈现建议，不自动修改任何配置）</p></div></div>
+
+<div class="card"><div class="card-header"><h2>五、回测 vs 实盘年化对比</h2>
+<span class="badge">偏离阈值 50%</span></div>
+<div class="card-body"><table><thead><tr>
+<th>口径</th><th>回测年化</th><th>实盘年化</th><th>偏离度</th><th>状态</th></tr></thead>
+<tbody><tr><td>回测 B（融资前）</td><td class="num">9.72%</td><td class="num">22.81%</td><td class="num negative">134.7%</td><td>⚠️ 偏离超限</td></tr>
+<tr><td>回测 Z（融资后）</td><td class="num">13.11%</td><td class="num">22.81%</td><td class="num negative">74.0%</td><td>⚠️ 偏离超限</td></tr>
+<tr><td>实盘（2026-07-24 ~ 2026-10-22，90天）</td><td class="num">—</td><td class="num positive">22.81%</td><td class="num">—</td><td>合成净值 Σnav</td></tr></tbody></table></div></div>
+
+<div class="card"><div class="card-header"><h2>六、口径说明</h2></div>
+<div class="card-body"><div class="note">
+<p>1. 前向收益口径：t 日价格 → t+7 个自然日后第一个有数据的评分日的价格，收益率=(future-entry)/entry×100；与现有周报约定一致。</p>
+<p>2. 分桶口径：H 桶 = status 'H'；M 桶 = status in ('M','M↓')，M↓（降级票）归入 M 桶；'卖出' 不参与 H-M 计算。</p>
+<p>3. 分档 IC：每个评分日、每个市场及全市场计算 final_score 与 7 日前向收益的 Spearman 秩相关（自实现，平均秩处理并列）；单日单市场样本 &lt; 20 跳过；周 IC 为该周各评分日均值按样本数加权。</p>
+<p>4. 评分周定义：按 ISO 周归组评分日，周锚 = 该周最后一个评分日，统计该周内全部评分日。</p>
+<p>5. 实盘年化口径：portfolio_daily_metrics 无 'ALL'/合计行（仅 CN/HK/US 三行/日），故按 date 聚合三市场 nav 之和作为等权合成净值，年化=(末Σnav/首Σnav)^(365/自然天数)-1。</p>
+<p>6. 回测年化=(1+total_return_pct/100)^(252/trading_days)-1；偏离度=|回测年化-实盘年化|/|回测年化|×100，&gt;50% 报警。</p>
+<p>7. 局限性：估值/舆情类因子在数据污染日（财务数据回填、舆情抓取延迟）的得分存在近似性，对应日期的 IC 可能被低估；H-M 为 7 日前向口径，与 30 天口径存在周期差异。</p>
+</div></div></div>
+
+<footer><p>全球选股模型 v5 · 评分有效性周度监控 · 每周六强制体检项</p>
+<p><a href="https://laodinglab.com/stockmarketanalysis/effectiveness.html">← 有效性验证报告</a></p></footer>
+</div>
+</body>
+</html>
