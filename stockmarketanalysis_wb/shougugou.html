@@ -753,7 +753,7 @@ function renderResult(r){
     }
   }
 
-  area.innerHTML = html;
+  area.innerHTML = renderFreshnessBar(r) + html;
   area.scrollIntoView({ behavior: 'smooth', block: 'start' });
   } catch(err) {
     // 崩的时候把异常位置 + result 顶层键显示出来，方便定位
@@ -769,6 +769,35 @@ function renderResult(r){
       + '<div style="margin-top:8px;font-size:12px;color:var(--text-muted)">提示：完整堆栈请打开浏览器开发者工具 Console 截屏；告诉阿岩错误信息与出错位置即可精准补字段。</div>'
       + '</div>';
   }
+}
+// 数据口径条（S3，2026-10-24）：顶部明示「K线末根日期 / 回测缓存构建时间 / 落后天数」
+// 目的：避免 K 线停更或缓存过期被当成正常输出。取不到数据时返回空串，不占位。
+function renderFreshnessBar(r){
+  const df = r && r.data_freshness;
+  if (!df || df.error) return '';
+  let items = [];
+  (df.kline || []).forEach(k => {
+    if (!k.kline_last) return;
+    const lag = k.kline_lag_days;
+    const col = (lag !== null && lag !== undefined && lag <= 3) ? 'var(--buy)'
+              : (lag !== null && lag !== undefined && lag <= 7) ? 'var(--accent)' : 'var(--sell)';
+    items.push('<span>K线 <b style="color:' + col + '">' + esc(k.kline_last) + '</b>'
+      + ' <span style="color:var(--text-muted)">（落后 ' + (lag === null || lag === undefined ? '?' : lag) + ' 天）</span></span>');
+  });
+  const c = df.bt_cache || {};
+  const clag = c.lag_days;
+  const cacheTxt = c.ready
+    ? ('回测缓存 <b style="color:' + ((clag !== null && clag !== undefined && clag <= 1) ? 'var(--buy)' : 'var(--accent)') + '">'
+       + esc((c.built_at || '').slice(0, 16)) + '</b>'
+       + ' <span style="color:var(--text-muted)">（' + (clag === null || clag === undefined ? '?' : clag) + ' 天前构建，覆盖 '
+       + (c.universe === null || c.universe === undefined ? '—' : c.universe) + ' 只）</span>')
+    : '<b style="color:var(--sell)">回测缓存缺失</b> <span style="color:var(--text-muted)">（本次将全量重建，耗时较长）</span>';
+  return '<div class="note-box" style="margin:0 0 14px;padding:10px 12px">'
+    + '<div style="font-size:12px;font-weight:600;color:var(--accent);margin-bottom:6px">数据口径 · 截至 '
+    + esc(df.today || '—') + '</div>'
+    + '<div style="display:flex;flex-wrap:wrap;gap:4px 18px;font-size:12.5px;line-height:1.8">'
+    + items.join('') + '<span>' + cacheTxt + '</span>'
+    + '</div></div>';
 }
 function ov(k, v){ return '<div class="ov-item"><div class="k">' + k + '</div><div class="v">' + v + '</div></div>'; }
 
