@@ -501,15 +501,30 @@ function renderResult(r){
           + '</div></div>';
       }
     }
-    // 动态买入阈值提示
+    // 动态买入阈值提示（S5 2026-10-25：阈值按 5 分一档量化以复用缓存，必须明示偏差）
     if (bt.tier === 'dynamic' && bt.dynamic_buy_threshold) {
+      const quantLine = bt.threshold_quantized
+        ? ('本次回测买入阈值 <b>' + bt.dynamic_buy_threshold + '</b>，由个股评分取整值 <b>' + bt.threshold_raw
+           + '</b> 按 5 分一档<b>量化</b>而来（偏差 ' + Math.abs(bt.dynamic_buy_threshold - bt.threshold_raw)
+           + ' 分），用于复用同档位的全市场回测结果')
+        : ('已将买入阈值动态调整为 <b>' + bt.dynamic_buy_threshold + '</b>（=当前评分取整）');
       html += '<div class="note-box" style="margin-top:10px;border-color:var(--accent)">'
         + '<b>📐 动态买入阈值已启用</b>'
         + '<div style="margin-top:6px;font-size:12.5px;line-height:1.7">'
         + '当前评分 <b>' + (view.scoring.final_score || 0).toFixed(1) + '</b> 低于策略标准买入阈值，'
-        + '已将买入阈值动态调整为 <b>' + bt.dynamic_buy_threshold + '</b>（=当前评分），'
-        + '使该股可被假定入选并完成完整回测周期。5 套策略各自的卖出阈值/止损/止盈参数保持不变，'
+        + quantLine
+        + '。5 套策略各自的卖出阈值/止损/止盈参数保持不变，'
         + '退出逻辑差异体现策略横向对比价值。'
+        + '</div></div>';
+    }
+    // 因量化达阈值而归入 normal 档（63~65 分区间）：同样要把口径说清楚
+    if (bt.promoted_to_normal) {
+      html += '<div class="note-box" style="margin-top:10px;border-color:var(--accent)">'
+        + '<b>📐 评分已量化达买入阈值</b>'
+        + '<div style="margin-top:6px;font-size:12.5px;line-height:1.7">'
+        + '当前评分 <b>' + (view.scoring.final_score || 0).toFixed(1) + '</b>，'
+        + '个股阈值取整为 <b>' + bt.threshold_raw + '</b>，按 5 分一档量化后达正式买入阈值，'
+        + '因此按 <b>normal 档</b>标准回测（阈值 = 策略原阈值），并复用全库缓存。'
         + '</div></div>';
     }
 
