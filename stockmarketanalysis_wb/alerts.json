@@ -1,19 +1,52 @@
 {
-  "generated_at": "2026-10-26T18:30:05",
-  "unread_count": 1,
+  "generated_at": "2026-10-27T18:30:30",
+  "unread_count": 3,
   "meta": {
-    "checked_at": "2026-10-26T18:30:01",
-    "date": "2026-10-26",
+    "checked_at": "2026-10-27T18:30:00",
+    "date": "2026-10-27",
     "trading_day": true,
     "trading_day_reason": "trading_day",
     "cron_log_count": 1,
     "run_completed": true,
-    "online_check": "online_updated(2026-10-26)",
-    "guard_alert_count": 5,
+    "online_check": "curl_failed_rc=28",
+    "guard_alert_count": 13,
     "weekly_latest": "weekly_20261024_101000.log",
-    "weekly_age_days": 2
+    "weekly_age_days": 3,
+    "pf5_size_local": 684588,
+    "pf5_size_remote": 684588,
+    "metrics": {
+      "holdings_total": 239,
+      "post_sell_total": 668,
+      "watch_total": 11,
+      "guard_alerts": 1,
+      "guard_checks": 12,
+      "report_size_kb": 1049
+    },
+    "drift_count": 0,
+    "shougugou": "200 OK",
+    "weekly_completed": true
   },
   "alerts": [
+    {
+      "id": "ONLINE_CHECK_FAILED_20261027_183000",
+      "level": "warn",
+      "code": "ONLINE_CHECK_FAILED",
+      "title": "无法确认线上报告状态",
+      "detail": "检查失败：curl_failed_rc=28。可能是网络问题或页面结构变化。",
+      "action": "手动打开线上主页确认日期",
+      "date": "2026-10-27",
+      "ts": "2026-10-27T18:30:00"
+    },
+    {
+      "id": "GUARD_ALERT_20261027_183000",
+      "level": "warn",
+      "code": "GUARD_ALERT",
+      "title": "数据守门告警 13 条",
+      "detail": "2026-10-27 15:51:14 [GUARD-ALERT] 守门1 告警: CN: 按交易日历今日应到货 K 线日期=2026-10-27，实际到货 47/1592（3.0%）< 阈值 90% ← 判据E：到货率不足（calendar_status=holidays_inferred_2027）",
+      "action": "查看 logs/guard_alerts.log 全文",
+      "date": "2026-10-27",
+      "ts": "2026-10-27T18:30:00"
+    },
     {
       "id": "GUARD_ALERT_20261026_183001",
       "level": "warn",
