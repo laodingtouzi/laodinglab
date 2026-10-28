@@ -341,6 +341,83 @@ tr:hover { background: #f1f5f9; }
 </style>
 <title>全球选股模型 v5 · 2026-10-27 盘后报告</title>
 <script>window.DELIST_WORKER_URL = "https://tri-market-api-rzer.vercel.app";</script>
+<script>
+// ===== 报告页实时对账 + 全局错误提示助手（2026-10-28 盯盘池手动卖出配套） =====
+// 与 GitHub Pages 同源的 data/portfolio/*.json 对齐：卖出/移仓后无需等次日跑分即可反映。
+// 任一请求失败都静默降级，绝不影响页面正常展示。
+(function() {
+  // 全局友好错误映射：后端英文错误 → 中文提示
+  window.reportFriendlyError = function(data, httpStatus) {
+    var raw = '';
+    if (data && (data.error || data.message)) raw = String(data.error || data.message);
+    else raw = 'HTTP ' + httpStatus;
+    if (/not found/i.test(raw) || raw.indexOf('不存在') >= 0) {
+      return '该股票已不在对应池中（可能刚被卖出或系统出清），刷新页面可查看最新状态';
+    }
+    return '操作失败：' + raw;
+  };
+
+  // 全局 toast（懒创建，供 delist / watch-sell 等对账场景复用）
+  window.reportToast = function(message, type) {
+    var toast = document.getElementById('report-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'report-toast';
+      toast.style.cssText = 'display:none; position:fixed; top:20px; right:20px; z-index:4000; padding:12px 20px; border-radius:8px; color:#fff; font-size:0.9rem; box-shadow:0 4px 12px rgba(0,0,0,0.15); transition:opacity 0.3s; max-width:320px; word-break:break-word;';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.style.background = type === 'success' ? '#16a34a' : '#dc2626';
+    toast.style.display = 'block';
+    toast.style.opacity = '1';
+    setTimeout(function() {
+      toast.style.opacity = '0';
+      setTimeout(function() { toast.style.display = 'none'; }, 300);
+    }, 3500);
+  };
+
+  function getJsonQuiet(url) {
+    return fetch(url).then(function(r) { return r.ok ? r.json() : null; }).catch(function() { return null; });
+  }
+
+  function hideGoneRows(selector, validCodes) {
+    var rows = document.querySelectorAll(selector);
+    for (var i = 0; i < rows.length; i++) {
+      var code = rows[i].getAttribute('data-code');
+      if (code && !validCodes.has(code)) rows[i].style.display = 'none';
+    }
+  }
+
+  function reconcilePortfolio() {
+    // 盯盘池：单文件，失败即跳过该步
+    getJsonQuiet('data/portfolio/watch_pool.json').then(function(wp) {
+      if (wp && wp.members && wp.members.length !== undefined) {
+        var codes = new Set();
+        wp.members.forEach(function(m) { if (m && m.code) codes.add(m.code); });
+        hideGoneRows('#watch-list tbody tr[data-code]', codes);
+      }
+    });
+    // 持有清单：跨三市场，必须三份全部拿到才隐藏，避免单市场失败误隐藏其他市场行
+    Promise.all([
+      getJsonQuiet('data/portfolio/holdings_CN.json'),
+      getJsonQuiet('data/portfolio/holdings_HK.json'),
+      getJsonQuiet('data/portfolio/holdings_US.json')
+    ]).then(function(vals) {
+      var hCN = vals[0], hHK = vals[1], hUS = vals[2];
+      if (hCN && hHK && hUS) {
+        var codes = new Set(Object.keys(hCN).concat(Object.keys(hHK), Object.keys(hUS)));
+        hideGoneRows('#holdings tbody tr[data-code]', codes);
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', reconcilePortfolio);
+  } else {
+    reconcilePortfolio();
+  }
+})();
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -851,7 +928,10 @@ tr:hover { background: #f1f5f9; }
           setTimeout(function() { row.style.display = 'none'; }, 350);
         }
       } else {
-        showWatchSellToast('卖出失败：' + (data.error || data.message || ('HTTP ' + resp.status)), 'error');
+        var msg = window.reportFriendlyError
+          ? window.reportFriendlyError(data, resp.status)
+          : ('卖出失败：' + (data.error || data.message || ('HTTP ' + resp.status)));
+        showWatchSellToast(msg, 'error');
       }
     } catch (e) {
       showWatchSellToast('请求失败：' + e.message, 'error');
@@ -9868,6 +9948,11 @@ async function confirmDelist() {
         if (!resp.ok) {
             const err = await resp.text().catch(() => '');
             console.error('[Delist] Worker sync failed:', resp.status, err);
+            if (window.reportToast) {
+                window.reportToast(window.reportFriendlyError
+                    ? window.reportFriendlyError({ error: String(err).slice(0, 200) }, resp.status)
+                    : ('剔除失败：HTTP ' + resp.status), 'error');
+            }
         } else {
             const result = await resp.json().catch(() => ({}));
             console.log('[Delist] Worker sync ok:', result.message || 'ok');
@@ -57201,13 +57286,14 @@ document.addEventListener('keydown', function(e) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     }).then(function(r) {
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      return r.json();
-    }).then(function(data) {
-      if (data.success) {
-        showToast('操作成功：' + (data.message || ''), 'success');
-        if (onSuccess) onSuccess();
-      } else { showToast('操作失败：' + (data.message || '未知错误'), 'error'); }
+      return r.json().catch(function() { return {}; }).then(function(data) {
+        if (r.ok && data.success) {
+          showToast('操作成功：' + (data.message || ''), 'success');
+          if (onSuccess) onSuccess();
+        } else {
+          showToast(window.reportFriendlyError ? window.reportFriendlyError(data, r.status) : ('操作失败：' + (data.message || '未知错误')), 'error');
+        }
+      });
     }).catch(function(e) { showToast('请求失败：' + e.message, 'error'); });
   }
 
