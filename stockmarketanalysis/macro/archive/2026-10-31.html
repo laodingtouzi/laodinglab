@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>宏观事件驱动板块轮动周报 · 2026-10-31</title>
+<style>
+  :root{
+    --bg:#f5f7fa; --card:#ffffff; --card2:#f1f5f9; --border:#dde4ee;
+    --text:#1c2b3a; --muted:#5b6b82; --accent:#1d5fd1;
+    --green:#0f8a4c; --amber:#b45309; --gray:#64748b; --orange:#c2410c; --red:#c0392b; --gold:#b45309;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--text);font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;line-height:1.8;padding:36px 18px}
+  .wrap{max-width:960px;margin:0 auto;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:40px 44px;box-shadow:0 2px 12px rgba(28,43,58,.06)}
+  header{border-bottom:3px solid var(--accent);padding-bottom:18px;margin-bottom:24px}
+  .kicker{color:var(--accent);font-size:13px;letter-spacing:2px;font-weight:600}
+  h1{font-size:26px;margin:6px 0 12px;color:#122033}
+  .regime{display:inline-block;background:#eef4ff;border:1px solid #b8d0f5;color:var(--accent);padding:6px 16px;border-radius:20px;font-size:14px;font-weight:700}
+  .meta{color:var(--muted);font-size:13px;margin-top:12px}
+  h2{font-size:19px;margin:36px 0 14px;padding-left:12px;border-left:4px solid var(--accent);color:#122033}
+  h3{font-size:16px;margin:20px 0 10px;color:#2b3b52}
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:13px;line-height:1.5}
+  .card .t{font-size:12px;color:var(--muted);margin-bottom:4px;font-weight:600}
+  .card .v{font-size:13px;font-weight:700}
+  .card.g{border-top:3px solid var(--green)} .card.g .v{color:var(--green)}
+  .card.r{border-top:3px solid var(--red)} .card.r .v{color:var(--red)}
+  .card.a{border-top:3px solid var(--amber)} .card.a .v{color:var(--amber)}
+  .card.o{border-top:3px solid var(--orange)} .card.o .v{color:var(--orange)}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+  th{background:var(--card2);color:#2b3b52;text-align:left;padding:10px 12px;font-weight:700;white-space:nowrap;border-bottom:2px solid var(--border)}
+  td{padding:9px 12px;border-top:1px solid #eef2f7;vertical-align:top;word-break:break-word}
+  tr:hover td{background:#f6f9ff}
+  .verify-table{table-layout:fixed;width:100%}
+  .verify-table :is(th,td):nth-child(1){width:90px}
+  .verify-table :is(th,td):nth-child(2){width:56px}
+  .verify-table :is(th,td):nth-child(3){width:96px}
+  .verify-table :is(th,td):nth-child(4){width:140px}
+  .verify-table :is(th,td):nth-child(5){width:auto;min-width:340px}
+  .verify-table :is(th,td):nth-child(6){width:120px}
+  .num{font-variant-numeric:tabular-nums;white-space:nowrap}
+  .up{color:var(--red);font-weight:600} .down{color:var(--green);font-weight:600}
+  .pill{display:inline-block;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:700;white-space:nowrap}
+  .pill.buy{background:#e6f6ec;color:var(--green);border:1px solid #a9dcc0}
+  .pill.watch{background:#fdf3e3;color:var(--amber);border:1px solid #f0d5a8}
+  .pill.neutral{background:#eef1f5;color:var(--gray);border:1px solid #cfd8e3}
+  .pill.caution{background:#fdeee4;color:var(--orange);border:1px solid #f5cdb0}
+  .pill.sell{background:#fbeae8;color:var(--red);border:1px solid #efb8b2}
+  .chart{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;margin:14px 0}
+  .chart svg{width:100%;height:auto;display:block}
+  .note{color:var(--muted);font-size:13px;margin:8px 0}
+  .scenario{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin:14px 0}
+  .scenario .card .p{font-size:22px;font-weight:800;margin-bottom:4px}
+  .box{background:#f4f8ff;border:1px solid #b8d0f5;border-radius:10px;padding:16px 18px;margin:14px 0}
+  .box .t{color:var(--accent);font-weight:700;margin-bottom:8px}
+  .formula{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-family:"SF Mono",Menlo,monospace;font-size:13px;margin:10px 0;color:#2b3b52;line-height:1.9}
+  ul,ol{margin:8px 0 8px 22px} li{margin:4px 0}
+  .summary-box{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin:14px 0}
+  .summary-section{margin:12px 0}
+  .summary-section:first-child{margin-top:0}
+  .summary-section:last-child{margin-bottom:0}
+  .summary-title{font-size:14px;font-weight:700;color:var(--accent);margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border)}
+  .summary-box ul{margin:4px 0 4px 18px;font-size:14px}
+  .summary-box li{margin:3px 0;line-height:1.7}
+  footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--border);color:var(--muted);font-size:12.5px}
+  .warn{color:var(--gold)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">
+    <div>
+      <div class="kicker">MACRO ROTATION · WEEKLY DEEP REPORT · 第15期 · 覆盖 10/24–10/31（交易日 10/26–10/30）</div>
+      <h1>宏观事件驱动板块轮动周报</h1>
+    </div>
+    <div style="margin-top:4px;">
+      <select id="archive-select" onchange="location.href=this.value" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;color:var(--text);background:var(--card2);cursor:pointer;">
+        <option value="">📚 往期报告</option>
+        <option value="/stockmarketanalysis/macro/archive/2026-10-31.html">2026-10-31 第15期</option>
+        <option value="/stockmarketanalysis/macro/archive/2026-10-24.html">2026-10-24 第14期</option>
+        <option value="/stockmarketanalysis/macro/archive/2026-10-17.html">2026-10-17 第13期</option>
+        <option value="/stockmarketanalysis/macro/archive/2026-10-10.html">2026-10-10 第12期</option>
+        <option value="/stockmarketanalysis/macro/archive/2026-09-12.html">2026-09-12 第11期</option>
+        <option value="/stockmarketanalysis/macro/archive/2026-09-05.html">2026-09-05 第10期</option>
+        <option value="/stockmarketanalysis/macro/archive/2026-09-01.html">2026-09-01 第9期</option>
+        <option value="/stockmarketanalysis/macro/archive/2026-08-29.html">2026-08-29 第8期</option>
+        <option value="/stockmarketanalysis/macro/archive/2026-08-22.html">2026-08-22 第7期</option>
+        <option value="/stockmarketanalysis/macro/archive/2026-08-20.html">2026-08-20 第6期</option>
+        <option value="/stockmarketanalysis/macro/archive/2026-08-01.html">2026-08-01 第3期</option>
+        <option value="/stockmarketanalysis/macro/archive/2026-07-26.html">2026-07-26 第2期</option>
+        <option value="/stockmarketanalysis/macro/archive/2026-07-17.html">2026-07-17 第1期</option>
+      </select>
+    </div>
+  </div>
+  <span class="regime">当前 Regime:第15期:'央行周鹰派兑现+AI信用蔓延至巨头FCF+黄金崩盘'定价周——①利率:FOMC鹰派按兵(10-2,库克2022年来首次反对/哈马克主张加息25bp)+ECB曾讨论加息+BOJ 2013年来首次'基础通胀达2%'+PCE同比3.6%加速→12月加息78-90%接近共识,但10Y先冲5.05%后回落至4.90%七周新低(避险买盘接管),'紧缩交易'与'避险交易'同台上演;②AI:信用风暴从CoreWeave蔓延至超大规模云厂商——亚马逊AWS+39.3%超预期但FCF TTM -423.57亿缺口暴增(盘后一度-11%)/英特尔Q4指引暴雷盘后-22%/谷歌-9%,仅微软(Azure+48%/capex低于预期)+6.4%,'FCF为负即原罪'成新定价准则;10/30纳指-2.86%;③黄金10/30单日-3.7%至3884.4:'股跌+金崩+债涨'=月末去杠杆抛售(财新:黄金已风险资产化,与美股相关系数0.89);④中东'外交降温vs战线未停':10/29胡塞导弹再袭利雅得被拦截,11/3中选='不攻击伊朗'承诺到期+E150打击窗口开启;⑤中国:五中全会公报党建主题确认(经济仅'用好用足宏观政策'段落),A股10月惨烈收官(沪指3599.02失守3600/月-6.3%,深成指-15.9%,双创-23%+),银行红利逆势历史新高(工行/建行)。全量重建:归档8项,新增E166-E174;★本期无信号跨档变更(加配仍仅油气一席,减配连续四期清零),但排序大挪移:军工2.92→2.15/黄金2.28→1.39回落,银行0.47→0.91/消费-2.43→-1.66回升</span>
+  <div class="meta">2026-10-31（周六）06:00 CST · 第15期每周深报 · 分析窗口:已发生 ≤7 天 / 预期 ≤90 天 · 管线 macro_rotation v1.0 · 数据截止:2026-10-30 美股收盘 · 对比基线 = 第 14 期（10/24，常规周度对比）· 本周每日快扫:E163–E165 先行入库（已并入本期事件库）· 仅供研究追踪，不构成投资建议</div>
+</header>
+
+<h2>一、核心结论</h2>
+<div class="cards">
+  <div class="card g"><div class="t">🟢 加配（轮动中）</div><div class="v">油气/煤炭/能源（+3.65，唯一一席；4.52→3.65 收敛）</div></div>
+  <div class="card r"><div class="t">🔴 减配</div><div class="v">（无——减配阵营连续四期清零；软件 -2.17/消费 -1.74 距 -3 线最近）</div></div>
+  <div class="card a"><div class="t">⚠️ 高波动预警</div><div class="v">油气（WTI 102-105 高位滞涨 vs 「巨头景气顶点+《国防生产法》+OPEC+ 11/1」对冲密集，拥挤度「高」）· 军工（中选 11/3=打击窗口开启，事件决断点临近）· 半导体/AI（「FCF 为负即原罪」个股裁决：微软 +6.4%/亚马逊 -5.4%/英特尔 -22%，CoreWeave Q3 十一月中生死节点，拥挤度「极高」）· 黄金（得分-价格极致背离：得分 +1.39 vs 10/30 单日 -3.7% 崩盘）· 银行（A 股红利历史新高 vs 10Y 避险回落至 4.90% 的成色分歧）</div></div>
+  <div class="card o"><div class="t">🔄 本期反转</div><div class="v"><b>无信号跨档变更</b>——加配仍仅油气一席、减配连续四期清零；但排序大挪移：军工 +2.92→+2.15 / 黄金 +2.28→+1.39 回落，银行 +0.47→+0.93（逼近中性偏多线，距 +1 线 0.07）/ 消费 -2.43→-1.74 / 高端制造 -1.77→-1.50 回升</div></div>
+</div>
+<div class="summary-box">
+  <div class="summary-section">
+    <div class="summary-title">🔥 本周核心事件</div>
+    <ul>
+      <li><b>E160/E167/E168/E169 央行周鹰派四连（10/28-30）</b>：FOMC 维持 3.75-4.00% 但 <b>10-2 投票</b>（库克 2022 年来首次反对+哈马克主张加息 25bp）+经济评估上调「强劲扩张」；ECB 按兵但<b>曾讨论加息</b>、市场完全定价 12/17 加息 25bp；BOJ 声明 <b>2013 年来首次判断「基础通胀已达 2% 目标」</b>+ETF 出售加速 330→860 亿日元/年；美国 9 月 PCE 同比 <b>3.6%</b> 加速（核心 3.1%）——<b>12 月美联储加息概率 78-90%</b> 接近共识，但 10Y 周内先冲 5.05% 后回落至 <b>4.90% 七周新低</b>（避险买盘接管）</li>
+      <li><b>E170/E171/E173 AI 信用蔓延至巨头 FCF+周五抛售（10/29-30）</b>：亚马逊 AWS <b>+39.3%</b> 超预期但 <b>FCF TTM -423.57 亿</b>（去年同期 +147.88 亿）缺口暴增、盘后一度 -11%；英特尔 Q4 指引暴雷（营收 150-160 亿 vs 预期 170 亿+）盘后<b>暴跌超 22%</b>；10/30 纳指 <b>-2.86%</b>——「花多花少都跌」演进为「FCF 为负即原罪」</li>
+      <li><b>★E173 黄金崩盘（10/30）</b>：单日 <b>-3.7%</b> 至 3884.4（盘中 3879.3），「股跌+金崩+债涨」=月末去杠杆中黄金被当作流动性来源抛售（财新：黄金已风险资产化，与美股相关系数 0.89）</li>
+    </ul>
+  </div>
+  <div class="summary-section">
+    <div class="summary-title">📊 关键数据变动</div>
+    <ul>
+      <li>贸易摩擦 trade_friction_up：<b>+0.73 → +0.35（-0.38）</b>——E16（欧盟插混关税预期）被中欧 TIC 谅解承接归档+E99（降税框架）衰减归档，出口链压制边际缓和</li>
+      <li>油 oil_up：<b>+1.41 → +1.07（-0.34）</b>——E157 降温（-0.11）+E123/E127/E133 衰减 vs E174 拉锯（+0.07）/E172 巨头财报（+0.12）；事件动量回落与 WTI 高位滞涨（-0.5%）同向</li>
+      <li>地缘 geopolitics_up：<b>+1.41 → +1.11（-0.30）</b>——「外交降温 vs 战线未停」拉锯，中选（11/3）前事件动量自然衰减</li>
+    </ul>
+  </div>
+  <div class="summary-section">
+    <div class="summary-title">📈 板块格局</div>
+    <ul>
+      <li><b>加配</b>：油气 <b>+3.65</b>（打击窗口临近+巨头财报验证「霍尔木兹实际仍关闭」；但高位滞涨+OPEC+ 11/1 对冲=区间操作不追高）——<b>仅一席</b></li>
+      <li><b>减配</b>：<b>无</b>——连续四期清零；软件 <b>-2.17</b>（距 -3 线 0.83）与高端制造 <b>-1.50</b> 距线最近</li>
+      <li><b>中性偏多</b>：军工 <b>+2.15</b>（中选 11/3=事件决断点）· 黄金 <b>+1.39</b>（★触发月末校准新规则「背离强制降档」：得分≥1 但价格 2w 跌 &gt;5%，执行层按中性观察处理）</li>
+      <li><b>中性</b>：银行 <b>+0.93</b>（距 +1 线仅 0.07，12 月加息 78-90%+A 股红利新高=NIM 交易回归前夜）</li>
+    </ul>
+  </div>
+</div>
+<p class="note">本期 defining theme：<b>「央行周鹰派兑现、AI 信用蔓延至巨头 FCF、黄金风险资产化崩盘」三重定价，外加中选（11/3）临窗。</b>全球央行同步转鹰（FOMC 10-2 鹰派按兵/ECB 曾讨论加息/BOJ「基础通胀达 2%」/PCE 3.6% 加速）把 12 月加息推向 78-90% 的接近共识，但 10Y 反而回落至 4.90% 七周新低——「紧缩定价」与「避险定价」同台，说明市场已开始交易紧缩的<b>增长代价</b>；AI 板块的定价准则从「capex 规模」切换到「FCF 可持续性」（亚马逊 -5.4%/英特尔 -22% vs 微软 +6.4%），CoreWeave Q3（11 月中）是信用端生死节点；黄金单日 -3.7% 崩盘验证财新「风险资产化」论断，触发本期月末校准的新规则（背离强制降档）。<b>下周核心节点：11/3 美国中选（「不攻击伊朗」承诺到期+E150 打击窗口开启）、11/1 OPEC+ 会议、11/4 以色列正式结果、11/9 当周 Anthropic 路演、11/10 中美吉隆坡安排到期。</b></p>
+
+<h2>📡 外部情报同步（手机端来源）</h2>
+<div class="box">
+  <div class="t">本周准入 0 条（✅ 强化 0 · 🔭 新增观察点 0 · ⚠️ 背离预警 0 · 📚 行业深度 0）——连续第四期零准入</div>
+  <p style="font-size:14px;">手机端资料库最近一份导入仍为 <b>2026-09-01</b>（15 条 accepted，均为 event 类型，距今 <b>60 天</b>，超出 event≤7 天时效准入窗口），此后无新增导入、结构性（structural）条目为空——<b>本期无符合条件的外部情报</b>，章节保留但为空。9/1 存档线索（伊朗-阿曼霍尔木兹安全通道磋商、贵金属强势等）已被 E91–E104 事件链与 9/28 以来金价持续下跌证伪/衰减，不再具参考性。</p>
+  <p class="note">准入规则（external_sync_wb.py 自动执行）：status=accepted · confidence.score≥65 · event≤7 天/structural≤90 天 · related_sectors 命中本周讨论板块或含 related_codes。分节结构：✅ 强化 / 🔭 新增观察点 / ⚠️ 背离预警 / 📚 行业深度。</p>
+</div>
+
+
+<h2>二、市场快照（截至 2026-10-30 收盘；周变化 = 10/30 vs 10/23 周五收盘）</h2>
+<table>
+  <tr><th>指标</th><th>现值</th><th>周变化</th><th>解读</th></tr>
+  <tr><td>美 10Y 收益率</td><td class="num">4.90%</td><td class="num down">-6.5bp</td><td><b>★先冲 5.05%（FOMC 鹰派按兵后 10/28 一度回 5.05%）后回落至 4.90% 七周新低</b>（财联社 10/30 快闪：-8.5bp 至 4.902%；10/29 为估算值 4.96）——「紧缩定价」与「避险定价」同台：12 月加息 <b>78-90%</b> 接近共识（PCE 3.6% 加速）vs 避险买盘接管；2Y 4.5648%（10/30，七周新低）；ECB 曾讨论加息+BOJ「基础通胀达 2%」=全球央行同步转鹰</td></tr>
+  <tr><td>WTI 原油</td><td class="num">102.9 美元</td><td class="num down">-0.5%</td><td><b>10/30 收 102.94（新浪 CL 实测）</b>；高位滞涨，周内 99.79-104.99 巨震：10/27 布油 -5.35% 降温回吐→10/29-30 胡塞再袭利雅得+巨头财报拉回；E172：埃克森净利 +104%/炼油利润创纪录+「霍尔木兹实际仍关闭」验证基本面；对冲：大摩「实货恢复接近战前」+《国防生产法》提产能+11/1 OPEC+ 会议</td></tr>
+  <tr><td>COMEX 黄金</td><td class="num">3,884 美元</td><td class="num down">-3.1%</td><td><b>★10/30 单日 -3.7% 崩盘收 3884.4（新浪 GC 实测，盘中低 3879.3）</b>；自 8/24 高点 4663.7 已 <b>-16.7%</b>；「股跌+金崩+债涨」组合=月末去杠杆中黄金被当作流动性来源抛售（财新：黄金已风险资产化，2023 年来与美股相关系数 0.89）——「实际利率压制」之外新增「风险资产化去杠杆」机制；央行购金底部叙事未变</td></tr>
+  <tr><td>美元指数 DXY</td><td class="num">103.05（估）</td><td class="num up">+1.3%</td><td>10/30 估 103.05（标注估算；周约 +1.3%）；上行驱动：ECB 后欧元跌至 1.1113+周五避险美元买盘+12 月加息 78-90% 定价共振；<b>人民币逆势走强</b>（10/30 在岸 6.6557，三年半首次回 6.66 下方，年末结汇潮）</td></tr>
+  <tr><td>VIX</td><td class="num">~21.8（估）</td><td class="num up">+2.3</td><td>10/30 估 ~21.8（接口全不可用，标注估算；纳指 -2.86% 抛售日）；10/29 估 ~18.45；周 19.5→21.8 约 +2.3</td></tr>
+</table>
+<p class="note">一句话：<b>「央行周鹰派兑现+AI 信用蔓延至巨头 FCF+黄金崩盘」定价周</b>——FOMC 鹰派按兵（10-2，库克 2022 年来首次反对/哈马克主张加息 25bp）+ECB 曾讨论加息+BOJ 2013 年来首次「基础通胀达 2%」+PCE 同比 3.6% 加速，12 月加息 78-90% 接近共识；但 10Y 先冲 5.05% 后回落至 4.90% 七周新低（避险买盘接管）；AI 信用从 CoreWeave 蔓延至超大规模云厂商（亚马逊 FCF TTM -423.57 亿/英特尔指引暴雷 -22%），「FCF 为负即原罪」成新定价准则；黄金 10/30 单日 -3.7% 崩盘验证「风险资产化」。美股 10/30（新浪 API 实测）：纳指 25437.00（-2.86%）/标普 7580.07（-1.82%）/道指 51770.31（-1.09%）；周度：纳指约 -2.0%/标普约 -1.2%/道指约 -0.9%。A 股：10/28 反弹（沪指 3681.47 +0.91%/创业板 +3.40%）→10/29 大跌（沪指 3651.43 -0.82%/创业板 2517.59 -4.45%/科创 50 -4.27%，超 4700 只下跌，<b>银行逆势：中证银行指数年内新高/工行建行历史新高</b>）→10/30 沪指 3599.02 失守 3600 收官（财新）；<b>10 月月线：沪指 -6.3%/深成指 -15.9%/双创均超 -23%，创业板较 6 月高点回撤超 44%/科创 50 较 7 月高点回撤超 48%</b>；周度：沪指 3690.48→3599.02（-2.48%）。<b>下周首要变量：11/3 美国中选（「不攻击伊朗」承诺到期+E150 打击窗口开启）、11/1 OPEC+ 会议、11/4 以色列正式结果、11/9 当周 Anthropic 路演、11/10 中美吉隆坡安排到期</b>。数据源：WTI/黄金=新浪期货日线实测（10/29-30 回填 OHLC）；10Y=财联社 10/30 快闪（4.902%，七周新低），10/29 为估算；DXY 10/29-30、VIX 10/29-30 均为估算标注；美股=新浪 API 实测；A 股=财新/新浪。</p>
+<div class="chart"><svg viewBox="0 0 920 380" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif"><text x="460.0" y="24" fill="#1c2b3a" font-size="15" font-weight="700" text-anchor="middle">油价周-0.5% vs 黄金月-3.2%：「滞胀型地缘冲击」而非「衰退避险」</text><line x1="66" y1="50.0" x2="854" y2="50.0" stroke="#dde4ee" stroke-width="1"/><text x="58" y="54.0" fill="#ea580c" font-size="11" text-anchor="end">109.1</text><text x="862" y="54.0" fill="#d97706" font-size="11" text-anchor="start">4815.7</text><line x1="66" y1="122.0" x2="854" y2="122.0" stroke="#dde4ee" stroke-width="1"/><text x="58" y="126.0" fill="#ea580c" font-size="11" text-anchor="end">99.7</text><text x="862" y="126.0" fill="#d97706" font-size="11" text-anchor="start">4557.9</text><line x1="66" y1="194.0" x2="854" y2="194.0" stroke="#dde4ee" stroke-width="1"/><text x="58" y="198.0" fill="#ea580c" font-size="11" text-anchor="end">90.3</text><text x="862" y="198.0" fill="#d97706" font-size="11" text-anchor="start">4300.1</text><line x1="66" y1="266.0" x2="854" y2="266.0" stroke="#dde4ee" stroke-width="1"/><text x="58" y="270.0" fill="#ea580c" font-size="11" text-anchor="end">80.9</text><text x="862" y="270.0" fill="#d97706" font-size="11" text-anchor="start">4042.4</text><line x1="66" y1="338.0" x2="854" y2="338.0" stroke="#dde4ee" stroke-width="1"/><text x="58" y="342.0" fill="#ea580c" font-size="11" text-anchor="end">71.4</text><text x="862" y="342.0" fill="#d97706" font-size="11" text-anchor="start">3784.6</text><text x="66.0" y="360" fill="#5b6b82" font-size="11" text-anchor="middle">07-20</text><text x="227.9" y="360" fill="#5b6b82" font-size="11" text-anchor="middle">08-10</text><text x="379.0" y="360" fill="#5b6b82" font-size="11" text-anchor="middle">08-28</text><text x="541.0" y="360" fill="#5b6b82" font-size="11" text-anchor="middle">09-18</text><text x="692.1" y="360" fill="#5b6b82" font-size="11" text-anchor="middle">10-08</text><text x="854.0" y="360" fill="#5b6b82" font-size="11" text-anchor="middle">10-30</text><polyline points="66.0,254.1 76.8,237.9 87.6,223.0 98.4,178.1 109.2,192.5 120.0,257.9 130.8,279.2 141.6,237.4 152.4,242.3 163.2,220.6 173.9,272.1 184.7,309.7 195.5,310.1 206.3,286.1 217.1,294.8 227.9,255.0 238.7,247.9 249.5,252.8 260.3,263.3 271.1,254.2 281.9,234.7 292.7,238.8 303.5,238.9 314.3,220.7 325.1,212.7 335.9,234.5 346.7,264.1 357.5,257.9 368.2,245.5 379.0,247.0 389.8,224.3 400.6,190.9 411.4,191.3 422.2,183.4 433.0,186.8 443.8,175.7 454.6,163.7 465.4,145.2 476.2,89.7 487.0,119.8 497.8,105.5 508.6,77.9 519.4,140.4 530.2,146.2 541.0,154.3 551.8,181.2 562.5,197.2 573.3,175.4 584.1,159.8 594.9,177.6 605.7,171.1 616.5,204.3 627.3,193.5 638.1,174.0 648.9,186.6 659.7,201.6 670.5,197.0 681.3,204.4 692.1,187.2 702.9,183.6 713.7,164.5 724.5,157.3 735.3,138.5 746.1,105.7 756.8,133.3 767.6,133.8 778.4,137.4 789.2,126.8 800.0,93.5 810.8,95.8 821.6,98.2 832.4,103.4 843.2,97.8 854.0,97.3" fill="none" stroke="#ea580c" stroke-width="2.4"/><polyline points="66.0,274.5 76.8,254.9 87.6,240.1 98.4,263.2 109.2,262.3 120.0,255.9 130.8,269.8 141.6,259.5 152.4,232.4 163.2,250.3 173.9,246.9 184.7,240.4 195.5,191.8 206.3,194.4 217.1,165.7 227.9,152.5 238.7,158.3 249.5,146.8 260.3,164.1 271.1,157.2 281.9,145.7 292.7,169.0 303.5,115.6 314.3,118.2 325.1,117.2 335.9,79.5 346.7,77.9 357.5,96.9 368.2,94.9 379.0,135.9 389.8,138.9 400.6,172.9 411.4,156.5 422.2,132.5 433.0,144.5 443.8,151.6 454.6,166.1 465.4,153.0 476.2,177.8 487.0,168.9 497.8,183.0 508.6,184.7 519.4,193.4 530.2,171.5 541.0,161.7 551.8,171.5 562.5,167.3 573.3,187.7 584.1,191.2 594.9,188.4 605.7,236.4 616.5,217.8 627.3,225.1 638.1,219.9 648.9,229.9 659.7,231.1 670.5,224.0 681.3,239.7 692.1,233.7 702.9,216.4 713.7,226.4 724.5,242.3 735.3,224.1 746.1,225.7 756.8,233.1 767.6,238.0 778.4,233.3 789.2,266.7 800.0,275.2 810.8,265.5 821.6,255.7 832.4,255.0 843.2,268.6 854.0,310.1" fill="none" stroke="#d97706" stroke-width="2.4"/><circle cx="854.0" cy="97.3" r="3.5" fill="#ea580c"/><circle cx="854.0" cy="310.1" r="3.5" fill="#d97706"/><text x="66" y="38" fill="#ea580c" font-size="12" font-weight="600">— WTI 原油 USD（左）</text><text x="854" y="38" fill="#d97706" font-size="12" font-weight="600" text-anchor="end">黄金 USD（右）—</text><text x="848.0" y="87.3" fill="#ea580c" font-size="12" font-weight="700" text-anchor="end">102.9</text><text x="848.0" y="328.1" fill="#d97706" font-size="12" font-weight="700" text-anchor="end">3884</text></svg></div>
+<div class="chart"><svg viewBox="0 0 920 380" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif"><text x="460.0" y="24" fill="#1c2b3a" font-size="15" font-weight="700" text-anchor="middle">美债10Y 4.90% 高位 + VIX 21.8：加息重定价与风险溢价双升</text><line x1="66" y1="50.0" x2="854" y2="50.0" stroke="#dde4ee" stroke-width="1"/><text x="58" y="54.0" fill="#1d5fd1" font-size="11" text-anchor="end">5.4</text><text x="862" y="54.0" fill="#7c3aed" font-size="11" text-anchor="start">24.6</text><line x1="66" y1="122.0" x2="854" y2="122.0" stroke="#dde4ee" stroke-width="1"/><text x="58" y="126.0" fill="#1d5fd1" font-size="11" text-anchor="end">5.2</text><text x="862" y="126.0" fill="#7c3aed" font-size="11" text-anchor="start">21.8</text><line x1="66" y1="194.0" x2="854" y2="194.0" stroke="#dde4ee" stroke-width="1"/><text x="58" y="198.0" fill="#1d5fd1" font-size="11" text-anchor="end">5.0</text><text x="862" y="198.0" fill="#7c3aed" font-size="11" text-anchor="start">18.9</text><line x1="66" y1="266.0" x2="854" y2="266.0" stroke="#dde4ee" stroke-width="1"/><text x="58" y="270.0" fill="#1d5fd1" font-size="11" text-anchor="end">4.7</text><text x="862" y="270.0" fill="#7c3aed" font-size="11" text-anchor="start">16.1</text><line x1="66" y1="338.0" x2="854" y2="338.0" stroke="#dde4ee" stroke-width="1"/><text x="58" y="342.0" fill="#1d5fd1" font-size="11" text-anchor="end">4.5</text><text x="862" y="342.0" fill="#7c3aed" font-size="11" text-anchor="start">13.3</text><text x="66.0" y="360" fill="#5b6b82" font-size="11" text-anchor="middle">07-20</text><text x="221.4" y="360" fill="#5b6b82" font-size="11" text-anchor="middle">08-07</text><text x="376.8" y="360" fill="#5b6b82" font-size="11" text-anchor="middle">08-27</text><text x="543.2" y="360" fill="#5b6b82" font-size="11" text-anchor="middle">09-21</text><text x="698.6" y="360" fill="#5b6b82" font-size="11" text-anchor="middle">10-09</text><text x="854.0" y="360" fill="#5b6b82" font-size="11" text-anchor="middle">10-30</text><polyline points="66.0,310.1 77.1,298.5 88.2,290.0 99.3,277.6 110.4,280.8 121.5,292.5 132.6,305.4 143.7,284.6 154.8,284.6 165.9,264.2 177.0,283.2 188.1,302.8 199.2,302.1 210.3,281.8 221.4,292.9 232.5,273.9 243.6,281.1 254.7,277.1 265.8,293.8 276.9,277.3 288.0,268.4 299.1,273.5 310.2,293.2 321.3,274.1 332.4,275.9 343.5,277.3 354.6,298.3 365.7,292.6 376.8,284.3 387.9,270.3 399.0,260.0 410.1,243.9 421.2,250.4 432.3,253.0 443.4,249.0 454.5,226.3 465.5,196.5 476.6,209.3 487.7,190.1 498.8,183.7 509.9,174.1 521.0,200.0 532.1,199.7 543.2,199.7 554.3,193.0 565.4,141.4 576.5,90.7 587.6,117.6 598.7,109.9 609.8,103.5 620.9,100.3 632.0,93.9 643.1,116.4 654.2,90.7 665.3,80.4 676.4,84.3 687.5,109.0 698.6,77.9 709.7,113.5 720.8,87.5 731.9,152.6 743.0,146.5 754.1,148.4 765.2,151.6 776.3,142.0 787.4,195.6 798.5,191.7 809.6,179.5 820.7,178.2 831.8,164.8 842.9,193.3 854.0,212.6" fill="none" stroke="#1d5fd1" stroke-width="2.4"/><polyline points="66.0,238.8 77.1,255.6 88.2,276.6 99.3,249.7 110.4,197.9 121.5,187.0 132.6,154.0 143.7,141.3 154.8,121.0 165.9,103.3 177.0,141.3 188.1,103.3 199.2,77.9 210.3,166.7 221.4,204.8 232.5,230.2 243.6,307.6 254.7,308.9 265.8,272.3 276.9,272.3 288.0,296.4 299.1,290.3 310.2,280.9 321.3,286.0 332.4,288.3 343.5,306.1 354.6,310.1 365.7,297.2 376.8,305.6 387.9,221.5 399.0,272.3 410.1,255.6 421.2,242.9 432.3,242.9 443.4,282.5 454.5,280.9 465.5,283.5 476.6,293.6 487.7,293.6 498.8,258.1 509.9,268.2 521.0,263.2 532.1,268.2 543.2,280.9 554.3,286.0 565.4,293.6 576.5,293.6 587.6,293.6 598.7,291.6 609.8,283.2 620.9,285.5 632.0,286.8 643.1,286.0 654.2,256.6 665.3,167.0 676.4,222.6 687.5,237.8 698.6,249.5 709.7,190.3 720.8,179.4 731.9,207.6 743.0,229.7 754.1,245.1 765.2,206.1 776.3,121.0" fill="none" stroke="#7c3aed" stroke-width="2.4"/><circle cx="854.0" cy="212.6" r="3.5" fill="#1d5fd1"/><circle cx="854.0" cy="121.0" r="3.5" fill="#7c3aed"/><text x="66" y="38" fill="#1d5fd1" font-size="12" font-weight="600">— 美10Y收益率 %（左）</text><text x="854" y="38" fill="#7c3aed" font-size="12" font-weight="600" text-anchor="end">VIX（右）—</text><text x="848.0" y="202.6" fill="#1d5fd1" font-size="12" font-weight="700" text-anchor="end">4.90</text><text x="848.0" y="139.0" fill="#7c3aed" font-size="12" font-weight="700" text-anchor="end">21.8</text></svg></div>
+
+<h2>三、宏观驱动因子得分</h2>
+<p class="note">由 41 项活跃事件汇总而来（推导过程见附录 A）。本期第一大驱动仍为<b>油价上行（+1.07，自 +1.41 回落——E157 降温 -0.11+E123/E127/E133 衰减 vs E174 拉锯 +0.07/E172 巨头财报 +0.12）</b>；<b>地缘 +1.11 第二</b>（「外交降温 vs 战线未停」拉锯，中选前自然衰减）；<b>利率 +0.40 上行至第三</b>（央行周鹰派四连：E168 PCE +0.12+E169 BOJ +0.08+E167 ECB +0.07+E160 残余 vs E173 避险 -0.08+E145 衰减）；<b>贸易摩擦 +0.35 大幅回落（-0.38，本期最大单项变化）</b>——E16 欧盟关税预期被中欧 TIC 谅解承接归档+E99 降税框架归档，出口链压制边际缓和；<b>AI -0.72 连续四周为负但边际收敛</b>（E170 亚马逊 -0.22/E171 英特尔 -0.15/E173 周五抛售 -0.15 vs E161 微软 +0.13/E158 Anthropic +0.08）；美元 +0.17（ECB 欧元跌+12 月定价+周五避险）；中国宽松 +0.22（E166 公报 +0.08+E152 残余 +0.08+E165 +0.03 vs E149 归档移除）；全球增长 0.00（E173 -0.08/E170 -0.04/E167 -0.04 vs E166 +0.04/E172 +0.04）。</p>
+<div class="chart"><svg viewBox="0 0 920 306" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif"><text x="460.0" y="24" fill="#1c2b3a" font-size="15" font-weight="700" text-anchor="middle">宏观驱动因子得分（Σ 事件分 × 确定性）</text><text x="200" y="65.0" fill="#1c2b3a" font-size="12.5" text-anchor="end">AI产业周期</text><rect x="270.0" y="51" width="196.7" height="19" rx="3" fill="#3b82f6"/><text x="263.0" y="65.0" fill="#1c2b3a" font-size="12" font-weight="700" text-anchor="end">-0.72</text><text x="200" y="95.0" fill="#1c2b3a" font-size="12.5" text-anchor="end">全球增长改善</text><rect x="466.7" y="81" width="2.0" height="19" rx="3" fill="#3b82f6"/><text x="473.7" y="95.0" fill="#1c2b3a" font-size="12" font-weight="700">+0</text><text x="200" y="125.0" fill="#1c2b3a" font-size="12.5" text-anchor="end">美元走强</text><rect x="466.7" y="111" width="46.4" height="19" rx="3" fill="#3b82f6"/><text x="520.2" y="125.0" fill="#1c2b3a" font-size="12" font-weight="700">+0.17</text><text x="200" y="155.0" fill="#1c2b3a" font-size="12.5" text-anchor="end">中国政策宽松</text><rect x="466.7" y="141" width="60.1" height="19" rx="3" fill="#3b82f6"/><text x="533.8" y="155.0" fill="#1c2b3a" font-size="12" font-weight="700">+0.22</text><text x="200" y="185.0" fill="#1c2b3a" font-size="12.5" text-anchor="end">贸易摩擦</text><rect x="466.7" y="171" width="95.6" height="19" rx="3" fill="#3b82f6"/><text x="569.3" y="185.0" fill="#1c2b3a" font-size="12" font-weight="700">+0.35</text><text x="200" y="215.0" fill="#1c2b3a" font-size="12.5" text-anchor="end">全球利率上行</text><rect x="466.7" y="201" width="109.3" height="19" rx="3" fill="#3b82f6"/><text x="583.0" y="215.0" fill="#1c2b3a" font-size="12" font-weight="700">+0.4</text><text x="200" y="245.0" fill="#1c2b3a" font-size="12.5" text-anchor="end">油价上行</text><rect x="466.7" y="231" width="292.3" height="19" rx="3" fill="#3b82f6"/><text x="766.1" y="245.0" fill="#1c2b3a" font-size="12" font-weight="700">+1.07</text><text x="200" y="275.0" fill="#1c2b3a" font-size="12.5" text-anchor="end">地缘风险</text><rect x="466.7" y="261" width="303.3" height="19" rx="3" fill="#3b82f6"/><text x="777.0" y="275.0" fill="#1c2b3a" font-size="12" font-weight="700">+1.11</text><line x1="466.7" y1="42" x2="466.7" y2="290" stroke="#94a3b8" stroke-width="1.2"/></svg></div>
+<table>
+  <tr><th>驱动</th><th>10/24 第14期</th><th>10/31 第15期</th><th>变化</th><th>主因</th></tr>
+  <tr><td>油 oil_up</td><td class="num">+1.41</td><td class="num"><b>+1.07</b></td><td class="num">-0.34</td><td>E157 降温（-0.11）+E123/E127/E133 衰减 vs E174 拉锯（+0.07）+E172 巨头财报（+0.12）+E150 残余（+0.15）</td></tr>
+  <tr><td>地缘 geopolitics_up</td><td class="num">+1.41</td><td class="num"><b>+1.11</b></td><td class="num">-0.30</td><td>E157（-0.11）+E143/E146 衰减 vs E174（+0.14）+E159 以色列（+0.06）+E150 残余（+0.15）</td></tr>
+  <tr><td>利率 us_rates_up</td><td class="num">+0.27</td><td class="num"><b>+0.40</b></td><td class="num">+0.13</td><td>★央行周鹰派四连：E168 PCE（+0.12）+E169 BOJ（+0.08）+E167 ECB（+0.07）+E160 FOMC 残余（+0.11）vs E173 避险（-0.08）+E145 鸽派重定价衰减</td></tr>
+  <tr><td>贸易摩擦 trade_friction_up</td><td class="num">+0.73</td><td class="num"><b>+0.35</b></td><td class="num">-0.38</td><td>★E16 欧盟插混关税预期归档（-0.50 移除，被中欧 TIC 谅解承接）+E99 降税框架归档——出口链压制边际缓和（本期最大单项变化）</td></tr>
+  <tr><td>中国宽松 china_easing</td><td class="num">+0.27</td><td class="num"><b>+0.22</b></td><td class="num">-0.05</td><td>E166 全会公报（+0.08）+E152 ETF 托底残余（+0.08）+E165 工业利润（+0.03）vs E149 全会预期归档（-0.03 移除）</td></tr>
+  <tr><td>美元 usd_strength</td><td class="num">+0.03</td><td class="num"><b>+0.17</b></td><td class="num">+0.14</td><td>E167 ECB 后欧元跌 1.1113（+0.07）+E168（+0.04）+E173 避险美元买盘（+0.04）vs E145 衰减</td></tr>
+  <tr><td>增长 global_growth_up</td><td class="num">+0.01</td><td class="num"><b>0.00</b></td><td class="num">-0.01</td><td>E173 周五抛售（-0.08）+E170（-0.04）+E167（-0.04）vs E166 公报（+0.04）+E172 巨头财报（+0.04）+E156 穆迪残余</td></tr>
+  <tr><td>AI ai_cycle_up</td><td class="num">-0.79</td><td class="num"><b>-0.72</b></td><td class="num">+0.07</td><td>E170 亚马逊 FCF（-0.22）+E171 英特尔指引（-0.15）+E173（-0.15）vs E161 微软（+0.13）+E158 Anthropic（+0.08）+E141 台积电衰减——E129/E154 归档对冲，连续四周为负但边际收敛</td></tr>
+</table>
+
+<h2>四、板块轮动地图</h2>
+<div class="chart"><svg viewBox="0 0 920 426" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif"><text x="460.0" y="24" fill="#1c2b3a" font-size="15" font-weight="700" text-anchor="middle">板块轮动分地图（驱动分 × 敏感度矩阵）</text><text x="200" y="65.0" fill="#1c2b3a" font-size="12.5" text-anchor="end">软件/互联网平台</text><rect x="270.0" y="51" width="186.4" height="19" rx="3" fill="#94a3b8"/><text x="263.0" y="65.0" fill="#1c2b3a" font-size="12" font-weight="700" text-anchor="end">-2.17</text><text x="200" y="95.0" fill="#1c2b3a" font-size="12.5" text-anchor="end">消费/零售/服务消费</text><rect x="306.9" y="81" width="149.5" height="19" rx="3" fill="#94a3b8"/><text x="299.9" y="95.0" fill="#1c2b3a" font-size="12" font-weight="700" text-anchor="end">-1.74</text><text x="200" y="125.0" fill="#1c2b3a" font-size="12.5" text-anchor="end">高端制造/机器人/工业自动化</text><rect x="327.6" y="111" width="128.9" height="19" rx="3" fill="#94a3b8"/><text x="320.6" y="125.0" fill="#1c2b3a" font-size="12" font-weight="700" text-anchor="end">-1.5</text><text x="200" y="155.0" fill="#1c2b3a" font-size="12.5" text-anchor="end">半导体/AI算力</text><rect x="365.4" y="141" width="91.1" height="19" rx="3" fill="#94a3b8"/><text x="358.4" y="155.0" fill="#1c2b3a" font-size="12" font-weight="700" text-anchor="end">-1.06</text><text x="200" y="185.0" fill="#1c2b3a" font-size="12.5" text-anchor="end">医药/生物科技</text><rect x="386.0" y="171" width="70.4" height="19" rx="3" fill="#94a3b8"/><text x="379.0" y="185.0" fill="#1c2b3a" font-size="12" font-weight="700" text-anchor="end">-0.82</text><text x="200" y="215.0" fill="#1c2b3a" font-size="12.5" text-anchor="end">电动车/智能汽车</text><rect x="420.3" y="201" width="36.1" height="19" rx="3" fill="#94a3b8"/><text x="413.3" y="215.0" fill="#1c2b3a" font-size="12" font-weight="700" text-anchor="end">-0.42</text><text x="200" y="245.0" fill="#1c2b3a" font-size="12.5" text-anchor="end">地产/建材/基建/城市更新</text><rect x="456.4" y="231" width="3.4" height="19" rx="3" fill="#94a3b8"/><text x="466.9" y="245.0" fill="#1c2b3a" font-size="12" font-weight="700">+0.04</text><text x="200" y="275.0" fill="#1c2b3a" font-size="12.5" text-anchor="end">新能源(光伏/风电/储能)</text><rect x="456.4" y="261" width="55.8" height="19" rx="3" fill="#94a3b8"/><text x="519.3" y="275.0" fill="#1c2b3a" font-size="12" font-weight="700">+0.65</text><text x="200" y="305.0" fill="#1c2b3a" font-size="12.5" text-anchor="end">银行/非银金融</text><rect x="456.4" y="291" width="79.9" height="19" rx="3" fill="#b45309"/><text x="543.3" y="305.0" fill="#1c2b3a" font-size="12" font-weight="700">+0.93</text><text x="200" y="335.0" fill="#1c2b3a" font-size="12.5" text-anchor="end">有色/黄金/大宗商品</text><rect x="456.4" y="321" width="119.4" height="19" rx="3" fill="#b45309"/><text x="582.8" y="335.0" fill="#1c2b3a" font-size="12" font-weight="700">+1.39</text><text x="200" y="365.0" fill="#1c2b3a" font-size="12.5" text-anchor="end">军工/国防</text><rect x="456.4" y="351" width="184.7" height="19" rx="3" fill="#b45309"/><text x="648.1" y="365.0" fill="#1c2b3a" font-size="12" font-weight="700">+2.15</text><text x="200" y="395.0" fill="#1c2b3a" font-size="12.5" text-anchor="end">油气/煤炭/能源</text><rect x="456.4" y="381" width="313.6" height="19" rx="3" fill="#0f8a4c"/><text x="777.0" y="395.0" fill="#1c2b3a" font-size="12" font-weight="700">+3.65</text><line x1="456.4" y1="42" x2="456.4" y2="410" stroke="#94a3b8" stroke-width="1.2"/><line x1="714.2" y1="42" x2="714.2" y2="410" stroke="#0f8a4c" stroke-width="1.2" stroke-dasharray="4,4"/><text x="720.2" y="54" fill="#0f8a4c" font-size="11" text-anchor="start">加配阈值 +3</text><line x1="198.7" y1="42" x2="198.7" y2="410" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="4,4"/><text x="192.7" y="54" fill="#c0392b" font-size="11" text-anchor="end">减配阈值 -3</text></svg></div>
+<table>
+  <tr><th>板块</th><th>得分（10/24→10/31）</th><th>信号</th><th>拥挤度</th><th>核心逻辑</th></tr>
+  <tr><td>油气/煤炭/能源</td><td class="num">+4.52 → <b>+3.65</b></td><td><span class="pill buy">轮动中(加配)</span></td><td>高(高位滞涨+巨头财报景气顶点)</td><td>加配独苗(+4.52→+3.65):油驱动+1.07(经2.0=+2.14)由E150计划化(+0.15)/E174拉锯(+0.07)/E172巨头财报(+0.12)vs E157降温(-0.11)重构;WTI周-0.5%高位滞涨(102.94,周内99.79-104.99巨震);★E172:埃克森/雪佛龙双超预期+炼油利润创纪录+'霍尔木兹实际仍关闭'=基本面验证,但巨头景气顶点+《国防生产法》提产能+11/1 OPEC+会议=上方对冲密集;拥挤度'高',reversal_watch开</td></tr>
+  <tr><td>军工/国防</td><td class="num">+2.92 → <b>+2.15</b></td><td><span class="pill watch">中性偏多(观察)</span></td><td>中高(中选后打击窗口临近)</td><td>中性偏多(+2.92→+2.15,距+3线0.85):地缘+1.11(经2.0=+2.22)托底——E174(利雅得10/29再拦截+中选倒计时)+E150计划化+E159以色列内氏领先;vs AI拖累(经0.5=-0.36);★11/3中选=E126'中选前不攻击伊朗'承诺到期+E150打击窗口开启=事件决断点;11/4以色列正式结果;拥挤度中高,reversal_watch开</td></tr>
+  <tr><td>有色/黄金/大宗商品</td><td class="num">+2.28 → <b>+1.39</b></td><td><span class="pill watch">中性偏多(观察)</span></td><td>极高(单日-3.7%崩盘,得分-价格极致背离)</td><td>★中性偏多下沿(+2.28→+1.39):得分-价格背离极致化——得分端:地缘溢价(经+1.5=+1.67)+利率拖累减轻(经-1.5=-0.60,10Y七周新低4.90%);价格端:10/30单日-3.7%崩盘至3884.4(周-3.1%,月内自4663高点-16.7%),'风险资产化'(财新:与美股相关系数0.89)+月末去杠杆抛售压倒避险与利率双利好;月末校准结论:不改矩阵,改规则(得分≥1但价格2w跌幅>5%→信号强制降一档+reversal_watch)——本期即触发,实际执行按中性观察处理;reversal_watch开</td></tr>
+  <tr><td>银行/非银金融</td><td class="num">+0.47 → <b>+0.93</b></td><td><span class="pill neutral">中性</span></td><td>中(A股红利历史新高,工行/建行)</td><td>中性(+0.47→+0.93,距+1线0.07):利率+0.40(经2.0=+0.80)支撑强化——12月加息78-90%定价(PCE 3.6%+FOMC鹰派按兵+ECB曾讨论加息)=NIM交易回归;A股验证:10/29中证银行指数年内新高/工行建行历史新高,10月暴跌中红利防御获资金集中;但10Y回落至4.90%(避险而非紧缩买债)削弱'利率上行'成色;FOMC 12/16为下一节点</td></tr>
+  <tr><td>新能源(光伏/风电/储能)</td><td class="num">+0.82 → <b>+0.65</b></td><td><span class="pill neutral">中性</span></td><td>低(10月双创-23%出清)</td><td>中性(+0.82→+0.65):油价替代(经+1.0=+1.07)维持 vs 摩擦(经-1.0=-0.35,E16归档后摩擦驱动降至+0.35)+利率(经-1.0=-0.40);A股10月双创-23%出清中新能源未能幸免;E16欧盟插混关税预期被TIC谅解承接=出口悬顶边际缓和</td></tr>
+  <tr><td>地产/建材/基建/城市更新</td><td class="num">+0.28 → <b>+0.04</b></td><td><span class="pill neutral">中性</span></td><td>低(全会无经济议程定论)</td><td>中性(+0.28→+0.04):宽松(经+2.0=+0.44)唯一支撑;E166公报确认全会无经济议程='全会催化'叙事彻底出清,政策预期转向12月中央经济工作会议;基本面未修复</td></tr>
+  <tr><td>电动车/智能汽车</td><td class="num">-0.65 → <b>-0.42</b></td><td><span class="pill neutral">中性</span></td><td>中</td><td>中性(-0.65→-0.42):摩擦缓和(经-1.5=-0.52,TIC谅解承接E16)为主要边际改善;油价替代(经+0.5=+0.54);AI(经+0.5=-0.36)拖累;特斯拉本周无新催化</td></tr>
+  <tr><td>医药/生物科技</td><td class="num">-0.90 → <b>-0.82</b></td><td><span class="pill neutral">中性</span></td><td>低</td><td>中性(-0.90→-0.82):利率压制(经-1.0=-0.40)+AI(经+0.5=-0.36)拖累;美财政部生物技术禁令扰动延续;A股10/29 CRO/创新药随大盘调整</td></tr>
+  <tr><td>半导体/AI算力</td><td class="num">-1.03 → <b>-1.06</b></td><td><span class="pill caution">中性偏空</span></td><td>极高(信用端未解冻+个股裁决)</td><td>中性偏空(-1.03→-1.06):张力核心延续——AI-0.72(经2.0=-1.44,E170亚马逊FCF/E171英特尔指引/E173周五抛售 vs E161微软Azure+48%/E141台积电)vs地缘自主可控(经+1.0=+1.11)+宽松(经+1.0=+0.22);本周'个股裁决'分化极致:微软+6.4%/亚马逊-5.4%/谷歌-9%/英特尔-22%——'FCF为负即原罪';10/29 A股创业板人工智能ETF-9.53%领跌;CoreWeave Q3(11月中,负FCF预计101亿)为生死节点;拥挤度'极高',reversal_watch开</td></tr>
+  <tr><td>高端制造/机器人/工业自动化</td><td class="num">-1.77 → <b>-1.50</b></td><td><span class="pill caution">中性偏空</span></td><td>中(题材热度回落)</td><td>中性偏空(-1.77→-1.50):AI(经+1.5=-1.08)拖累延续+摩擦(经-1.0=-0.35)缓和+宽松(经+1.5=+0.33)对冲;10/28 A股机器人题材反弹后10/29回落;reversal_watch开(题材热度vs驱动偏空背离)</td></tr>
+  <tr><td>消费/零售/服务消费</td><td class="num">-2.43 → <b>-1.74</b></td><td><span class="pill caution">中性偏空</span></td><td>低(10月大幅出清后)</td><td>中性偏空(-2.43→-1.74):油价侵蚀(经-1.0=-1.07)+地缘(经-0.5=-0.56)压制缓和(油/地缘驱动回落)+宽松(经+2.0=+0.44)对冲;A股10/29食品饮料逆市+0.94%(防御轮动)+猪价5月新低养殖股走强;10月大幅出清后空头动能衰减,reversal_watch开</td></tr>
+  <tr><td>软件/互联网平台</td><td class="num">-2.38 → <b>-2.17</b></td><td><span class="pill caution">中性偏空</span></td><td>中(周五跟随下跌)</td><td>中性偏空(-2.38→-2.17):利率(经-1.5=-0.60)+AI(经+1.5=-1.08)双压略缓+油(经-0.5=-0.54)成本端;Anthropic 11/9当周路演=AI软件估值锚事件;距-3线0.83</td></tr>
+</table>
+<p class="note"><b>信号变更（vs 10/24 第 14 期）</b>：（无跨档变化——加配仍仅油气一席、减配连续四期清零；排序大挪移：军工/黄金回落，银行/消费/高端制造回升）。<br>
+<b>阈值跨越（±3）</b>：（无）。<b>逼近阈值</b>：（无——银行 +0.93 距 +1 中性偏多线仅 0.07，为本期最近贴线）。<br>
+<b>本期结构主题</b>：「央行周鹰派兑现+AI 信用蔓延+黄金崩盘」三重定价下，<b>加配阵营连续第二期仅一席（油气 +3.65，自 +4.52 收敛）</b>；无信号跨档变更是表面，<b>排序大挪移才是本期主特征</b>——军工 +2.92→+2.15 / 黄金 +2.28→+1.39 回落（中选前事件动量衰减+崩盘背离），银行 +0.47→+0.93 / 消费 -2.43→-1.74 / 高端制造 -1.77→-1.50 回升（12 月加息 78-90% 定价逼近+A 股 10 月出清后空头动能衰减）；黄金触发月末校准新规则「得分-价格背离强制降档」（得分 1.39 偏多区但价格 2w -7.2%，执行层按中性观察处理+reversal_watch）。</p>
+
+<h2>五、事件评分表（41 项活跃事件 · 本期新增 E166-E174 九项，以粗体标注；★ 为本期 defining 事件）</h2>
+<h3>🏦 政策/央行（15 项）</h3>
+<table>
+  <tr><th>#</th><th>事件</th><th>状态</th><th>强度</th><th>确定性</th><th>衰减</th><th>驱动冲击</th></tr>
+  <tr><td>E130</td><td>10/8-9 美债'短端鸽长端熊'强化:10/8盘中10Y 5.364%创2002年来新高后收5.223%(-5.48bp),10/9欧洲时段再升至5.33…</td><td>已发生 10-09</td><td>4</td><td>0.9</td><td>0.11</td><td>利率 <b>+0.4</b> / 美元 <b>+0.1</b></td></tr>
+  <tr><td>E132</td><td>10/9 财政部下达5500亿元地方政府债务结存限额:一般债3000亿全部分配县区(专门用于提高县区一般公共预算保障能力)+专项债2500亿分配给四季度有实…</td><td>已发生 10-09</td><td>2</td><td>0.95</td><td>0.11</td><td>中国宽松 <b>+0.3</b></td></tr>
+  <tr><td>E137</td><td>10/14 美国9月CPI全面超预期:同比3.7%(预期3.6/前值3.4,4个月最高)/环比+0.6%(5个月最大);核心同比2.6%(预期2.5)/核心…</td><td>已发生 10-14</td><td>4</td><td>0.95</td><td>0.19</td><td>利率 <b>+0.5</b> / 美元 <b>+0.2</b> / AI <b>-0.2</b></td></tr>
+  <tr><td>E139</td><td>10/14 中欧贸易投资磋商机制(TIC)第二次例会在北京达成共识:吉利/中汽协/奇瑞/比亚迪集体声明欢迎混动及电动车磋商积极成果;此前10/9中欧就混动车…</td><td>已发生 10-14</td><td>2</td><td>0.8</td><td>0.19</td><td>贸易摩擦 <b>-0.2</b></td></tr>
+  <tr><td>E142</td><td>10/15 美国9月PPI同比6.3%创2026年5月来新高(预期5.3)/环比+1.3%(预期0.5)+零售环比+0.8%超预期+初请19.9万(低于预期…</td><td>已发生 10-15</td><td>3</td><td>0.9</td><td>0.21</td><td>利率 <b>+0.2</b> / 增长 <b>+0.1</b> / 美元 <b>-0.1</b></td></tr>
+  <tr><td>E145</td><td>10/16-23 FOMC 10月加息概率大幅重定价:沃什曼谷IMF年会(静默期前最后发言)'不预判10月会议结果/不做前瞻指引',未重申鹰派;戴利/古尔斯…</td><td>已发生 10-16</td><td>3</td><td>0.95</td><td>0.23</td><td>利率 <b>-0.3</b> / 美元 <b>-0.1</b></td></tr>
+  <tr><td>E147</td><td>10/22 法国10年期国债收益率盘中+14bp至5.15%,2013年来首次反超美债(同时刻美10Y 5.077%);大规模抗议浪潮+公共债务3.6万亿欧…</td><td>已发生 10-22</td><td>3</td><td>0.8</td><td>0.41</td><td>利率 <b>+0.1</b> / 增长 <b>-0.1</b></td></tr>
+  <tr><td>E152</td><td>10/22-23 中国资金托底组合拳+A股V反:股票ETF连续14个交易日净流入累计2612.96亿(9/28以来),10/22单日净流入464.8亿为年内…</td><td>已发生 10-23</td><td>2</td><td>0.9</td><td>0.45</td><td>中国宽松 <b>+0.2</b> / 增长 <b>+0.1</b></td></tr>
+  <tr><td>E156</td><td>10/23(周五盘后)穆迪维持法国Aa3评级/展望负面:市场此前部分定价降级(法德10Y利差盘中178bp创欧债危机来最高/法10Y 5.14%创2002年…</td><td>已发生 10-23</td><td>1</td><td>0.9</td><td>0.45</td><td>增长 <b>+0.1</b> / 利率 <b>-0.1</b></td></tr>
+  <tr><td>E160</td><td>10/28 FOMC维持3.75-4.00%不变(E145兑现)但鹰意超预期:10-2投票,理事库克(2022年入局以来首次反对)+克利夫兰联储哈马克主张加…</td><td>已发生 10-28</td><td>3</td><td>1.0</td><td>0.74</td><td>利率 <b>+0.1</b></td></tr>
+  <tr><td>E165</td><td>10/27 中国1-9月规上工业企业利润+15.5%(9月单月+14.4%,年内持续两位数):采矿业+38.2%(煤炭+57.0%/油气开采+21.3%)、…</td><td>已发生 10-27</td><td>2</td><td>0.95</td><td>0.67</td><td>中国宽松 <b>+0.1</b> / 增长 <b>+0.1</b></td></tr>
+  <tr><td><b>E166</b></td><td><b>10/29 五中全会公报:审议通过《关于持之以恒推进全面从严治党若干重大问题的决定》(党建主题确认,E149判断兑现);公报含岁末年初经济段落('用好用足宏…</b></td><td>已发生 10-29</td><td><b>2</b></td><td>0.95</td><td>0.82</td><td>中国宽松 <b>+0.1</b> / 增长 <b>+0.1</b></td></tr>
+  <tr><td><b>E167</b></td><td><b>10/29 ECB维持三大利率不变(存款2.5%/主要再融资2.65%/边际贷款2.90%)但鹰意外露:拉加德称会上曾讨论加息(最终一致维持)+警告能源价格…</b></td><td>已发生 10-29</td><td><b>2</b></td><td>0.9</td><td>0.82</td><td>利率 <b>+0.1</b> / 美元 <b>+0.1</b> / 增长 <b>-0.1</b></td></tr>
+  <tr><td><b>E168</b></td><td><b>10/29 美国9月PCE:整体环比+0.5%/同比3.6%(加速0.2pp);核心环比+0.3%/同比3.0→3.1%,均符合预期——美联储首选通胀指标加…</b></td><td>已发生 10-29</td><td><b>3</b></td><td>0.95</td><td>0.82</td><td>利率 <b>+0.1</b> / 美元 <b>+0.1</b></td></tr>
+  <tr><td><b>E169</b></td><td><b>10/30 BOJ维持1.25%不变(8-1,高田创主张1.5%被否);声明2013年来首次判断'基础通胀总体上已达到与2%目标相一致的水平';ETF出售加…</b></td><td>已发生 10-30</td><td><b>2</b></td><td>0.9</td><td>0.91</td><td>利率 <b>+0.1</b></td></tr>
+</table>
+<h3>⚔️ 地缘/冲突（12 项）</h3>
+<table>
+  <tr><th>#</th><th>事件</th><th>状态</th><th>强度</th><th>确定性</th><th>衰减</th><th>驱动冲击</th></tr>
+  <tr><td>E123</td><td>10/7-8 美伊谈判轨道实质恶化+霍尔木兹封锁声明:伊朗高官称'没有任何谈判'在进行、永不放弃铀浓缩权利(美方方案与伊诉求相悖);革命卫队司令顾问纳格迪宣…</td><td>已发生 10-08</td><td>4</td><td>0.9</td><td>0.10</td><td>油 <b>+0.5</b> / 地缘 <b>+0.4</b></td></tr>
+  <tr><td>E126</td><td>10/8 美对伊朗17艘运油船新一轮制裁(财政部,约2000万桶伊朗原油滞留船上/伊朗停止装卸)+特朗普称'中选前(11/3)不攻击伊朗、正进行富有成效磋商…</td><td>已发生 10-08</td><td>3</td><td>0.85</td><td>0.10</td><td>油 <b>+0.4</b> / 地缘 <b>+0.3</b> / 利率 <b>-0.2</b></td></tr>
+  <tr><td>E127</td><td>10/8-9 霍尔木兹袭击升至战争以来单周最高(10/5当周≥12艘油轮遇袭;10/6仅7艘大宗商品船通过为7/23来最低,日流量降至~1010万桶=战前7…</td><td>已发生 10-08</td><td>4</td><td>0.9</td><td>0.10</td><td>油 <b>+0.8</b> / 地缘 <b>+0.6</b></td></tr>
+  <tr><td>E133</td><td>10/10-11 胡塞武装两轮袭击沙特并重创民航枢纽：利雅得哈立德国王机场13死309伤(含1名美国公民)、机场关闭(10/11取消655班=98%)+达曼…</td><td>已发生 10-10</td><td>4</td><td>0.9</td><td>0.12</td><td>地缘 <b>+0.4</b> / 油 <b>+0.3</b></td></tr>
+  <tr><td>E136</td><td>10/13-14 胡塞冲突再升级:沙特阿美宰赫兰总部行政楼遭导弹袭击起火,胡塞宣布阿美石油设施为'合法打击目标'并警告撤离;沙特联军空袭萨那中央维修站/地下…</td><td>已发生 10-13</td><td>4</td><td>0.85</td><td>0.17</td><td>地缘 <b>+0.3</b> / 油 <b>+0.2</b></td></tr>
+  <tr><td>E143</td><td>10/15-16 胡塞-沙特冲突固化+霍尔木兹袭击延续:沙特联军首次新闻发布会通报10月以来20次袭击利雅得机场、17死333伤(含其他城市19死近400伤…</td><td>已发生 10-16</td><td>4</td><td>0.9</td><td>0.23</td><td>地缘 <b>+0.4</b> / 油 <b>+0.5</b></td></tr>
+  <tr><td>E146</td><td>10/17-22 胡塞持续袭沙特:延布阿美设施命中大火/谢拜油田(日产100万桶)命中/利雅得机场第三轮/达曼法赫德国王机场10/21晚遇袭1死8伤/艾卜哈…</td><td>已发生 10-19</td><td>4</td><td>0.95</td><td>0.30</td><td>地缘 <b>+0.3</b> / 油 <b>+0.2</b></td></tr>
+  <tr><td>E150</td><td>10/22-23 中东从传闻变计划+油价周五加速:美以军方已制定中选后打击伊朗具体计划(NYT:短时间高强度,目标能源基础设施/核设施/导弹无人机库,特朗普…</td><td>已发生 10-23</td><td>4</td><td>0.85</td><td>0.45</td><td>地缘 <b>+0.4</b> / 油 <b>+0.4</b></td></tr>
+  <tr><td>E153</td><td>10/24-25 中东升级面再扩大:伊朗威胁波斯湾海底电缆(新维度:从油轮/能源设施扩展至通信基础设施);沙特阿美周四下令疏散达兰总部剩余员工并转远程办公(…</td><td>已发生 10-24</td><td>3</td><td>0.8</td><td>0.50</td><td>地缘 <b>+0.3</b> / 油 <b>+0.2</b></td></tr>
+  <tr><td>E157</td><td>10/25-26 中东降温信号集中、油价风险溢价大幅回吐:卡塔尔斡旋人员周日抵德黑兰与美协调降温,沙特/土耳其/巴基斯坦高级官员周一赴伊磋商;特朗普周日(F…</td><td>已发生 10-26</td><td>2</td><td>0.75</td><td>0.61</td><td>油 <b>-0.2</b> / 地缘 <b>-0.2</b></td></tr>
+  <tr><td>E164</td><td>10/27-28 中东外交与战线拉锯:普京-佩泽希齐扬莫斯科会晤(年内第三次,'希望局势朝积极方向发展');油价10/27连续第二日回落(布伦特盘中114.…</td><td>已发生 10-28</td><td>2</td><td>0.8</td><td>0.74</td><td>油 <b>+0.1</b> / 地缘 <b>+0.1</b></td></tr>
+  <tr><td><b>E174</b></td><td><b>10/29-30 中东拉锯延续+中选临窗:沙特联军10/29晚拦截两枚胡塞射向利雅得导弹(财联社)——10/25-26降温(E157)后冲突未平息;以色列大…</b></td><td>已发生 10-29</td><td><b>2</b></td><td>0.85</td><td>0.82</td><td>地缘 <b>+0.2</b> / 油 <b>+0.1</b></td></tr>
+</table>
+<h3>🗳️ 政治/贸易（3 项）</h3>
+<table>
+  <tr><th>#</th><th>事件</th><th>状态</th><th>强度</th><th>确定性</th><th>衰减</th><th>驱动冲击</th></tr>
+  <tr><td>E12</td><td>巴西大选已兑现(并入E119/E155)；以色列选举10/27已投票(兑现见E159)；美国中期选举11/3（horizon→临窗）</td><td>预期 2026-11-03</td><td>2</td><td>0.7</td><td>1.00</td><td>地缘 <b>+0.5</b> / 油 <b>+0.5</b> / 贸易摩擦 <b>+0.5</b></td></tr>
+  <tr><td>E155</td><td>10/25 巴西决选结果:卢拉51.79%逆转小博索纳罗48.21%当选第4任期(首轮落后2pp翻盘,民主化以来首次);小博索纳罗拒绝承认败选+要求作废选举…</td><td>已发生 10-25</td><td>1</td><td>1.0</td><td>0.55</td><td>贸易摩擦 <b>+0.1</b> / 增长 <b>+0.1</b></td></tr>
+  <tr><td>E159</td><td>10/27-28 以色列大选投票+初步计票:投票率77.7%创1999年来新高;初步结果内塔尼亚胡阵营53席>反对派(埃森科特)48席>阿拉伯政党;正式结果…</td><td>已发生 10-28</td><td>2</td><td>0.8</td><td>0.74</td><td>地缘 <b>+0.1</b></td></tr>
+</table>
+<h3>💡 科技/产业（11 项）</h3>
+<table>
+  <tr><th>#</th><th>事件</th><th>状态</th><th>强度</th><th>确定性</th><th>衰减</th><th>驱动冲击</th></tr>
+  <tr><td>E140</td><td>10/14-16 AI信用压力显性化+亚洲科技股熔断周:CoreWeave 2032年债跌至面值77%/甲骨文·软银·亚马逊·Meta·英伟达5Y CDS同…</td><td>已发生 10-15</td><td>4</td><td>0.9</td><td>0.21</td><td>AI <b>-0.8</b> / 增长 <b>-0.1</b></td></tr>
+  <tr><td>E141</td><td>10/15 台积电Q3法说会双超预期:营收467亿美元(超指引上限,环比+16.2%)/毛利率66.4%(2nm爬坡稀释-130bp)/EPS 29.43新…</td><td>已发生 10-15</td><td>3</td><td>0.95</td><td>0.21</td><td>AI <b>+0.5</b></td></tr>
+  <tr><td>E148</td><td>10/19-23 AI'清算-反弹'拉锯:10/22费半-6.72%(7月来最大跌幅,13日自峰值回撤>20%)/Meta财报超预期但跌7%(FCF-21.…</td><td>已发生 10-22</td><td>3</td><td>0.85</td><td>0.41</td><td>AI <b>-0.1</b></td></tr>
+  <tr><td>E151</td><td>10/22-23 AI信用风暴深化:CoreWeave 5Y CDS升至1145bp历史新高(10月+39%/一年+179%,隐含5年违约概率>60%)/股…</td><td>已发生 10-22</td><td>4</td><td>0.9</td><td>0.41</td><td>AI <b>-0.6</b> / 增长 <b>-0.1</b></td></tr>
+  <tr><td>E158</td><td>10/26 Anthropic正式提交IPO申请文件+美股风险偏好回升:招股书细节——Q2营收116亿且营业利润9.74亿首度转正(H1净亏807亿系可转债…</td><td>已发生 10-26</td><td>2</td><td>0.85</td><td>0.61</td><td>AI <b>+0.1</b></td></tr>
+  <tr><td>E161</td><td>10/28盘后 微软FY27Q1全面超预期+甲骨文FCF指引提振:微软营收922.8亿+19%(预期906.3亿),Azure +48%(预期44%)加速,…</td><td>已发生 10-28</td><td>3</td><td>0.9</td><td>0.74</td><td>AI <b>+0.2</b></td></tr>
+  <tr><td>E162</td><td>10/28盘后 谷歌Q3褒贬不一:广告收入低于分析师预期,云计算超出预期,盘后跌逾9%——与微软+6.4%形成鲜明分化,AI财报季'个股裁决'特征强化</td><td>已发生 10-28</td><td>2</td><td>0.85</td><td>0.74</td><td>AI <b>-0.1</b></td></tr>
+  <tr><td><b>E170</b></td><td><b>★10/29盘后 亚马逊Q3:营收2019.44亿+12%略逊;AWS 459.84亿+39.3%超预期(预期38%)——云增速2022年来最快;营业利润率1…</b></td><td>已发生 10-29</td><td><b>3</b></td><td>0.9</td><td>0.82</td><td>AI <b>-0.3</b> / 增长 <b>-0.1</b></td></tr>
+  <tr><td><b>E171</b></td><td><b>10/29盘后 英特尔Q3:营收165亿+21%符合预期/EPS 0.52超预期(0.41)/DCAI+78%至73亿/代工67亿+58%;★但Q4指引营收…</b></td><td>已发生 10-29</td><td><b>2</b></td><td>0.9</td><td>0.82</td><td>AI <b>-0.2</b></td></tr>
+  <tr><td><b>E172</b></td><td><b>10/30盘前 石油巨头Q3双超预期:埃克森净利154.1亿+104%创2022年来最高/EPS 4.23超预期/炼油利润创新高(六年来首次炼油超上游)/股…</b></td><td>已发生 10-30</td><td><b>2</b></td><td>0.9</td><td>0.91</td><td>油 <b>+0.1</b> / 增长 <b>+0.1</b></td></tr>
+  <tr><td><b>E173</b></td><td><b>★10/30 周五全球risk-off+黄金崩盘:纳指-2.86%(收25437.00)/标普-1.82%(7580.07)/道指-1.09%(51770.3…</b></td><td>已发生 10-30</td><td><b>3</b></td><td>0.85</td><td>0.91</td><td>AI <b>-0.2</b> / 增长 <b>-0.1</b> / 利率 <b>-0.1</b> / 美元 <b>+0.1</b></td></tr>
+</table>
+<p class="note"><b>本期归档 8 项</b>：E16（欧盟插混关税预期，被中欧 TIC 谅解承接——「关税落地」落空）、E99（降税框架衰减至噪声区，11/10 续期由日历承接）、E124（国庆消费+央行逆回购，噪声区）、E129（OpenAI 营收口径，被 AI 信用链承接）、E138（中国 9 月物价外贸，噪声区）、E144（央行周临近，已由 E160/E167/E169 兑现承接）、E149（五中全会预期，已由 E166 公报承接）、E154（Anthropic 草案，由 E158 正式提交+11/9 路演承接）。<b>复核调整 1 项</b>：E159（以色列大选：初步计票内氏阵营 53&gt;48，正式结果 11/4）。累计 130 项历史事件已归档，完整清单见 data/events/2026-10-31_events.json。</p>
+
+<h2>六、事件日历（未来 7 天 + horizon 90 天）</h2>
+<table>
+  <tr><th>日期</th><th>事件</th><th>关注板块/备注</th></tr>
+  <tr><td class="num">2026-10-31</td><td><b>中国10月官方PMI(09:30) + 第13期2w验证日 + 月末校准</b></td><td>PMI验证'岁末年初用好用足宏观政策'的必要性;复核与校准已在本期完成</td></tr>
+  <tr><td class="num">2026-11-01</td><td><b>OPEC+ 7国会议</b></td><td>对油价102-105区间的供给端回应;《国防生产法》提产能+东西管道700万桶/日的对冲合力</td></tr>
+  <tr><td class="num">2026-11-03</td><td><b>★美国中期选举</b></td><td>民调民主党47%vs共和党36%/特朗普32%;=E126'中选前不攻击伊朗'承诺到期+E150打击计划窗口开启——油/军工事件决断点</td></tr>
+  <tr><td class="num">2026-11-04</td><td><b>以色列大选正式结果</b></td><td>初步内氏阵营53>48;若确认=对伊强硬派组阁,打击窗口政治条件成熟</td></tr>
+  <tr><td class="num">2026-11-07</td><td><b>第12期4w验证日 + 第14期2w验证日</b></td><td>检验油气'事件驱动型加配有效期约2周'规律(第12期4w:WTI 91.64起)</td></tr>
+  <tr><td class="num">2026-11-09当周</td><td><b>Anthropic IPO路演</b></td><td>AI软件估值锚;招股书:H1算力支出近90亿美元,Q2营业利润首度转正</td></tr>
+  <tr><td class="num">2026-11-10</td><td><b>中美吉隆坡降税安排到期</b></td><td>300亿美元对等降税框架续期验证(E99已归档,由本日历承接)</td></tr>
+  <tr><td class="num">2026-11-03</td><td><i>★美国中期选举+'中选后打击伊朗'窗口（horizon）</i></td><td>E126承诺到期+E150计划窗口开启;民主党夺众议院→特朗普跛脚→打击决策受国会掣肘但不停摆</td></tr>
+  <tr><td class="num">2026-11-07</td><td><i>第12期信号4w验证日（horizon）</i></td><td>油气加配(10/10,6.82)长窗口成色;历史规律:事件驱动型加配有效期约2周</td></tr>
+  <tr><td class="num">2026-11-07</td><td><i>第14期信号2w验证日（horizon）</i></td><td>军工跌出加配线贴线2.92的判断是否正确</td></tr>
+  <tr><td class="num">2026-11月中</td><td><i>★CoreWeave Q3财报（horizon）</i></td><td>负FCF预计扩至101亿创纪录——AI信用风暴生死节点;伯恩斯坦测算还需760亿增量融资</td></tr>
+  <tr><td class="num">2026-11-14</td><td><i>第13期信号4w验证日（horizon）</i></td><td>黄金'中性偏多'4w最终复核(2w已失效-7.2%)</td></tr>
+  <tr><td class="num">2026-11月下旬</td><td><i>Anthropic IPO定价/上市（horizon）</i></td><td>11/9当周路演后;AI情绪锚</td></tr>
+  <tr><td class="num">2026-12-15/16</td><td><i>FOMC 12月议息（horizon）</i></td><td>12月加息概率78-90%+PCE 3.6%加速——'接近共识';沃什:2027年起FOMC减至每年6次</td></tr>
+  <tr><td class="num">2026-12-17</td><td><i>ECB 12月议息（horizon）</i></td><td>市场完全定价加息25bp</td></tr>
+  <tr><td class="num">2026-12-07/13</td><td><i>珠海航展（horizon）</i></td><td>军工链年度催化</td></tr>
+  <tr><td class="num">2026-12月中</td><td><i>中央经济工作会议（horizon）</i></td><td>五中全会无经济议程后,岁末政策主战场;'用好用足宏观政策'的具体化窗口</td></tr>
+</table>
+
+<h2>七、情景推演（未来 4–8 周）</h2>
+<div class="scenario">
+  <div class="card g"><div class="p">40%</div><div class="t">基准</div><div>中选民主党夺众议院（民调 47vs36）→特朗普跛脚→对伊打击决策受国会掣肘但窗口仍在；OPEC+ 11/1 维持配额；12/16 FOMC 加息 25bp 兑现（78-90%）→10Y 4.9-5.1 震荡；CoreWeave Q3（11 月中）负 FCF 扩大但不重组→AI 信用缓慢出清；Anthropic 路演平稳。<br>→ 油气加配维持但区间操作（100-108）；军工中选后事件驱动回摆（打击窗口开启）；银行升中性偏多（NIM 交易回归+12 月加息兑现）；黄金 3800-3900 筑底（去杠杆出清后，背离降档规则观察收敛）；半导体高波动不给方向；A 股 11 月超跌反弹（10 月 -6.3% 出清后）。</div></div>
+  <div class="card r"><div class="p">35%</div><div class="t">上行风险（紧缩×冲突×信用三重深化）</div><div>中选后美以打击伊朗兑现（11/3 后窗口开启）→布油冲 120+；或 12 月加息 50bp 预期升温（PCE 加速延续）；或 CoreWeave 重组讨论/巨头 capex 指引再下调→AI 信用第二波→纳指破 10/30 低点加速出清。<br>→ 油气加速/军工回摆加配但追高风险极大；银行短期受益后受资产质量担忧压制；黄金先跌后涨（避险 finally 接管）；软件/医药/半导体/高端制造二次出清；VIX 25+ 全球 risk-off；A 股红利（银行/电力/煤炭）相对收益扩大。</div></div>
+  <div class="card a"><div class="p">25%</div><div class="t">下行缓和</div><div>美伊纸面框架+霍尔木兹重开时间表（卡塔尔斡旋兑现）→油价回落 95 下方；Anthropic 路演超预期+CoreWeave 融资落地→AI 信用解冻；12 月加息转鸽（通胀回落）→10Y 回落 4.7 下方。<br>→ 黄金 V 型反转（实际利率回落+去杠杆出清双支撑）；半导体/软件「利率见底交易」反弹；A 股成长风格修复（创业板超卖反弹）；银行回吐；油气/军工地缘溢价回吐 30-50%。</div></div>
+</div>
+
+<h2>八、对 v5 模型的微调建议（仅建议 · 不自动修改任何配置）</h2>
+<div class="box">
+  <div class="t">⏸ 本模块只提议、不自动修改 tri_market_stock_model/config/ 任何文件（含 macro_overlay.json）；两项恢复性接线仍按 7/17 决定挂起，待用户确认</div>
+  <ul>
+    <li><b>Event 因子关键词增补</b>：亚马逊FCF TTM-423.57亿、AWS+39.3%、英特尔Q4指引暴雷、盘后-22%、FCF为负即原罪、FOMC鹰派按兵10-2、库克首次反对、哈马克主张加息25bp、12月加息78-90%、PCE同比3.6%、ECB曾讨论加息、12/17加息完全定价、BOJ基础通胀达2%、ETF出售860亿日元、10Y七周新低4.90%、黄金单日-3.7%、黄金风险资产化、月末去杠杆、埃克森净利+104%、炼油利润创纪录、霍尔木兹实际仍关闭、胡塞导弹利雅得10/29、中选民主党47vs36、特朗普支持率32%、五中全会公报、用好用足宏观政策、A股10月沪指-6.3%、工行建行历史新高、Anthropic路演11/9、CoreWeave Q3 11月中；</li>
+    <li><b>行业倾斜建议</b>（若 macro_overlay 恢复接线后参考）：油气 +3~+4（维持——加配独苗 +3.65，但 WTI 高位滞涨+巨头景气顶点+OPEC+ 11/1 对冲：区间操作不追高，若中选后打击未兑现或 OPEC+ 增产，下调一档）；军工 +1~+2（维持——得分回落至 +2.15 但 11/3 中选=打击窗口开启+11/4 以色列正式结果+12 月珠海航展，事件期权价值上升）；黄金 0~+1（维持但执行层降档——★触发月末校准新规则「得分≥1 但价格 2w 跌幅 &gt;5%→强制降一档」，10/30 单日 -3.7% 崩盘后背离未收敛前不加码，等 3800-3900 筑底信号）；银行 +1~+2（较上期 0~+1 上调一档——得分 +0.93 逼近中性偏多线+12 月加息 78-90% 定价+A 股银行红利历史新高，NIM 交易回归前夜）；半导体 -1（维持——「FCF 为负即原罪」个股裁决延续，CoreWeave Q3 11 月中生死节点，「国产算力自主可控」子标签维持 +1~+2 对冲）；软件/消费 -1（维持，距 -3 线 0.83/1.26——消费 10 月出清后空头动能衰减，可上调至 -1~0）；高端制造 -1~0（维持）；医药 0（维持）；新能源 0（维持——E16 欧盟关税预期被 TIC 谅解承接=出口悬顶边际缓和，但 A 股双创 10 月 -23% 出清未完）；</li>
+    <li><b>宏观倾斜输入</b>：本期 data/rotation/latest.json（已同步 10/31 值）加配 [oil_energy]，减配 []（连续四期清零），中性偏多观察 [defense, metals_gold]；</li>
+    <li><b>时点提醒</b>：<b>11/3 美国中选为下周第一决断点</b>——「中选前不攻击伊朗」承诺到期+E150 打击窗口开启，建议 v5 对油/军工仓位在选前设置「承诺失效」双向预案（打击兑现→油气/军工加速；未兑现+民主党夺众议院→溢价回吐 30-50%）；11/1 OPEC+ 会议为油价供给端对冲验证；11/9 当周 Anthropic 路演为 AI 软件估值锚；11 月中 CoreWeave Q3（负 FCF 预计 101 亿）为 AI 信用生死节点；12/16 FOMC（加息 78-90%）前后对利率敏感板块（银行/黄金/半导体/软件）设置事件前检查；</li>
+    <li><b>低置信标注</b>：①DXY 与 VIX 的 10/29-30 值均为估算（接口不可用，已标注），10Y 10/30 为财联社快闪口径（4.902%）、10/29 为估算——若下周实测值偏差 &gt;10bp/&gt;0.5 点需回填修正；②美国三季度 GDP 初值「上修至 3.2%」仅 B 级信源（sohu），未采信进事件库，待权威源确认；③黄金「风险资产化」论断来自财新专栏（相关系数 0.89），单日 -3.7% 的归因（月末去杠杆抛售）为推断性解释，需观察下周是否止跌验证；④「中选后打击伊朗」仍为计划层信息（NYT 转引），未兑现前油/军工的事件溢价均应打折；</li>
+    <li><b>挂起事项重申</b>：event_tuning ±10/±5 事件分级、AI 泡沫个人因子（v5 重写时遗失，详见 7-17 会话记录）两项恢复性接线仍待用户决策。</li>
+  </ul>
+  <div class="note">追踪验证：本期（10/31 第15期）全部信号已写入 tracking/rotation_tracker.jsonl，将于 2026-11-14（T+2 周）与 2026-11-28（T+4 周）用板块指数复核命中率。</div>
+</div>
+
+<h2>九、历史信号命中率复核（已到验证日记录，截止 10/31）+ 月末校准结论</h2>
+<p class="note">方法说明：方向性复核（信号方向 vs 验证窗口板块实际表现；WTI/黄金为新浪实测价，10Y 为新闻校准/估算；东财接口不可用期间 A 股板块指数代码映射未建立，精确 2/4 周超额收益待补算）。<b>本期（10/31）完成第 13 期（10/17）信号 2w 复核</b>（验证日=今天）：<b>可验证子集约 3.5/6 ≈ 55-60%</b>——①油气加配 ✓（弱）（WTI 101.84→102.94，+1.1%，周内冲 103.92 后高位滞涨；巨头 Q3 双超预期+「霍尔木兹实际仍关闭」验证基本面——「事件驱动型加配有效期约 2 周」规律第三次成立，收益主要在前半段兑现）；②军工加配 ✗（10/25-26 中东降温使打击预期后移至中选后，2w 窗口内无升级催化——窗口错位）；③★黄金中性偏多 ✗✗ <b>连续第二期失效且加倍</b>（4186.5→3884.4，-7.2%，10/30 单日 -3.7% 崩盘；机制从「实际利率压倒避险」扩展为「风险资产化+月末去杠杆抛售」）；④银行中性偏多 ✓✓ <b>本期最强验证</b>（10/29 中证银行指数年内新高/工行建行历史新高；A 股 10 月暴跌中红利防御获资金集中+12 月加息 78-90% 定价共振）；⑤新能源中性偏多 ✗（A 股 10 月双创 -23% 出清中未能幸免，油价替代逻辑被系统性下跌淹没）；⑥减配清零 ✓（「清零≠转多」连续两期验证：10 月创业板 -23%/科创 50 回撤 48%/费半 10/23 -6.72%+10/30 纳指 -2.86%——偏空方向判断正确）。<b>月末校准结论（10/31 议程兑现）</b>：黄金敏感度对列（利率 -1.5/美元 -1.5）<b>不改矩阵先验</b>——本期得分端已通过驱动回落自行纠偏（2.30→1.39），矩阵本身无系统性偏差，偏差出在「得分-价格背离时的执行层」；改在<b>规则层</b>新增「背离强制降档」：当板块得分 ≥1（偏多区）但对应价格 2w 跌幅 &gt;5% 时，信号执行层强制降一档并挂 reversal_watch（本期黄金即触发：得分 1.39 但价格 2w -7.2%，执行按中性观察处理）。该规则自本期起生效，写入附录 A5。</p>
+<table class="verify-table">
+  <tr><th>信号日</th><th>期次</th><th>验证日</th><th>核心信号</th><th>复核结果</th><th>命中率</th></tr>
+  <tr><td class="num">2026-07-17</td><td>第1期</td><td class="num">2w 07-31<br>4w 08-14</td><td>加配:银行/油气/军工; 减配:医药/软件; 消费中性偏空</td><td>已于第4/6期复核:2w窗口油气✓银行✓软件✓医药✓;4w窗口油气失效✗(8/3-8/6霍尔木兹重开预期油价-5%+),银行✓</td><td class="num">2w: 4/5 ≈80%<br>4w: 3/5 ≈60%</td></tr>
+  <tr><td class="num">2026-07-26</td><td>第2期</td><td class="num">2w 08-09<br>4w 08-23</td><td>加配7板块(油气/军工/银行/黄金/地产/新能源/半导体); 减配:消费/软件/医药</td><td>已于第4/6期复核:2w约50%(油气✗黄金✓✓);4w约70%(黄金+12%✓油气收复✓减配三席✓半导体8/19暴跌✗)</td><td class="num">2w: 约5/10 =50%<br>4w: 约7/10 =70%</td></tr>
+  <tr><td class="num">2026-08-01</td><td>第5期</td><td class="num">2w 08-15<br>4w 08-29</td><td>加配:军工9.56/地产7.55/油气6.25/黄金3.44; 无减配</td><td>已于第6期复核:2w约50%(油气✓黄金✓两项证据不足);4w约100%(油气+5.4%✓黄金+11.3%✓✓地产组合拳✓军工阅兵✓)</td><td class="num">2w: 约2/4 =50%<br>4w: 约4/4 ≈100%(含定性)</td></tr>
+  <tr><td class="num">2026-08-20</td><td>第6期(补发)</td><td class="num">2w 09-03<br>4w 09-17</td><td>加配:黄金5.12/油气3.70; 减配:银行-3.61; 中性偏多:军工/新能源/地产/半导体/电动车/医药; 消费中性偏空</td><td>2w(→9/3)已复核2/4=50%。4w补课(8/20→9/17):油气WTI 86.79→96.53(+11.2%,E76大空袭+E82油轮战)✓;黄金4571→4380(-4.2%,实际利率压制)✗;银行减配→9/16加息落地+银行走强✗(同型失误第四次);消费中性偏空✓</td><td class="num">2w: 2/4 =50%<br>4w: 可验证子集 2/4 =50%(银行同型失误第四次)</td></tr>
+  <tr><td class="num">2026-08-22</td><td>第7期</td><td class="num">2w 08-29<br>4w 09-12</td><td>加配:油气/黄金/新能源/军工/半导体/电动车/地产(7板块); 减配:消费/银行</td><td>已于第11期复核4w(约38%):油气+16%✓✓军工✓消费✓;黄金/半导体/电动车/地产✗;银行减配✗(同型失误第三次)——'加配阵营过宽'教训</td><td class="num">2w: 已复核(4/6 ≈67%)<br>4w: 约3/8 ≈38%</td></tr>
+  <tr><td class="num">2026-08-29</td><td>第8期</td><td class="num">1w 09-05<br>2w 09-19</td><td>加配:油气7.81/军工5.39; 减配:电动车-3.69/高端制造-4.66/软件-6.25/消费-7.11; 银行中性偏多2.87; 黄金中性偏空-1.09</td><td>1w已复核约86%。2w补课(8/29→9/19):油气83.34→95.47(+14.6%)✓✓;军工✓(E95会谈推迟+管道遇袭);银行✓(9/16加息落地,10Y 4.94%);黄金中性偏空✓(4508→4416,-2%);软件/消费减配✓;高端制造/电动车减配~✓(美股纳指9/22四连涨新高,A股制造链仍承压)</td><td class="num">1w: 约7/8 ≈86%<br>2w: 可验证子集 约7/8 ≈88%</td></tr>
+  <tr><td class="num">2026-09-01</td><td>第9期</td><td class="num">2w 09-15<br>4w 09-29</td><td>加配:油气11.10/军工8.49/银行5.76; 减配:高端制造-3.02/医药-3.05/软件-5.58/消费-6.61; 黄金/新能源/半导体/地产中性; 电动车中性偏空</td><td>2w(9/1→9/15):油气90.68→105.48(+16.3%)✓✓;军工✓(E76/E82冲突升级);银行✓(加息定价60%→85%+);减配四席✓(9/8-10美股四连跌+柴油破6美元)。4w(9/1→9/29):油气105.48峰值→88.93(-1.9% vs 9/1,五连跌)✗;军工✓;银行✓✓(10Y 5.196创19年新高);软件✓(9/28芯片重挫);消费✓;高端制造~✗(9月末宽松+PMI回升修复);医药✓</td><td class="num">2w: 可验证子集 约7/7 ≈100%<br>4w: 可验证子集 约5/7 ≈71%(油气4w失效)</td></tr>
+  <tr><td class="num">2026-09-05</td><td>第10期</td><td class="num">1w 09-12<br>2w 09-19<br>4w 10-03</td><td>加配:油气12.24/军工9.20/银行5.25; 减配:消费-7.85/软件-5.89/高端制造-3.52/电动车-3.33/医药-3.30; 黄金中性偏多1.38; 半导体中性偏空</td><td>1w非正式已复核约89%。2w(9/5→9/19):油气91.22→95.47✓;军工✓;银行✓(加息落地);减配五席✓;黄金中性偏多✗(4477→4380)。4w(9/5→10/3):油气91.22→91.25(冲高105.48后回落持平)✗;军工✓;银行✓✓(10Y 5.20+);减配五席大体✓(但10/2非农后美股反弹);黄金中性偏多✗✗(4477→4172)</td><td class="num">1w: 约8/9 ≈89%(非正式)<br>2w: 可验证子集 约7/8 ≈88%<br>4w: 可验证子集 约6/9 ≈67%(油气/黄金失效)</td></tr>
+  <tr><td class="num">2026-09-12</td><td>第11期</td><td class="num">2w 09-26<br>4w 10-10</td><td>加配:油气10.63/银行8.06/军工7.77; 减配:高端制造-3.03/电动车-3.71/医药-3.86/软件-5.86/消费-6.32; 黄金/新能源/半导体/地产中性偏空</td><td>2w(9/12→9/26):银行✓✓(加息落地+10Y破5.1→5.196);军工✓(E95会谈破裂+管道遇袭);油气99.99→92.43(-7.6%,E96停火+E104会谈缓和)✗;消费/软件/医药/电动车减配✓;高端制造减配✗(宽松+PMI回升修复);黄金中性偏空✓(4390→4320)。4w(9/12→10/10):银行✓(10Y 5.32创2002新高,10/8工行/中行新高);军工✓(袭击单周最高+胡塞弹道导弹);油气→91.64(-8.4%)✗;消费/医药✓;软件✓(10/8费半-3.39%+A股算力链重挫);高端制造✗;黄金中性偏空✓(4390→4140两月新低后10/9反弹4220,窗口方向正确)</td><td class="num">2w: 可验证子集 约8/10 =80%(油气/高端制造✗)<br>4w: 可验证子集 约8/10 =80%(油气/高端制造✗)</td></tr>
+  <tr><td class="num">2026-10-10</td><td>第12期</td><td class="num">2w 10-24<br>4w 11-07</td><td>加配:油气6.82/军工3.52; 减配:无(清零); 中性偏多:黄金2.64/新能源2.03/银行1.38; 中性偏空:软件-1.78/消费-2.84; ★AI驱动翻负-0.14</td><td>2w(10/10→10/24): ①油气✓✓ WTI 91.64→103.43(+12.9%破百,周五一个月新高103.43/布油盘中117.40); ②军工✓✓ A股军工涨停潮(10/16)+洛马10/22 +5.9%上调全年指引+美以打击计划具体化; ③★AI翻负✓✓✓本期最强信号——KOSPI年内第10次熔断(-7.57%)/纳指两周-5.2%/费半13日自峰值回撤>20%/CoreWeave CDS 1145bp/高收益债市场事实暂停至中选后; ④减配清零✓'清零≠转多'验证——消费-2.84→-2.46/软件-1.78→-2.23仍偏空未误判; ⑤银行中性偏多✓ 四大行10/12-14历史新高后随10Y破5回吐(中行10/23 -4%),方向先对后回; ⑥黄金中性偏多✗唯一失效——4186→4009(-4.2%三连跌破4000),'通胀锁死利率→实际利率上行(TIPS 2.76%)'压倒避险; ⑦新能源中性偏多✓ 10/23电池板块+5.98%领涨(宁德+8%)</td><td class="num">2w: 可验证子集 约6/7 ≈86%(黄金失效)<br>4w: 待2026-11-07</td></tr>
+  <tr><td class="num">2026-10-17</td><td>第13期</td><td class="num">2w 10-31<br>4w 11-14</td><td>加配:油气5.83/军工3.41; 中性偏多:黄金2.30/银行1.61/新能源1.27; 减配:无(连续两期清零); ★AI驱动-0.52连续两周为负</td><td>2w(10/17→10/31): ①油气✓(弱) WTI 101.84→102.94(+1.1%,周内冲103.92后高位滞涨;巨头Q3双超预期+'霍尔木兹实际仍关闭'验证基本面,但《国防生产法》+OPEC+11/1对冲压制)——'事件驱动型加配有效期约2周'规律成立,收益主要在前半段兑现; ②军工✗ 10/25-26中东降温(卡塔尔斡旋/布油-5.35%)使打击预期后移至中选后,2w窗口内无升级催化,A股军工无涨停潮再现; ③黄金✗✗连续第二期失效且幅度加倍——4186.5→3884.4(-7.2%),10/30单日-3.7%:'实际利率压倒避险'之外新增'风险资产化去杠杆抛售'机制(财新:与美股相关系数0.89); ④银行✓✓本期最强验证——10/29中证银行指数年内新高/工行建行历史新高,A股10月暴跌(沪指-6.3%)中红利防御获资金集中,与'12月加息78-90%定价'共振; ⑤新能源✗ 中性偏多未兑现——A股10月双创-23%出清中未能幸免,油价替代逻辑被系统性下跌淹没; ⑥偏空方向✓ 减配清零判断正确(消费/软件/半导体偏空):10月创业板-23%/科创50回撤48%/费半10/23 -6.72%+10/30纳指-2.86%,'清零≠转多'连续两期验证</td><td class="num">2w: 可验证子集 约3.5/6 ≈55-60%(银行✓✓/偏空✓/油气弱✓;军工✗/黄金✗✗/新能源✗)<br>4w: 待2026-11-14</td></tr>
+</table>
+<p class="note"><b>待验证</b>：第 12 期 4w = 2026-11-07 · 第 14 期 2w = 2026-11-07 / 4w = 2026-11-21 · 第 13 期 4w = 2026-11-14 · 本期（第 15 期）2w = 2026-11-14 / 4w = 2026-11-28。</p>
+<ul>
+  <li>'利率→银行'主线在加息落地窗口连续命中:第9期2w约100%、第10期2w约88%、第11期2w/4w均约80%;银行自第8期起方向连续五期正确(第6期'银行减配'同型失误第四次确认为8月鸽派残余期孤立错误,非矩阵失效)</li>
+  <li>油气加配的长窗口失效规律明确:第9期4w(✗)/第10期4w(✗)/第11期2w+4w(均✗)——9/15峰值105.48后缓和交易(E96/E104)主导回落,而2w内事件冲击窗口(第8/9期2w✓✓)命中;结论:油气'事件驱动型加配'有效期约2周,超出须以拥挤度+缓和信号强制减仓,本期已将E126'中选前不攻击'作为上方约束写入评论</li>
+  <li>高端制造减配在第11期2w/4w双窗口失效(✗✗):中国宽松驱动(PSL+贴息+PMI 50.1)对制造链修复的支撑被低估——本期宽松驱动仍+0.44,制造链已升出减配线</li>
+  <li>黄金'中性偏空'第11期双窗口✓(4390→4140两月新低):'10Y≥4.9%环境下黄金不给方向性信号'规则二次验证;但本期框架主导因子切换为地缘溢价(金价10/9反弹4220),信号升中性偏多并开reversal_watch——规则 vs 新 regime 的张力列为月末校准议题</li>
+  <li>精确超额收益复核(2/4周板块代理指数)待A股板块指数代码映射建立后补算;东财接口持续不可用,本期为方向性复核;9/19-10/3缺位三期的快扫信号(9/19/9/23/9/29/10/7)未设验证日,不纳入命中率统计</li>
+  <li>第12期2w复核约86%(6/7):★AI驱动翻负连续第三期强力验证(第13期KOSPI熔断→本期费半回撤20%+信用风暴深化),'事件驱动型加配'油气/军工2w窗口继续命中;黄金'中性偏多'失效(4186→4009,-4.2%)——实际利率上行压倒地缘溢价,与第11期'中性偏空✓'形成对照:'10Y≥4.9%环境下黄金方向性信号须让位于实际利率'规则三次验证,黄金敏感度对列(利率-1.5/美元-1.5)列入10/31月末校准议程</li>
+  <li>第13期2w复核约55-60%(3.5/6)——显著低于第12期(86%),回撤主因:①黄金'中性偏多'连续第二期失效且加重(-4.2%→-7.2%),机制从'实际利率压倒避险'扩展为'风险资产化+月末去杠杆抛售';②军工加配遭遇'打击预期后移至中选后'的窗口错位;★月末校准结论(10/31议程兑现):黄金敏感度对列(利率-1.5/美元-1.5)不改矩阵先验——本期得分端已通过驱动回落自行纠偏(2.30→1.39),改在规则层新增'得分-价格背离强制降档':当板块得分≥1(偏多区)但对应价格2w跌幅>5%时,信号执行层强制降一档并挂reversal_watch(本期黄金即触发);③银行'中性偏多'成2w窗口最强验证,NIM交易(12月加息78-90%)+A股红利防御逻辑双兑现</li>
+</ul>
+
+<h2>十、风险提示</h2>
+<ol>
+  <li><b>中选周事件冲击（11/3）</b>：民调民主党 47% vs 共和党 36% 指向众议院易主，但中选最大的资产含义是「中选前不攻击伊朗」承诺到期+E150 打击窗口开启——若打击兑现，布油冲 120+ 将迫使 12 月加息定价从 25bp 向 50bp 演进（油→通胀→加息螺旋）；若未兑现，油/军工事件溢价回吐 30-50%；</li>
+  <li><b>12 月加息「接近共识」后的双向脆弱性</b>：78-90% 定价意味着——若 11 月数据（非农/CPI）走弱，鸽派重定价将驱动 10Y 快速回落 4.7 下方（利多久期成长/黄金）；若通胀继续加速（PCE 3.6% 路径），50bp 讨论将浮出水面（利空一切长久期）；</li>
+  <li><b>AI 信用链未解冻</b>：亚马逊 FCF TTM -423.57 亿+英特尔指引暴雷把信用担忧从 CoreWeave 扩散至巨头本身；CoreWeave Q3（11 月中，负 FCF 预计 101 亿）若触发重组讨论，纳指出清进入第二阶段；Anthropic 路演（11/9 当周）是情绪修复的唯一近窗机会；⚠️「高收益债市场暂停」仍为单一信源，待交叉验证；</li>
+  <li><b>黄金崩盘的传染性</b>：10/30「股跌+金崩+债涨」是 2020 年 3 月式流动性螺旋的雏形特征——若下周黄金不止跌（3800 失守），需警惕去杠杆向其他资产蔓延（EM、高收益债）；反之若快速收复 3950+，则证明仅为月末一次性出清；</li>
+  <li><b>A 股 10 月出清后的方向选择</b>：沪指 3599.02 失守 3600（月 -6.3%）/双创 -23%，技术上超卖但缺催化；五中全会无经济议程已定论，政策预期转向 12 月中央经济工作会议——11 月为政策真空期，超跌反弹的力度取决于外部（中选/AI 信用）而非内部；</li>
+  <li><b>数据缺口与方法论披露</b>：①DXY/VIX 10/29-30 为估算（接口全不可用，已标注）；10Y 10/30 为财联社快闪口径、10/29 为估算；②美国 Q3 GDP「上修 3.2%」为 B 级单一信源未采信；③A 股板块指数精确超额收益仍待代码映射建立后补算；</li>
+  <li><b>矩阵局限</b>：敏感度矩阵 v1.0 先验值未经完整回测；第 13 期 2w 复核约 55-60%（3.5/6），较第 12 期（86%）显著回撤——主因黄金连续两期失效+军工窗口错位；月末校准已在规则层新增「背离强制降档」，矩阵先验暂不调整，待 11/28（本期 4w）再评估；</li>
+  <li>所有输出为研究追踪用途，不构成投资建议。</li>
+</ol>
+
+<h2>附录 A：分值推导逻辑详解</h2>
+
+<h3>A1. 三层打分结构</h3>
+<div class="formula">
+第 1 层 · 事件分 = 方向(±) × 强度(1–5) × 确定性(0–1) × 时间衰减<br>
+第 2 层 · 驱动分 = Σ 事件分 × 事件对宏观驱动的分配权重<br>
+第 3 层 · 板块分 = Σ 驱动分 × 板块敏感度（-2 ~ +2）<br>
+信　号 · 板块分 ≥ +3 → 轮动中(加配)；≤ -3 → 减配；其余 → 中性/观察（拥挤度修正）
+</div>
+<ul>
+  <li><b>强度（1–5）</b>：事件对宏观定价的潜在冲击量级。参考标准：5=危机级，4=央行政策转向或 decisive 数据/冲突固化，3=重要政策/会议或显著供给冲击（如 E160 FOMC 鹰派按兵/E168 PCE 加速/E173 黄金崩盘），2=常规政策或产业事件（如 E166 五中全会公报/E167 ECB/E169 BOJ/E172 石油巨头财报），1=噪音。</li>
+  <li><b>确定性（0–1）</b>：已发生事件取 0.7–1.0（按市场消化程度）；预期事件取市场隐含概率或主观概率。本期无确定性上调事件；复核调整 1 项：E159（以色列大选初步计票内氏阵营 53&gt;48，正式结果 11/4，确定性维持 0.8）；失效叙事直接归档而非降权（E16 欧盟关税预期被中欧 TIC 谅解承接归档、E149 全会预期由 E166 公报承接、E144 央行周临近由 E160/E167/E169 兑现承接）。</li>
+  <li><b>时间衰减</b>：已发生事件按半衰期 7 天衰减（避免旧闻长期主导评分）；预期事件不衰减，以确定性加权，兑现后转为已发生重新计时。本期 decay 锚从 10/24 推进至 10/31：10/17 以前的已发生事件衰减至 ≤0.50（E123/E126/E127 衰减至 0.10 是油/地缘驱动回落的主机制之一）；本期归档 8 项，活跃事件 41 项。</li>
+  <li><b>驱动分配权重</b>：一个事件可同时冲击多个宏观驱动。例如 E173 周五 risk-off+黄金崩盘：ai_cycle_up -0.2（纳指 -2.86%/费半续跌）、global_growth_up -0.1（risk-off 的增长含义）、us_rates_up -0.1（避险买盘压 10Y 至七周新低）、usd_strength +0.1（避险美元买盘）；E170 亚马逊财报：ai_cycle_up -0.3（FCF TTM -423.57 亿缺口暴增=「FCF 为负即原罪」定价准则确立）、global_growth_up -0.1；E166 五中全会公报：china_easing +0.1（「用好用足宏观政策」段落）、global_growth_up +0.1（政策托底预期）。</li>
+</ul>
+
+<h3>A2. 本期驱动分的实际推导（哪项事件贡献了多少）</h3>
+<table>
+  <tr><th>宏观驱动</th><th>得分</th><th>构成</th></tr>
+  <tr><td><b>地缘风险</b></td><td class="num"><b>+1.11</b></td><td>E12 +0.35 ｜ E150 +0.15 ｜ E174 +0.14 ｜ E153 +0.12 ｜ E157 -0.11 ｜ E146 +0.09 ｜ E143 +0.08 ｜ E159 +0.06 ｜ E127 +0.06 ｜ E133 +0.05 ｜ E136 +0.04 ｜ E123 +0.04 ｜ E164 +0.03 ｜ E126 +0.03</td></tr>
+  <tr><td><b>油价上行</b></td><td class="num"><b>+1.07</b></td><td>E12 +0.35 ｜ E150 +0.15 ｜ E172 +0.12 ｜ E157 -0.11 ｜ E143 +0.10 ｜ E153 +0.08 ｜ E127 +0.07 ｜ E174 +0.07 ｜ E146 +0.06 ｜ E123 +0.05 ｜ E126 +0.03 ｜ E133 +0.03 ｜ E164 +0.03 ｜ E136 +0.03</td></tr>
+  <tr><td><b>全球利率上行</b></td><td class="num"><b>+0.40</b></td><td>E168 +0.12 ｜ E160 +0.11 ｜ E137 +0.09 ｜ E169 +0.08 ｜ E173 -0.08 ｜ E167 +0.07 ｜ E145 -0.06 ｜ E130 +0.04 ｜ E142 +0.04 ｜ E147 +0.03 ｜ E156 -0.02 ｜ E126 -0.02</td></tr>
+  <tr><td><b>贸易摩擦</b></td><td class="num"><b>+0.35</b></td><td>E12 +0.35 ｜ E139 -0.03 ｜ E155 +0.03</td></tr>
+  <tr><td><b>中国政策宽松</b></td><td class="num"><b>+0.22</b></td><td>E152 +0.08 ｜ E166 +0.08 ｜ E132 +0.03 ｜ E165 +0.03</td></tr>
+  <tr><td><b>美元走强</b></td><td class="num"><b>+0.17</b></td><td>E167 +0.07 ｜ E168 +0.04 ｜ E173 +0.04 ｜ E137 +0.04 ｜ E142 -0.02 ｜ E145 -0.01 ｜ E130 +0.01</td></tr>
+  <tr><td><b>全球增长改善</b></td><td class="num"><b>+0.00</b></td><td>E173 -0.08 ｜ E152 +0.04 ｜ E156 +0.04 ｜ E172 +0.04 ｜ E166 +0.04 ｜ E151 -0.04 ｜ E167 -0.04 ｜ E170 -0.04 ｜ E147 -0.03 ｜ E165 +0.03 ｜ E155 +0.03 ｜ E140 -0.02 ｜ E142 +0.02</td></tr>
+  <tr><td><b>AI产业周期</b></td><td class="num"><b>-0.72</b></td><td>E151 -0.22 ｜ E170 -0.22 ｜ E173 -0.15 ｜ E140 -0.15 ｜ E171 -0.15 ｜ E161 +0.13 ｜ E141 +0.10 ｜ E158 +0.08 ｜ E162 -0.06 ｜ E137 -0.04 ｜ E148 -0.03</td></tr>
+</table>
+
+<h3>A3. 板块敏感度的设定依据</h3>
+<p>敏感度（-2 ~ +2）是<b>先验判断值</b>，不是回归拟合值——与美林时钟、Bridgewater 四驱动框架、BlackRock 主题敏感度表同属「结构化专家判断」流派。设定依据三类证据：</p>
+<ol>
+  <li><b>传导机制</b>：该驱动如何进入板块的盈利或估值。例：利率上行 → 银行净息差扩张（盈利端，+2.0）；利率上行 → 软件远端现金流折现受损（估值端，-1.5）。</li>
+  <li><b>历史 regime 表现</b>：2016–17、2021–22 加息周期中银行显著跑赢、长久期成长跑输；历次油价冲击中能源股相对收益与油价涨幅高度同向。</li>
+  <li><b>对冲结构</b>：同一驱动对板块可能存在双向力量，取净值。例：黄金 = 实际利率压制（-1.5）与避险需求（+1.5）的拔河——<b>本期得分-价格背离极致化并触发新规则</b>：得分端地缘溢价（1.11×1.5=+1.67）+ 油价传导（1.07×0.5=+0.54）+ 宽松（0.22×1.0=+0.22）仍压倒实际利率（0.40×-1.5=-0.60）与美元（0.17×-1.5=-0.26）、摩擦（0.35×-0.5=-0.18），净 +1.39 维持中性偏多下沿；但价格端 10/30 单日 -3.7% 崩盘（2w -7.2%）——机制从「实际利率压倒避险」扩展为「风险资产化+月末去杠杆抛售」（财新：与美股相关系数 0.89）。月末校准结论：<b>矩阵先验不改</b>（得分端已通过驱动回落自行纠偏 2.30→1.39），改在规则层新增「背离强制降档」（详见 A5）；半导体对地缘 = 供应链受损（负）与国产替代（正），净值 +1.0，但本期主导变量仍为 AI 驱动（-0.72×2.0=-1.44），得分 -1.06 维持中性偏空。</li>
+</ol>
+
+<h3>A4. 本期算例（油气 = +3.65 加配 / 高端制造 = -1.50 中性偏空）</h3>
+<div class="formula">
+油气/煤炭/能源 = 0.40×(+0.5) + 0.22×(+0.5) + 0.17×(+0.5) + 1.07×(+2.0) + 1.11×(+1.0) + 0.00×(+0.5)<br>
+             = 0.20 + 0.11 + 0.09 + 2.14 + 1.11 + 0.00 ≈ <b>+3.65</b> → 轮动中(加配)（唯一一席，较 10/24 的 +4.52 收敛）<br>
+<br>
+高端制造/机器人/工业自动化 = 0.40×(-1.0) + 0.22×(+1.5) + 0.00×(+1.0) + (-0.72)×(+1.5) + 0.35×(-1.0)<br>
+                 = -0.40 + 0.33 + 0.00 - 1.08 - 0.35 ≈ <b>-1.50</b> → 中性偏空（AI 拖累收敛+摩擦缓和+宽松对冲，自 -1.77 回升）
+</div>
+<p class="note">油气仍是「供给冲击」主线的最大受益者，但构成继续从「急性冲击」向「计划化对峙」切换（E150 残余 +0.15/E174 拉锯 +0.07/E172 巨头财报 +0.12 vs E157 降温 -0.11），得分自 +4.52 收敛至 +3.65，拥挤度「高（高位滞涨+巨头财报景气顶点）」——WTI 高位滞涨（-0.5%）与事件动量回落本期同向，连续两期的得分-价格背离已收敛。高端制造是「AI 信用传导」的持续观察样本：AI 驱动 -0.79→-0.72 边际收敛，经 +1.5 敏感度拖累收窄至 -1.08；叠加摩擦缓和（E16 归档后 -0.35）与宽松对冲（+0.33），得分自 -1.77 回升至 -1.50——但 10/28 后 A 股机器人题材热度回落，「题材 vs 驱动」反向背离缓解，reversal_watch 维持观察。</p>
+
+<h3>A5. 校准机制（诚实声明）</h3>
+<ul>
+  <li>敏感度矩阵当前为 v1.0 先验值，<b>未经回测</b>，分值仅供板块间相对比较，不对应具体收益预测。</li>
+  <li>每月最后一周深报执行校准：用 tracking/rotation_tracker.jsonl 中信号与板块指数实际表现核对，命中率 &lt; 50% 的「驱动-板块」敏感度对调整 ±0.5 并记 Changelog；连续两次不合格的板块人工复核。<b>本期（10/31）为月末校准期，议程兑现</b>：完成第 13 期 2w 复核（约 55-60%，3.5/6，较第 12 期 86% 显著回撤）——①黄金「中性偏多」连续第二期失效且加重（-4.2%→-7.2%），机制从「实际利率压倒避险」扩展为「风险资产化+月末去杠杆抛售」；②军工加配遭遇「打击预期后移至中选后」的窗口错位；③银行「中性偏多」成 2w 窗口最强验证（NIM 交易+A 股红利防御双兑现）。<b>校准结论：黄金敏感度对列（利率 -1.5/美元 -1.5）不改矩阵先验</b>——本期得分端已通过驱动回落自行纠偏（2.30→1.39），矩阵本身无系统性偏差，偏差出在「得分-价格背离时的执行层」；<b>规则层新增「背离强制降档」（本期起生效）：当板块得分 ≥1（偏多区）但对应价格 2w 跌幅 &gt;5% 时，信号执行层强制降一档并挂 reversal_watch</b>（本期黄金即触发：得分 1.39 但价格 2w -7.2%，执行按中性观察处理）。</li>
+  <li>7/17 期信号于 07-31、08-14 验证；7/26 期于 08-09、08-23；8/01 期于 08-15、08-29；8/20（补发第6期）于 09-03、09-17；8/22 第7期于 08-29、09-12；8/29 第8期于 09-05、09-19；9/01 第9期于 09-15、09-29；9/05 第10期于 09-12（1w 非正式）、09-19、10-03；9/12 第11期于 09-26、10-10；10/10 第12期于 10-24（2w 约 86%）、11-07；10/17 第13期于 <b>10-31（本期已复核 2w 约 55-60%）</b>、11-14；10/24 第14期于 11-07、11-21；<b>本期（10/31 第15期）于 11-14、11-28。</b>9/19-10/3 缺位三期的快扫信号未设验证日，不纳入统计。</li>
+</ul>
+
+<footer>
+  <p class="warn"><b>免责声明</b>：本报告为研究追踪用途，不构成投资建议。</p>
+  <p>数据来源：CME FedWatch · 财联社（10/30 10Y 快闪） · 金十数据 · 华尔街见闻 · 新浪财经（美股 API 实测/期货日线 10/29-30 回填 OHLC） · 东方财富 · 汇通网 · 中金在线 · 证券时报 · 财新（A 股月线/黄金风险资产化专栏）· CNBC/路透/NYT/FT（转引）· 高盛/摩根士丹利/伯恩斯坦/CIBC（转引）· 央广网 · 腾讯财经（手机端导入研报，本期连续第四期零准入）；DXY/VIX 10/29-30 为估算标注，stooq/东财行情接口持续不可用</p>
+  <p>generated by <b>macro_rotation v1.0</b> · 方法论见 METHODOLOGY.md · <b>2026-10-31 第15期 · 每周深报（周六 06:00 CST）</b></p>
+</footer>
+
+</div>
+</body>
+</html>
