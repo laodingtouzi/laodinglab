@@ -1,14 +1,14 @@
 {
- "generated_at": "2026-10-30T19:02:46",
- "unread_count": 3,
+ "generated_at": "2026-10-30T21:00:05",
+ "unread_count": 2,
  "meta": {
-  "checked_at": "2026-10-30T19:02:46",
+  "checked_at": "2026-10-30T21:00:05",
   "date": "2026-10-30",
   "trading_day": true,
   "trading_day_reason": "daily_scores(当日有评分记录)",
   "cron_log_count": 1,
   "run_completed": true,
-  "online_check": "parse_failed",
+  "online_check": "online_updated(2026-10-30)",
   "guard_alert_count": 19,
   "weekly_latest": "weekly_20261025_132844.log",
   "weekly_age_days": 4,
@@ -21,34 +21,24 @@
  },
  "alerts": [
   {
-   "id": "ONLINE_CHECK_FAILED_20261030_190246",
-   "level": "error",
-   "code": "ONLINE_CHECK_FAILED",
-   "title": "线上页面头部未解析到日期",
-   "detail": "Range 0-32767 内无日期文本，页面结构可能变更。",
-   "action": "人工访问线上页确认",
-   "date": "2026-10-30",
-   "ts": "2026-10-30T19:02:46"
-  },
-  {
-   "id": "GUARD_CRIT_20261030_190246",
+   "id": "GUARD_CRIT_20261030_210005",
    "level": "error",
    "code": "GUARD_CRIT",
    "title": "守门告警当日出现 CRIT 级熔断",
    "detail": "Kimi侧:2026-10-30T18:31:04 [GUARD-ALERT] I13 warn: stock_industry 2 项异常 ← US 覆盖 0（存量已知缺口，WARN 注明不升 CRIT）; updated_at 最大 2026-08；Kimi侧:2026-10-30T18:31:20 [GUARD-ALERT] SYNC-ZERO warn: WB同步「mobile_input」连续2个交易日零增量（上次复制 无记录）← WB 侧该类数据源可能断供；Kimi侧:2026-10-30T18:31:20 [GUARD-ALERT] SYNC-ZERO warn: WB同步「extended/consensus」连续2个交易日零增量（上次复制 无记录）← WB 侧该类数据源可能断供",
    "action": "查看对应 guard_alerts.log，WB 数据源可能断供",
    "date": "2026-10-30",
-   "ts": "2026-10-30T19:02:46"
+   "ts": "2026-10-30T21:00:05"
   },
   {
-   "id": "POST_SELL_DRIFT_20261030_190246",
+   "id": "POST_SELL_DRIFT_20261030_210005",
    "level": "warn",
    "code": "POST_SELL_DRIFT",
    "title": "沽后对账发现双写漂移 3 条",
    "detail": "当日日志 [沽后对账] 修复双写漂移 3 条（JSON↔DB 曾不一致）。",
    "action": "关注 post_sell JSON 与 DB 一致性，必要时人工核对",
    "date": "2026-10-30",
-   "ts": "2026-10-30T19:02:46"
+   "ts": "2026-10-30T21:00:05"
   }
  ]
 }
