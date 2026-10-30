@@ -1,54 +1,54 @@
 {
- "generated_at": "2026-10-29T21:00:05",
+ "generated_at": "2026-10-30T19:02:46",
  "unread_count": 3,
  "meta": {
-  "checked_at": "2026-10-29T21:00:05",
-  "date": "2026-10-29",
+  "checked_at": "2026-10-30T19:02:46",
+  "date": "2026-10-30",
   "trading_day": true,
   "trading_day_reason": "daily_scores(当日有评分记录)",
   "cron_log_count": 1,
   "run_completed": true,
-  "online_check": "curl_failed",
-  "guard_alert_count": 1,
+  "online_check": "parse_failed",
+  "guard_alert_count": 19,
   "weekly_latest": "weekly_20261025_132844.log",
-  "weekly_age_days": 3,
+  "weekly_age_days": 4,
   "monthly_latest": "月度复盘_2026-10.html",
-  "monthly_age_days": 4,
+  "monthly_age_days": 5,
   "launchd_status": "loaded(last_exit=0)",
   "admin_server": "up(200)",
-  "post_sell_recon": "drift(1)",
+  "post_sell_recon": "drift(3)",
   "sentiment_cache": "fresh"
  },
  "alerts": [
   {
-   "id": "ONLINE_CHECK_FAILED_20261029_210005",
+   "id": "ONLINE_CHECK_FAILED_20261030_190246",
    "level": "error",
    "code": "ONLINE_CHECK_FAILED",
-   "title": "线上报告头部拉取失败",
-   "detail": "curl Range 请求异常: 'utf-8' codec can't decode byte 0xe9 in position 32767: unexpected end of data",
-   "action": "检查本机网络",
-   "date": "2026-10-29",
-   "ts": "2026-10-29T21:00:05"
+   "title": "线上页面头部未解析到日期",
+   "detail": "Range 0-32767 内无日期文本，页面结构可能变更。",
+   "action": "人工访问线上页确认",
+   "date": "2026-10-30",
+   "ts": "2026-10-30T19:02:46"
   },
   {
-   "id": "GUARD_ALERT_20261029_210005",
-   "level": "warn",
-   "code": "GUARD_ALERT",
-   "title": "守门告警日志当日有新增",
-   "detail": "Kimi侧(tri_market_stock_model)；WB侧(tri_market_stock_model_wb) 当日有写入，数据质量守门触发过熔断。",
-   "action": "查看对应 guard_alerts.log 内容",
-   "date": "2026-10-29",
-   "ts": "2026-10-29T21:00:05"
+   "id": "GUARD_CRIT_20261030_190246",
+   "level": "error",
+   "code": "GUARD_CRIT",
+   "title": "守门告警当日出现 CRIT 级熔断",
+   "detail": "Kimi侧:2026-10-30T18:31:04 [GUARD-ALERT] I13 warn: stock_industry 2 项异常 ← US 覆盖 0（存量已知缺口，WARN 注明不升 CRIT）; updated_at 最大 2026-08；Kimi侧:2026-10-30T18:31:20 [GUARD-ALERT] SYNC-ZERO warn: WB同步「mobile_input」连续2个交易日零增量（上次复制 无记录）← WB 侧该类数据源可能断供；Kimi侧:2026-10-30T18:31:20 [GUARD-ALERT] SYNC-ZERO warn: WB同步「extended/consensus」连续2个交易日零增量（上次复制 无记录）← WB 侧该类数据源可能断供",
+   "action": "查看对应 guard_alerts.log，WB 数据源可能断供",
+   "date": "2026-10-30",
+   "ts": "2026-10-30T19:02:46"
   },
   {
-   "id": "POST_SELL_DRIFT_20261029_210005",
+   "id": "POST_SELL_DRIFT_20261030_190246",
    "level": "warn",
    "code": "POST_SELL_DRIFT",
-   "title": "沽后对账发现双写漂移 1 条",
-   "detail": "当日日志 [沽后对账] 修复双写漂移 1 条（JSON↔DB 曾不一致）。",
+   "title": "沽后对账发现双写漂移 3 条",
+   "detail": "当日日志 [沽后对账] 修复双写漂移 3 条（JSON↔DB 曾不一致）。",
    "action": "关注 post_sell JSON 与 DB 一致性，必要时人工核对",
-   "date": "2026-10-29",
-   "ts": "2026-10-29T21:00:05"
+   "date": "2026-10-30",
+   "ts": "2026-10-30T19:02:46"
   }
  ]
 }
