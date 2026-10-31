@@ -1,44 +1,56 @@
 {
- "generated_at": "2026-10-30T21:00:05",
- "unread_count": 2,
+ "generated_at": "2026-10-31T19:46:24",
+ "unread_count": 3,
  "meta": {
-  "checked_at": "2026-10-30T21:00:05",
-  "date": "2026-10-30",
+  "checked_at": "2026-10-31T19:46:24",
+  "date": "2026-10-31",
   "trading_day": true,
   "trading_day_reason": "daily_scores(当日有评分记录)",
   "cron_log_count": 1,
   "run_completed": true,
-  "online_check": "online_updated(2026-10-30)",
-  "guard_alert_count": 19,
-  "weekly_latest": "weekly_20261025_132844.log",
-  "weekly_age_days": 4,
+  "online_check": "parse_failed",
+  "guard_alert_count": 14,
+  "weekly_latest": "weekly_20261031_104005.log",
+  "weekly_age_days": -1,
   "monthly_latest": "月度复盘_2026-10.html",
-  "monthly_age_days": 5,
+  "monthly_age_days": -1,
   "launchd_status": "loaded(last_exit=0)",
-  "admin_server": "up(200)",
-  "post_sell_recon": "drift(3)",
-  "sentiment_cache": "fresh"
+  "admin_server": "down(000)",
+  "post_sell_recon": "drift(4)",
+  "sentiment_cache": "fresh",
+  "data_gap_today": [],
+  "pending_gaps": []
  },
  "alerts": [
   {
-   "id": "GUARD_CRIT_20261030_210005",
+   "id": "ONLINE_CHECK_FAILED_20261031_194624",
    "level": "error",
-   "code": "GUARD_CRIT",
-   "title": "守门告警当日出现 CRIT 级熔断",
-   "detail": "Kimi侧:2026-10-30T18:31:04 [GUARD-ALERT] I13 warn: stock_industry 2 项异常 ← US 覆盖 0（存量已知缺口，WARN 注明不升 CRIT）; updated_at 最大 2026-08；Kimi侧:2026-10-30T18:31:20 [GUARD-ALERT] SYNC-ZERO warn: WB同步「mobile_input」连续2个交易日零增量（上次复制 无记录）← WB 侧该类数据源可能断供；Kimi侧:2026-10-30T18:31:20 [GUARD-ALERT] SYNC-ZERO warn: WB同步「extended/consensus」连续2个交易日零增量（上次复制 无记录）← WB 侧该类数据源可能断供",
-   "action": "查看对应 guard_alerts.log，WB 数据源可能断供",
-   "date": "2026-10-30",
-   "ts": "2026-10-30T21:00:05"
+   "code": "ONLINE_CHECK_FAILED",
+   "title": "线上页面头部未解析到日期",
+   "detail": "Range 0-32767 内无日期文本，页面结构可能变更。",
+   "action": "人工访问线上页确认",
+   "date": "2026-10-31",
+   "ts": "2026-10-31T19:46:24"
   },
   {
-   "id": "POST_SELL_DRIFT_20261030_210005",
+   "id": "ADMIN_SERVER_DOWN_20261031_194624",
+   "level": "warn",
+   "code": "ADMIN_SERVER_DOWN",
+   "title": "手搓股服务无响应（HTTP 000）",
+   "detail": "http://localhost:8788/ 返回 000，手动剔除入口不可用。",
+   "action": "检查 admin_server 进程（start_admin_server.sh）",
+   "date": "2026-10-31",
+   "ts": "2026-10-31T19:46:24"
+  },
+  {
+   "id": "POST_SELL_DRIFT_20261031_194624",
    "level": "warn",
    "code": "POST_SELL_DRIFT",
-   "title": "沽后对账发现双写漂移 3 条",
-   "detail": "当日日志 [沽后对账] 修复双写漂移 3 条（JSON↔DB 曾不一致）。",
+   "title": "沽后对账发现双写漂移 4 条",
+   "detail": "当日日志 [沽后对账] 修复双写漂移 4 条（JSON↔DB 曾不一致）。",
    "action": "关注 post_sell JSON 与 DB 一致性，必要时人工核对",
-   "date": "2026-10-30",
-   "ts": "2026-10-30T21:00:05"
+   "date": "2026-10-31",
+   "ts": "2026-10-31T19:46:24"
   }
  ]
 }
