@@ -1,14 +1,14 @@
 {
- "generated_at": "2026-11-01T19:02:58",
- "unread_count": 1,
+ "generated_at": "2026-11-01T21:00:05",
+ "unread_count": 2,
  "meta": {
-  "checked_at": "2026-11-01T19:02:58",
+  "checked_at": "2026-11-01T21:00:05",
   "date": "2026-11-01",
   "trading_day": true,
   "trading_day_reason": "daily_scores(当日有评分记录)",
   "cron_log_count": 1,
   "run_completed": true,
-  "online_check": "online_updated(2026-11-01)",
+  "online_check": "parse_failed",
   "guard_alert_count": 42,
   "weekly_latest": "weekly_20261031_104005.log",
   "weekly_age_days": 0,
@@ -23,14 +23,24 @@
  },
  "alerts": [
   {
-   "id": "POST_SELL_DRIFT_20261101_190258",
+   "id": "ONLINE_CHECK_FAILED_20261101_210005",
+   "level": "error",
+   "code": "ONLINE_CHECK_FAILED",
+   "title": "线上页面头部未解析到日期",
+   "detail": "Range 0-32767 内无日期文本，页面结构可能变更。",
+   "action": "人工访问线上页确认",
+   "date": "2026-11-01",
+   "ts": "2026-11-01T21:00:05"
+  },
+  {
+   "id": "POST_SELL_DRIFT_20261101_210005",
    "level": "warn",
    "code": "POST_SELL_DRIFT",
    "title": "沽后对账发现双写漂移 2 条",
    "detail": "当日日志 [沽后对账] 修复双写漂移 2 条（JSON↔DB 曾不一致）。",
    "action": "关注 post_sell JSON 与 DB 一致性，必要时人工核对",
    "date": "2026-11-01",
-   "ts": "2026-11-01T19:02:58"
+   "ts": "2026-11-01T21:00:05"
   }
  ]
 }
