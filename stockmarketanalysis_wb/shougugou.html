@@ -403,11 +403,23 @@ function renderResult(r){
   } else {
     const hs = sc.holdings_style || {};
     const statusCls = sc.status === 'H' ? 'status-H' : sc.status === 'M' ? 'status-M' : 'status-sell';
+    // 【2026-11-01】档位去歧义：H/M/卖出 只是「评分 vs 阈值」的静态判定，不含交易验证，
+    // 与模块四「策略历史适用性」回答的不是同一个问题。此处显式标注判据来源。
+    let statusHint;
+    if (sc.status === 'H') {
+      statusHint = '评分 ' + fmt(sc.final_score, 1) + ' ≥ 买入阈值 ' + fmt(hs.buy_threshold, 0);
+    } else if (sc.status === 'M') {
+      statusHint = '评分 ' + fmt(sc.final_score, 1) + ' 介于买入阈值 ' + fmt(hs.buy_threshold, 0)
+                 + ' 与卖出阈值 ' + fmt(hs.sell_threshold, 0) + ' 之间';
+    } else {
+      statusHint = '评分 ' + fmt(sc.final_score, 1) + ' < 卖出阈值 ' + fmt(hs.sell_threshold, 0);
+    }
     html += '<div class="overview-grid">'
       + ov('综合评分', '<span style="font-size:22px;color:var(--accent)">' + fmt(sc.final_score, 1) + '</span>')
-      + ov('模拟状态', '<span class="' + statusCls + '">' + statusText(sc.status) + '</span>')
+      + ov('评分档位（非交易建议）', '<span class="' + statusCls + '">' + statusText(sc.status) + '</span>'
+        + '<span style="font-size:11px;color:var(--text-muted);display:block">（' + statusHint + '）</span>')
       + ov('买入阈值', fmt(hs.buy_threshold, 0)) + ov('卖出阈值', fmt(hs.sell_threshold, 0))
-      + ov('现价', fmt(hs.current_price)) + ov('区间涨幅', (hs.total_return > 0 ? '+' : '') + fmt(hs.total_return) + '%')
+      + ov('现价', fmt(hs.current_price)) + ov('区间涨幅<span style="font-size:10px;font-weight:400;color:var(--text-muted)">（buy&amp;hold·非策略收益）</span>', (hs.total_return > 0 ? '+' : '') + fmt(hs.total_return) + '%')
       + ov('模拟建仓价（区间首日）', fmt(hs.entry_price)) + ov('数据天数', hs.hold_days + ' 日')
       + ov('区间最高/最低', fmt(hs.peak_price) + ' / ' + fmt(hs.trough_price))
       + ov('市场PE中位数', fmt(f.market_median_pe, 1))
@@ -488,7 +500,7 @@ function renderResult(r){
       const cur = view.scoring && view.scoring.factors ? view.scoring.factors : {};
       const curScore = view.scoring && view.scoring.final_score;
       if (bt.tier === 'below_sell') {
-        html += '<div class="note-box" style="margin-top:10px;border-color:var(--sell)"><b>⛔ 不具备投资潜力</b>'
+        html += '<div class="note-box" style="margin-top:10px;border-color:var(--sell)"><b>⛔ 未进入策略交易区间</b>'
           + '<div style="margin-top:6px;font-size:12.5px;line-height:1.7">'
           + '当前综合评分 <b style="color:var(--sell)">' + (curScore === undefined ? '—' : curScore.toFixed(1)) + '</b> '
           + '已低于该市场卖出阈值，策略体系在回测期内均未发出买入信号（合理结论）。'
