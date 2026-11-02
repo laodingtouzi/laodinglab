@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中国储能市场头部玩家调研 · 老丁实验室</title>
+<meta name="description" content="中国储能市场头部玩家调研 — 电芯制造分技术路线格局、大储/工商储/户储应用场景玩家、各企业中国与海外市场占比及主力国家市场追踪">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #edeae6;
+  --bg-surface: #f7f6f4;
+  --bg-dark: #2d3a4f;
+  --bg-dark-light: #364765;
+  --text: #2a3445;
+  --text-secondary: #5c6b80;
+  --text-muted: #9a9a9e;
+  --text-on-dark: #e1dad8;
+  --text-on-dark-muted: #a8a4a0;
+  --border: #d0cbc5;
+  --border-hover: #b8b2aa;
+  --border-dark: rgba(225, 218, 216, 0.12);
+  --accent: #B69C91;
+  --accent-light: #e8ddd5;
+  --accent-2: #76819C;
+  --accent-2-light: #e0e3e8;
+  --accent-3: #9a8a80;
+  --green: #4a7a5a;
+  --green-light: #e3eae4;
+  --shadow: rgba(42, 52, 69, 0.06);
+  --shadow-hover: rgba(42, 52, 69, 0.12);
+  --sans: 'Inter', 'Noto Sans SC', 'PingFang SC', sans-serif;
+  --serif: 'Noto Serif SC', Georgia, serif;
+  --mono: 'Roboto Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--sans); background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
+
+/* header */
+.site-header { background: var(--bg-dark); border-bottom: 1px solid var(--border-dark); padding: 14px 24px; }
+.header-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.logo-group { display: flex; align-items: center; gap: 8px; }
+.logo-mark { width: 28px; height: 28px; border-radius: 6px; background: linear-gradient(135deg, var(--accent), var(--accent-3)); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #fff; flex-shrink: 0; }
+.site-name { font-size: 15px; font-weight: 600; letter-spacing: .02em; color: var(--text-on-dark); line-height: 1.2; }
+.site-name-en { font-family: var(--mono); font-size: 9px; font-weight: 400; color: var(--text-on-dark-muted); letter-spacing: .12em; text-transform: uppercase; display: block; margin-top: 1px; }
+.site-nav { display: flex; gap: 20px; align-items: center; }
+.site-nav a { font-size: 13px; color: var(--text-on-dark-muted); text-decoration: none; transition: color .2s; position: relative; padding-bottom: 2px; }
+.site-nav a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); transition: width .2s; border-radius: 1px; }
+.site-nav a:hover { color: var(--text-on-dark); }
+.site-nav a:hover::after, .site-nav a.active::after { width: 100%; }
+.site-nav a.active { color: var(--text-on-dark); }
+
+/* hero */
+.page-hero { background: linear-gradient(135deg, #2a3445 0%, #364765 50%, #3d4f6b 100%); padding: 40px 24px 36px; text-align: center; border-bottom: 1px solid var(--border-dark); position: relative; overflow: hidden; }
+.page-hero::before { content: ''; position: absolute; top: 50%; right: 10%; width: 220px; height: 220px; background: radial-gradient(circle, rgba(182,156,145,0.08) 0%, transparent 70%); transform: translateY(-50%); pointer-events: none; }
+.page-hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
+.page-hero-eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--text-on-dark-muted); margin-bottom: 8px; }
+.page-hero-title { font-family: var(--serif); font-size: 34px; font-weight: 700; color: var(--text-on-dark); margin-bottom: 10px; }
+.page-hero-desc { font-size: 13px; color: var(--text-on-dark-muted); line-height: 1.8; font-weight: 300; }
+.page-hero-meta { margin-top: 14px; display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+.page-hero-meta span { font-family: var(--mono); font-size: 10px; letter-spacing: .1em; color: var(--text-on-dark-muted); border: 1px solid var(--border-dark); padding: 4px 10px; border-radius: 4px; }
+
+.main { max-width: 1200px; margin: 0 auto; padding: 32px 24px 56px; }
+
+/* badges */
+.badge { display: inline-block; font-family: var(--mono); font-size: 9px; letter-spacing: .08em; padding: 1px 6px; border-radius: 3px; vertical-align: middle; margin-left: 4px; font-weight: 500; }
+.b-official { background: var(--green-light); color: var(--green); }
+.b-confirmed { background: var(--accent-2-light); color: #4a5878; }
+.b-estimate { background: var(--accent-light); color: #7a5e53; }
+.b-unknown { background: #e5e2de; color: var(--text-muted); }
+
+/* KPI */
+.kpi-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin-bottom: 36px; }
+.kpi { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; box-shadow: 0 1px 3px var(--shadow); }
+.kpi-label { font-family: var(--mono); font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+.kpi-value { font-family: var(--mono); font-size: 24px; font-weight: 500; color: var(--text); line-height: 1.1; }
+.kpi-value .num { font-size: 30px; font-weight: 600; }
+.kpi-note { font-size: 11px; color: var(--text-secondary); margin-top: 6px; font-weight: 300; }
+
+/* sections */
+.doc-section { margin-bottom: 44px; }
+.doc-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 6px; }
+.doc-idx { font-family: var(--mono); font-size: 22px; font-weight: 500; color: var(--accent); }
+.doc-title { font-family: var(--serif); font-size: 21px; font-weight: 700; color: var(--text); }
+.doc-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 18px; font-weight: 300; }
+.doc-section p.body { font-size: 13px; color: var(--text-secondary); line-height: 1.9; margin-bottom: 14px; font-weight: 300; }
+.doc-section p.body b { color: var(--text); font-weight: 600; }
+
+h3.sub-h { font-size: 15px; font-weight: 600; color: var(--text); margin: 22px 0 10px; padding-left: 10px; border-left: 3px solid var(--accent); }
+
+/* callout */
+.callout { border: 1px solid var(--border); border-left: 3px solid var(--accent-2); background: var(--bg-surface); border-radius: 8px; padding: 14px 18px; font-size: 12.5px; color: var(--text-secondary); line-height: 1.8; margin: 14px 0; font-weight: 300; }
+.callout.warn { border-left-color: #b0856a; }
+.callout.info { border-left-color: var(--green); }
+.callout b { color: var(--text); font-weight: 600; }
+
+/* charts */
+.chart-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin: 16px 0; box-shadow: 0 1px 3px var(--shadow); }
+.chart-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.chart-desc { font-size: 11px; color: var(--text-muted); margin-bottom: 12px; font-weight: 300; }
+.chart-box { position: relative; height: 300px; }
+.chart-box.tall { height: 360px; }
+
+/* tables */
+.table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-surface); }
+table.tbl { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.tbl th { font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--border); background: rgba(208,203,197,0.18); white-space: nowrap; }
+.tbl td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--text-secondary); line-height: 1.6; font-weight: 300; }
+.tbl tr:last-child td { border-bottom: none; }
+.tbl td b { color: var(--text); font-weight: 600; }
+.tbl .r { font-family: var(--mono); font-size: 11px; white-space: nowrap; }
+
+/* rank list */
+.rank-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; margin: 14px 0; }
+.rank-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+.rank-card h4 { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+.rank-card .src { font-family: var(--mono); font-size: 9px; color: var(--text-muted); letter-spacing: .08em; margin-bottom: 10px; text-transform: uppercase; }
+.rank-list { list-style: none; }
+.rank-list li { display: flex; align-items: baseline; gap: 8px; font-size: 12.5px; color: var(--text-secondary); padding: 4px 0; border-bottom: 1px dashed rgba(208,203,197,0.5); font-weight: 300; }
+.rank-list li:last-child { border-bottom: none; }
+.rank-list .no { font-family: var(--mono); font-size: 10px; color: var(--accent-3); width: 16px; flex-shrink: 0; }
+.rank-list .v { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--text-muted); white-space: nowrap; }
+
+/* company cards */
+.co-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 16px; margin: 16px 0; }
+.co-item { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px var(--shadow); transition: all .25s ease; }
+.co-item:hover { transform: translateY(-2px); box-shadow: 0 8px 24px -4px var(--shadow-hover); border-color: var(--border-hover); }
+.co-head { display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px; flex-wrap: wrap; }
+.co-name { font-size: 15px; font-weight: 700; color: var(--text); }
+.co-ticker { font-family: var(--mono); font-size: 10px; color: var(--text-muted); }
+.co-seg { font-family: var(--mono); font-size: 9px; letter-spacing: .08em; color: #7a5e53; background: var(--accent-light); padding: 2px 6px; border-radius: 3px; }
+.co-body { font-size: 12.5px; color: var(--text-secondary); line-height: 1.8; font-weight: 300; }
+.co-body .row { margin-bottom: 6px; }
+.co-body .k { color: var(--text-muted); font-size: 11px; }
+.co-hot { margin-top: 8px; font-size: 12px; color: var(--text); background: rgba(118,129,156,0.08); border-radius: 6px; padding: 8px 10px; line-height: 1.7; font-weight: 300; }
+.co-hot b { font-weight: 600; }
+
+/* footer */
+.site-footer { padding: 16px 24px; border-top: 1px solid var(--border-dark); background: var(--bg-dark); }
+.footer-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+.footer-brand { font-size: 13px; font-weight: 600; color: var(--text-on-dark-muted); }
+.footer-note { font-family: var(--mono); font-size: 10px; color: var(--text-on-dark-muted); letter-spacing: .08em; text-transform: uppercase; }
+
+@media (max-width: 768px) {
+  .site-header, .page-hero, .main { padding-left: 18px; padding-right: 18px; }
+  .header-inner { justify-content: center; text-align: center; }
+  .site-nav { display: none; }
+  .page-hero-title { font-size: 24px; }
+  .chart-box { height: 260px; }
+  .chart-box.tall { height: 320px; }
+  .doc-title { font-size: 18px; }
+  .co-grid, .rank-grid { grid-template-columns: 1fr; }
+  .footer-inner { justify-content: center; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" style="text-decoration:none;">
+      <div class="logo-group">
+        <div class="logo-mark">L</div>
+        <div>
+          <div class="site-name">老丁实验室</div>
+          <div class="site-name-en">Laodinglab</div>
+        </div>
+      </div>
+    </a>
+    <nav class="site-nav">
+      <a href="/newenergynews">每日简报</a>
+      <a href="/globalnewenergydata">全球数据</a>
+      <a href="/chinapowermarket">市场研究</a>
+      <a href="/powerstation_fin_model">投资模型</a>
+      <a href="/solarstoragemarket/" class="active">光储行业市场动态</a>
+    </nav>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-hero-eyebrow">Energy Storage Market · Player Landscape</div>
+    <h1 class="page-hero-title">中国储能市场头部玩家调研</h1>
+    <p class="page-hero-desc">制造板块（储能电芯 · 分技术路线）× 应用板块（大储 / 工商储 / 户储）双维拆解，追踪头部玩家的出货规模、竞争格局、中国与海外市场占比及主力国家市场。</p>
+    <div class="page-hero-meta">
+      <span>第 1 期 · 创刊号</span>
+      <span>2026-11-02</span>
+      <span>月度更新</span>
+      <span>数据截至 2026 年 10 月</span>
+    </div>
+  </div>
+</section>
+
+<main class="main">
+
+<!-- KPI -->
+<div class="kpi-strip">
+  <div class="kpi">
+    <div class="kpi-label">中国新型储能累计装机 <span class="badge b-official">官方</span></div>
+    <div class="kpi-value"><span class="num">136</span> GW</div>
+    <div class="kpi-note">351 GWh · 2025 年底 · 同比 +84%（能源局口径）</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">2025 全球储能电芯出货 <span class="badge b-estimate">推算</span></div>
+    <div class="kpi-value"><span class="num">612</span> GWh</div>
+    <div class="kpi-note">同比 +94.6% · InfoLink 口径，Top10 全部为中国企业</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">2025 全球储能系统出货 <span class="badge b-estimate">推算</span></div>
+    <div class="kpi-value"><span class="num">421</span> GWh</div>
+    <div class="kpi-note">同比 +75.5% · InfoLink 口径，Top10 中国企业占 8 席</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">海外电芯出货占比 <span class="badge b-estimate">推算</span></div>
+    <div class="kpi-value"><span class="num">49</span>%</div>
+    <div class="kpi-note">2025 全年 · 2025H2 达 51.3%，海外首超中国（InfoLink）</div>
+  </div>
+</div>
+
+<!-- 01 行业大盘 -->
+<section class="doc-section">
+  <div class="doc-head"><span class="doc-idx">01</span><span class="doc-title">行业大盘：装机从"强配驱动"转向"市场驱动"</span></div>
+  <div class="doc-sub">136 号文取消强制配储是分水岭；独立储能取代新能源配储成为新增主力形态</div>
+
+  <p class="body">截至 2025 年底，全国已建成投运新型储能 <b>1.36 亿千瓦 / 3.51 亿千瓦时</b>，较 2024 年底增长 84%，平均储能时长提升至 <b>2.58 小时</b> <span class="badge b-official">官方</span>。2025 年全年新增投运约 <b>66GW / 190GWh</b>，中国新增装机占全球比重约 <b>58.6%</b>，连续四年居全球首位 <span class="badge b-estimate">推算</span>。</p>
+
+  <div class="chart-card">
+    <div class="chart-title">中国新型储能累计装机规模（GW）</div>
+    <div class="chart-desc">CNESA 口径 · 2025 年底累计 144.7GW，与能源局口径（136GW）存在统计范围差异，见附录 A</div>
+    <div class="chart-box"><canvas id="chart-install"></canvas></div>
+  </div>
+
+  <h3 class="sub-h">结构变化（2025 年底，能源局口径）</h3>
+  <div class="table-wrap">
+    <table class="tbl">
+      <tr><th>维度</th><th>数据</th><th>解读</th></tr>
+      <tr><td><b>独立储能占比</b></td><td class="r">累计 51.2%（+5pct）</td><td>2025 年新增 35.4GW 独立储能；2026H1 新增中独立储能占比已达 <b>69.3%</b>，取代配储成为主力形态</td></tr>
+      <tr><td><b>大型化</b></td><td class="r">10 万 kW+ 项目占 72%</td><td>较 2024 年底提高约 10 个百分点</td></tr>
+      <tr><td><b>长时化</b></td><td class="r">4 小时+ 项目占 27.6%</td><td>较 2024 年底提高约 12 个百分点</td></tr>
+      <tr><td><b>技术路线</b></td><td class="r">锂离子 96.1%</td><td>压缩空气 / 液流 / 飞轮合计 3.9%</td></tr>
+      <tr><td><b>利用水平</b></td><td class="r">等效利用 1195 小时</td><td>较 2024 年提升近 300 小时，"建而不用"改善</td></tr>
+    </table>
+  </div>
+
+  <div class="callout warn"><b>2026 年节奏提示：</b>2026 上半年国内新增装机同比回落约 18%，并非需求萎缩，而是"5·31"抢装透支后的节奏回归；叠加独立储能收益版图（容量电价 + 电能量市场 + 辅助服务）成型，行业从"装机导向"切换为"效能导向"。<span class="badge b-estimate">推算</span></div>
+</section>
+
+<!-- 02 制造板块 -->
+<section class="doc-section">
+  <div class="doc-head"><span class="doc-idx">02</span><span class="doc-title">制造板块：储能电芯按技术路线的格局</span></div>
+  <div class="doc-sub">LFP 绝对主导，大电芯（587/588Ah）进入量产元年；钠电开启产业化，液流/压缩空气守长时细分</div>
+
+  <h3 class="sub-h">2.1 技术路线格局</h3>
+  <div class="table-wrap">
+    <table class="tbl">
+      <tr><th>路线</th><th>2025 状态</th><th>关键事件与玩家</th></tr>
+      <tr><td><b>磷酸铁锂（LFP）</b></td><td>装机占比 96.1%，绝对主流 <span class="badge b-official">官方</span></td><td>314Ah 完成主流化（大储市占约 65%）；<b>500Ah+ 大电芯 2026Q1-Q2 陆续量产</b>，587/588Ah 为主力方向，2026 年渗透率预计破 15% <span class="badge b-estimate">推算</span></td></tr>
+      <tr><td><b>钠离子</b></td><td>产业化元年 <span class="badge b-confirmed">企业披露</span></td><td>海辰已量产钠电；比亚迪钠电工业化落地；2026 年 1 月国内在建最大钠电储能电站（洪湖 100MW/200MWh）一期验收</td></tr>
+      <tr><td><b>液流 / 压缩空气 / 飞轮</b></td><td>合计 3.9% <span class="badge b-official">官方</span></td><td>守 4 小时以上长时场景；与锂电错位竞争，不构成主流替代</td></tr>
+    </table>
+  </div>
+
+  <div class="callout info"><b>大电芯军备竞赛：</b>宁德时代 <b>587Ah</b> 已于 2025 年 6 月量产、年内出货目标 3GWh（率先实现 GWh 级交付）；亿纬锂能 <b>628Ah</b>、中创新航 <b>640Ah</b> 跟进；海辰推出 4 小时长时专用 <b>1175Ah</b> 电芯。系统侧 6.25MWh（南都、株洲所、晶科）与 7MWh+（天合 7MWh、海博思创 7.81MWh）方案围绕 587Ah 快速站队。<span class="badge b-confirmed">企业披露</span></div>
+
+  <h3 class="sub-h">2.2 电芯厂出货排名（2025 全年）</h3>
+  <div class="chart-card">
+    <div class="chart-title">2025 全球储能电芯出货（GWh，SNE 口径）</div>
+    <div class="chart-desc">全球合计约 550GWh（+79%）· Top7 全部为中国企业，合计 458GWh、占 83.3% <span class="badge b-estimate">推算</span></div>
+    <div class="chart-box tall"><canvas id="chart-cell"></canvas></div>
+  </div>
+
+  <div class="rank-grid">
+    <div class="rank-card">
+      <h4>InfoLink 2025 年度全球 Top10（全中资）</h4>
+      <div class="src">InfoLink · 612.39GWh · CR10 88.8%</div>
+      <ul class="rank-list">
+        <li><span class="no">1</span>宁德时代</li>
+        <li><span class="no">2</span>海辰储能</li>
+        <li><span class="no">3</span>亿纬锂能</li>
+        <li><span class="no">4</span>比亚迪储能</li>
+        <li><span class="no">5</span>中创新航</li>
+        <li><span class="no">6</span>瑞浦兰钧</li>
+        <li><span class="no">7</span>远景动力</li>
+        <li><span class="no">8</span>国轩高科</li>
+        <li><span class="no">9</span>楚能新能源</li>
+        <li><span class="no">10</span>鹏辉能源</li>
+      </ul>
+    </div>
+    <div class="rank-card">
+      <h4>细分：大储电芯 Top5（2025）</h4>
+      <div class="src">InfoLink · 大储电芯 556.74GWh（+96.7%）</div>
+      <ul class="rank-list">
+        <li><span class="no">1</span>宁德时代</li>
+        <li><span class="no">2</span>海辰储能</li>
+        <li><span class="no">3</span>亿纬锂能</li>
+        <li><span class="no">4</span>中创新航</li>
+        <li><span class="no">5</span>比亚迪储能</li>
+      </ul>
+    </div>
+    <div class="rank-card">
+      <h4>细分：小储（户储）电芯 Top5（2025）</h4>
+      <div class="src">InfoLink · 小储电芯 55.65GWh（+75.5%）</div>
+      <ul class="rank-list">
+        <li><span class="no">1</span>亿纬锂能</li>
+        <li><span class="no">2</span>瑞浦兰钧</li>
+        <li><span class="no">3</span>鹏辉能源</li>
+        <li><span class="no">4</span>国轩高科</li>
+        <li><span class="no">5</span>新能安</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout"><b>2026 年最新动向：</b>2026 上半年全球电芯出货约 468GWh（InfoLink，+94.8%），<b>海外占比首次过半</b>；CR10 降至 82.3% 的历史低位，腰部企业放量、竞争烈度上行。InfoLink 对 2026 全年出货预测为 <b>801GWh</b>。<span class="badge b-estimate">推算</span></div>
+</section>
+
+<!-- 03 应用板块 -->
+<section class="doc-section">
+  <div class="doc-head"><span class="doc-idx">03</span><span class="doc-title">应用板块：大储 / 工商储 / 户储玩家格局</span></div>
+  <div class="doc-sub">大储按"新能源配储 vs 独立储能"切分；工商储与户储即表后市场，户储主战场在海外</div>
+
+  <div class="callout info"><b>划分口径说明：</b>中国语境下"大储"本质即表前市场（电源侧 + 电网侧），因此本报告不对大储再做表前/表后切分，而按 136 号文后有商业意义的<b>商业模式</b>切分——<b>新能源配储</b>（强配存量 + 市场化配储增量）与<b>独立储能/共享储能</b>（容量租赁 + 现货套利 + 容量电价）。工商储、户储天然为表后市场。</div>
+
+  <h3 class="sub-h">3.1 大储（表前）：系统集成商两榜对照</h3>
+  <p class="body">国内榜（CNESA）与全球榜（InfoLink）的名次差异本身就是信息：<b>中车株洲所国内第一但全球第四</b>，说明其基本盘在国内独立储能/配储市场；<b>阳光电源国内第七但全球前二</b>，说明其出货重心在海外大储。</p>
+  <div class="rank-grid">
+    <div class="rank-card">
+      <h4>国内市场系统出货 Top10（2025 年度）</h4>
+      <div class="src">CNESA · 中国企业 · 国内口径</div>
+      <ul class="rank-list">
+        <li><span class="no">1</span>中车株洲所</li>
+        <li><span class="no">2</span>海博思创</li>
+        <li><span class="no">3</span>远景能源</li>
+        <li><span class="no">4</span>中电装储能</li>
+        <li><span class="no">5</span>融和元储</li>
+        <li><span class="no">6</span>比亚迪</li>
+        <li><span class="no">7</span>阳光电源</li>
+        <li><span class="no">8</span>赣锋锂电</li>
+        <li><span class="no">9</span>远信储能</li>
+        <li><span class="no">10</span>新源智储</li>
+      </ul>
+    </div>
+    <div class="rank-card">
+      <h4>全球大储（含工商）系统 Top5（2025 年度）</h4>
+      <div class="src">InfoLink · 375.25GWh（+77.8%）· CR10 60.6%</div>
+      <ul class="rank-list">
+        <li><span class="no">1</span>Tesla</li>
+        <li><span class="no">2</span>阳光电源</li>
+        <li><span class="no">3</span>比亚迪储能</li>
+        <li><span class="no">4</span>中车株洲所</li>
+        <li><span class="no">5</span>海博思创</li>
+      </ul>
+    </div>
+    <div class="rank-card">
+      <h4>全球系统出货 Top5（2025 年度，全场景）</h4>
+      <div class="src">InfoLink · 421.16GWh（+75.5%）</div>
+      <ul class="rank-list">
+        <li><span class="no">1</span>Tesla</li>
+        <li><span class="no">2</span>阳光电源</li>
+        <li><span class="no">3</span>比亚迪储能</li>
+        <li><span class="no">4</span>华为</li>
+        <li><span class="no">5</span>中车株洲所</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout"><b>口径提示：</b>比亚迪自称 2025 年储能系统出货"超 60GWh、全球第一"（公司口径，含直流侧），与 InfoLink 交流侧榜（Tesla 第一）存在统计范围差异；公司口径与第三方口径并列呈现，不做调和。<span class="badge b-confirmed">企业披露</span> 此外，2026Q1 全球系统 Top5 已变为：比亚迪、阳光、华为、Tesla、海博思创——头部仍在快速换位。<span class="badge b-estimate">推算</span></div>
+
+  <h3 class="sub-h">3.2 工商储（表后）：产品化能力定胜负</h3>
+  <div class="rank-grid">
+    <div class="rank-card">
+      <h4>中国企业全球工商储出货 Top3（2025）</h4>
+      <div class="src">GGII 高工产研</div>
+      <ul class="rank-list">
+        <li><span class="no">1</span>阳光电源</li>
+        <li><span class="no">2</span>鹏辉能源</li>
+        <li><span class="no">3</span>奇点能源</li>
+      </ul>
+    </div>
+    <div class="rank-card">
+      <h4>国内用户侧出货 Top5（2024，CNESA）</h4>
+      <div class="src">CNESA · 用户侧口径</div>
+      <ul class="rank-list">
+        <li><span class="no">1</span>奇点能源（连续两年第一）</li>
+        <li><span class="no">2</span>阳光电源</li>
+        <li><span class="no">3</span>鹏辉能源</li>
+        <li><span class="no">4</span>融和元储</li>
+        <li><span class="no">5</span>弘正储能</li>
+      </ul>
+    </div>
+  </div>
+  <p class="body">工商储是 2025-26 年增速最快的表后场景，收益模式为峰谷套利 + 需量管理。竞争关键不是电芯硬件，而是<b>模块化产品化能力</b>（如奇点 eBlock 已累计交付超 1000 个场景、2 万+ 能量块）与渠道下沉。<span class="badge b-confirmed">企业披露</span></p>
+
+  <h3 class="sub-h">3.3 户储（表后）：中国企业的海外生意</h3>
+  <div class="rank-grid">
+    <div class="rank-card">
+      <h4>全球户储系统 Top10（2025 年度）</h4>
+      <div class="src">InfoLink · 35.11GWh（+75.6%）</div>
+      <ul class="rank-list">
+        <li><span class="no">1</span>Tesla</li>
+        <li><span class="no">2</span>华为</li>
+        <li><span class="no">3</span>比亚迪储能</li>
+        <li><span class="no">4</span>阳光电源</li>
+        <li><span class="no">5</span>思格新能源</li>
+        <li><span class="no">6</span>派能科技</li>
+        <li><span class="no">7</span>德业股份</li>
+        <li><span class="no">8</span>麦田能源</li>
+        <li><span class="no">9</span>大秦数能</li>
+        <li><span class="no">10</span>艾罗能源</li>
+      </ul>
+    </div>
+    <div class="rank-card">
+      <h4>欧洲户储 Top5（2026 上半年）</h4>
+      <div class="src">InfoLink · 欧洲 15.25GWh</div>
+      <ul class="rank-list">
+        <li><span class="no">1</span>麦田能源</li>
+        <li><span class="no">2</span>思格新能源</li>
+        <li><span class="no">3</span>华为数字能源</li>
+        <li><span class="no">4</span>德业股份</li>
+        <li><span class="no">5</span>比亚迪储能</li>
+      </ul>
+    </div>
+    <div class="rank-card">
+      <h4>中东非户储 Top5（2026 上半年）</h4>
+      <div class="src">InfoLink · 中东非 3.82GWh</div>
+      <ul class="rank-list">
+        <li><span class="no">1</span>Felicity</li>
+        <li><span class="no">2</span>德业股份</li>
+        <li><span class="no">3</span>大秦数能</li>
+        <li><span class="no">4</span>派能科技</li>
+        <li><span class="no">5</span>思格新能源</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout"><b>格局变化：</b>2026 上半年欧洲户储榜"换新"——麦田、思格等新锐反超华为、比亚迪等老牌玩家；德业凭乌克兰等东欧市场跻身欧洲 Top5，同时在南非、尼日利亚领跑中东非市场。比亚迪在欧洲户储仍以约 20-21% 份额守擂第一（EUPD/S&P 口径），但高端一体机市场正被思格分流。<span class="badge b-estimate">推算</span></div>
+</section>
+
+<!-- 04 中国 vs 海外 -->
+<section class="doc-section">
+  <div class="doc-head"><span class="doc-idx">04</span><span class="doc-title">中国市场 vs 海外市场：各企业占比与主力国家</span></div>
+  <div class="doc-sub">核心结论：电芯环节海外占比已近半（2025H2 首超中国）；系统环节头部企业的海外收入占比普遍过半</div>
+
+  <div class="chart-card">
+    <div class="chart-title">2025 全球储能电芯出货：海外 vs 中国（InfoLink）</div>
+    <div class="chart-desc">海外出货 299.79GWh，占 49.0%；2025H2 海外占比 51.3%，统计以来首超中国 <span class="badge b-estimate">推算</span></div>
+    <div class="chart-box"><canvas id="chart-region"></canvas></div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title">2025 年 1-9 月中国企业海外储能订单分布（GWh，CESA）</div>
+    <div class="chart-desc">合计 214.7GWh（+131.75%）· 欧洲 48.08 / 澳洲 43.21 / 中东 40.06 为三大主力区域 <span class="badge b-estimate">推算</span></div>
+    <div class="chart-box tall"><canvas id="chart-orders"></canvas></div>
+  </div>
+
+  <h3 class="sub-h">头部企业海外占比与主力国家市场</h3>
+  <div class="table-wrap">
+    <table class="tbl">
+      <tr><th>企业</th><th>海外占比（口径）</th><th>主力海外市场</th><th>备注</th></tr>
+      <tr><td><b>阳光电源</b></td><td class="r">58.3%（2025H1 海外营收占比，首超国内）<span class="badge b-confirmed">企业披露</span></td><td>欧洲（区域第一）、美洲、中东（与比亚迪合计约 87%）</td><td>储能营收 372.87 亿元、占比 41.81%，已成第一大业务</td></tr>
+      <tr><td><b>海辰储能</b></td><td class="r">28.6%（2024 海外收入占比）<span class="badge b-confirmed">企业披露</span></td><td>美国（2024 年占海外 60.5%）、欧洲、中东；美国得州 10GWh 基地</td><td>海外毛利率 42.3% 远高于国内；Powin 破产为最大风险事件</td></tr>
+      <tr><td><b>宁德时代</b></td><td class="r">约 30%（2024 海外收入占比）<span class="badge b-confirmed">企业披露</span></td><td>欧洲（匈牙利、西班牙建厂）、美国（技术授权模式）</td><td>2025 海外订单 53.5GWh 居首；587Ah 率先量产</td></tr>
+      <tr><td><b>比亚迪</b></td><td class="r">储能业务遍及 110+ 国 <span class="badge b-confirmed">企业披露</span></td><td>中东（沙特 12.5GWh 全球最大单体）、欧洲（户储份额第一）、拉美</td><td>2025 储能系统出货超 60GWh（公司口径全球第一）</td></tr>
+      <tr><td><b>华为</b></td><td class="r">未单独披露 <span class="badge b-unknown">未知</span></td><td>欧洲（德国等户储双寡头）、中东大储</td><td>全球户储系统第二（2025，InfoLink）</td></tr>
+      <tr><td><b>中车株洲所</b></td><td class="r">国内为主 <span class="badge b-estimate">推算</span></td><td>中国（国内出货/并网双第一），海外起步</td><td>央企体系代表，国内独立储能主要受益者</td></tr>
+      <tr><td><b>思格新能源</b></td><td class="r">几乎全部海外 <span class="badge b-estimate">推算</span></td><td>欧洲（荷比卢、北欧高端市场）、澳洲</td><td>许映童（前华为智能光伏总裁）创办；五合一一体机 + AI 动态电价 + VPP</td></tr>
+      <tr><td><b>派能科技</b></td><td class="r">海外为主 <span class="badge b-estimate">推算</span></td><td>欧洲（德国、意大利）、澳洲</td><td>户储电池包专业化路线</td></tr>
+      <tr><td><b>德业股份</b></td><td class="r">海外为主 <span class="badge b-estimate">推算</span></td><td>东欧（乌克兰）、南非、尼日利亚、中东（伊拉克、黎巴嫩）</td><td>中东非户储第二（2026H1）</td></tr>
+    </table>
+  </div>
+  <div class="callout warn"><b>口径警示：</b>上表"海外占比"混用了<b>收入口径</b>（年报披露）与<b>出货量口径</b>（第三方推算），两者不可直接横比；上市公司年报分部披露的颗粒度不一，未披露者标注"未知"或按第三方数据推算。后续检索到更精确数据将滚动更新表述。</div>
+</section>
+
+<!-- 05 企业画像 -->
+<section class="doc-section">
+  <div class="doc-head"><span class="doc-idx">05</span><span class="doc-title">头部玩家画像（20 家）</span></div>
+  <div class="doc-sub">按板块分组；跨场景企业以"主战场标签"归类，避免重复计数</div>
+
+  <h3 class="sub-h">制造板块 · 储能电芯</h3>
+  <div class="co-grid">
+    <div class="co-item">
+      <div class="co-head"><span class="co-name">宁德时代</span><span class="co-ticker">300750.SZ</span><span class="co-seg">电芯 + 直流侧</span></div>
+      <div class="co-body">
+        <div class="row"><span class="k">2025 电芯出货：</span><b>167GWh</b>（SNE，全球第一，份额 30%）；储能电池销量 121GWh、营收 624.4 亿元（占 14.7%）<span class="badge b-confirmed">企业披露</span></div>
+        <div class="row"><span class="k">技术：</span>587Ah 大电芯 2025 年 6 月率先量产，循环寿命 12,000 次；钠电、固态同步布局</div>
+      </div>
+      <div class="co-hot">海外：收入占比约 30%；欧洲建厂（匈牙利/西班牙），对美技术授权；2025 年 1-9 月海外订单 <b>53.5GWh</b> 居行业首位</div>
+    </div>
+    <div class="co-item">
+      <div class="co-head"><span class="co-name">海辰储能</span><span class="co-ticker">港股 IPO 中</span><span class="co-seg">电芯 + 系统</span></div>
+      <div class="co-body">
+        <div class="row"><span class="k">2025 电芯出货：</span><b>69GWh</b>（SNE，全球第二，+200%）——年度最大黑马，专注储能单一赛道</div>
+        <div class="row"><span class="k">技术：</span>587Ah + 1175Ah 长时专用电芯；已量产钠电</div>
+      </div>
+      <div class="co-hot">海外：2024 年占比 28.6%、毛利率 42.3%；美国曾占海外 60.5%（Powin 破产形成冲击），转向欧洲/中东；得州 10GWh 基地 2025H2 投产；在手订单超 39GWh。<b>风险：</b>与宁德时代 587Ah 专利诉讼进行中</div>
+    </div>
+    <div class="co-item">
+      <div class="co-head"><span class="co-name">亿纬锂能</span><span class="co-ticker">300014.SZ</span><span class="co-seg">电芯</span></div>
+      <div class="co-body">
+        <div class="row"><span class="k">2025 电芯出货：</span><b>66GWh</b>（SNE，全球第三，+65%）；小储电芯全球第一</div>
+        <div class="row"><span class="k">技术：</span>628Ah 大电芯跟进量产；2025H1 储能收入 102.98 亿元（+37%）</div>
+      </div>
+      <div class="co-hot">客户以国内能源央企为主，海外拓展中；大储 + 户储电芯双线居前</div>
+    </div>
+    <div class="co-item">
+      <div class="co-head"><span class="co-name">比亚迪储能</span><span class="co-ticker">002594.SZ</span><span class="co-seg">电芯 + 系统全场景</span></div>
+      <div class="co-body">
+        <div class="row"><span class="k">2025 出货：</span>电芯 <b>48GWh</b>（SNE 第四）；系统超 <b>60GWh</b>（公司口径全球第一）<span class="badge b-confirmed">企业披露</span></div>
+        <div class="row"><span class="k">技术：</span>2710Ah 刀片电池 + MC Cube-T Pro（6.25MWh）；钠电工业化落地</div>
+      </div>
+      <div class="co-hot">海外：110+ 国家、650+ 大型项目；沙特 12.5GWh 全球最大单体；欧洲户储份额第一（约 20-21%）</div>
+    </div>
+    <div class="co-item">
+      <div class="co-head"><span class="co-name">中创新航</span><span class="co-ticker">03931.HK</span><span class="co-seg">电芯</span></div>
+      <div class="co-body">
+        <div class="row"><span class="k">2025 电芯出货：</span><b>40GWh</b>（SNE，+100%）</div>
+        <div class="row"><span class="k">技术：</span>640Ah 大电芯；绑定阳光电源等头部集成商</div>
+      </div>
+      <div class="co-hot">海外电芯出货 Top3（2025H1，InfoLink）；随集成商客户出海</div>
+    </div>
+    <div class="co-item">
+      <div class="co-head"><span class="co-name">瑞浦兰钧</span><span class="co-ticker">00666.HK</span><span class="co-seg">电芯</span></div>
+      <div class="co-body">
+        <div class="row"><span class="k">2025 电芯出货：</span><b>43GWh</b>（SNE 第五）；小储电芯全球第二</div>
+      </div>
+      <div class="co-hot">2025 年 1-9 月海外订单 6.5GWh；问顶电池技术路线</div>
+    </div>
+    <div class="co-item">
+      <div class="co-head"><span class="co-name">国轩高科</span><span class="co-ticker">002074.SZ</span><span class="co-seg">电芯</span></div>
+      <div class="co-body">
+        <div class="row"><span class="k">2025 电芯出货：</span><b>25GWh</b>（SNE 第七，+39%）；小储电芯第四</div>
+      </div>
+      <div class="co-hot">海外订单 8.26GWh（2025 年 1-9 月）；大众股东背景助力欧洲渠道</div>
+    </div>
+  </div>
+
+  <h3 class="sub-h">应用板块 · 大储（系统集成）</h3>
+  <div class="co-grid">
+    <div class="co-item">
+      <div class="co-head"><span class="co-name">阳光电源</span><span class="co-ticker">300274.SZ</span><span class="co-seg">大储 + 工商储 + 户储</span></div>
+      <div class="co-body">
+        <div class="row"><span class="k">2025 系统出货：</span><b>43GWh</b>（+53.6%）；储能营收 372.87 亿元（+49.4%），占比 41.81% 成第一大业务 <span class="badge b-confirmed">企业披露</span></div>
+        <div class="row"><span class="k">排名：</span>全球系统第二（InfoLink/WoodMac 14%）；GGII 工商储全球第一</div>
+      </div>
+      <div class="co-hot">海外：2025H1 海外营收占比 <b>58.3%</b> 首超国内；欧洲区域第一、北美第二、中东与比亚迪合计约 87%</div>
+    </div>
+    <div class="co-item">
+      <div class="co-head"><span class="co-name">中车株洲所</span><span class="co-ticker">中车系</span><span class="co-seg">大储</span></div>
+      <div class="co-body">
+        <div class="row"><span class="k">排名：</span>国内系统出货 + 并网装机<b>双第一</b>（CNESA 2025）；全球系统第五（InfoLink）</div>
+      </div>
+      <div class="co-hot">主战场：国内独立储能/配储市场，央企体系代表；海外扩张起步阶段</div>
+    </div>
+    <div class="co-item">
+      <div class="co-head"><span class="co-name">海博思创</span><span class="co-ticker">688411.SH</span><span class="co-seg">大储</span></div>
+      <div class="co-body">
+        <div class="row"><span class="k">排名：</span>国内第二（CNESA 2025）；全球大储 Top5（InfoLink）</div>
+        <div class="row"><span class="k">产品：</span>基于 587Ah 的 7.81MWh 系统</div>
+      </div>
+      <div class="co-hot">国内独立储能核心受益者；与 Fluence 合作推进国际化</div>
+    </div>
+    <div class="co-item">
+      <div class="co-head"><span class="co-name">远景能源</span><span class="co-ticker">未上市</span><span class="co-seg">大储 + 电芯（远景动力）</span></div>
+      <div class="co-body">
+        <div class="row"><span class="k">排名：</span>国内第三（CNESA 2025）；WoodMac 全球份额 6%</div>
+      </div>
+      <div class="co-hot">风储融合 + 内蒙古独立储能项目集中开工；远景动力电芯全球第七（InfoLink）</div>
+    </div>
+    <div class="co-item">
+      <div class="co-head"><span class="co-name">天合储能</span><span class="co-ticker">天合光能系</span><span class="co-seg">大储</span></div>
+      <div class="co-body">
+        <div class="row"><span class="k">排名：</span>全球系统 Top10（CNESA 全球口径）</div>
+        <div class="row"><span class="k">产品：</span>基于 587Ah 的 7MWh 系统</div>
+      </div>
+      <div class="co-hot">海外订单 7.97GWh（2025 年 1-9 月）；欧洲、澳洲光储协同</div>
+    </div>
+  </div>
+
+  <h3 class="sub-h">应用板块 · 工商储</h3>
+  <div class="co-grid">
+    <div class="co-item">
+      <div class="co-head"><span class="co-name">奇点能源</span><span class="co-ticker">未上市</span><span class="co-seg">工商储</span></div>
+      <div class="co-body">
+        <div class="row"><span class="k">排名：</span>国内用户侧出货<b>连续两年第一</b>（CNESA 2023-2024）；GGII 全球工商储第三（2025）</div>
+      </div>
+      <div class="co-hot">eBlock 智慧能量块累计交付 1000+ 场景、2 万+ 个；产品化路线代表；主战场在国内</div>
+    </div>
+    <div class="co-item">
+      <div class="co-head"><span class="co-name">鹏辉能源</span><span class="co-ticker">300438.SZ</span><span class="co-seg">工商储 + 小储电芯</span></div>
+      <div class="co-body">
+        <div class="row"><span class="k">排名：</span>GGII 全球工商储第二（2025）；小储电芯全球第三（InfoLink）</div>
+      </div>
+      <div class="co-hot">电芯 + 系统一体，户储与工商储双线</div>
+    </div>
+    <div class="co-item">
+      <div class="co-head"><span class="co-name">精控能源</span><span class="co-ticker">隆基系合作</span><span class="co-seg">工商储 + 直流侧</span></div>
+      <div class="co-body">
+        <div class="row"><span class="k">排名：</span>直流侧系统全球 Top5（2025H1，InfoLink）；国内用户侧 Top10（CNESA 2024）</div>
+      </div>
+      <div class="co-hot">直流侧代工转型代表；隆基精控进入 GGII 工商储全球前十</div>
+    </div>
+  </div>
+
+  <h3 class="sub-h">应用板块 · 户储</h3>
+  <div class="co-grid">
+    <div class="co-item">
+      <div class="co-head"><span class="co-name">华为数字能源</span><span class="co-ticker">未上市</span><span class="co-seg">户储 + 大储</span></div>
+      <div class="co-body">
+        <div class="row"><span class="k">排名：</span>全球户储第二（2025，InfoLink）；欧洲与 Tesla 双寡头</div>
+      </div>
+      <div class="co-hot">FusionSolar 逆变器+电池一体化；德国等欧洲市场+中东大储</div>
+    </div>
+    <div class="co-item">
+      <div class="co-head"><span class="co-name">思格新能源</span><span class="co-ticker">Sigenergy · 未上市</span><span class="co-seg">户储 + 工商储</span></div>
+      <div class="co-body">
+        <div class="row"><span class="k">排名：</span>全球户储第五（2025，InfoLink）；<b>欧洲户储第二（2026H1）</b></div>
+      </div>
+      <div class="co-hot">许映童（前华为智能光伏总裁）创办；SigenStor 五合一一体机 + AI 动态电价 + VPP；主战场为欧洲高端市场（荷比卢、北欧）及澳洲，收入几乎全部来自海外</div>
+    </div>
+    <div class="co-item">
+      <div class="co-head"><span class="co-name">派能科技</span><span class="co-ticker">688063.SH</span><span class="co-seg">户储</span></div>
+      <div class="co-body">
+        <div class="row"><span class="k">排名：</span>全球户储第六（2025）；中东非第四（2026H1）</div>
+      </div>
+      <div class="co-hot">Force 系列电池包，兼容多逆变器品牌；欧洲（德/意）、澳洲</div>
+    </div>
+    <div class="co-item">
+      <div class="co-head"><span class="co-name">德业股份</span><span class="co-ticker">605117.SH</span><span class="co-seg">户储 + 微逆</span></div>
+      <div class="co-body">
+        <div class="row"><span class="k">排名：</span>全球户储第七（2025）；<b>中东非第二</b>、欧洲第四（2026H1）</div>
+      </div>
+      <div class="co-hot">差异化市场深耕：东欧（乌克兰）、南非、尼日利亚、中东动荡国家备用电源需求</div>
+    </div>
+    <div class="co-item">
+      <div class="co-head"><span class="co-name">麦田能源</span><span class="co-ticker">未上市</span><span class="co-seg">户储</span></div>
+      <div class="co-body">
+        <div class="row"><span class="k">排名：</span><b>欧洲户储第一（2026H1）</b>；全球户储第八（2025）</div>
+      </div>
+      <div class="co-hot">西欧/北欧/东欧多点开花，2026 年反超老牌玩家；逆变器+电池一体机路线</div>
+    </div>
+    <div class="co-item">
+      <div class="co-head"><span class="co-name">艾罗能源 / 大秦数能</span><span class="co-ticker">688717.SH 等</span><span class="co-seg">户储</span></div>
+      <div class="co-body">
+        <div class="row"><span class="k">排名：</span>全球户储第九、第十（2025，InfoLink）</div>
+      </div>
+      <div class="co-hot">艾罗以欧洲为主；大秦数能中东非第三（2026H1）</div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 数据可靠性 -->
+<section class="doc-section">
+  <div class="doc-head"><span class="doc-idx">06</span><span class="doc-title">数据可靠性分级与来源限制</span></div>
+  <div class="doc-sub">本报告严格区分官方数据、企业披露与推算值，避免把估算包装成确定结论</div>
+  <div class="table-wrap">
+    <table class="tbl">
+      <tr><th>级别</th><th>含义</th><th>本报告典型来源</th></tr>
+      <tr><td><span class="badge b-official">官方</span></td><td>政府部门发布</td><td>国家能源局新闻发布会（装机规模、结构、利用小时）</td></tr>
+      <tr><td><span class="badge b-confirmed">企业披露</span></td><td>上市公司年报/公告、企业官方发布</td><td>阳光电源/宁德时代/比亚迪年报与业绩披露、公司新闻稿</td></tr>
+      <tr><td><span class="badge b-estimate">推算</span></td><td>第三方研究机构统计口径</td><td>CNESA、InfoLink、SNE Research、GGII、CESA、Wood Mackenzie、EUPD/S&P</td></tr>
+      <tr><td><span class="badge b-unknown">未知</span></td><td>无公开可靠数据</td><td>华为储能业务分部数据等</td></tr>
+    </table>
+  </div>
+  <div class="callout warn"><b>主要口径差异：</b>① 能源局（136GW）与 CNESA（144.7GW）累计装机相差约 8.7GW，统计范围不同；② SNE（550GWh）与 InfoLink（612.39GWh）电芯出货相差约 10%，后者含更多二线厂商；③ 比亚迪"全球第一"为公司口径（含直流侧），与 InfoLink 交流侧口径不同；④ "海外占比"存在收入口径与出货量口径混用，已在表格中逐条标注。</div>
+</section>
+
+<!-- 07 跟踪事项 -->
+<section class="doc-section">
+  <div class="doc-head"><span class="doc-idx">07</span><span class="doc-title">重点跟踪事项</span></div>
+  <div class="doc-sub">按优先级排序，下期更新进展</div>
+  <div class="rank-card" style="max-width:100%">
+    <ul class="rank-list">
+      <li><span class="no">1</span><b>500Ah+ 大电芯量产爬坡</b>——宁德 587Ah 年内 3GWh 出货兑现度；亿纬 628Ah、中创新航 640Ah 量产节奏；2026 年渗透率能否破 15%</li>
+      <li><span class="no">2</span><b>海辰储能港股 IPO 与宁德诉讼</b>——587Ah 专利纠纷判决走向、Powin 破产后续影响、美国基地投产爬坡</li>
+      <li><span class="no">3</span><b>独立储能收益模型跑通情况</b>——容量电价省份扩围、现货市场套利空间、等效利用小时数能否持续抬升</li>
+      <li><span class="no">4</span><b>欧洲户储格局重排</b>——麦田/思格反超能否站稳；补贴落地节奏（英国、匈牙利、波兰、荷兰）</li>
+      <li><span class="no">5</span><b>美国关税与本地化</b>——电芯/系统出口关税走向，宁德授权模式、海辰得州基地等本地化路径有效性</li>
+      <li><span class="no">6</span><b>钠电产业化</b>——海辰、比亚迪之外是否有第三家规模量产；钠电储能电站项目经济性强化的拐点</li>
+    </ul>
+  </div>
+</section>
+
+<!-- A 附录 -->
+<section class="doc-section">
+  <div class="doc-head"><span class="doc-idx">A</span><span class="doc-title">附录：口径说明与数据缺口</span></div>
+  <p class="body"><b>已知缺口：</b>① CNESA 2025 年度国内出货 Top10 仅有排名、未公开各家具体 GWh 数值；② 工商储 2025 年度国内榜（CNESA 用户侧）尚未发布，现用 2024 年度数据并标注；③ 华为、远景等未上市企业无财务口径数据；④ 户储企业的分国家出货量为估算值。上述缺口将在各机构数据发布后滚动补齐。</p>
+  <p class="body"><b>更新机制：</b>本报告为月度更新（每月第一个周一），季报季（4 / 8 / 10 月末）出深度版；行业重大事件随时插播。创刊号数据截至 2026 年 10 月，以 2025 年全年 + 2026 上半年数据打底建框架。</p>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span class="footer-brand">老丁实验室 · Laodinglab</span>
+    <span class="footer-note">光储行业市场动态 · 中国储能市场头部玩家调研 · 第 1 期</span>
+  </div>
+</footer>
+
+<script>
+const MORANDI = ['#364765','#B69C91','#76819C','#9a8a80','#5c6b80','#4a7a5a','#8a9bb8','#c4b3a8','#6b8e6b','#a8a4a0'];
+const baseOpt = {
+  responsive: true, maintainAspectRatio: false,
+  plugins: { legend: { labels: { font: { family: "'Noto Sans SC', sans-serif", size: 11 }, color: '#5c6b80' } } },
+  scales: {
+    x: { ticks: { font: { family: "'Noto Sans SC', sans-serif", size: 10 }, color: '#5c6b80' }, grid: { color: 'rgba(208,203,197,0.35)' } },
+    y: { ticks: { font: { family: "'Roboto Mono', monospace", size: 10 }, color: '#5c6b80' }, grid: { color: 'rgba(208,203,197,0.35)' } }
+  }
+};
+
+// 1. 中国累计装机 (CNESA口径)
+new Chart(document.getElementById('chart-install'), {
+  type: 'bar',
+  data: {
+    labels: ['2021', '2022', '2023', '2024', '2025'],
+    datasets: [{
+      label: '累计装机 (GW)',
+      data: [5.7, 13.1, 34.5, 78.2, 144.7],
+      backgroundColor: ['#a8a4a0','#9a8a80','#76819C','#5c6b80','#364765'],
+      borderRadius: 6
+    }]
+  },
+  options: { ...baseOpt, plugins: { ...baseOpt.plugins, legend: { display: false } } }
+});
+
+// 2. 2025 全球电芯出货 (SNE)
+new Chart(document.getElementById('chart-cell'), {
+  type: 'bar',
+  data: {
+    labels: ['宁德时代','海辰储能','亿纬锂能','比亚迪','瑞浦兰钧','中创新航','国轩高科'],
+    datasets: [{
+      label: '2025 出货 (GWh)',
+      data: [167, 69, 66, 48, 43, 40, 25],
+      backgroundColor: MORANDI,
+      borderRadius: 6
+    }]
+  },
+  options: { ...baseOpt, indexAxis: 'y', plugins: { ...baseOpt.plugins, legend: { display: false } } }
+});
+
+// 3. 海外 vs 中国
+new Chart(document.getElementById('chart-region'), {
+  type: 'doughnut',
+  data: {
+    labels: ['海外市场 299.79GWh (49.0%)', '中国市场 312.6GWh (51.0%)'],
+    datasets: [{ data: [299.79, 312.6], backgroundColor: ['#B69C91', '#364765'], borderWidth: 0 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, cutout: '58%',
+    plugins: { legend: { position: 'bottom', labels: { font: { family: "'Noto Sans SC', sans-serif", size: 11 }, color: '#5c6b80', padding: 16 } } } }
+});
+
+// 4. 海外订单区域
+new Chart(document.getElementById('chart-orders'), {
+  type: 'bar',
+  data: {
+    labels: ['欧洲', '澳大利亚', '中东', '其他区域'],
+    datasets: [{
+      label: '2025.1-9 海外订单 (GWh)',
+      data: [48.08, 43.21, 40.06, 83.35],
+      backgroundColor: ['#364765','#76819C','#B69C91','#d0cbc5'],
+      borderRadius: 6
+    }]
+  },
+  options: { ...baseOpt, plugins: { ...baseOpt.plugins,
+    legend: { display: false },
+    tooltip: { callbacks: { afterLabel: (c) => ['波兰 7.7 / 英国 6.2 / 德国 3.7 / 保加利亚 3.7','','阿联酋 20 / 沙特 12 / 土耳其 2.2','亚太、拉美、非洲等'][c.dataIndex] } } }
+  }
+});
+</script>
+
+</body>
+</html>
