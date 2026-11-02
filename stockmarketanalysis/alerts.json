@@ -1,46 +1,72 @@
 {
- "generated_at": "2026-11-01T21:00:05",
- "unread_count": 2,
+ "generated_at": "2026-11-02T19:02:33",
+ "unread_count": 4,
  "meta": {
-  "checked_at": "2026-11-01T21:00:05",
-  "date": "2026-11-01",
+  "checked_at": "2026-11-02T19:02:33",
+  "date": "2026-11-02",
   "trading_day": true,
   "trading_day_reason": "daily_scores(当日有评分记录)",
   "cron_log_count": 1,
   "run_completed": true,
   "online_check": "parse_failed",
-  "guard_alert_count": 42,
+  "guard_alert_count": 36,
   "weekly_latest": "weekly_20261031_104005.log",
-  "weekly_age_days": 0,
+  "weekly_age_days": 1,
   "monthly_latest": "月度复盘_2026-10.html",
-  "monthly_age_days": 0,
+  "monthly_age_days": 1,
   "launchd_status": "loaded(last_exit=0)",
   "admin_server": "up(200)",
   "post_sell_recon": "drift(2)",
   "sentiment_cache": "fresh",
-  "data_gap_today": [],
-  "pending_gaps": []
+  "data_gap_today": [
+   "market_stale",
+   "step:0"
+  ],
+  "pending_gaps": [
+   "market_stale",
+   "step:0"
+  ]
  },
  "alerts": [
   {
-   "id": "ONLINE_CHECK_FAILED_20261101_210005",
+   "id": "ONLINE_CHECK_FAILED_20261102_190233",
    "level": "error",
    "code": "ONLINE_CHECK_FAILED",
    "title": "线上页面头部未解析到日期",
    "detail": "Range 0-32767 内无日期文本，页面结构可能变更。",
    "action": "人工访问线上页确认",
-   "date": "2026-11-01",
-   "ts": "2026-11-01T21:00:05"
+   "date": "2026-11-02",
+   "ts": "2026-11-02T19:02:33"
   },
   {
-   "id": "POST_SELL_DRIFT_20261101_210005",
+   "id": "POST_SELL_DRIFT_20261102_190233",
    "level": "warn",
    "code": "POST_SELL_DRIFT",
    "title": "沽后对账发现双写漂移 2 条",
    "detail": "当日日志 [沽后对账] 修复双写漂移 2 条（JSON↔DB 曾不一致）。",
    "action": "关注 post_sell JSON 与 DB 一致性，必要时人工核对",
-   "date": "2026-11-01",
-   "ts": "2026-11-01T21:00:05"
+   "date": "2026-11-02",
+   "ts": "2026-11-02T19:02:33"
+  },
+  {
+   "id": "DATA_GAP_PERSIST_20261102_190233",
+   "level": "warn",
+   "code": "DATA_GAP_PERSIST",
+   "title": "当日新出现数据缺口：market_stale",
+   "detail": "行情陈旧 28.6%（阈值 >10%），样本 ['000831.SZ', '002129.SZ', '002249.SZ', '002827.SZ', '002929.SZ']（当日首次出现只 warn，跨日未解决将升级为 error）",
+   "action": "观察次日 step_status 与 freshness 是否恢复",
+   "date": "2026-11-02",
+   "ts": "2026-11-02T19:02:33"
+  },
+  {
+   "id": "DATA_GAP_PERSIST_20261102_190233",
+   "level": "warn",
+   "code": "DATA_GAP_PERSIST",
+   "title": "当日新出现数据缺口：step:0",
+   "detail": "数据获取步骤 [0] 补偿延后：熔断冷却中（step_status 日期 2026-11-02）（当日首次出现只 warn，跨日未解决将升级为 error）",
+   "action": "观察次日 step_status 与 freshness 是否恢复",
+   "date": "2026-11-02",
+   "ts": "2026-11-02T19:02:33"
   }
  ]
 }
