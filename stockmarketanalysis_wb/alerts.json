@@ -1,32 +1,52 @@
 {
-  "generated_at": "2026-10-30T08:30:04",
-  "unread_count": 4,
+  "generated_at": "2026-11-02T08:30:11",
+  "unread_count": 6,
   "meta": {
-    "checked_at": "2026-10-30T08:30:00",
-    "date": "2026-10-30",
+    "checked_at": "2026-11-02T08:30:00",
+    "date": "2026-11-02",
     "trading_day": true,
     "trading_day_reason": "trading_day",
     "cron_log_count": 1,
     "run_completed": true,
-    "online_check": "online_updated(2026-10-30)",
-    "guard_alert_count": 2,
-    "weekly_latest": "weekly_20261024_101000.log",
-    "weekly_age_days": 6,
-    "pf5_size_local": 700533,
-    "pf5_size_remote": 700533,
+    "online_check": "online_updated(2026-11-02)",
+    "guard_alert_count": 1,
+    "weekly_latest": "weekly_20261031_101001.log",
+    "weekly_age_days": 2,
+    "pf5_size_local": 729992,
+    "pf5_size_remote": 729992,
     "metrics": {
-      "holdings_total": 248,
-      "post_sell_total": 674,
+      "holdings_total": 251,
+      "post_sell_total": 682,
       "watch_total": 15,
-      "guard_alerts": 2,
-      "guard_checks": 12,
-      "report_size_kb": 1066
+      "guard_alerts": 1,
+      "guard_checks": 13,
+      "report_size_kb": 1077
     },
-    "drift_count": 0,
+    "drift_count": 1,
     "shougugou": "200 OK",
     "weekly_completed": true
   },
   "alerts": [
+    {
+      "id": "GUARD_ALERT_20261102_083000",
+      "level": "warn",
+      "code": "GUARD_ALERT",
+      "title": "数据守门告警 1 条",
+      "detail": "2026-11-02 07:06:34 [GUARD-ALERT] 守门5 告警: 扫描相邻交易日对：涉及 72 只标的；另有 ≥5× 断层 22 处 → 复权口径污染｜G2 成对反向 2 只：688522.SH(2次)、688615.SH(2次)；另 1 只已核实为**源限制**（根因不在写入端、重灌零收益，不重复告警）：600546.SH(4次)；样例 688522.SH 2025-01-08 ×1.97 / 2025-01-22 ×0.53 ← 判据G2/G3：真实行情与真实拆合股都不可能生成此形态，系前复权/不复权交替写入，会扭曲动量与回测，需定向重灌",
+      "action": "查看 logs/guard_alerts.log 全文",
+      "date": "2026-11-02",
+      "ts": "2026-11-02T08:30:00"
+    },
+    {
+      "id": "METRIC_DRIFT_20261102_083000",
+      "level": "warn",
+      "code": "METRIC_DRIFT",
+      "title": "1 项指标偏离自身近期基线",
+      "detail": "post_sell_total: 基线均值 671.3，本次 682，偏离 +10.7（+2%）。判据是对最近 7 次自身取值的偏离（>3σ 或 >40%），不等同于绝对阈值告警，请优先排查是否为数据缺失导致的断崖。",
+      "action": "核对今日跑分结果是否业务上合理（如是否为主动清仓）",
+      "date": "2026-11-02",
+      "ts": "2026-11-02T08:30:00"
+    },
     {
       "id": "GUARD_ALERT_20261030_083000",
       "level": "warn",
