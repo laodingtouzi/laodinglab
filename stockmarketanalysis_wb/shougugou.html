@@ -207,8 +207,16 @@ function setBadge(ok){
   }
 }
 
-function startAnalysis(){
-  const q = document.getElementById('sg-input').value.trim();
+// L2 回放灰度（2026-11-03）：页面 URL 带 ?replay=1 时透传给本地服务，
+// 服务端会同时跑「回放」与「全市场」两套并回报差异笔数；不带参数 = 走默认链路。
+function replayQS(){
+  try {
+    const v = (new URLSearchParams(location.search).get('replay') || '').trim();
+    return v ? '&replay=' + encodeURIComponent(v) : '';
+  } catch (e) { return ''; }
+}
+
+function startAnalysis(){  const q = document.getElementById('sg-input').value.trim();
   if (!q) { alert('请输入股票代码或名称'); return; }
   const btn = document.getElementById('sg-btn');
   btn.disabled = true; btn.textContent = '评估中...';
@@ -218,7 +226,7 @@ function startAnalysis(){
   area.innerHTML = '<div class="placeholder">⏳ 正在分析「' + esc(q) + '」，请稍候...</div>';
   showProgress(['正在提交分析任务：' + q]);
 
-  fetch(API_BASE + '/api/shougugou/start?code=' + encodeURIComponent(q), { mode: 'cors' })
+  fetch(API_BASE + '/api/shougugou/start?code=' + encodeURIComponent(q) + replayQS(), { mode: 'cors' })
     .then(r => r.json().then(j => ({ status: r.status, body: j })))
     .then(({ status, body }) => {
       if (status === 409 && body.task_id) {   // 已有任务在跑，直接接管轮询
