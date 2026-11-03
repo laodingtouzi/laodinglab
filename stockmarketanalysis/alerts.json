@@ -1,46 +1,46 @@
 {
- "generated_at": "2026-11-02T21:00:04",
+ "generated_at": "2026-11-03T19:02:17",
  "unread_count": 2,
  "meta": {
-  "checked_at": "2026-11-02T21:00:04",
-  "date": "2026-11-02",
+  "checked_at": "2026-11-03T19:02:17",
+  "date": "2026-11-03",
   "trading_day": true,
   "trading_day_reason": "daily_scores(当日有评分记录)",
-  "cron_log_count": 2,
+  "cron_log_count": 1,
   "run_completed": true,
-  "online_check": "online_updated(2026-11-02)",
-  "guard_alert_count": 44,
+  "online_check": "online_updated(2026-11-03)",
+  "guard_alert_count": 21,
   "weekly_latest": "weekly_20261031_104005.log",
-  "weekly_age_days": 1,
+  "weekly_age_days": 2,
   "monthly_latest": "月度复盘_2026-10.html",
-  "monthly_age_days": 1,
+  "monthly_age_days": 2,
   "launchd_status": "loaded(last_exit=0)",
-  "admin_server": "up(200)",
-  "post_sell_recon": "drift(1)",
+  "admin_server": "down(000)",
+  "post_sell_recon": "drift(3)",
   "sentiment_cache": "fresh",
   "data_gap_today": [],
   "pending_gaps": []
  },
  "alerts": [
   {
-   "id": "DUAL_INSTANCE_20261102_210004",
-   "level": "error",
-   "code": "DUAL_INSTANCE",
-   "title": "当日存在多份日跑日志（双实例风险）",
-   "detail": "当日 cron_*.log 共 2 份: ['cron_20261102_183005.log', 'cron_20261102_205242.log']，并发执行可能写坏持仓/沽后池。",
-   "action": "检查 launchd 是否重复加载或存在残留 crontab 条目",
-   "date": "2026-11-02",
-   "ts": "2026-11-02T21:00:04"
+   "id": "ADMIN_SERVER_DOWN_20261103_190217",
+   "level": "warn",
+   "code": "ADMIN_SERVER_DOWN",
+   "title": "手搓股服务无响应（HTTP 000）",
+   "detail": "http://localhost:8788/ 返回 000，手动剔除入口不可用。",
+   "action": "检查 admin_server 进程（start_admin_server.sh）",
+   "date": "2026-11-03",
+   "ts": "2026-11-03T19:02:17"
   },
   {
-   "id": "POST_SELL_DRIFT_20261102_210004",
+   "id": "POST_SELL_DRIFT_20261103_190217",
    "level": "warn",
    "code": "POST_SELL_DRIFT",
-   "title": "沽后对账发现双写漂移 1 条",
-   "detail": "当日日志 [沽后对账] 修复双写漂移 1 条（JSON↔DB 曾不一致）。",
+   "title": "沽后对账发现双写漂移 3 条",
+   "detail": "当日日志 [沽后对账] 修复双写漂移 3 条（JSON↔DB 曾不一致）。",
    "action": "关注 post_sell JSON 与 DB 一致性，必要时人工核对",
-   "date": "2026-11-02",
-   "ts": "2026-11-02T21:00:04"
+   "date": "2026-11-03",
+   "ts": "2026-11-03T19:02:17"
   }
  ]
 }
