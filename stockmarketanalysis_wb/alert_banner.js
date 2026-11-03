@@ -193,7 +193,7 @@
     var list = document.getElementById('wbAlertList');
     if (!state.alerts.length) {
       list.innerHTML = '<li class="wb-alert-empty"><span class="ok">✓</span>当前没有告警<br>' +
-        '<span style="font-size:12px;">每日 18:30 自动巡检选股模型运行状态</span></li>';
+        '<span style="font-size:12px;">每日 08:30 自动巡检选股模型运行状态</span></li>';
     } else {
       var html = '';
       for (var i = 0; i < state.alerts.length; i++) {
@@ -221,7 +221,7 @@
     if (window.__WB_ALERT_META__) {
       meta.textContent = '巡检时间 ' + window.__WB_ALERT_META__;
     } else {
-      meta.textContent = '每日 18:30 自动巡检';
+      meta.textContent = '每日 08:30 自动巡检';
     }
   }
 
