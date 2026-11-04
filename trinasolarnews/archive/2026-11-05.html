@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>天合光能舆情监控 · 第84期 (2026-11-05)</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2c5f7c;
+  --primary-light: #e8f0f5;
+  --accent: #c9a227;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #1a1a2e;
+  --text-secondary: #4a5568;
+  --text-muted: #718096;
+  --border: #e2e8f0;
+  --shadow: 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-hover: 0 4px 16px rgba(0,0,0,0.1);
+  --radius: 12px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  font-size: 15px;
+}
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Header */
+header {
+  background: linear-gradient(135deg, var(--primary) 0%, #1a3a4f 100%);
+  color: white;
+  padding: 40px 30px;
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-hover);
+}
+header h1 {
+  font-family: 'Noto Serif SC', Georgia, serif;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+header .subtitle {
+  font-size: 14px;
+  opacity: 0.85;
+  margin-bottom: 16px;
+}
+header .meta-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 13px;
+  opacity: 0.8;
+}
+header .meta-bar span {
+  background: rgba(255,255,255,0.12);
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+/* Navigation */
+nav {
+  background: var(--card-bg);
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 10px;
+  z-index: 100;
+}
+nav .nav-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+nav .nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+nav a {
+  font-size: 13px;
+  color: var(--primary);
+  text-decoration: none;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: var(--primary-light);
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+nav a:hover {
+  background: var(--primary);
+  color: white;
+}
+
+/* Section */
+.section {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.section-title {
+  font-family: 'Noto Serif SC', Georgia, serif;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 18px 24px;
+  background: linear-gradient(90deg, var(--primary-light) 0%, transparent 100%);
+  border-left: 4px solid var(--primary);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-title .count {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-left: auto;
+}
+.section-content {
+  padding: 0 24px 24px;
+}
+
+/* News Item — Compact */
+.news-item {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.news-item:last-child {
+  border-bottom: none;
+}
+.news-title-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+.news-title-link {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--primary);
+  text-decoration: none;
+  line-height: 1.4;
+  flex: 1;
+}
+.news-title-link:hover {
+  text-decoration: underline;
+  color: #1a3a4f;
+}
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.news-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.meta-date { font-weight: 500; }
+.meta-source { font-style: italic; }
+.meta-link {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+.meta-link:hover { text-decoration: underline; }
+.news-summary {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.news-summary p {
+  text-align: justify;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Sentiment */
+.sentiment-card {
+  text-align: center;
+  padding: 24px;
+  border-radius: var(--radius);
+  margin-bottom: 20px;
+}
+.sentiment-card.sentiment-negative {
+  background: linear-gradient(135deg, #fee2e2 0%, #fef2f2 100%);
+  border: 1px solid #fca5a5;
+}
+.sentiment-card.sentiment-neutral {
+  background: linear-gradient(135deg, #fef3c7 0%, #fffbeb 100%);
+  border: 1px solid #fcd34d;
+}
+.sentiment-card.sentiment-positive {
+  background: linear-gradient(135deg, #d1fae5 0%, #ecfdf5 100%);
+  border: 1px solid #6ee7b7;
+}
+.sentiment-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+.sentiment-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+}
+.sentiment-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+.sentiment-col {
+  background: var(--bg);
+  padding: 16px;
+  border-radius: 8px;
+}
+.sentiment-col h4 {
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+.sentiment-col ul {
+  list-style: none;
+  font-size: 13px;
+}
+.sentiment-col li {
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--border);
+  line-height: 1.6;
+}
+.sentiment-col li:last-child { border-bottom: none; }
+.sentiment-col li.pos { color: #065f46; }
+.sentiment-col li.neg { color: #991b1b; }
+.sentiment-col li.watch { color: #5b21b6; }
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 30px 20px;
+  color: var(--text-muted);
+  font-size: 13px;
+  border-top: 1px solid var(--border);
+  margin-top: 20px;
+}
+footer .sources {
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+footer .disclaimer {
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  header h1 { font-size: 22px; }
+  header { padding: 24px 20px; }
+  .section-content { padding: 0 16px 16px; }
+  .news-title-link { font-size: 14px; }
+  nav { position: static; }
+}
+
+/* Smooth scroll */
+html { scroll-behavior: smooth; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>🔍 天合光能舆情监控报告</h1>
+  <div class="subtitle">监控对象：天合光能股份有限公司 &nbsp;|&nbsp; 共聚合 20 条资讯</div>
+  <div class="meta-bar">
+    <span>📅 报告日期：2026-11-05</span>
+    <span>📋 第 84 期</span>
+  </div>
+</header>
+
+<nav>
+  <div class="nav-title">📑 快速导航</div>
+  <div class="nav-links">
+    <a href="#company">🔴 🏢 公司动态</a>
+<a href="#personnel">🟡 👥 人事变动</a>
+<a href="#finance">🔴 💰 财务与股价</a>
+<a href="#storage">🟡 🔋 储能与技术</a>
+<a href="#policy">🟢 📜 政策与行业</a>
+<a href="#sentiment">📊 舆情综合研判</a>
+  </div>
+</nav>
+
+
+    <section class="section" id="company">
+      <h2 class="section-title">🔴 🏢 公司动态 <span class="count">(5条)</span></h2>
+      <div class="section-content">
+        
+    <div class="news-item" id="news-0">
+      <div class="news-title-row">
+        <a href="http://finance.eastmoney.com/a/202611023918622080.html" target="_blank" class="news-title-link">天合光能回应出售光伏支架资产：尚在预沟通阶段</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">个股新闻</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-11-02</span>
+        <span class="meta-source">📰 界面新闻</span>
+        <a href="http://finance.eastmoney.com/a/202611023918622080.html" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>10月30日，深南电A（000037.SZ）公告，拟以现金方式收购天合光能（688599.SH）旗下天合开拓者光伏支架（江苏常州）有限公司不低于51%且不超过70%的股权，交易预计构成重大资产重组。</p></div>
+    </div>
+    
+    <div class="news-item" id="news-1">
+      <div class="news-title-row">
+        <a href="http://finance.eastmoney.com/a/202611023918705244.html" target="_blank" class="news-title-link">全球第二跟踪支架企业控股权拟易主，天合光能为何放手？</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">个股新闻</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-11-02</span>
+        <span class="meta-source">📰 新京报</span>
+        <a href="http://finance.eastmoney.com/a/202611023918705244.html" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>深南电A（000037.SZ）10月30日晚间公告称，与天合光能（688599.SH）及其全资子公司天合光能（常州）科技有限公司（“天合科技”）签署《股权收购意向协议》，深南电A拟以支付现金的方式购买天合科技持有的天合开拓者光伏支架（江苏常…</p></div>
+    </div>
+    
+    <div class="news-item" id="news-2">
+      <div class="news-title-row">
+        <a href="http://finance.eastmoney.com/a/202610313917605545.html" target="_blank" class="news-title-link">深南电A拟收购天合开拓者光伏支架不低于51%股权 预计构成重大资产重组</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">个股新闻</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-10-31</span>
+        <span class="meta-source">📰 央广财经</span>
+        <a href="http://finance.eastmoney.com/a/202610313917605545.html" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>10月30日，深南电A（000037.SZ）发布公告称，公司与天合光能（688599.SH）（常州）科技有限公司及天合光能股份有限公司签署《股权收购意向协议》，拟以现金方式购买天合科技持有的天合开拓者光伏支架（江苏常州）有限公司不低于51%…</p></div>
+    </div>
+    
+    <div class="news-item" id="news-3">
+      <div class="news-title-row">
+        <a href="http://finance.eastmoney.com/a/202610313917621474.html" target="_blank" class="news-title-link">“天合系”拟出售光伏支架板块股份 深南电A或接盘</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">个股新闻</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-10-31</span>
+        <span class="meta-source">📰 中国经营报</span>
+        <a href="http://finance.eastmoney.com/a/202610313917621474.html" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>10月30日，深南电A（000037.SZ）发布筹划重大资产重组提示性公告，公司与天合光能（常州）科技有限公司、天合光能（688599.SH）签署《股权收购意向协议》，拟以现金收购天合开拓者光伏支架（江苏常州）有限公司（以下简称 “天合跟踪…</p></div>
+    </div>
+    
+    <div class="news-item" id="news-4">
+      <div class="news-title-row">
+        <a href="https://www.energytrend.cn/news/20261019-148935.html" target="_blank" class="news-title-link">通威、天合光能等5企拿下光伏订单，总量超1.8GW</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">个股新闻</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-10-19</span>
+        <span class="meta-source">📰 集邦新能源网</span>
+        <a href="https://www.energytrend.cn/news/20261019-148935.html" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>天合光能与常州丽曜光电签订至尊3代系列高效组件23MW供货合作，并参与沙特NREP第五轮1200MW重点IPP项目供货。</p></div>
+    </div>
+    
+      </div>
+    </section>
+    
+    <section class="section" id="personnel">
+      <h2 class="section-title">🟡 👥 人事变动 <span class="count">(0条)</span></h2>
+      <div class="section-content">
+        
+      </div>
+    </section>
+    
+    <section class="section" id="finance">
+      <h2 class="section-title">🔴 💰 财务与股价 <span class="count">(10条)</span></h2>
+      <div class="section-content">
+        
+    <div class="news-item" id="news-5">
+      <div class="news-title-row">
+        <a href="" target="_blank" class="news-title-link">前三季度营收超479亿元，天合光能加速走出光伏寒冬</a>
+        <span class="tag" style="background:#dbeafe;color:#1e40af;border:1px solid #60a5fa">业绩解读</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-11-04</span>
+        <span class="meta-source">📰 新浪财经</span>
+        <a href="" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>天合光能前三季度营收超479亿元，净利润同比减亏近54%，储能第二增长线放量，经营现金流同比增长超六成，公司加速走出光伏寒冬。</p></div>
+    </div>
+    
+    <div class="news-item" id="news-6">
+      <div class="news-title-row">
+        <a href="" target="_blank" class="news-title-link">光伏行业深度调整期显现分化 天合光能展现经营韧性</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">公司动态</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-11-04</span>
+        <span class="meta-source">📰 新浪财经</span>
+        <a href="" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>光伏行业深度调整期中企业分化明显，天合光能凭借储能放量与海外市场布局展现经营韧性，减亏幅度居行业前列。</p></div>
+    </div>
+    
+    <div class="news-item" id="news-7">
+      <div class="news-title-row">
+        <a href="" target="_blank" class="news-title-link">天合光能：11月3日获融资买入2984.21万元，融资余额11.15亿元</a>
+        <span class="tag" style="background:#dbeafe;color:#1e40af;border:1px solid #60a5fa">资金流向</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-11-04</span>
+        <span class="meta-source">📰 新浪财经</span>
+        <a href="" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>天合光能11月3日获融资买入2984.21万元，融资余额11.15亿元，占流通市值比例4.57%，低于近一年10%分位水平。</p></div>
+    </div>
+    
+    <div class="news-item" id="news-8">
+      <div class="news-title-row">
+        <a href="" target="_blank" class="news-title-link">天合光能三季报减亏近54%，储能第二增长线放量，现金流增超六成</a>
+        <span class="tag" style="background:#dbeafe;color:#1e40af;border:1px solid #60a5fa">业绩解读</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-11-03</span>
+        <span class="meta-source">📰 新浪财经</span>
+        <a href="" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>天合光能2026年三季报显示净利润减亏近54%，储能业务第二增长线持续放量，经营活动现金流同比增长超六成。</p></div>
+    </div>
+    
+    <div class="news-item" id="news-9">
+      <div class="news-title-row">
+        <a href="" target="_blank" class="news-title-link">又亏了20亿，天合光能欲卖子“回血”自救</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">个股新闻</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-11-03</span>
+        <span class="meta-source">📰 新浪财经</span>
+        <a href="" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>天合光能前三季度亏损约19.42亿元，拟出售全球第二跟踪支架企业天合开拓者控股权回笼资金，聚焦光储主业自救。</p></div>
+    </div>
+    
+    <div class="news-item" id="news-10">
+      <div class="news-title-row">
+        <a href="http://finance.eastmoney.com/a/202611023917939211.html" target="_blank" class="news-title-link">天合光能：2026年第三季度亏16.72亿元，非经常性损益由正转负，主业扣非口径仍在减亏</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">个股新闻</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-11-02</span>
+        <span class="meta-source">📰 南方财经网</span>
+        <a href="http://finance.eastmoney.com/a/202611023917939211.html" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>天合光能（688599.SH）发布2026年三季报。第三季度实现营业收入159.93亿元，同比下降15.45%、环比回升5.52%；单季归母净利润-16.72亿元，较第二季度1320.67万元的微利转亏。</p></div>
+    </div>
+    
+    <div class="news-item" id="news-11">
+      <div class="news-title-row">
+        <a href="" target="_blank" class="news-title-link">单季净亏超83亿！隆基、天合、阿特斯…12家头部光伏企业披露三季报</a>
+        <span class="tag" style="background:#ede9fe;color:#5b21b6;border:1px solid #a78bfa">行业动态</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-11-01</span>
+        <span class="meta-source">📰 新浪财经</span>
+        <a href="" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>12家头部光伏企业披露三季报，隆基、天合、阿特斯等单季合计净亏超83亿元，行业仍处底部但减亏信号显现。</p></div>
+    </div>
+    
+    <div class="news-item" id="news-12">
+      <div class="news-title-row">
+        <a href="" target="_blank" class="news-title-link">天合光能十大流通股东格局生变：华夏上证科创板50成份ETF等增持</a>
+        <span class="tag" style="background:#dbeafe;color:#1e40af;border:1px solid #60a5fa">股东变动</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-10-31</span>
+        <span class="meta-source">📰 新浪财经</span>
+        <a href="" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>三季报显示天合光能十大流通股东格局生变，华夏上证科创板50成份ETF等增持，盘基投资有限公司等减持。</p></div>
+    </div>
+    
+    <div class="news-item" id="news-13">
+      <div class="news-title-row">
+        <a href="http://finance.eastmoney.com/a/202610303916917985.html" target="_blank" class="news-title-link">股价创年内新低！天合光能前三季度实现净利约-19.42亿元</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">个股新闻</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-10-30</span>
+        <span class="meta-source">📰 北京商报</span>
+        <a href="http://finance.eastmoney.com/a/202610303916917985.html" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>10月30日晚间，天合光能（688599）披露2026年三季报显示，报告期内公司实现归属净利润约为-19.42亿元。 财务数据显示，今年前三季度，天合光能实现营业收入约为479.78亿元，对应实现归属净利润约为-19.42亿元。</p></div>
+    </div>
+    
+    <div class="news-item" id="news-14">
+      <div class="news-title-row">
+        <a href="http://sh.news.cn/20261020/cb4790e19f99494cb25753d3794275c6/c.html" target="_blank" class="news-title-link">天合光能战略升级见效，储能与分布式盈利增长</a>
+        <span class="tag" style="background:#dbeafe;color:#1e40af;border:1px solid #60a5fa">业绩解读</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-10-20</span>
+        <span class="meta-source">📰 新华网</span>
+        <a href="http://sh.news.cn/20261020/cb4790e19f99494cb25753d3794275c6/c.html" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>天合光能储能上半年出货超5GWh同比增188%，海外出货占比超90%，欧洲拉美保持高毛利；天合富家分布式持续贡献正向利润。</p></div>
+    </div>
+    
+      </div>
+    </section>
+    
+    <section class="section" id="storage">
+      <h2 class="section-title">🟡 🔋 储能与技术 <span class="count">(5条)</span></h2>
+      <div class="section-content">
+        
+    <div class="news-item" id="news-15">
+      <div class="news-title-row">
+        <a href="" target="_blank" class="news-title-link">光伏还在调整，天合光能给自己留了后手</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">公司动态</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-11-04</span>
+        <span class="meta-source">📰 新浪财经</span>
+        <a href="" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>光伏行业仍在深度调整，天合光能通过出售支架资产、加码储能与分布式业务为自己留出后手，聚焦光储智慧能源主业。</p></div>
+    </div>
+    
+    <div class="news-item" id="news-16">
+      <div class="news-title-row">
+        <a href="https://weibo.com/1969530267/P6Lj48XnU" target="_blank" class="news-title-link">中国联通/天合光能三江源绿电智算融合示范微电网项目在西宁开工</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">微博</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-11-03</span>
+        <span class="meta-source">📰 微博·西宁晚报</span>
+        <a href="https://weibo.com/1969530267/P6Lj48XnU" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>西宁首个算电融合创新示范项目开工，采用“风光储充+算力中心负荷”协同调度，总装机约6兆瓦，年供绿电近1000万千瓦时。</p></div>
+    </div>
+    
+    <div class="news-item" id="news-17">
+      <div class="news-title-row">
+        <a href="http://finance.eastmoney.com/a/202611023918320413.html" target="_blank" class="news-title-link">天合光能回应拟出售支架业务：引入战略合作方 聚焦光储主业</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">个股新闻</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-11-02</span>
+        <span class="meta-source">📰 新京报</span>
+        <a href="http://finance.eastmoney.com/a/202611023918320413.html" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>就计划出售光伏支架子公司控制权，11月2日，天合光能（688599.SH）方面向贝壳财经记者表示，本次交易拟引入战略合作方，充分发挥协同效应强强联合互利共赢。公司将充分发挥光储智慧能源整体解决方案战略优势，持续夯实光储主业，聚力AIDC算电…</p></div>
+    </div>
+    
+    <div class="news-item" id="news-18">
+      <div class="news-title-row">
+        <a href="" target="_blank" class="news-title-link">天合光能：为江苏天合储能等控股子公司提供10.27亿元担保</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">公司公告</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-11-02</span>
+        <span class="meta-source">📰 新浪财经</span>
+        <a href="" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>天合光能公告为江苏天合储能等控股子公司提供合计10.27亿元担保，支持储能等子公司业务发展。</p></div>
+    </div>
+    
+    <div class="news-item" id="news-19">
+      <div class="news-title-row">
+        <a href="https://www.energytrend.cn/news/20261019-148937.html" target="_blank" class="news-title-link">天合光能获日本/英国486MWh储能订单</a>
+        <span class="tag" style="background:#d1fae5;color:#065f46;border:1px solid #34d399">储能订单</span>
+      </div>
+      <div class="news-meta">
+        <span class="meta-date">📅 2026-10-19</span>
+        <span class="meta-source">📰 集邦新能源网</span>
+        <a href="https://www.energytrend.cn/news/20261019-148937.html" target="_blank" class="meta-link">阅读原文 →</a>
+      </div>
+      <div class="news-summary"><p>天合储能在英国和日本市场接连取得进展：英国三个BESS项目总规模超145MW/290MWh，日本市场亦获订单，合计约486MWh。</p></div>
+    </div>
+    
+      </div>
+    </section>
+    
+    <section class="section" id="policy">
+      <h2 class="section-title">🟢 📜 政策与行业 <span class="count">(0条)</span></h2>
+      <div class="section-content">
+        
+      </div>
+    </section>
+    
+
+
+    <section class="section sentiment-section" id="sentiment">
+      <h2 class="section-title">📊 舆情综合研判</h2>
+      <div class="section-content">
+        <div class="sentiment-card sentiment-neutral">
+          <div class="sentiment-label">总体判断</div>
+          <div class="sentiment-value">三季报减亏近54%叠加支架出售，光储聚焦战略提速，股价低位反弹</div>
+        </div>
+        <div class="sentiment-grid">
+          <div class="sentiment-col">
+            <h4>🟢 利好因素</h4>
+            <ul><li class="pos">✅ 前三季度营收超479亿元，净利润同比减亏近54%，经营现金流增超六成</li><li class="pos">✅ 拟向深南电A出售天合开拓者支架控股权，回笼资金聚焦光储主业</li><li class="pos">✅ 天合储能获日本/英国合计约486MWh储能订单，海外出货占比超90%</li><li class="pos">✅ 储能上半年出货超5GWh同比增188%，第二增长线持续放量</li><li class="pos">✅ 11月3日获融资买入2984万元，11月4日股价反弹2.88%成交5.4亿元</li></ul>
+          </div>
+          <div class="sentiment-col">
+            <h4>🔴 风险因素</h4>
+            <ul><li class="neg">⚠️ 前三季度归母净亏损19.42亿元，Q3单季亏损16.72亿元</li><li class="neg">⚠️ 三季报披露前后股价一度创年内新低，近3日主力净流出超3100万元</li><li class="neg">⚠️ 光伏六巨头前三季度合计亏损250亿元，行业底部出清仍在持续</li><li class="neg">⚠️ 非经常性损益由正转负，主业盈利修复仍待验证</li></ul>
+          </div>
+          <div class="sentiment-col">
+            <h4>👁️ 关键观察点</h4>
+            <ul><li class="watch">👁️ 深南电A收购天合开拓者交易的定价与交割进展</li><li class="watch">👁️ 四季度减亏幅度与储能海外订单交付节奏</li><li class="watch">👁️ “天23转债”转股价是否下修及转股进展</li><li class="watch">👁️ 股价反弹能否延续并站稳10元上方</li></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+
+<footer>
+  <div class="sources">📰 信息来源：东方财富个股新闻 (AkShare)、kimi_search_v2、微博</div>
+  <div>老丁实验室 · laodinglab.com/trinasolarnews</div>
+  <div class="disclaimer">⚠️ 免责声明：本报告由自动化系统聚合公开信息生成，仅提供标题与链接，内容需阅读原文了解。不构成投资建议。</div>
+</footer>
+
+</div>
+</body>
+</html>
