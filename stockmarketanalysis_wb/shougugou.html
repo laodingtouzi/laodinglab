@@ -16,6 +16,9 @@
     --serif: 'Noto Serif SC', 'Georgia', serif;
     --primary: #5f01d1; --success: #16a34a; --danger: #dc2626; --warning: #ca8a04;
     --buy: #16a34a; --sell: #dc2626; --hold: #ca8a04; --card: #ffffff;
+    /* 2026-11-04：补齐卡片底色/分隔线变量（此前被引用 20 次却从未定义 →
+       综合评估等区块卡片无底无边，视觉上散成一片） */
+    --bg-card: #faf7ff; --bg-card2: #ede0ff;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
@@ -63,6 +66,14 @@ body {
 #sg-btn:active { transform: scale(.98); }
 #sg-btn:disabled { opacity: .5; cursor: not-allowed; }
 .service-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; padding: 4px 12px; border-radius: 20px; margin-top: 14px; }
+/* 回放引擎开关（2026-11-04）：纯前端开关，勾选状态存 localStorage，请求时附 &replay=1 */
+.replay-toggle { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 12px; padding: 9px 14px;
+  background: var(--bg-subtle, #f8fafc); border: 1px solid var(--border, #e2e8f0); border-radius: 10px; }
+.replay-toggle label { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 600;
+  color: var(--text, #0f172a); cursor: pointer; user-select: none; }
+.replay-toggle input[type=checkbox] { width: 16px; height: 16px; cursor: pointer; accent-color: var(--accent, #7c3aed); }
+.replay-hint { font-size: 12px; color: var(--text-secondary, #64748b); }
+.replay-hint b { color: var(--accent, #7c3aed); }
 .service-ok { background: rgba(22,163,74,.1); color: var(--success); }
 .service-off { background: rgba(220,38,38,.08); color: var(--danger); }
 /* 进度 */
@@ -118,7 +129,51 @@ summary { cursor: pointer; font-size: 13px; color: var(--accent); font-weight: 5
 .multi-mkt-chip.primary { border-color:var(--buy); background:rgba(34,197,94,.06); box-shadow: 0 0 0 2px rgba(34,197,94,.12); }
 .multi-mkt-chip .mkt-tag { font-size:10px; }
 .footer-note { text-align: center; font-size: 12px; color: var(--text-muted); padding: 20px 0 30px; }
-@media (max-width: 640px) { .input-row { flex-direction: column; align-items: stretch; } #sg-input, #sg-btn { max-width: none; width: 100%; } }
+/* 综合评估区（2026-11-04 版式重构：核心结论徽章化 + 三栏紧凑卡片） */
+.assess-verdict { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px;
+    border: 1px solid; border-left-width: 4px; border-radius: 6px; }
+.assess-verdict .av-label { display: block; font-size: 10px; font-weight: 600; letter-spacing: .12em; opacity: .85; margin-bottom: 1px; }
+.assess-verdict .av-text { display: block; font-size: 17px; font-weight: 700; line-height: 1.35; }
+.assess-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 8px; }
+.assess-card { min-width: 0; padding: 10px 12px; background: var(--bg-card);
+    border: 1px solid var(--border); border-radius: 6px; font-size: 12.5px; line-height: 1.62; }
+.assess-block { margin-top: 8px; padding: 10px 12px; background: var(--bg-card);
+    border: 1px solid var(--border); border-radius: 6px; font-size: 12.5px; line-height: 1.65; }
+.assess-t { display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600;
+    color: var(--text-muted); letter-spacing: .04em; margin-bottom: 6px; }
+.assess-t::before { content: ''; width: 3px; height: 11px; border-radius: 2px; background: var(--accent); display: inline-block; }
+.sig-row { display: grid; grid-template-columns: 62px 1fr; gap: 8px; align-items: start; padding: 5px 0; }
+.sig-row + .sig-row { border-top: 1px dashed var(--bg-card2); }
+.sig-k { font-size: 11.5px; font-weight: 600; color: var(--text-muted); line-height: 1.62; }
+.sig-v { min-width: 0; }
+/* 表格滚动容器（2026-11-04 手机端修复）：9~10 列表格在窄屏会顶破视口，
+   改为容器内横向滚动，不再把整页撑宽 */
+.tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 10px 0;
+  /* 可横滑提示：左右两侧阴影随滚动位置出现/消失（纯 CSS，不占位、不误导） */
+  background:
+    linear-gradient(to right, #fff 30%, rgba(255,255,255,0)) left center,
+    linear-gradient(to left, #fff 30%, rgba(255,255,255,0)) right center,
+    radial-gradient(farthest-side at 0 50%, rgba(95,1,209,.20), rgba(95,1,209,0)) left center,
+    radial-gradient(farthest-side at 100% 50%, rgba(95,1,209,.20), rgba(95,1,209,0)) right center;
+  background-repeat: no-repeat;
+  background-size: 42px 100%, 42px 100%, 14px 100%, 14px 100%;
+  background-attachment: local, local, scroll, scroll;
+}
+.tbl-wrap table { margin: 0; }
+@media (max-width: 780px) { .assess-grid { grid-template-columns: 1fr; } .sig-row { grid-template-columns: 56px 1fr; } }
+@media (max-width: 640px) {
+  .input-row { flex-direction: column; align-items: stretch; } #sg-input, #sg-btn { max-width: none; width: 100%; }
+  /* 手机端版式：收紧留白、六宫格改两列、表格降字号后容器内滚动 */
+  .main { padding: 22px 14px 40px; }
+  .section { padding: 16px 14px; }
+  .hero { padding: 24px 16px 20px; }
+  .hero-title { font-size: 26px; }
+  .overview-grid.six-col { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  table { font-size: 12px; }
+  th, td { padding: 6px 7px; }
+  .assess-verdict .av-text { font-size: 16px; }
+  .sub-title { font-size: 14px; margin: 16px 0 8px; }
+}
 </style>
 </head>
 <body>
@@ -158,6 +213,13 @@ summary { cursor: pointer; font-size: 13px; color: var(--accent); font-weight: 5
     <div class="input-row">
       <input id="sg-input" type="text" placeholder="如：000001 / 贵州茅台 / 00700 / AAPL" autocomplete="off">
       <button id="sg-btn" onclick="startAnalysis()">开始评估</button>
+    </div>
+    <div class="replay-toggle">
+      <label for="sg-replay">
+        <input type="checkbox" id="sg-replay" onchange="onReplayToggle(this)">
+        <span>⚡ 快速回放引擎</span>
+      </label>
+      <span class="replay-hint" id="replay-hint">关闭时走全市场回测（首次较慢）；开启时用单股回放，1 秒级出结果，并回报与全市场回测的差异笔数</span>
     </div>
     <div id="service-badge" class="service-badge service-off">● 本地分析服务：检测中...</div>
     <div class="progress-box" id="progress-box"></div>
@@ -207,14 +269,37 @@ function setBadge(ok){
   }
 }
 
-// L2 回放灰度（2026-11-03）：页面 URL 带 ?replay=1 时透传给本地服务，
-// 服务端会同时跑「回放」与「全市场」两套并回报差异笔数；不带参数 = 走默认链路。
-function replayQS(){
-  try {
-    const v = (new URLSearchParams(location.search).get('replay') || '').trim();
-    return v ? '&replay=' + encodeURIComponent(v) : '';
-  } catch (e) { return ''; }
+// L2 回放引擎开关（2026-11-04 老丁选择「页面上给个开关」，取代只认 URL 参数）
+// 规则：
+//   ① 勾选状态存 localStorage（key sg_replay_on），下次打开页面保持上次选择；
+//   ② URL 带 ?replay=1 / ?replay=0 时以 URL 为准，并回写 localStorage（老链接仍可用）；
+//   ③ 勾选 → 每次请求附加 &replay=1，服务端走单股回放并回报与全市场的差异笔数。
+const REPLAY_LS = 'sg_replay_on';
+function replayOn(){
+  try { return localStorage.getItem(REPLAY_LS) === '1'; } catch (e) { return false; }
 }
+function replayQS(){ return replayOn() ? '&replay=1' : ''; }
+function updateReplayHint(){
+  const h = document.getElementById('replay-hint');
+  if (!h) return;
+  h.innerHTML = replayOn()
+    ? '已开启：优先用单股回放（秒级），并在结果里回报<b>与全市场回测的差异笔数</b>；评分低于买入阈值的股票仍走全市场链路'
+    : '已关闭：走全市场回测（首次较慢）；开启时用单股回放，1 秒级出结果，并回报与全市场回测的差异笔数';
+}
+function setReplayOn(on){
+  try { localStorage.setItem(REPLAY_LS, on ? '1' : '0'); } catch (e) {}
+  const cb = document.getElementById('sg-replay');
+  if (cb) cb.checked = !!on;
+  updateReplayHint();
+}
+function onReplayToggle(cb){ setReplayOn(cb.checked); }
+(function initReplayToggle(){
+  let url = '';
+  try { url = (new URLSearchParams(location.search).get('replay') || '').trim().toLowerCase(); } catch (e) {}
+  if (url === '1' || url === 'on' || url === 'true' || url === 'yes') setReplayOn(true);
+  else if (url === '0' || url === 'off' || url === 'false' || url === 'no') setReplayOn(false);
+  else setReplayOn(replayOn());   // 无 URL 参数 → 沿用上次选择
+})();
 
 function startAnalysis(){  const q = document.getElementById('sg-input').value.trim();
   if (!q) { alert('请输入股票代码或名称'); return; }
@@ -397,6 +482,26 @@ function renderResult(r){
     + ov('全量因子库', view.in_library && view.in_library.extended_kline ? '✅ 已收录' : '未收录')
     + ov('分析耗时', fmtDur(view.elapsed_sec) + ' · ' + ((view.generated_at || '').slice(11, 16)))
     + '</div>';
+
+  // 回放引擎状态条（2026-11-04）：只在开关开启时出现，让「有没有用回放、差异几笔」一眼可见
+  const rp = view.replay || null;
+  if (rp && rp.mode === 'on') {
+    let diff = 0, known = 0;
+    (rp.compare || []).forEach(c => {
+      if (c && typeof c.diff_trades === 'number') { diff += c.diff_trades; known += 1; }
+    });
+    let txt, cls;
+    if (rp.used && known === 0) {
+      txt = '⚡ 本次使用回放引擎（差异笔数未记录：旧链路无同版本缓存）'; cls = 'note-box';
+    } else if (rp.used && diff === 0) {
+      txt = '⚡ 本次使用回放引擎 · 与全市场回测差异 <b>0</b> 笔（完全一致）'; cls = 'ok-box';
+    } else if (rp.used) {
+      txt = '⚡ 本次使用回放引擎 · 与全市场回测差异 <b>' + diff + '</b> 笔（详见上方进度日志）'; cls = 'note-box';
+    } else {
+      txt = '⚡ 回放引擎已开启，但本次回退到全市场链路（该股评分低于买入阈值走动态档、或不在预热宇宙，原因见上方进度日志）'; cls = 'note-box';
+    }
+    html += '<div class="' + cls + '" style="margin-top:10px;font-size:12.5px">' + txt + '</div>';
+  }
   if (view.supplement_log && view.supplement_log.length) {
     html += '<div class="ok-box"><b>新股票数据补足记录：</b><div class="log-list">' + view.supplement_log.map(esc).map(s => '<div>' + s + '</div>').join('') + '</div></div>';
   }
@@ -480,9 +585,165 @@ function renderResult(r){
     }
   }
 
+  // --- 综合评估摘要（2026-11-04：前置到回测之前、卡片收紧、核心结论徽章化） ---
+  const a = view.assessment || {};
+  if (a.verdict) {
+    html += '<div class="sub-title">③ 综合评估摘要</div>';
+
+    // 核心结论分档：与后端 verdict 取值一一对应（良好/尚可/有限/不佳/待观察/数据不足/无可对比）
+    // —— 旧版只匹配「较好/一定/不具备/不足/有限/待观察」，导致 良好/尚可/不佳 全部落到紫色兜底档
+    const vRaw = a.verdict;
+    const VTONE = [
+      { k: ['良好'],                     t: 'buy' },
+      { k: ['尚可'],                     t: 'accent' },
+      { k: ['有限'],                     t: 'hold' },
+      { k: ['不佳', '未进入策略交易区间'], t: 'sell' },
+      { k: ['待观察'],                   t: 'hold' },
+      { k: ['不足', '无可对比'],          t: 'neutral' }
+    ];
+    const vTone = (VTONE.find(x => x.k.some(w => vRaw.includes(w))) || { t: 'accent' }).t;
+    const tone = {
+      buy:     { c: '#16a34a', bg: 'rgba(22,163,74,.09)',  bd: 'rgba(22,163,74,.28)',  ic: '✅' },
+      accent:  { c: '#5f01d1', bg: 'rgba(95,1,209,.07)',   bd: 'rgba(95,1,209,.26)',   ic: '▲' },
+      hold:    { c: '#a16207', bg: 'rgba(202,138,4,.11)',  bd: 'rgba(202,138,4,.32)',  ic: '⏳' },
+      sell:    { c: '#dc2626', bg: 'rgba(220,38,38,.08)',  bd: 'rgba(220,38,38,.28)',  ic: '⛔' },
+      neutral: { c: '#6b7280', bg: 'rgba(107,114,128,.07)', bd: 'rgba(107,114,128,.24)', ic: '·' }
+    }[vTone];
+    html += '<div class="assess-verdict" style="background:' + tone.bg + ';border-color:' + tone.bd + ';border-left-color:' + tone.c + '">'
+      + '<span style="font-size:17px;line-height:1.3;flex-shrink:0">' + tone.ic + '</span>'
+      + '<span style="min-width:0">'
+      + '<span class="av-label" style="color:' + tone.c + '">核心结论</span>'
+      + '<span class="av-text" style="color:' + tone.c + '">' + esc(vRaw) + '</span>'
+      + '</span></div>';
+
+    const parts = a.summary_parts;
+    const cumColor = (v) => (typeof v === 'number' && v >= 0) ? 'var(--buy)' : 'var(--sell)';
+    const pf = parts && parts.perf;
+    const fc = parts && parts.factors;
+    const th = parts && parts.threshold;
+
+    // ── 三栏：回测表现 / 因子诊断 / 阈值状态 ──
+    let perfHtml = '';
+    if (pf) {
+      if (pf.text) {
+        perfHtml = esc(pf.text);
+      } else {
+        perfHtml = '<div style="display:flex;flex-wrap:wrap;gap:0 8px;margin-bottom:5px;padding-bottom:5px;border-bottom:1px dashed var(--bg-card2)">'
+          + '<span><b>' + pf.trades + '</b> 笔</span>'
+          + '<span>均值 <b style="color:' + cumColor(pf.avg_cum) + '">' + fmt(pf.avg_cum, 1) + '%</b></span>'
+          + '<span>胜率 <b>' + pf.avg_win + '%</b></span>'
+          + '</div>'
+          + '<div style="color:var(--text-muted);font-size:11.5px;line-height:1.6">'
+          + '<div>最优 <b style="color:var(--text)">' + esc(pf.best_id) + '</b> <b style="color:' + cumColor(pf.best_cum) + '">' + fmt(pf.best_cum, 1) + '%</b></div>'
+          + '<div>最差 <b style="color:var(--text)">' + esc(pf.worst_id) + '</b> <b style="color:' + cumColor(pf.worst_cum) + '">' + fmt(pf.worst_cum, 1) + '%</b></div>';
+        if (pf.z) {
+          perfHtml += '<div>Z 对照 <b style="color:' + cumColor(pf.z.cum) + '">' + fmt(pf.z.cum, 1) + '%</b>（' + pf.z.trades + ' 笔）</div>';
+        }
+        perfHtml += '</div>';
+      }
+    } else if (a.best_strategy && a.best_strategy !== '—') {
+      perfHtml = '<div>最优 <b>' + esc(a.best_strategy) + '</b>｜最差 <b>' + esc(a.worst_strategy) + '</b></div>'
+        + '<div style="color:var(--text-muted);font-size:11.5px;margin-top:3px">均值 <b>' + fmt(a.avg_cum_return, 1) + '%</b>｜胜率 <b>' + fmt(a.avg_win_rate, 0) + '%</b>｜' + a.total_trades + ' 笔</div>';
+    }
+
+    let factHtml = '';
+    if (fc && (fc.strongest || fc.weakest)) {
+      factHtml = '<div style="display:flex;justify-content:space-between;gap:8px">'
+        + '<span style="color:var(--text-muted)">最强</span><b style="color:var(--buy);text-align:right">' + esc(fc.strongest || '—') + '</b></div>'
+        + '<div style="display:flex;justify-content:space-between;gap:8px;margin-top:3px">'
+        + '<span style="color:var(--text-muted)">最弱</span><b style="color:var(--sell);text-align:right">' + esc(fc.weakest || '—') + '</b></div>';
+    } else if (a.weakest_factors || a.strongest_factors) {
+      factHtml = '<div style="display:flex;justify-content:space-between;gap:8px">'
+        + '<span style="color:var(--text-muted)">最强</span><b style="text-align:right">' + esc(a.strongest_factors || '—') + '</b></div>'
+        + '<div style="display:flex;justify-content:space-between;gap:8px;margin-top:3px">'
+        + '<span style="color:var(--text-muted)">最弱</span><b style="text-align:right">' + esc(a.weakest_factors || '—') + '</b></div>';
+    } else {
+      factHtml = '<span style="color:var(--text-muted)">—</span>';
+    }
+
+    const threshHtml = th ? esc(th) : '<span style="color:var(--text-muted)">—</span>';
+
+    html += '<div class="assess-grid">'
+      + '<div class="assess-card"><div class="assess-t">回测表现' + (pf && !pf.text && a.dynamic_buy_threshold ? '（动态阈值）' : '') + '</div>' + perfHtml + '</div>'
+      + '<div class="assess-card"><div class="assess-t">因子诊断</div>' + factHtml + '</div>'
+      + '<div class="assess-card"><div class="assess-t">阈值状态</div>' + threshHtml + '</div>'
+      + '</div>';
+
+    // ── 信号解读：键值两列（标签列固定 62px），比逐条堆叠更紧凑 ──
+    const signalItems = [];
+    if (parts && parts.trend) signalItems.push({ t: '趋势信号', b: parts.trend });
+    if (parts && parts.breakthrough) signalItems.push({ t: '突破路径', b: parts.breakthrough });
+    if (parts && parts.score_trend) signalItems.push({ t: '评分趋势', b: parts.score_trend });
+    const bp = a.breakthrough_path;
+    if (bp && !bp.reached && bp.paths && bp.paths.length) {
+      let bpList = '<div style="margin-bottom:2px">距入阈值 <b>' + bp.gap + '</b> 分</div>';
+      bp.paths.slice(0, 3).forEach(p => {
+        const tag = p.feasible ? '<b style="color:var(--buy)">✅ 可行</b>' : '<b style="color:var(--sell)">⚠️ 难</b>';
+        bpList += '<div style="margin-top:3px">' + tag + ' <b>' + esc(p.factor) + '</b> ' + p.current + '→' + (p.current + p.needed).toFixed(0) + '（需 +' + p.needed + '，权重 ' + p.weight_pct + '%）</div>';
+      });
+      signalItems.push({ t: '突破详情', b: bpList });
+    }
+    if (signalItems.length) {
+      html += '<div class="assess-block"><div class="assess-t">信号解读</div>';
+      signalItems.forEach(it => {
+        html += '<div class="sig-row"><div class="sig-k">' + esc(it.t) + '</div><div class="sig-v">' + it.b + '</div></div>';
+      });
+      html += '</div>';
+    }
+
+    // ── 宏观事件（板块主题一行 + 驱动因子标签 + 市场快照行） ──
+    const mc = parts && parts.macro;
+    if (mc) {
+      if (mc.text) {
+        html += '<div class="assess-block"><div class="assess-t">宏观/情绪</div>' + esc(mc.text) + '</div>';
+      } else if (mc.theme) {
+        const stColor = mc.sector_status && (mc.sector_status.includes('积极') || mc.sector_status.includes('乐观') || mc.sector_status.includes('强势')) ? 'var(--buy)'
+                     : mc.sector_status && (mc.sector_status.includes('观望') || mc.sector_status.includes('中性')) ? 'var(--text-muted)'
+                     : 'var(--sell)';
+        let mh = '<div class="assess-block"><div class="assess-t">宏观事件</div>'
+          + '<div style="display:flex;flex-wrap:wrap;gap:0 10px;padding-bottom:6px;border-bottom:1px dashed var(--bg-card2)">'
+          + '<span>板块 <b>' + esc(mc.theme) + '</b></span>'
+          + '<span>状态 <b style="color:' + stColor + '">' + esc(mc.sector_status) + '</b></span>'
+          + '<span>倾斜 <b>' + (mc.tilt > 0 ? '+' : '') + mc.tilt + '</b> 分</span>'
+          + '</div>';
+
+        if (mc.drivers && mc.drivers.length) {
+          const driverArr = Array.isArray(mc.drivers) ? mc.drivers
+            : String(mc.drivers).split(/[、，,]/).map(s => s.trim()).filter(Boolean);
+          if (driverArr.length) {
+            const SHOW = 8;
+            mh += '<div style="margin-top:6px">'
+              + '<span style="color:var(--text-muted);font-size:11.5px;margin-right:6px">驱动因子 ' + driverArr.length + '</span>'
+              + '<span style="display:inline-flex;flex-wrap:wrap;gap:4px;vertical-align:middle">';
+            driverArr.slice(0, SHOW).forEach(d => {
+              mh += '<code style="background:var(--bg-card2);padding:1px 7px;border-radius:3px;font-size:11.5px">' + esc(d) + '</code>';
+            });
+            if (driverArr.length > SHOW) {
+              mh += '<code title="' + esc(driverArr.slice(SHOW).join('；')) + '" style="background:transparent;border:1px dashed var(--border-hover);padding:1px 7px;border-radius:3px;font-size:11.5px;color:var(--text-muted);cursor:help">+' + (driverArr.length - SHOW) + '</code>';
+            }
+            mh += '</span></div>';
+          }
+        }
+
+        if (mc.snapshot && Object.keys(mc.snapshot).length) {
+          mh += '<div style="margin-top:6px;padding-top:5px;border-top:1px dashed var(--bg-card2);font-size:11.5px;color:var(--text-muted)">'
+            + Object.entries(mc.snapshot).map(([k, v]) => k + ' <b style="color:var(--text)">' + esc(String(v)) + '</b>').join('　/　')
+            + '</div>';
+        }
+        mh += '</div>';
+        html += mh;
+      }
+    }
+
+    // 旧 summary 兜底（如服务端未升级）
+    if (!parts && a.summary) {
+      html += '<div class="assess-block" style="font-size:12.5px">' + esc(a.summary) + '</div>';
+    }
+  }
+
   // --- 回测对比 ---
   const bt = view.backtest || {};
-  html += '<div class="sub-title">③ 模拟回测：策略横向对比（主力5套 + 研究线Z，2024年以来）</div>';
+  html += '<div class="sub-title">④ 模拟回测：策略横向对比（主力5套 + 研究线Z，2024年以来）</div>';
   if (!bt.applicable) {
     html += '<div class="note-box"><b>回测不适用说明：</b>' + esc(bt.reason || '') + '</div>';
   } else {
@@ -561,141 +822,6 @@ function renderResult(r){
             + '<td style="font-size:12px">' + esc(t.reason || '') + '</td></tr>'
         ).join('') + '</table></details>';
     });
-
-    // --- 综合评估摘要 ---
-    const a = view.assessment || {};
-    if (a.verdict) {
-      const verdictColor = a.verdict.includes('较好') || a.verdict.includes('一定') ? 'var(--buy)'
-                         : a.verdict.includes('不具备') || a.verdict.includes('不足') ? 'var(--sell)'
-                         : a.verdict.includes('有限') || a.verdict.includes('待观察') ? 'var(--text-muted)'
-                         : 'var(--accent)';
-      html += '<div class="sub-title">④ 综合评估摘要</div>';
-      html += '<div class="note-box" style="border-left:4px solid ' + verdictColor + '">'
-        + '<div style="font-size:15px;font-weight:600;color:' + verdictColor + '">' + esc(a.verdict) + '</div>';
-
-      const parts = a.summary_parts;
-      const cumColor = (v) => (typeof v === 'number' && v >= 0) ? 'var(--buy)' : 'var(--sell)';
-      const colCard = 'padding:8px 10px;background:var(--bg-card);border-radius:4px;font-size:12px;line-height:1.7';
-      const colTitle = '<div style="font-weight:600;color:var(--accent);font-size:11.5px;margin-bottom:5px">▎ ';
-
-      // ── 顶部三栏：回测表现 / 因子诊断 / 阈值状态 ──
-      const pf = parts && parts.perf;
-      const fc = parts && parts.factors;
-      const th = parts && parts.threshold;
-
-      let perfHtml = '';
-      if (pf) {
-        if (pf.text) {
-          perfHtml = esc(pf.text);
-        } else {
-          perfHtml = '<div style="margin-bottom:5px;padding-bottom:5px;border-bottom:1px dashed var(--bg-card2)">'
-            + '<b>' + pf.trades + '</b> 笔平仓 ｜ 平均收益 <b style="color:' + cumColor(pf.avg_cum) + '">' + fmt(pf.avg_cum, 1) + '%</b> ｜ 胜率 <b>' + pf.avg_win + '%</b>'
-            + '</div>'
-            + '<div style="font-size:11.5px;color:var(--text-muted);line-height:1.65">'
-            + '<div>最优 <b style="color:var(--text)">' + esc(pf.best_id) + '</b> <b style="color:' + cumColor(pf.best_cum) + '">' + fmt(pf.best_cum, 1) + '%</b></div>'
-            + '<div>最差 <b style="color:var(--text)">' + esc(pf.worst_id) + '</b> <b style="color:' + cumColor(pf.worst_cum) + '">' + fmt(pf.worst_cum, 1) + '%</b></div>';
-          if (pf.z) {
-            perfHtml += '<div>Z 对照 <b style="color:' + cumColor(pf.z.cum) + '">' + fmt(pf.z.cum, 1) + '%</b>（' + pf.z.trades + ' 笔，研究对照）</div>';
-          }
-          perfHtml += '</div>';
-        }
-      } else if (a.best_strategy && a.best_strategy !== '—') {
-        perfHtml = '<div style="margin-bottom:4px">最优 <b>' + esc(a.best_strategy) + '</b>｜最差 <b>' + esc(a.worst_strategy) + '</b></div>'
-          + '<div>平均收益 <b>' + fmt(a.avg_cum_return, 1) + '%</b>｜胜率 <b>' + fmt(a.avg_win_rate, 0) + '%</b>｜' + a.total_trades + ' 笔</div>';
-      }
-
-      let factHtml = '';
-      if (fc && (fc.strongest || fc.weakest)) {
-        factHtml = '<div style="margin-bottom:4px"><span style="color:var(--text-muted)">最强</span>　<b style="color:var(--buy)">' + esc(fc.strongest || '—') + '</b></div>'
-          + '<div><span style="color:var(--text-muted)">最弱</span>　<b style="color:var(--sell)">' + esc(fc.weakest || '—') + '</b></div>';
-      } else if (a.weakest_factors || a.strongest_factors) {
-        factHtml = '<div style="margin-bottom:4px"><span style="color:var(--text-muted)">最强</span>　<b>' + esc(a.strongest_factors || '—') + '</b></div>'
-          + '<div><span style="color:var(--text-muted)">最弱</span>　<b>' + esc(a.weakest_factors || '—') + '</b></div>';
-      } else {
-        factHtml = '<span style="color:var(--text-muted)">—</span>';
-      }
-
-      const threshHtml = th ? esc(th) : '<span style="color:var(--text-muted)">—</span>';
-
-      html += '<div style="margin-top:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px">'
-        + '<div style="' + colCard + '">' + colTitle + '回测表现' + (pf && !pf.text && a.dynamic_buy_threshold ? '（动态阈值）' : '') + '</div>' + perfHtml + '</div>'
-        + '<div style="' + colCard + '">' + colTitle + '因子诊断</div>' + factHtml + '</div>'
-        + '<div style="' + colCard + '">' + colTitle + '阈值状态</div>' + threshHtml + '</div>'
-        + '</div>';
-
-      // ── 信号解读：趋势 / 突破路径 / 评分趋势 / 突破路径详情（合并单卡，内部虚线分隔） ──
-      const signalItems = [];
-      if (parts && parts.trend) signalItems.push({ t: '趋势信号', b: parts.trend });
-      if (parts && parts.breakthrough) signalItems.push({ t: '突破路径', b: parts.breakthrough });
-      if (parts && parts.score_trend) signalItems.push({ t: '评分趋势', b: parts.score_trend });
-      const bp = a.breakthrough_path;
-      if (bp && !bp.reached && bp.paths && bp.paths.length) {
-        let bpList = '';
-        bp.paths.slice(0, 3).forEach(p => {
-          const tag = p.feasible ? '<b style="color:var(--buy)">✅ 可行</b>' : '<b style="color:var(--sell)">⚠️ 难</b>';
-          bpList += '<div style="margin-top:3px">' + tag + ' <b>' + esc(p.factor) + '</b> ' + p.current + '→' + (p.current + p.needed).toFixed(0) + '（需 +' + p.needed + '，权重 ' + p.weight_pct + '%）</div>';
-        });
-        signalItems.push({ t: '突破路径详情（距入阈值 ' + bp.gap + ' 分）', b: bpList });
-      }
-      if (signalItems.length) {
-        html += '<div style="margin-top:10px;padding:10px 12px;background:var(--bg-card);border-radius:4px;font-size:12.5px;line-height:1.7">'
-          + '<div style="font-weight:600;color:var(--accent);font-size:11.5px;margin-bottom:8px">▎ 信号解读</div>';
-        signalItems.forEach((it, i) => {
-          if (i > 0) html += '<div style="margin-top:7px;padding-top:7px;border-top:1px dashed var(--bg-card2)"></div>';
-          html += '<div style="font-weight:600;color:var(--text-muted);font-size:11.5px;margin-bottom:3px">' + esc(it.t) + '</div>'
-            + '<div>' + it.b + '</div>';
-        });
-        html += '</div>';
-      }
-
-      // ── 宏观事件（板块主题一行 + 驱动因子 flex 标签 + 市场快照行） ──
-      const mc = parts && parts.macro;
-      if (mc) {
-        if (mc.text) {
-          html += '<div style="margin-top:10px;padding:10px 12px;background:var(--bg-card);border-radius:4px;font-size:12.5px;line-height:1.7">'
-            + '<div style="font-weight:600;color:var(--accent);font-size:11.5px;margin-bottom:4px">▎ 宏观/情绪</div>'
-            + esc(mc.text) + '</div>';
-        } else if (mc.theme) {
-          const stColor = mc.sector_status && (mc.sector_status.includes('积极') || mc.sector_status.includes('乐观') || mc.sector_status.includes('强势')) ? 'var(--buy)'
-                       : mc.sector_status && (mc.sector_status.includes('观望') || mc.sector_status.includes('中性')) ? 'var(--text-muted)'
-                       : 'var(--sell)';
-          let mh = '<div style="margin-top:10px;padding:10px 12px;background:var(--bg-card);border-radius:4px;font-size:12.5px;line-height:1.7">'
-            + '<div style="font-weight:600;color:var(--accent);font-size:11.5px;margin-bottom:6px">▎ 宏观事件</div>'
-            + '<div style="padding-bottom:6px;border-bottom:1px dashed var(--bg-card2)">'
-            + '板块主题 <b>' + esc(mc.theme) + '</b> ｜ 状态 <b style="color:' + stColor + '">' + esc(mc.sector_status) + '</b> ｜ 倾斜 <b>' + (mc.tilt > 0 ? '+' : '') + mc.tilt + '</b> 分'
-            + '</div>';
-
-          if (mc.drivers && mc.drivers.length) {
-            const driverArr = Array.isArray(mc.drivers) ? mc.drivers
-              : String(mc.drivers).split(/[、，,]/).map(s => s.trim()).filter(Boolean);
-            if (driverArr.length) {
-              mh += '<div style="margin-top:6px">'
-                + '<div style="color:var(--text-muted);font-size:11.5px;margin-bottom:5px">驱动因子（' + driverArr.length + '）</div>'
-                + '<div style="display:flex;flex-wrap:wrap;gap:4px">';
-              driverArr.forEach(d => {
-                mh += '<code style="background:var(--bg-card2);padding:2px 8px;border-radius:3px;font-size:11.5px;line-height:1.6;display:inline-block">' + esc(d) + '</code>';
-              });
-              mh += '</div></div>';
-            }
-          }
-
-          if (mc.snapshot && Object.keys(mc.snapshot).length) {
-            mh += '<div style="margin-top:6px;padding-top:6px;border-top:1px dashed var(--bg-card2);font-size:11.5px;color:var(--text-muted)">'
-              + '<span>市场快照　</span>'
-              + Object.entries(mc.snapshot).map(([k, v]) => k + ' <b style="color:var(--text)">' + esc(String(v)) + '</b>').join('　/　')
-              + '</div>';
-          }
-          mh += '</div>';
-          html += mh;
-        }
-      }
-
-      // 旧 summary 兜底（如服务端未升级）
-      if (!parts && a.summary) {
-        html += '<div style="margin-top:10px;font-size:13px;line-height:1.8">' + esc(a.summary) + '</div>';
-      }
-      html += '</div>';
-    }
 
     // --- ⑨ 跨市场对比（仅多市场时显示） ---
     if (r.is_multi_market && r.multi_market && Object.keys(r.multi_market).length > 1) {
@@ -789,6 +915,16 @@ function renderResult(r){
   }
 
   area.innerHTML = renderFreshnessBar(r) + html;
+  // 窄屏表格横向滚动容器（2026-11-04）：回测 9 列 / 明细 8 列在手机端会顶破视口，
+  // 逐个表格包一层 .tbl-wrap，超出部分在容器内滑动，不再撑宽整页
+  area.querySelectorAll('table').forEach(function (t) {
+    var p = t.parentNode;
+    if (!p || (p.classList && p.classList.contains('tbl-wrap'))) return;
+    var w = document.createElement('div');
+    w.className = 'tbl-wrap';
+    p.insertBefore(w, t);
+    w.appendChild(t);
+  });
   area.scrollIntoView({ behavior: 'smooth', block: 'start' });
   } catch(err) {
     // 崩的时候把异常位置 + result 顶层键显示出来，方便定位
