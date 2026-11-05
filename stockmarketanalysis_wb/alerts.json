@@ -1,32 +1,42 @@
 {
-  "generated_at": "2026-11-04T08:30:16",
-  "unread_count": 7,
+  "generated_at": "2026-11-05T08:30:06",
+  "unread_count": 8,
   "meta": {
-    "checked_at": "2026-11-04T08:30:00",
-    "date": "2026-11-04",
+    "checked_at": "2026-11-05T08:30:01",
+    "date": "2026-11-05",
     "trading_day": true,
     "trading_day_reason": "trading_day",
     "cron_log_count": 1,
     "run_completed": true,
-    "online_check": "online_updated(2026-11-04)",
-    "guard_alert_count": 1,
+    "online_check": "online_updated(2026-11-05)",
+    "guard_alert_count": 4,
     "weekly_latest": "weekly_20261031_101001.log",
-    "weekly_age_days": 4,
-    "pf5_size_local": 708155,
-    "pf5_size_remote": 708155,
+    "weekly_age_days": 5,
+    "pf5_size_local": 712230,
+    "pf5_size_remote": 712230,
     "metrics": {
-      "holdings_total": 252,
-      "post_sell_total": 682,
+      "holdings_total": 250,
+      "post_sell_total": 684,
       "watch_total": 15,
-      "guard_alerts": 1,
+      "guard_alerts": 4,
       "guard_checks": 13,
-      "report_size_kb": 1081
+      "report_size_kb": 1079
     },
     "drift_count": 0,
     "shougugou": "200 OK",
     "weekly_completed": true
   },
   "alerts": [
+    {
+      "id": "GUARD_ALERT_20261105_083001",
+      "level": "error",
+      "code": "GUARD_ALERT",
+      "title": "数据守门告警 4 条",
+      "detail": "1. 2026-11-05 07:14:40 [GUARD-ALERT] 守门1 告警: 全量刷新标记异常（2026-11-05 07:14:39，ok=2087/2589）：aborted=true（中途熔断，未跑完） ← 判据D；2. 2026-11-05 07:14:40 [GUARD-ALERT] 守门1 告警: HK: 按交易日历今日应到货 K 线日期=2026-11-04，实际到货 205/480（42.7%）< 阈值 90% ← 判据E：到货率不足（calendar_status=complete）；3. 2026-11-05 07:14:40 [GUARD-ALERT] 守门1 告警: US: 按交易日历今日应到货 K 线日期=2026-11-04，实际到货 295/521（56.6%）< 阈值 90% ← 判据E：到货率不足（calendar_status=complete）；4. 2026-11-05 07:14:50 [GUARD-ALERT] 守门5 告警: 扫描相邻交易日对：涉及 56 只标的；另有 ≥5× 断层 21 处 → 复权口径污染｜G2 成对反向 1 只：688615.SH(2次)；另 1 只已核实为**源限制**（根因不在写入端、重灌零收益，不重复告警）：600546.SH(4次)；样例 688615.SH 2024-09-30 ×1.99 / 2024-",
+      "action": "查看 logs/guard_alerts.log 全文",
+      "date": "2026-11-05",
+      "ts": "2026-11-05T08:30:01"
+    },
     {
       "id": "GUARD_ALERT_20261104_083000",
       "level": "warn",
