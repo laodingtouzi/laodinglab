@@ -1,15 +1,15 @@
 {
- "generated_at": "2026-11-06T19:45:32",
+ "generated_at": "2026-11-06T21:00:02",
  "unread_count": 3,
  "meta": {
-  "checked_at": "2026-11-06T19:45:32",
+  "checked_at": "2026-11-06T21:00:02",
   "date": "2026-11-06",
   "trading_day": true,
   "trading_day_reason": "daily_scores(当日有评分记录)",
-  "cron_log_count": 1,
+  "cron_log_count": 2,
   "run_completed": true,
   "online_check": "online_updated(2026-11-06)",
-  "guard_alert_count": 18,
+  "guard_alert_count": 26,
   "weekly_latest": "weekly_20261031_104005.log",
   "weekly_age_days": 5,
   "monthly_latest": "月度复盘_2026-10.html",
@@ -17,41 +17,41 @@
   "launchd_status": "loaded(last_exit=0)",
   "admin_server": "down(000)",
   "admin_code_fresh": "ok",
-  "post_sell_recon": "drift(12)",
+  "post_sell_recon": "ok_or_skipped",
   "sentiment_cache": "fresh",
   "data_gap_today": [],
   "pending_gaps": []
  },
  "alerts": [
   {
-   "id": "GUARD_CRIT_20261106_194532",
+   "id": "MULTI_RUN_SEQUENTIAL_20261106_210002",
+   "level": "info",
+   "code": "MULTI_RUN_SEQUENTIAL",
+   "title": "当日 2 次日跑均顺序执行（无并发）",
+   "detail": "cron_20261106_183003.log → cron_20261106_200001.log。顺序补跑属合法运维动作（如数据补齐后的重跑），不构成双实例风险。",
+   "action": "无需处理",
+   "date": "2026-11-06",
+   "ts": "2026-11-06T21:00:02"
+  },
+  {
+   "id": "GUARD_CRIT_20261106_210002",
    "level": "error",
    "code": "GUARD_CRIT",
    "title": "守门告警当日出现 CRIT 级熔断",
-   "detail": "Kimi侧:2026-11-06T18:32:50 [GUARD-ALERT] I11 crit: WB源 6 类数据超新鲜度阈值 ← finance滞后9天(2026-10-28); kline滞后19天(2026-10-18); notice滞后9",
+   "detail": "Kimi侧:2026-11-06T18:32:50 [GUARD-ALERT] I11 crit: WB源 6 类数据超新鲜度阈值 ← finance滞后9天(2026-10-28); kline滞后19天(2026-10-18); notice滞后9；Kimi侧:2026-11-06T20:03:32 [GUARD-ALERT] I11 crit: WB源 6 类数据超新鲜度阈值 ← finance滞后9天(2026-10-28); kline滞后19天(2026-10-18); notice滞后9",
    "action": "查看对应 guard_alerts.log，WB 数据源可能断供",
    "date": "2026-11-06",
-   "ts": "2026-11-06T19:45:32"
+   "ts": "2026-11-06T21:00:02"
   },
   {
-   "id": "ADMIN_SERVER_DOWN_20261106_194532",
+   "id": "ADMIN_SERVER_DOWN_20261106_210002",
    "level": "warn",
    "code": "ADMIN_SERVER_DOWN",
    "title": "手搓股服务无响应（HTTP 000）",
    "detail": "http://localhost:8788/ 返回 000，手动剔除入口不可用。",
    "action": "检查 admin_server 进程（start_admin_server.sh）",
    "date": "2026-11-06",
-   "ts": "2026-11-06T19:45:32"
-  },
-  {
-   "id": "POST_SELL_DRIFT_20261106_194532",
-   "level": "warn",
-   "code": "POST_SELL_DRIFT",
-   "title": "沽后对账发现双写漂移 12 条",
-   "detail": "当日日志 [沽后对账] 修复双写漂移 12 条（JSON↔DB 曾不一致）。",
-   "action": "关注 post_sell JSON 与 DB 一致性，必要时人工核对",
-   "date": "2026-11-06",
-   "ts": "2026-11-06T19:45:32"
+   "ts": "2026-11-06T21:00:02"
   }
  ]
 }
