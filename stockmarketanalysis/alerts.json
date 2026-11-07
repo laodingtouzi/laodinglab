@@ -1,11 +1,67 @@
 {
- "generated_at": "2026-11-07T11:10:24",
- "unread_count": 0,
+ "generated_at": "2026-11-07T21:00:05",
+ "unread_count": 4,
  "meta": {
-  "checked_at": "2026-11-07T11:10:24",
+  "checked_at": "2026-11-07T21:00:05",
   "date": "2026-11-07",
-  "trading_day": false,
-  "trading_day_reason": "weekend(当日无评分,本不该跑)"
+  "trading_day": true,
+  "trading_day_reason": "daily_scores(当日有评分记录)",
+  "cron_log_count": 2,
+  "run_completed": true,
+  "online_check": "curl_failed",
+  "guard_alert_count": 20,
+  "weekly_latest": "weekly_20261107_104005.log",
+  "weekly_age_days": -1,
+  "monthly_latest": "月度复盘_2026-10.html",
+  "monthly_age_days": 6,
+  "launchd_status": "loaded(last_exit=0)",
+  "admin_server": "down(000)",
+  "admin_code_fresh": "ok",
+  "post_sell_recon": "drift(3)",
+  "sentiment_cache": "fresh",
+  "data_gap_today": [],
+  "pending_gaps": []
  },
- "alerts": []
+ "alerts": [
+  {
+   "id": "MULTI_RUN_SEQUENTIAL_20261107_210005",
+   "level": "info",
+   "code": "MULTI_RUN_SEQUENTIAL",
+   "title": "当日 2 次日跑均顺序执行（无并发）",
+   "detail": "cron_20261107_183004.log → cron_20261107_200000.log。顺序补跑属合法运维动作（如数据补齐后的重跑），不构成双实例风险。",
+   "action": "无需处理",
+   "date": "2026-11-07",
+   "ts": "2026-11-07T21:00:05"
+  },
+  {
+   "id": "ONLINE_CHECK_FAILED_20261107_210005",
+   "level": "error",
+   "code": "ONLINE_CHECK_FAILED",
+   "title": "线上报告头部拉取失败",
+   "detail": "curl Range 请求异常: 'utf-8' codec can't decode byte 0xef in position 32767: unexpected end of data",
+   "action": "检查本机网络",
+   "date": "2026-11-07",
+   "ts": "2026-11-07T21:00:05"
+  },
+  {
+   "id": "ADMIN_SERVER_DOWN_20261107_210005",
+   "level": "warn",
+   "code": "ADMIN_SERVER_DOWN",
+   "title": "手搓股服务无响应（HTTP 000）",
+   "detail": "http://localhost:8788/ 返回 000，手动剔除入口不可用。",
+   "action": "检查 admin_server 进程（start_admin_server.sh）",
+   "date": "2026-11-07",
+   "ts": "2026-11-07T21:00:05"
+  },
+  {
+   "id": "POST_SELL_DRIFT_20261107_210005",
+   "level": "warn",
+   "code": "POST_SELL_DRIFT",
+   "title": "沽后对账发现双写漂移 3 条",
+   "detail": "当日日志 [沽后对账] 修复双写漂移 3 条（JSON↔DB 曾不一致）。",
+   "action": "关注 post_sell JSON 与 DB 一致性，必要时人工核对",
+   "date": "2026-11-07",
+   "ts": "2026-11-07T21:00:05"
+  }
+ ]
 }
