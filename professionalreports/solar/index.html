@@ -271,7 +271,7 @@ body {
 .tl-bench table { width: 100%; border-collapse: collapse; margin-top: 9px; font-size: 12px; }
 .tl-bench th {
   text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border);
-  font-family: var(--mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase;
+  font-family: var(--mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase;
   color: var(--text-secondary); font-weight: 500;
 }
 .tl-bench td { padding: 8px; border-bottom: 1px solid #e0dcd7; vertical-align: top; line-height: 1.6; }
@@ -293,6 +293,7 @@ body {
 /* 因子分组说明（逐条下钻） */
 .factor-group { margin-top: 26px; }
 .factor-group:first-of-type { margin-top: 0; }
+.fg-group { margin-top: 18px; }
 .fg-head {
   display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
   padding-bottom: 9px; margin-bottom: 4px; border-bottom: 2px solid var(--border);
@@ -509,7 +510,7 @@ body {
     <div class="mini-stat">
       <div class="ms-label">出清事件净分</div>
       <div class="ms-value" style="color:var(--text)">95</div>
-      <div class="ms-sub">利好权重 16.8 / 利空权重 0 · 命中 6 条</div>
+      <div class="ms-sub">利好权重 20.8 / 利空权重 0 · 命中 7 条</div>
     </div>
     <div class="mini-stat">
       <div class="ms-label">领先因子评分</div>
@@ -667,8 +668,8 @@ body {
         <b>基础权重</b>（规则定义 1-5 分）× <b>广度加成</b>（同规则被 N 家触发则 ×(1+0.15×(N−1))，上限 2.0）
         × <b>时间衰减</b>（0.5^(事件天数/45)，半衰期 45 天）= <b>有效权重</b>，
         正负分别封顶 60，单事件封顶 12。
-        <br>本期读数：利好权重 16.8 / 利空权重 0，
-        净分 <b>95</b>（0-100，50 为中性），命中 6 条事件。
+        <br>本期读数：利好权重 20.8 / 利空权重 0，
+        净分 <b>95</b>（0-100，50 为中性），命中 7 条事件。
         <br><b>怎么读</b>　数值高说明<b>近期</b>出清相关事件以利好为主；低说明利空事件（政府救助、
         低水平重组）占优，即出清被延后。<b>它不直接进总分</b>，而是对 F1/F9/F10 三个因子施加
         ±7 分以内的调节（本期调节 +6.75 分）——避免与产能退出因子重复计权。
@@ -1726,7 +1727,17 @@ body {
   </div>
 </div><div class="section-label">出清事件流 · Event Feed</div>
 <div class="card">
-      <div style="margin-bottom:12px;font-size:13.5px;color:var(--text-secondary)">本期扫描命中 <strong>6</strong> 条出清相关事件（含公告与舆情）。分类依据：物理性退出判利好，政府救助与低水平重组判利空。有效权重 = 基础权重 × 广度加成 × 时间衰减。</div>
+      <div style="margin-bottom:12px;font-size:13.5px;color:var(--text-secondary)">本期扫描命中 <strong>7</strong> 条出清相关事件（含公告与舆情）。分类依据：物理性退出判利好，政府救助与低水平重组判利空。有效权重 = 基础权重 × 广度加成 × 时间衰减。</div>
+      <div class="ev-item">
+        <div class="ev-badge" style="background:#c0392b18;color:#c0392b">出清利好</div>
+        <div>
+          <div class="ev-title">多晶硅龙头集体减产，现在最怕的是再出“内鬼”！<span class="ev-tag">产能关停/停产/废弃</span></div>
+          <div class="ev-meta">sh688303 · 舆情 · 基础权重 4
+            × 广度 1.0 × 衰减 1.0（0天）
+            = 有效权重 <strong>4.0</strong>
+            </div>
+        </div>
+      </div>
       <div class="ev-item">
         <div class="ev-badge" style="background:#c0392b18;color:#c0392b">出清利好</div>
         <div>
@@ -1800,7 +1811,7 @@ body {
     因子权重、阈值与分类规则均可配置，随行业阶段演进调整。
   </p>
   <p class="disclaimer">
-    数据截至 2026-11-07，评分生成于 2026-11-07T23:09:43。
+    数据截至 2026-11-07，评分生成于 2026-11-07T23:28:33。
     本报告为个人研究记录，不构成投资建议。市场有风险，决策需谨慎。
     评分模型输出的是结构化信号，不替代独立判断。
   </p>
