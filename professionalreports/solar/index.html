@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>光伏行业投资价值监控 · 老丁实验室</title>
+<meta name="description" content="光伏行业产能出清进度监控 · 事件驱动因子模型 · 二级市场投资价值与买卖时点判断">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #edeae6;
+  --bg-surface: #f7f6f4;
+  --bg-dark: #2d3a4f;
+  --text: #2a3445;
+  --text-secondary: #5c6b80;
+  --text-muted: #9a9a9e;
+  --text-on-dark: #e1dad8;
+  --text-on-dark-muted: #a8a4a0;
+  --border: #d0cbc5;
+  --border-hover: #b8b2aa;
+  --border-dark: rgba(225, 218, 216, 0.12);
+  --accent: #B69C91;
+  --accent-light: #e8ddd5;
+  --accent-2: #76819C;
+  --accent-2-light: #e0e3e8;
+  --accent-3: #9a8a80;
+  --shadow: rgba(42, 52, 69, 0.06);
+  --shadow-hover: rgba(42, 52, 69, 0.12);
+  --pos: #c0392b;
+  --neg: #27ae60;
+  --warn: #d68910;
+  --sans: 'Inter', 'Noto Sans SC', 'PingFang SC', sans-serif;
+  --serif: 'Noto Serif SC', Georgia, serif;
+  --mono: 'Roboto Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--sans); background: var(--bg); color: var(--text);
+  min-height: 100vh; display: flex; flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+}
+.site-header {
+  background: var(--bg-dark); border-bottom: 1px solid var(--border-dark); padding: 14px 24px;
+}
+.header-inner {
+  max-width: 1200px; margin: 0 auto; display: flex; align-items: center;
+  justify-content: space-between; flex-wrap: wrap; gap: 8px;
+}
+.logo-group { display: flex; align-items: center; gap: 8px; }
+.logo-mark {
+  width: 28px; height: 28px; border-radius: 6px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-3));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.site-name { font-size: 15px; font-weight: 600; color: var(--text-on-dark); line-height: 1.2; }
+.site-name-en {
+  font-family: var(--mono); font-size: 9px; font-weight: 400; color: var(--text-on-dark-muted);
+  letter-spacing: .12em; text-transform: uppercase; display: block; margin-top: 1px;
+}
+.site-nav { display: flex; gap: 20px; align-items: center; }
+.site-nav a {
+  font-size: 13px; font-weight: 400; color: var(--text-on-dark-muted); text-decoration: none;
+  transition: color .2s; position: relative; padding-bottom: 2px;
+}
+.site-nav a::after {
+  content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transition: width .2s; border-radius: 1px;
+}
+.site-nav a:hover { color: var(--text-on-dark); }
+.site-nav a:hover::after { width: 100%; }
+.site-nav a.active { color: var(--text-on-dark); }
+.site-nav a.active::after { width: 100%; }
+
+.page-hero {
+  background: linear-gradient(135deg, #2a3445 0%, #364765 50%, #3d4f6b 100%);
+  padding: 40px 24px 36px; text-align: center; border-bottom: 1px solid var(--border-dark);
+  position: relative; overflow: hidden;
+}
+.page-hero::before {
+  content: ''; position: absolute; top: 50%; right: 10%; width: 220px; height: 220px;
+  background: radial-gradient(circle, rgba(182, 156, 145, 0.08) 0%, transparent 70%);
+  transform: translateY(-50%); pointer-events: none;
+}
+.page-hero-inner { max-width: 640px; margin: 0 auto; position: relative; z-index: 1; }
+.page-hero-eyebrow {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--text-on-dark-muted); margin-bottom: 8px;
+}
+.page-hero-title {
+  font-size: 32px; font-weight: 700; color: var(--text-on-dark);
+  font-family: var(--serif); line-height: 1.2; margin-bottom: 8px;
+}
+.page-hero-desc {
+  font-size: 13px; color: var(--text-on-dark-muted); line-height: 1.7; font-weight: 300;
+  max-width: 520px; margin: 0 auto;
+}
+
+.main { flex: 1; max-width: 960px; margin: 0 auto; padding: 36px 24px 56px; width: 100%; }
+.section-label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--text-muted); margin-bottom: 20px; display: flex; align-items: center; gap: 8px;
+}
+.section-label::before {
+  content: ''; display: block; width: 12px; height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2)); border-radius: 1px;
+}
+.card {
+  background: var(--bg-surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 22px 24px; margin-bottom: 18px; box-shadow: var(--shadow);
+}
+
+/* 仪表盘 */
+.gauge-wrap {
+  display: grid; grid-template-columns: 1.15fr 1fr; gap: 28px; align-items: center;
+}
+.gauge-main { text-align: center; }
+.gauge-value {
+  font-family: var(--mono); font-size: 68px; font-weight: 500; line-height: 1;
+  letter-spacing: -0.02em;
+}
+.gauge-of { font-family: var(--mono); font-size: 20px; color: var(--text-muted); }
+.gauge-track {
+  height: 8px; background: #e2ded9; border-radius: 4px; margin-top: 18px; overflow: hidden;
+}
+.gauge-fill { height: 100%; border-radius: 4px; transition: width .6s; }
+.gauge-caption { font-size: 12px; color: var(--text-secondary); margin-top: 10px; }
+.verdict {
+  display: inline-block; margin-top: 14px; padding: 7px 18px; border-radius: 6px;
+  font-size: 15px; font-weight: 700; letter-spacing: .04em;
+}
+.verdict-note { font-size: 12px; color: var(--text-secondary); margin-top: 10px; line-height: 1.6; }
+.lead-box {
+  border-left: 3px solid var(--accent-2); padding: 4px 0 4px 16px; margin-bottom: 16px;
+}
+.lead-box .lead-title {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--text-muted); margin-bottom: 6px;
+}
+.lead-box .lead-val { font-family: var(--mono); font-size: 26px; font-weight: 500; }
+.lead-box .lead-note { font-size: 11px; color: var(--text-secondary); margin-top: 4px; line-height: 1.6; }
+.mini-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 4px; }
+.mini-stat {
+  background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px;
+}
+.mini-stat .ms-label {
+  font-size: 10px; color: var(--text-muted); margin-bottom: 5px;
+  font-family: var(--mono); letter-spacing: .06em;
+}
+.mini-stat .ms-value { font-family: var(--mono); font-size: 16px; font-weight: 500; }
+.mini-stat .ms-sub { font-size: 10px; color: var(--text-muted); margin-top: 3px; }
+
+/* 因子表 */
+.f-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.f-table th {
+  text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--border);
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-muted); font-weight: 500; white-space: nowrap;
+}
+.f-table td { padding: 11px 10px; border-bottom: 1px solid #e5e1dc; vertical-align: top; line-height: 1.6; }
+.f-table tr:last-child td { border-bottom: none; }
+.f-table tr:hover td { background: rgba(255,255,255,.55); }
+.f-id { font-family: var(--mono); color: var(--text-muted); font-size: 11px; }
+.f-name { font-weight: 600; }
+.f-name .lead-flag {
+  display: inline-block; margin-left: 6px; padding: 1px 5px; border-radius: 3px;
+  font-family: var(--mono); font-size: 8px; letter-spacing: .08em;
+  background: var(--accent-2-light); color: #4a5570; font-weight: 500;
+}
+.f-group { font-size: 10.5px; color: var(--text-muted); margin-top: 3px; }
+.f-val { font-size: 11px; color: var(--text-secondary); margin-top: 4px; }
+.f-rat { font-size: 11px; color: var(--text-secondary); margin-top: 5px; max-width: 300px; }
+.freq { font-family: var(--mono); font-size: 10px; color: var(--text-muted); white-space: nowrap; }
+.score-cell { white-space: nowrap; text-align: right; }
+.score-num { font-family: var(--mono); font-size: 15px; font-weight: 500; }
+.score-bar {
+  width: 62px; height: 4px; background: #e2ded9; border-radius: 2px; margin-top: 5px;
+  margin-left: auto; overflow: hidden;
+}
+.score-bar span { display: block; height: 100%; border-radius: 2px; }
+
+/* 事件流 */
+.ev-item {
+  display: flex; gap: 12px; padding: 11px 0; border-bottom: 1px solid #e5e1dc;
+  align-items: flex-start;
+}
+.ev-item:last-child { border-bottom: none; }
+.ev-badge {
+  flex-shrink: 0; width: 62px; text-align: center; padding: 3px 0; border-radius: 4px;
+  font-size: 10px; font-weight: 700; font-family: var(--mono); letter-spacing: .04em;
+}
+.ev-title { font-size: 12.5px; line-height: 1.55; }
+.ev-meta { font-size: 10.5px; color: var(--text-muted); margin-top: 4px; font-family: var(--mono); }
+.ev-tag {
+  display: inline-block; margin-left: 6px; padding: 1px 6px; border-radius: 3px;
+  background: #e8e4df; color: var(--text-secondary); font-size: 10px;
+}
+
+/* 传导链 */
+.chain { display: flex; flex-direction: column; gap: 0; }
+.chain-step {
+  display: grid; grid-template-columns: 116px 1fr; gap: 16px; padding: 14px 0;
+  border-left: 2px solid var(--border); margin-left: 9px; padding-left: 22px; position: relative;
+}
+.chain-step:last-child { border-left-color: transparent; }
+.chain-step::before {
+  content: ''; position: absolute; left: -6px; top: 20px; width: 10px; height: 10px;
+  border-radius: 50%; background: var(--bg-surface); border: 2px solid var(--accent-2);
+}
+.chain-step.is-key::before { background: var(--accent-2); }
+.chain-stage {
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--accent-4); font-weight: 600; padding-top: 2px;
+}
+.chain-stage .cs-lead { display: block; font-size: 11px; color: var(--text-muted);
+  letter-spacing: 0; text-transform: none; margin-top: 3px; font-weight: 400; }
+.chain-body { font-size: 12.5px; line-height: 1.65; }
+.chain-body strong { color: var(--text); }
+.chain-signal {
+  margin-top: 6px; font-size: 11px; color: var(--text-secondary); background: #fff;
+  border: 1px solid var(--border); border-radius: 6px; padding: 7px 10px;
+}
+.chain-signal b { font-family: var(--mono); font-size: 10px; letter-spacing: .06em; }
+
+/* 两栏 */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.stat-list { display: flex; flex-direction: column; gap: 9px; }
+.stat-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 8px 0; border-bottom: 1px solid #e5e1dc; font-size: 12.5px;
+}
+.stat-row:last-child { border-bottom: none; }
+.stat-row .sr-label { color: var(--text-secondary); }
+.stat-row .sr-value { font-family: var(--mono); font-weight: 500; }
+
+.tag-list { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 4px; }
+.tag {
+  padding: 4px 10px; border-radius: 5px; font-size: 11px; font-family: var(--mono);
+  background: #e8e4df; color: var(--text-secondary); border: 1px solid var(--border);
+}
+.tag.t-pos { background: #fbe9e7; color: var(--pos); border-color: #f0c9c4; }
+.tag.t-neg { background: #e6f4ec; color: var(--neg); border-color: #c4e3d3; }
+
+.note {
+  font-size: 11.5px; color: var(--text-secondary); line-height: 1.7;
+  background: #fff; border-left: 3px solid var(--accent); padding: 12px 14px; border-radius: 0 6px 6px 0;
+}
+.note strong { color: var(--text); }
+.disclaimer {
+  font-size: 11px; color: var(--text-muted); line-height: 1.7; margin-top: 20px;
+  padding-top: 16px; border-top: 1px solid var(--border);
+}
+
+.about { margin-top: 30px; }
+.about-title {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--text-muted); margin-bottom: 10px;
+}
+.about-text { font-size: 12.5px; color: var(--text-secondary); line-height: 1.75; }
+
+.site-footer {
+  background: var(--bg-dark); padding: 18px 24px; border-top: 1px solid var(--border-dark);
+}
+.footer-inner {
+  max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 8px;
+}
+.footer-brand { font-size: 12px; color: var(--text-on-dark); }
+.footer-note { font-size: 11px; color: var(--text-on-dark-muted); font-family: var(--mono); }
+
+@media (max-width: 760px) {
+  .gauge-wrap { grid-template-columns: 1fr; gap: 22px; }
+  .two-col { grid-template-columns: 1fr; }
+  .mini-stats { grid-template-columns: 1fr; }
+  .chain-step { grid-template-columns: 1fr; gap: 6px; }
+  .site-nav { gap: 12px; }
+  .site-nav a { font-size: 12px; }
+  .gauge-value { font-size: 54px; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo-group">
+      <div class="logo-mark">丁</div>
+      <div>
+        <div class="site-name">老丁实验室</div>
+        <span class="site-name-en">Laodinglab</span>
+      </div>
+    </div>
+    <nav class="site-nav">
+      <a href="/">首页</a>
+      <a href="/newenergynews">每日简报</a>
+      <a href="/globalnewenergydata">全球数据</a>
+      <a href="/chinapowermarket">市场研究</a>
+      <a href="/professionalreports/" class="active">其他专业报告</a>
+    </nav>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-hero-eyebrow">Solar Industry Value Monitor</div>
+    <h1 class="page-hero-title">光伏行业投资价值监控</h1>
+    <p class="page-hero-desc">
+      以「产能物理性退出」为核心判据的事件驱动模型，监控公司公告、信用事件、政策标准与资金面动态，
+      评估行业出清进度并给出二级市场买卖时点建议。
+    </p>
+  </div>
+</section>
+
+<main class="main">
+
+<div class="section-label">核心结论 · Verdict</div>
+<div class="card">
+  <div class="gauge-wrap">
+    <div class="gauge-main">
+      <div>
+        <span class="gauge-value" style="color:#d68910">58.4</span>
+        <span class="gauge-of">/100</span>
+      </div>
+      <div class="gauge-track">
+        <div class="gauge-fill" style="width:58.4%;background:#d68910"></div>
+      </div>
+      <div class="gauge-caption">行业出清进度综合评分 · 观察等待区间</div>
+      <div class="verdict" style="background:#7f8c8d22;color:#7f8c8d;border:1px solid #7f8c8d55">
+        观察等待
+      </div>
+      <div class="verdict-note">出清逻辑成立但证据不足，保留观察仓，不新增</div>
+    </div>
+    <div>
+      <div class="lead-box">
+        <div class="lead-title">领先因子评分 · 提前 3-6 个月</div>
+        <div class="lead-val" style="color:#d68910">56.0<span style="font-size:13px;color:var(--text-muted)">/100</span></div>
+        <div class="lead-note">
+          仅由领先型因子（产能退出、资金流、信用收缩、政策标准、现金流）计算，
+          边际改善早于价格与盈利修复 3-6 个月，是建仓时点的核心读数。
+        </div>
+      </div>
+      <div class="mini-stats">
+        <div class="mini-stat">
+          <div class="ms-label">出清事件信号</div>
+          <div class="ms-value" style="color:#c0392b">
+            20 / 0
+          </div>
+          <div class="ms-sub">利好权重 / 利空权重 · 命中 7 条</div>
+        </div>
+        <div class="mini-stat">
+          <div class="ms-label">最高资产负债率</div>
+          <div class="ms-value" style="color:#c0392b">109.07%</div>
+          <div class="ms-sub">*ST亿晶 · 13 只样本</div>
+        </div>
+        <div class="mini-stat">
+          <div class="ms-label">板块估值分位</div>
+          <div class="ms-value" style="color:#c0392b">
+            27.4%
+          </div>
+          <div class="ms-sub">PE-TTM 均值 · 近一年</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-label">判断框架 · Framework</div>
+<div class="card">
+  <div class="note" style="margin-bottom:16px">
+    <strong>核心命题：</strong>2024 年初以来，由中国光伏行业协会牵头、多个主要部委指导的头部企业自律联盟，
+    以自律限产方式约束产能利用、协助行业走出底部并实现价格回升与盈利恢复的路径，<strong>已被事实证伪</strong>——
+    2026 年 1 月工信部明确将「反内卷」界定为行业规范治理的<strong>主要矛盾</strong>，
+    监管同时约谈行业协会与企业通报垄断风险，人民网社论亦明确「严禁企业串通定价、抱团控产、联合投标」。
+    <strong>回归市场经济的逻辑，产能的真正出清必须以一定体量的产能物理性退出市场为标志</strong>
+    ——形式包括产能废弃与企业破产注销，或因政策标准提高而落入落后产能被动出清。
+    本模型据此建立事件判别规则：<span style="color:var(--pos)">真出清=利好</span>，
+    <span style="color:var(--neg)">政府救企业/低水平重组=利空</span>（延后出清、增加行业纠缠）。
+  </div>
+
+  <div class="chain">
+    <div class="chain-step is-key">
+      <div class="chain-stage">阶段一<span class="cs-lead">财务恶化 · 敏感节点</span></div>
+      <div class="chain-body">
+        产能过剩 → 价格跌破完全成本 → 经营性现金流由正转负、资产负债率攀升、三角债拉长。
+        <strong>半年报与年报披露日是最核心的敏感节点</strong>，此处决定后续所有环节的启动时点。
+        <div class="chain-signal"><b>观测信号</b>　经营现金流净额转负（龙头单季/半年）、应付账款周转天数拉长、
+          资产负债率突破 75%、存货跌价准备计提、控股股东质押比例上升</div>
+      </div>
+    </div>
+    <div class="chain-step is-key">
+      <div class="chain-stage">阶段二<span class="cs-lead">银行收贷 · 市场化强制力</span></div>
+      <div class="chain-body">
+        银行依据财报指标收紧授信、停止续贷、下调评级 → 流动性断裂加速。
+        这是<strong>非行政手段的强制出清力量</strong>，也是本模型认为最有效的加速器：
+        银行以自身风控逻辑行动，不受「稳就业、保交付」的政策目标约束。
+        <div class="chain-signal"><b>观测信号</b>　债券回售触发与拒绝转股、评级展望下调、授信余额下降、
+          可转债/超短融到期未兑付、诉讼与资产冻结、担保代偿</div>
+      </div>
+    </div>
+    <div class="chain-step is-key">
+      <div class="chain-stage">阶段三<span class="cs-lead">政府介入 · 关键分岔</span></div>
+      <div class="chain-body">
+        介入方向决定出清成败。<strong>纾困基金、政府/国资接盘、债务展期</strong> → 僵尸产能续命，
+        出清被推迟，<span style="color:var(--neg)"><strong>判定为利空</strong></span>；
+        <strong>强制性能效/能耗标准、行业规范条件</strong> → 不达标产能丧失准入资格，
+        <span style="color:var(--pos)"><strong>判定为利好</strong></span>。
+        有政府参股的企业需单独标注，其经营自主性受限，是出清受阻的预警信号。
+        <div class="chain-signal"><b>观测信号</b>　国资入股公告、纾困基金设立、政府接盘、债务展期协议；
+          强标发布与执行细则、行业规范条件修订</div>
+      </div>
+    </div>
+    <div class="chain-step is-key">
+      <div class="chain-stage">阶段四<span class="cs-lead">企业互动 · 重组甄别</span></div>
+      <div class="chain-body">
+        并购与重组≠出清。<strong>交割后产线是否保留生产是唯一判别标准</strong>：
+        保留则只是股权腾挪、延后出清（<span style="color:var(--neg)">利空</span>）；
+        关停注销则是实质退出（<span style="color:var(--pos)">利好</span>）。
+        例如 TCL 中环控股一道新能后立即投入约 26 亿元将产能改造为 BC 路线，
+        产能并未消失且将重新进入市场，属延后出清；弘元绿能接手无锡尚德重整、ST 棒杰以股抵债同理。
+        <div class="chain-signal"><b>观测信号</b>　重整投资人引入、资产包转让、二手设备拍卖、
+          产线注销与设备拆除、预重整协议签署</div>
+      </div>
+    </div>
+    <div class="chain-step">
+      <div class="chain-stage">阶段五<span class="cs-lead">产能实际退出</span></div>
+      <div class="chain-body">
+        物理产能从市场消失 → 供需缺口显现 → 价格回升至完全成本之上 → 龙头盈利修复。
+        <strong>这是滞后确认环节</strong>，用于验证而非预警。
+        <div class="chain-signal"><b>观测信号</b>　累计退出产能（GW）超 250GW、开工率回升至 60% 以上、
+          硅料库存降至 30 万吨以下、组件价格站上全成本</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-label">因子体系 · Factors</div>
+<div class="card">
+  <div class="f-table-wrap">
+  <table class="f-table">
+    <thead>
+      <tr>
+        <th style="width:34%">因子 / 指标</th>
+        <th style="width:22%">当前读数</th>
+        <th style="width:12%">监控频率</th>
+        <th style="width:12%">得分</th>
+      </tr>
+    </thead>
+    <tbody>      <tr>
+        <td>
+          <div class="f-id">F8 · 权重 5</div>
+          <div class="f-name">融资余额与股权质押<span class="lead-flag">领先</span></div>
+          <div class="f-group">金融与债务（银行收贷）</div>
+          <div class="f-rat">质押是杠杆风险的直接读数。质押比例高 + 股价下跌 = 强平风险 → 加速出清</div>
+        </td>
+        <td><div class="f-val">通威集团累计质押 7.44亿股，占总股本 16.54%、占其持股 36.56%（2026-11-06）</div></td>
+        <td><span class="freq">日（公告扫描）+ 周（两融）</span></td>
+        <td class="score-cell">
+          <div class="score-num" style="color:#c0392b">70.0</div>
+          <div class="score-bar"><span style="width:70.0%;background:#c0392b"></span></div>
+        </td>
+      </tr>      <tr>
+        <td>
+          <div class="f-id">F14 · 权重 5</div>
+          <div class="f-name">板块估值分位</div>
+          <div class="f-group">资本与资金</div>
+          <div class="f-rat">估值分位是『预期已充分反映』的度量。极低分位+基本面未改善 = 预期差，反之则警惕</div>
+        </td>
+        <td><div class="f-val">光伏产业指数 PB 1.85倍、近一年 7.02% 分位；中证光伏产业指数 PE -64.75（近1年20%-80%分位）</div></td>
+        <td><span class="freq">周</span></td>
+        <td class="score-cell">
+          <div class="score-num" style="color:#c0392b">87.7</div>
+          <div class="score-bar"><span style="width:87.7%;background:#c0392b"></span></div>
+        </td>
+      </tr>      <tr>
+        <td>
+          <div class="f-id">F7 · 权重 6</div>
+          <div class="f-name">债券与信用事件<span class="lead-flag">领先</span></div>
+          <div class="f-group">金融与债务（银行收贷）</div>
+          <div class="f-rat">公开市场违约是硬约束，银行抽贷的极端形式，往往伴随破产重整申请</div>
+        </td>
+        <td><div class="f-val">隆基绿能 70亿转债触发回售，拒绝低价转股（2026年11月）</div></td>
+        <td><span class="freq">日（公告扫描）</span></td>
+        <td class="score-cell">
+          <div class="score-num" style="color:#d68910">60.0</div>
+          <div class="score-bar"><span style="width:60.0%;background:#d68910"></span></div>
+        </td>
+      </tr>      <tr>
+        <td>
+          <div class="f-id">F15 · 权重 6</div>
+          <div class="f-name">个股资金与估值分化<span class="lead-flag">领先</span></div>
+          <div class="f-group">资本与资金</div>
+          <div class="f-rat">决定个股投资价值。资金在龙头与尾部之间的分布反映市场对『出清受益方』的定价</div>
+        </td>
+        <td><div class="f-val">东方日升单日 +15.26%（主力净流入）；钧达股份 +2.11%；*ST亿晶 +10.22%（风险偏好回升迹象）</div></td>
+        <td><span class="freq">日</span></td>
+        <td class="score-cell">
+          <div class="score-num" style="color:#7f8c8d">51.6</div>
+          <div class="score-bar"><span style="width:51.6%;background:#7f8c8d"></span></div>
+        </td>
+      </tr>      <tr>
+        <td>
+          <div class="f-id">F3 · 权重 8</div>
+          <div class="f-name">库存水平与去化速度</div>
+          <div class="f-group">产能出清（核心）</div>
+          <div class="f-rat">高库存 = 供给过剩未真正消化；库存去化速度决定价格回升斜率</div>
+        </td>
+        <td><div class="f-val">约 57.2 万吨（2026年9月底）</div></td>
+        <td><span class="freq">月（硅业分会）/ 周（价格追踪）</span></td>
+        <td class="score-cell">
+          <div class="score-num" style="color:#27ae60">25.6</div>
+          <div class="score-bar"><span style="width:25.6%;background:#27ae60"></span></div>
+        </td>
+      </tr>      <tr>
+        <td>
+          <div class="f-id">F4 · 权重 8</div>
+          <div class="f-name">龙头资产负债率</div>
+          <div class="f-group">金融与债务（银行收贷）</div>
+          <div class="f-rat">银行授信评估的核心指标。资产负债率 &gt;80% 通常触发授信收紧，进而加速出清</div>
+        </td>
+        <td><div class="f-val">晶澳 79.95% / 天合 79.7% / 晶科 76% / 通威 75.6% / TCL中环 73.44% / 隆基 67.21%（2026Q3）</div></td>
+        <td><span class="freq">季（财报披露后 3 个工作日内）</span></td>
+        <td class="score-cell">
+          <div class="score-num" style="color:#d68910">65.3</div>
+          <div class="score-bar"><span style="width:65.3%;background:#d68910"></span></div>
+        </td>
+      </tr>      <tr>
+        <td>
+          <div class="f-id">F6 · 权重 8</div>
+          <div class="f-name">三角债压力（应收/应付剪刀差）<span class="lead-flag">领先</span></div>
+          <div class="f-group">金融与债务（银行收贷）</div>
+          <div class="f-rat">应付端拉长说明压力向中小供应商转移，中小企业现金流断裂会引发批量停产，形成出清连锁反应</div>
+        </td>
+        <td><div class="f-val">近150家光伏上市企业应收约 3.5万亿、应付约 5,500亿（2026年6月底口径），创历史新高</div></td>
+        <td><span class="freq">季 + 事件驱动（欠款/诉讼公告）</span></td>
+        <td class="score-cell">
+          <div class="score-num" style="color:#c0392b">70.0</div>
+          <div class="score-bar"><span style="width:70.0%;background:#c0392b"></span></div>
+        </td>
+      </tr>      <tr>
+        <td>
+          <div class="f-id">F12 · 权重 8</div>
+          <div class="f-name">龙头亏损收敛速度</div>
+          <div class="f-group">价格与盈利</div>
+          <div class="f-rat">亏损收敛是价格回升传导到报表的验证，也是银行收贷意愿变化的反向指标</div>
+        </td>
+        <td><div class="f-val">2026Q3：晶科环比减亏83%、隆基减亏41.66%、晶澳减亏39%、TCL中环改善13.2%（扣非改善40.4%）；通威Q3亏16.39亿（Q2亏26.75亿）；天合由盈转亏16.72亿</div></td>
+        <td><span class="freq">季</span></td>
+        <td class="score-cell">
+          <div class="score-num" style="color:#d68910">55.0</div>
+          <div class="score-bar"><span style="width:55.0%;background:#d68910"></span></div>
+        </td>
+      </tr>      <tr>
+        <td>
+          <div class="f-id">F13 · 权重 8</div>
+          <div class="f-name">光伏 ETF 资金流向<span class="lead-flag">领先</span></div>
+          <div class="f-group">资本与资金</div>
+          <div class="f-rat">机构资金对出清进度的投票。ETF 份额变化比主力资金流更可靠（不受拆单影响）</div>
+        </td>
+        <td><div class="f-val">2026-11-06：159857 主力净流出 -2,563万；515790 主力净流出 -9,154万、超大单净流出 -1.28亿。近30日 159857 累计净流入 1.29亿</div></td>
+        <td><span class="freq">日（收盘后）</span></td>
+        <td class="score-cell">
+          <div class="score-num" style="color:#27ae60">22.0</div>
+          <div class="score-bar"><span style="width:22.0%;background:#27ae60"></span></div>
+        </td>
+      </tr>      <tr>
+        <td>
+          <div class="f-id">F10 · 权重 10</div>
+          <div class="f-name">政府介入方向（救企业 vs 强标准）<span class="lead-flag">领先</span></div>
+          <div class="f-group">政策与标准</div>
+          <div class="f-rat">本因子是模型的『伪出清识别器』：政府注资/国资接盘/低水平重组会延后出清，必须扣分</div>
+        </td>
+        <td><div class="f-val">2026年已有 9 起并购重整（历史新高）：TCL中环12.58亿控股一道新能、通威收购丽豪（反垄断放行）、弘元绿能6.3亿接手无锡尚德重整、ST棒杰以股抵债</div></td>
+        <td><span class="freq">日（事件扫描）</span></td>
+        <td class="score-cell">
+          <div class="score-num" style="color:#7f8c8d">50.0</div>
+          <div class="score-bar"><span style="width:50.0%;background:#7f8c8d"></span></div>
+        </td>
+      </tr>      <tr>
+        <td>
+          <div class="f-id">F11 · 权重 10</div>
+          <div class="f-name">产品价格相对成本线位置</div>
+          <div class="f-group">价格与盈利</div>
+          <div class="f-rat">价格站上完全成本是盈利修复的必要条件，也是价格上限的约束</div>
+        </td>
+        <td><div class="f-val">多晶硅 3.35万元/吨（2026-11-04）；硅片 0.98元/片；电池片 0.29元/W；组件 0.70元/W。多数环节仍在成本线下方</div></td>
+        <td><span class="freq">周（price-tracker 周日21:00 已自动化）</span></td>
+        <td class="score-cell">
+          <div class="score-num" style="color:#c0392b">90.9</div>
+          <div class="score-bar"><span style="width:90.9%;background:#c0392b"></span></div>
+        </td>
+      </tr>      <tr>
+        <td>
+          <div class="f-id">F2 · 权重 12</div>
+          <div class="f-name">全产业链产能利用率<span class="lead-flag">领先</span></div>
+          <div class="f-group">产能出清（核心）</div>
+          <div class="f-rat">利用率是出清是否真实发生的『验钞机』：闲置产能随时可复产，会压制价格反弹持续性</div>
+        </td>
+        <td><div class="f-val">硅料约 35%（2026年10月）；全产业链平均 40-50%</div></td>
+        <td><span class="freq">周（硅业分会月度开工）+ 月</span></td>
+        <td class="score-cell">
+          <div class="score-num" style="color:#7f8c8d">50.0</div>
+          <div class="score-bar"><span style="width:50.0%;background:#7f8c8d"></span></div>
+        </td>
+      </tr>      <tr>
+        <td>
+          <div class="f-id">F5 · 权重 12</div>
+          <div class="f-name">经营性现金流<span class="lead-flag">领先</span></div>
+          <div class="f-group">金融与债务（银行收贷）</div>
+          <div class="f-rat">银行收贷最直接的先行信号。现金流由正转负 → 抽贷 → 债务危机 → 破产重整，是老丁所述传导链的核心一环</div>
+        </td>
+        <td><div class="f-val">隆基 2026H1 经营现金流 -58.18亿元（上年同期 -4.84亿）；晶澳Q3单季 +31.2亿；通威Q3 +19.15亿（连续两季正流入）</div></td>
+        <td><span class="freq">季（财报节点）</span></td>
+        <td class="score-cell">
+          <div class="score-num" style="color:#d68910">65.3</div>
+          <div class="score-bar"><span style="width:65.3%;background:#d68910"></span></div>
+        </td>
+      </tr>      <tr>
+        <td>
+          <div class="f-id">F9 · 权重 12</div>
+          <div class="f-name">强制性能效/能耗标准执行<span class="lead-flag">领先</span></div>
+          <div class="f-group">政策与标准</div>
+          <div class="f-rat">政策倒逼是唯一能『不可逆』淘汰落后产能的力量，是老丁所述『被动出清』的主路径</div>
+        </td>
+        <td><div class="f-val">3项强制国标（硅多晶/硅片能耗限额、组件能效）2027-01-01 实施；测算出清 310GW（华泰）/ 153.6GW（组件口径）</div></td>
+        <td><span class="freq">事件驱动 + 月</span></td>
+        <td class="score-cell">
+          <div class="score-num" style="color:#7f8c8d">50.0</div>
+          <div class="score-bar"><span style="width:50.0%;background:#7f8c8d"></span></div>
+        </td>
+      </tr>      <tr>
+        <td>
+          <div class="f-id">F1 · 权重 20</div>
+          <div class="f-name">有效产能退出率<span class="lead-flag">领先</span></div>
+          <div class="f-group">产能出清（核心）</div>
+          <div class="f-rat">唯一能真正兑现『市场化出清』的量化指标。计划退出≠实际退出，需用产能利用率和开工率交叉验证</div>
+        </td>
+        <td><div class="f-val">约 310-360GW 计划退出（华泰测算 TOPCon300/HJT10/BC0 + 组件老旧P型线），占名义产能约 15-31%</div></td>
+        <td><span class="freq">周（公告+新闻扫描）/ 季（财报确认）</span></td>
+        <td class="score-cell">
+          <div class="score-num" style="color:#d68910">65.0</div>
+          <div class="score-bar"><span style="width:65.0%;background:#d68910"></span></div>
+        </td>
+      </tr>    </tbody>
+  </table>
+  </div>
+</div>
+
+<div class="section-label">监控频率建议 · Cadence</div>
+<div class="card">
+  <div class="two-col">
+    <div>
+      <div class="about-title" style="margin-bottom:12px">分级监控策略</div>
+      <div class="stat-list">
+        <div class="stat-row"><span class="sr-label">① 事件驱动（实时）<br><span style="font-size:10.5px;color:var(--text-muted)">公告/舆情扫描</span></span><span class="sr-value" style="color:var(--accent-4)">每日</span></div>
+        <div class="stat-row"><span class="sr-label">② 资金面（收盘后）<br><span style="font-size:10.5px;color:var(--text-muted)">ETF 份额/主力净流</span></span><span class="sr-value" style="color:var(--accent-4)">每日</span></div>
+        <div class="stat-row"><span class="sr-label">③ 产业链价格与排产<br><span style="font-size:10.5px;color:var(--text-muted)">多晶硅/硅片/电池/组件</span></span><span class="sr-value" style="color:var(--accent-4)">每周</span></div>
+        <div class="stat-row"><span class="sr-label">④ 开工率与库存<br><span style="font-size:10.5px;color:var(--text-muted)">硅业分会口径</span></span><span class="sr-value" style="color:var(--accent-4)">每月</span></div>
+        <div class="stat-row"><span class="sr-label">⑤ 财报敏感节点<br><span style="font-size:10.5px;color:var(--text-muted)">负债/现金流/担保/质押</span></span><span class="sr-value" style="color:var(--accent-4)">每季</span></div>
+        <div class="stat-row"><span class="sr-label">⑥ 政策与标准日历<br><span style="font-size:10.5px;color:var(--text-muted)">强标/规范条件/行业会议</span></span><span class="sr-value" style="color:var(--accent-4)">按节点</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="about-title" style="margin-bottom:12px">关键时间锚点</div>
+      <div class="stat-list">
+        <div class="stat-row"><span class="sr-label">三项能耗能效强制国标执行<br><span style="font-size:10.5px;color:var(--text-muted)">非达标产能丧失准入资格</span></span><span class="sr-value" style="color:var(--pos)">2027-01-01</span></div>
+        <div class="stat-row"><span class="sr-label">《光伏制造行业规范条件》<br><span style="font-size:10.5px;color:var(--text-muted)">2026年本征求意见中</span></span><span class="sr-value" style="color:var(--warn)">待定稿</span></div>
+        <div class="stat-row"><span class="sr-label">光伏出口增值税退税取消<br><span style="font-size:10.5px;color:var(--text-muted)">削弱低价出口，抑制复产</span></span><span class="sr-value" style="color:var(--text-secondary)">已生效</span></div>
+        <div class="stat-row"><span class="sr-label">《光伏行业成本核算模型通则》<br><span style="font-size:10.5px;color:var(--text-muted)">统一成本口径，价格执法基础</span></span><span class="sr-value" style="color:var(--text-secondary)">已发布</span></div>
+      </div>
+      <div class="note" style="margin-top:16px">
+        <strong>频率设计原则：</strong>事件驱动置于最高优先级——破产重整、收贷、政府接盘等事件具有
+        突发性且不可回溯补采，日频扫描是唯一可靠方式；财报节点决定信用因子基准，按季重算；
+        产业链价格与资金面为高频连续变量，用于捕捉边际变化方向。
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-label">财务与信用面板 · Credit Panel</div>
+<div class="card">
+  <div class="f-table-wrap">
+  <table class="f-table">
+    <thead>
+      <tr>
+        <th style="width:20%">标的</th>
+        <th style="width:13%">资产负债率</th>
+        <th style="width:17%">经营现金流净额</th>
+        <th style="width:15%">归母净利</th>
+        <th style="width:15%">股东权益</th>
+        <th style="width:20%">风险提示</th>
+      </tr>
+    </thead>
+    <tbody>      <tr>
+        <td><div class="f-name">协鑫集成</div><div class="f-id">sz002506 · 2026-09-30</div></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#d68910">95.08%</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">1.01亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-6.21亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">7.21亿</span></td>
+        <td><span class="ev-badge" style="background:#d6891018;color:#d68910;width:auto;padding:2px 8px">负债率超警戒</span></td>
+      </tr>      <tr>
+        <td><div class="f-name">*ST亿晶</div><div class="f-id">sh600537 · 2026-09-30</div></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#d68910">109.07%</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">1.79亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-2.04亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-3.27亿</span></td>
+        <td><span class="ev-badge" style="background:#c0392b18;color:#c0392b;width:auto;padding:2px 8px">资不抵债</span></td>
+      </tr>      <tr>
+        <td><div class="f-name">海源复材</div><div class="f-id">sz002529 · 2026-09-30</div></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#d68910">94.96%</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-0.95亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-0.71亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">0.34亿</span></td>
+        <td><span class="ev-badge" style="background:#c0392b18;color:#c0392b;width:auto;padding:2px 8px">经营现金流为负</span></td>
+      </tr>      <tr>
+        <td><div class="f-name">爱旭股份</div><div class="f-id">sh600732 · 2026-09-30</div></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#d68910">79.49%</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">19.47亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-7.09亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">78.78亿</span></td>
+        <td><span style="color:var(--text-muted);font-size:11px">—</span></td>
+      </tr>      <tr>
+        <td><div class="f-name">隆基绿能</div><div class="f-id">sh601012 · 2026-09-30</div></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">67.21%</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-34.67亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-47.13亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">488.09亿</span></td>
+        <td><span class="ev-badge" style="background:#c0392b18;color:#c0392b;width:auto;padding:2px 8px">经营现金流为负</span></td>
+      </tr>      <tr>
+        <td><div class="f-name">大全能源</div><div class="f-id">sh688303 · 2026-09-30</div></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">10.27%</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-23.35亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-20.06亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">369.63亿</span></td>
+        <td><span class="ev-badge" style="background:#c0392b18;color:#c0392b;width:auto;padding:2px 8px">经营现金流为负</span></td>
+      </tr>      <tr>
+        <td><div class="f-name">晶澳科技</div><div class="f-id">sz002459 · 2026-09-30</div></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#d68910">79.95%</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">39.81亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-36.40亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">199.29亿</span></td>
+        <td><span style="color:var(--text-muted);font-size:11px">—</span></td>
+      </tr>      <tr>
+        <td><div class="f-name">钧达股份</div><div class="f-id">sz002865 · 2026-09-30</div></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#d68910">77.78%</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-1.42亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-4.28亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">37.68亿</span></td>
+        <td><span class="ev-badge" style="background:#c0392b18;color:#c0392b;width:auto;padding:2px 8px">经营现金流为负</span></td>
+      </tr>      <tr>
+        <td><div class="f-name">通威股份</div><div class="f-id">sh600438 · 2026-09-30</div></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#d68910">75.60%</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">20.24亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-67.59亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">423.75亿</span></td>
+        <td><span style="color:var(--text-muted);font-size:11px">—</span></td>
+      </tr>      <tr>
+        <td><div class="f-name">晶科能源</div><div class="f-id">sh688223 · 2026-09-30</div></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#d68910">76.00%</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">6.11亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-33.67亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">269.27亿</span></td>
+        <td><span style="color:var(--text-muted);font-size:11px">—</span></td>
+      </tr>      <tr>
+        <td><div class="f-name">天合光能</div><div class="f-id">sh688599 · 2026-09-30</div></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#d68910">79.70%</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">47.03亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-19.42亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">237.05亿</span></td>
+        <td><span style="color:var(--text-muted);font-size:11px">—</span></td>
+      </tr>      <tr>
+        <td><div class="f-name">TCL中环</div><div class="f-id">sz002129 · 2026-09-30</div></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">73.44%</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">4.31亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-45.56亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">326.20亿</span></td>
+        <td><span style="color:var(--text-muted);font-size:11px">—</span></td>
+      </tr>      <tr>
+        <td><div class="f-name">捷佳伟创</div><div class="f-id">sz300724 · 2026-09-30</div></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">50.58%</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">28.75亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">6.33亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">135.55亿</span></td>
+        <td><span style="color:var(--text-muted);font-size:11px">—</span></td>
+      </tr>    </tbody>
+  </table>
+  </div>
+  <div class="note" style="margin-top:16px">
+    <strong>银行收贷判读：</strong>经营现金流为负且资产负债率超 75% 的企业，其授信续作概率显著下降，
+    是「银行收贷 → 债务危机 → 破产重整」传导链的起点。股东权益为负即<strong>资不抵债</strong>，
+    直接进入破产程序概率最高。本期共 13 只标的纳入信用观察。
+  </div>
+</div>
+
+<div class="section-label">资金面 · Capital Flow</div>
+<div class="card">
+  <div class="two-col">
+    <div>
+      <div class="about-title" style="margin-bottom:12px">光伏 ETF 主力资金流（万元）</div>
+      <div class="stat-list">        <div class="stat-row">
+          <span class="sr-label">光伏ETF国泰<br><span style="font-size:10px;color:var(--text-muted)">20日累计 665 万元</span></span>
+          <span class="sr-value" style="color:#c0392b">190<span style="font-size:10px;color:var(--text-muted);font-weight:400"> 万</span></span>
+        </div>        <div class="stat-row">
+          <span class="sr-label">光伏ETF招商<br><span style="font-size:10px;color:var(--text-muted)">20日累计 -110 万元</span></span>
+          <span class="sr-value" style="color:#27ae60">-74<span style="font-size:10px;color:var(--text-muted);font-weight:400"> 万</span></span>
+        </div>        <div class="stat-row">
+          <span class="sr-label">光伏ETF富国<br><span style="font-size:10px;color:var(--text-muted)">20日累计 -197 万元</span></span>
+          <span class="sr-value" style="color:#27ae60">-145<span style="font-size:10px;color:var(--text-muted);font-weight:400"> 万</span></span>
+        </div>        <div class="stat-row">
+          <span class="sr-label">光伏ETF汇添富<br><span style="font-size:10px;color:var(--text-muted)">20日累计 -1,242 万元</span></span>
+          <span class="sr-value" style="color:#27ae60">-1,287<span style="font-size:10px;color:var(--text-muted);font-weight:400"> 万</span></span>
+        </div>        <div class="stat-row">
+          <span class="sr-label">光伏ETF易方达<br><span style="font-size:10px;color:var(--text-muted)">20日累计 -1,565 万元</span></span>
+          <span class="sr-value" style="color:#27ae60">-1,728<span style="font-size:10px;color:var(--text-muted);font-weight:400"> 万</span></span>
+        </div>        <div class="stat-row">
+          <span class="sr-label">光伏龙头ETF广发<br><span style="font-size:10px;color:var(--text-muted)">20日累计 -2,375 万元</span></span>
+          <span class="sr-value" style="color:#27ae60">-2,577<span style="font-size:10px;color:var(--text-muted);font-weight:400"> 万</span></span>
+        </div>        <div class="stat-row">
+          <span class="sr-label">光伏ETF天弘<br><span style="font-size:10px;color:var(--text-muted)">20日累计 -3,274 万元</span></span>
+          <span class="sr-value" style="color:#27ae60">-2,061<span style="font-size:10px;color:var(--text-muted);font-weight:400"> 万</span></span>
+        </div>        <div class="stat-row">
+          <span class="sr-label">光伏ETF华夏<br><span style="font-size:10px;color:var(--text-muted)">20日累计 -4,098 万元</span></span>
+          <span class="sr-value" style="color:#27ae60">-3,986<span style="font-size:10px;color:var(--text-muted);font-weight:400"> 万</span></span>
+        </div>        <div class="stat-row">
+          <span class="sr-label">光伏ETF华泰柏瑞<br><span style="font-size:10px;color:var(--text-muted)">20日累计 -5,944 万元</span></span>
+          <span class="sr-value" style="color:#27ae60">-3,501<span style="font-size:10px;color:var(--text-muted);font-weight:400"> 万</span></span>
+        </div>      </div>
+    </div>
+    <div>
+      <div class="about-title" style="margin-bottom:12px">板块估值分位</div>
+      <div class="stat-list">        <div class="stat-row">
+          <span class="sr-label">光伏设备<br><span style="font-size:10px;color:var(--text-muted)">PB 2.4591倍</span></span>
+          <span class="sr-value" style="color:#c0392b">PE分位 7.8%</span>
+        </div>        <div class="stat-row">
+          <span class="sr-label">光伏电池组件<br><span style="font-size:10px;color:var(--text-muted)">PB 2.2489倍</span></span>
+          <span class="sr-value" style="color:#c0392b">PE分位 9.9%</span>
+        </div>        <div class="stat-row">
+          <span class="sr-label">光伏加工设备<br><span style="font-size:10px;color:var(--text-muted)">PB 3.0999倍</span></span>
+          <span class="sr-value" style="color:#27ae60">PE分位 89.7%</span>
+        </div>        <div class="stat-row">
+          <span class="sr-label">光伏辅材<br><span style="font-size:10px;color:var(--text-muted)">PB 1.9298倍</span></span>
+          <span class="sr-value" style="color:#c0392b">PE分位 2.2%</span>
+        </div>      </div>
+      <div class="note" style="margin-top:16px">
+        <strong>资金面判读：</strong>九只光伏 ETF 5 日主力资金合计
+        <span style="font-family:var(--mono);color:#27ae60;font-weight:600">
+        -15,170 万元</span>。
+        估值分位处于极低区间（光伏辅材 PE 分位
+        2.2%、
+        电池组件 9.9%），
+        说明<strong>预期已充分反映悲观情形</strong>；但资金仍在流出，
+        反映机构对出清兑现节奏存疑。<strong>估值底已现，资金底未现</strong>——
+        这是当前不宜重仓、但应建立观察仓的关键理由。
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-label">出清事件流 · Event Feed</div>
+<div class="card">      <div style="margin-bottom:12px;font-size:11.5px;color:var(--text-secondary)">本期扫描命中 <strong>7</strong> 条出清相关事件（含公告与舆情）。分类依据：物理性退出判利好，政府救助与低水平重组判利空。</div>      <div class="ev-item">
+        <div class="ev-badge" style="background:#c0392b18;color:#c0392b">出清利好</div>
+        <div>
+          <div class="ev-title">TCL中环收购少数股权获单季盈利资产，强化半导体硅片竞争力<span class="ev-tag">头部并购且伴随产能实际关停</span></div>
+          <div class="ev-meta">sz002129 · 舆情 · 权重 2 · 2026-11-06 20:38:04</div>
+        </div>
+      </div>      <div class="ev-item">
+        <div class="ev-badge" style="background:#c0392b18;color:#c0392b">出清利好</div>
+        <div>
+          <div class="ev-title">通威股份：通威股份有限公司关于控股股东股份质押的公告<span class="ev-tag">现金流/负债恶化信号</span></div>
+          <div class="ev-meta">sh600438 · 公告 · 权重 2 · 2026-11-06 16:58:21</div>
+        </div>
+      </div>      <div class="ev-item">
+        <div class="ev-badge" style="background:#c0392b18;color:#c0392b">出清利好</div>
+        <div>
+          <div class="ev-title">隆基绿能：关于“隆22转债”回售结果的公告<span class="ev-tag">银行收贷/信用收缩</span></div>
+          <div class="ev-meta">sh601012 · 公告 · 权重 4 · 2026-11-04 17:36:53</div>
+        </div>
+      </div>      <div class="ev-item">
+        <div class="ev-badge" style="background:#c0392b18;color:#c0392b">出清利好</div>
+        <div>
+          <div class="ev-title">*ST亿晶：亿晶光电科技股份有限公司关于与重整投资人签署预重整投资协议之补充协议的公告<span class="ev-tag">企业破产/重整清算</span></div>
+          <div class="ev-meta">sh600537 · 公告 · 权重 6 · 2026-11-01 15:35:32</div>
+        </div>
+      </div>      <div class="ev-item">
+        <div class="ev-badge" style="background:#c0392b18;color:#c0392b">出清利好</div>
+        <div>
+          <div class="ev-title">*ST亿晶：亿晶光电科技股份有限公司关于孙公司收到《民事判决书》暨诉讼进展公告<span class="ev-tag">现金流/负债恶化信号</span></div>
+          <div class="ev-meta">sh600537 · 公告 · 权重 2 · 2026-10-20 17:47:17</div>
+        </div>
+      </div>      <div class="ev-item">
+        <div class="ev-badge" style="background:#c0392b18;color:#c0392b">出清利好</div>
+        <div>
+          <div class="ev-title">东方日升：关于股东部分股份质押的公告<span class="ev-tag">现金流/负债恶化信号</span></div>
+          <div class="ev-meta">sz300118 · 公告 · 权重 2 · 2026-09-29 17:18:07</div>
+        </div>
+      </div>      <div class="ev-item">
+        <div class="ev-badge" style="background:#c0392b18;color:#c0392b">出清利好</div>
+        <div>
+          <div class="ev-title">海源复材：关于累计诉讼、仲裁情况的进展公告<span class="ev-tag">现金流/负债恶化信号</span></div>
+          <div class="ev-meta">sz002529 · 公告 · 权重 2 · 2026-08-20 17:02:09</div>
+        </div>
+      </div>    </div>
+  </div>
+</div>
+
+<div class="about">
+  <div class="about-title">关于本报告</div>
+  <p class="about-text">
+    本报告由自动化监控模型生成，数据源包括上市公司公告与定期报告、交易所与评级机构披露、
+    光伏行业协会与硅业分会产业数据、ETF 与板块资金流及估值数据。核心判据为
+    「产能是否发生物理性退出」——这是区分真出清与伪出清的唯一标准。
+    模型采用事件驱动 + 因子加权架构，领先因子边际改善用于构建提前 3-6 个月的建仓提示。
+    因子权重、阈值与分类规则均可配置，随行业阶段演进调整。
+  </p>
+  <p class="disclaimer">
+    数据截至 2026-11-07，评分生成于 2026-11-07T10:35:33。
+    本报告为个人研究记录，不构成投资建议。市场有风险，决策需谨慎。
+    评分模型输出的是结构化信号，不替代独立判断。
+  </p>
+</div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span class="footer-brand">老丁实验室 · Laodinglab</span>
+    <span class="footer-note">laodinglab.com · 独立研究 · 持续更新</span>
+  </div>
+</footer>
+
+</body>
+</html>
