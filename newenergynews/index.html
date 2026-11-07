@@ -450,6 +450,65 @@
             .footer-inner { justify-content: center; text-align: center; flex-direction: column; }
             .region-grid { grid-template-columns: 1fr; }
         }
+    .copy-btn {
+            margin-top: 20px;
+            padding: 15px 34px;
+            font-size: 16.5px;
+            font-weight: 600;
+            font-family: inherit;
+            color: #ffffff;
+            background: linear-gradient(135deg, #2c5f7c 0%, #1a4f7a 100%);
+            border: none;
+            border-radius: 999px;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(44, 95, 124, 0.38);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+        .copy-btn:hover {
+            box-shadow: 0 6px 20px rgba(44, 95, 124, 0.48);
+            transform: translateY(-1px);
+        }
+        .copy-btn:active {
+            transform: scale(0.95);
+        }
+        .copy-btn.done {
+            background: linear-gradient(135deg, #2e8b57 0%, #1a6b3a 100%);
+        }
+        .copy-hint {
+            margin-top: 10px;
+            font-size: 12.5px;
+            color: var(--text-muted, #718096);
+        }
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 52px;
+            transform: translateX(-50%) translateY(24px);
+            background: rgba(22, 38, 54, 0.94);
+            color: #ffffff;
+            padding: 13px 22px;
+            border-radius: 12px;
+            font-size: 14.5px;
+            line-height: 1.6;
+            max-width: 86vw;
+            box-sizing: border-box;
+            text-align: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 9999;
+            white-space: pre-line;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.28);
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        @media (max-width: 768px) {
+            .copy-btn { font-size: 16px; padding: 16px 30px; width: min(88%, 340px); }
+        }
     </style>
 </head>
 <body>
@@ -471,12 +530,15 @@
   </div>
 </header>
 
+<div id="copy-scope">
 <section class="hero">
   <div class="hero-inner">
     <div class="hero-eyebrow">New Energy Daily Brief · 第113期 · 2026-11-07 周六</div>
     <h1 class="hero-title">新能源要闻简报</h1>
     <div class="hero-date">第113期 · 2026-11-07 周六</div>
     <p class="hero-desc">覆盖光伏、风电、储能、氢能、电力体系等领域的每日要闻</p>
+<button class="copy-btn" id="copyBtn" onclick="copyBrief()">📋 复制全文 · 到豆包朗读</button>
+    <div class="copy-hint">一键复制正文 → 自动唤起豆包 App → 粘贴即可朗读</div>
   </div>
 </section>
 
@@ -738,7 +800,9 @@
         </div>
         
         <!-- 信息来源 -->
-        <div class="sources-section">
+        </div><!-- /copy-scope -->
+
+<div class="sources-section">
             <h3>附录：信息来源统计</h3>
             <div class="source-category"><h5>中国行业媒体</h5><ul><li>国家能源局</li><li>中国能源新闻网</li><li>新京报</li><li>国际能源网</li><li>北极星电力网</li><li>索比储能网</li><li>证券时报</li><li>财新周刊</li><li>中关村储能产业技术联盟</li></ul></div><div class="source-category"><h5>国际媒体</h5><ul><li>FuelCellsWorks</li><li>Utility Dive</li><li>Riviera Maritime Media</li><li>Renewables Now</li><li>TaiyangNews</li><li>ECV International</li></ul></div><div class="source-category"><h5>龙头企业与研究</h5><ul><li>国家能源集团</li><li>特变电工新能源</li><li>宏盛华源</li><li>海天股份</li><li>安泰科</li><li>全球风能理事会（GWEC）</li><li>美国能源信息署（EIA）</li></ul></div>
         </div>
@@ -755,6 +819,108 @@
     <span class="footer-disclaimer">⚠️ 免责声明：本简报由自动化系统整理生成，内容仅供参考，不构成投资建议。信息来源为公开新闻，请自行核实。</span>
   </div>
 </footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+    var toastEl = document.getElementById('toast');
+    var toastTimer = null;
+
+    function showToast(msg, ms) {
+        toastEl.textContent = msg;
+        toastEl.classList.add('show');
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () {
+            toastEl.classList.remove('show');
+        }, ms || 3000);
+    }
+
+    function cleanText(raw) {
+        var lines = raw.split('
+');
+        var out = [];
+        var prevBlank = false;
+        for (var i = 0; i < lines.length; i++) {
+            var line = lines[i].replace(/\s+/g, ' ').trim();
+            if (line === '') {
+                if (!prevBlank && out.length > 0) out.push('');
+                prevBlank = true;
+            } else {
+                out.push(line);
+                prevBlank = false;
+            }
+        }
+        while (out.length > 0 && out[out.length - 1] === '') out.pop();
+        return out.join('
+');
+    }
+
+    function legacyCopy(text) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, text.length);
+        try {
+            document.execCommand('copy');
+            return true;
+        } catch (e) {
+            return false;
+        } finally {
+            document.body.removeChild(ta);
+        }
+    }
+
+    window.copyBrief = function () {
+        var scope = document.getElementById('copy-scope');
+        if (!scope) return;
+        var text = cleanText(scope.innerText);
+
+        function onCopied(ok) {
+            if (!ok) {
+                showToast('❌ 复制失败，请长按页面手动全选复制', 3500);
+                return;
+            }
+            var btn = document.getElementById('copyBtn');
+            if (btn) {
+                btn.classList.add('done');
+                btn.textContent = '✅ 已复制 ' + text.length + ' 字';
+                setTimeout(function () {
+                    btn.classList.remove('done');
+                    btn.textContent = '📋 复制全文 · 到豆包朗读';
+                }, 4000);
+            }
+            showToast('✅ 正文已复制（' + text.length + ' 字）
+正在尝试打开豆包 App…', 2600);
+
+            // 尝试唤起豆包 App（iOS/Android scheme；不保证各版本有效）
+            setTimeout(function () {
+                window.location.href = 'doubao://';
+            }, 700);
+
+            // 若 3 秒后页面仍在前台，说明未唤起成功，提示手动切换
+            setTimeout(function () {
+                if (!document.hidden) {
+                    showToast('如豆包未自动打开：
+请手动切换到豆包 App，长按输入框粘贴即可朗读', 5200);
+                }
+            }, 3200);
+        }
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(
+                function () { onCopied(true); },
+                function () { onCopied(legacyCopy(text)); }
+            );
+        } else {
+            onCopied(legacyCopy(text));
+        }
+    };
+})();
+</script>
 
 </body>
 </html>
