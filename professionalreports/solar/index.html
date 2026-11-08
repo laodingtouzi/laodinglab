@@ -349,6 +349,8 @@ body {
 
 /* 政府拉锯 */
 .tug { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 12px; }
+.tug-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 12px; }
+@media (max-width: 900px) { .tug-grid { grid-template-columns: 1fr; } }
 .tug-side { border-radius: 9px; padding: 16px 18px; border: 1px solid var(--border); background: #fff; }
 .tug-side.rescue { border-top: 3px solid var(--warn); }
 .tug-side.governance { border-top: 3px solid var(--accent-2); }
@@ -663,31 +665,32 @@ body {
 <div class="card">
   <div class="dual-grid">
     <div class="axis-card progress">
-      <div class="axis-name">Axis 1 · 出清进度轴</div>
-      <div class="axis-q">出清正在以多快速度推进？</div>
+      <div class="axis-name">Axis 1 · 出清压力指数</div>
+      <div class="axis-q">出清压力已经显现到什么程度？</div>
       <div class="axis-score-row">
-        <span class="axis-score" style="color:#9a8a80">34.5</span>
+        <span class="axis-score" style="color:#9a8a80">40.4</span>
         <span style="font-size:18px;color:var(--text-muted)">/100</span>
-        <span class="axis-act" style="background:#7f8c8d18;color:#7f8c8d;border-color:#7f8c8d44">出清启动初期</span>
+        <span class="axis-act" style="background:#7f8c8d18;color:#7f8c8d;border-color:#7f8c8d44">压力初步显现</span>
       </div>
-      <div class="axis-desc">信号初现但规模有限</div>
+      <div class="axis-desc">信号初现但规模有限，出清刚起步</div>
       <div class="axis-formula">
-        <b>口径</b>　10 项供给侧与政策侧因子加权（F1-F10），含尾部传染扣分。<br>
-        <b>含义</b>　高分 = 出清推进快（对行业长期健康是好事，但当前股价未必是买点）。
+        <b>口径</b>　10 项供给侧与政策侧因子加权（F1-F10）。<br>
+        <b>含义</b>　★v2.1 语义修正：进度轴不再是『出清进度百分比』，而是<strong>压力水位</strong>——分数高 = 财务/库存/信用/政策四类压力已充分显现 = 出清条件趋成熟。注意：高分不是『行业很好』，而是『风险已充分释放、出清条件成熟』，这是建仓的前提条件。
       </div>
     </div>
     <div class="axis-card timing">
-      <div class="axis-name">Axis 2 · 投资时机轴</div>
+      <div class="axis-name">Axis 2 · 投资时机指数</div>
       <div class="axis-q">现在是不是买入时点？</div>
       <div class="axis-score-row">
-        <span class="axis-score" style="color:#B69C91">29.4</span>
+        <span class="axis-score" style="color:#B69C91">21.4</span>
         <span style="font-size:18px;color:var(--text-muted)">/100</span>
-        <span class="axis-act" style="background:#7f8c8d18;color:#7f8c8d;border-color:#7f8c8d44">回避</span>
+        <span class="axis-act" style="background:#7f8c8d18;color:#7f8c8d;border-color:#7f8c8d44">明确回避</span>
       </div>
-      <div class="axis-desc">买入条件不成立，等待时机</div>
+      <div class="axis-desc">估值/需求/盈利均不支持，且尾部风险已显性化，风险大于机会</div>
       <div class="axis-formula">
-        <b>口径</b>　8 项价格/资金/需求侧因子加权（F11-F18）。<br>
-        <b>含义</b>　高分 = 当前具备买入性价比（估值、需求、资金、盈利综合支撑）。
+        <b>口径</b>　8 项价格/资金/需求侧因子加权（F11-F18），
+        并扣减尾部传染（8.0 分）与倒挂深度（-1.4 分）。<br>
+        <b>含义</b>　高分 = 当前具备买入性价比（估值、需求、资金、盈利综合支撑）。尾部高危与深度倒挂在此轴扣分。
       </div>
     </div>
   </div>
@@ -699,25 +702,34 @@ body {
     两个轴分开看，才能区分「行业还会不会好」与「现在该不该买」——
     <strong>这正是提前 3-6 个月建仓提示的落点</strong>。
     <br><br>
-    <b>当前定位</b>　出清进度轴「出清启动初期」× 投资时机轴「回避」
-    → <strong style="color:#27ae60">回避</strong>　出清仅信号初现且买入条件差
+    <b>当前定位</b>　出清压力指数「压力初步显现」
+    × 投资时机指数「明确回避」
+    → <strong style="color:#27ae60">明确回避</strong>　出清未启动+买入条件差，规避
+  </div>
+
+  <div class="matrix-note" style="margin-top:14px;background:var(--emo-neu-bg);border-left-color:var(--emo-neu)">
+    <b>怎么读这两个数（状态 vs 路径）</b>　两个轴是<b>状态</b>（此刻条件水位），
+    阶段 1→5 是<b>路径</b>（沿出清链条走到第几步）—— 两者不是同一维度，不构成矛盾。
+    <br><b>为什么「阶段 1 + 压力指数高」是自洽的</b>　阶段 1（财务恶化）本身就是压力的<strong>累积结果</strong>，所以处于阶段 1 时压力指数高是完全自洽的 —— 恰恰是财务恶化把压力指数推高，而不是与它矛盾。更准确地说：<strong>阶段 1 是压力指数的主要来源之一</strong>（F4/F5/F7/F8 全部指向财务与信用压力），因此『阶段 1 + 压力指数 60』是自洽的读数。
+    <br><b>「出清完成度」看哪两个读数</b>　『出清完成度』不由进度轴分数反映，而由两个独立读数承担：① <strong>F1 有效产能退出率</strong>（实际退出 GW / 名义产能）—— 唯一的结果型指标；② <strong>阶段位置</strong>（当前在第几步）。本轮曾因单轴分数把『还没开始』误判为『不会发生』，根因正是把状态与路径混在一个数里。
+    <br><b>本期套用</b>　本期读数：压力指数 39.6 + 阶段 1 + 投资时机 21.4 → 结论『压力刚开始显现、且尾部风险已显性化』→ 建议：明确回避（等压力进一步显现 + 时机条件转好）。若压力指数升至 60 而时机指数仍 21 → 仍是回避（条件成熟但买点未到）；若压力指数 60 且时机指数 55 → 试探建仓。
   </div>
 
   <div class="mini-stats" style="margin-top:20px">
     <div class="mini-stat">
       <div class="ms-label">出清事件净分</div>
       <div class="ms-value" style="color:var(--text)">95</div>
-      <div class="ms-sub">0-100，50 为中性 · 利好权重 20.5 / 利空 0</div>
+      <div class="ms-sub">0-100，50 为中性 · 利好权重 33.9 / 利空 0</div>
     </div>
     <div class="mini-stat">
       <div class="ms-label">领先因子评分</div>
-      <div class="ms-value" style="color:var(--text)">30.1</div>
+      <div class="ms-value" style="color:var(--text)">30.7</div>
       <div class="ms-sub">边际改善早于价格修复 3-6 个月</div>
     </div>
     <div class="mini-stat">
       <div class="ms-label">尾部高危标的</div>
       <div class="ms-value" style="color:var(--text)">
-        3/18
+        3/16
       </div>
       <div class="ms-sub">家数占比 · 负债率&gt;90% 或 权益为负（连锁出清证据）</div>
     </div>
@@ -747,13 +759,13 @@ body {
       </div>
     </div>
     <div class="tl-item tl-warn">
-      <div class="tl-lead">提前 18 个月<span class="tl-unit">至出清确认</span></div>
+      <div class="tl-lead">提前 26-30 个月<span class="tl-unit">至出清确认</span></div>
       <div>
-        <div class="tl-stage">阶段 2 · 银行收贷</div>
-        <div class="tl-conf">置信度：中高</div>
-        <div class="tl-obs"><b>可观测信号</b>　债券回售触发、评级展望下调、授信余额下降、抽贷传闻、逾期与冻结公告</div>
-        <div class="tl-hist"><b>历史实证</b>　隆基 70 亿转债触发回售（2026-11）；2012 年赛维/尚德破产前均经历授信收紧<br>
-          <b>说明</b>　提前 18 个月：2026-11 的信用信号指向 2028 年初的出清完成</div>
+        <div class="tl-stage">阶段 2 · 银行收贷（状态依赖）</div>
+        <div class="tl-conf">置信度：中高（经 Kimi K2 修正：含 8-12 个月僵尸化期）</div>
+        <div class="tl-obs"><b>可观测信号</b>　阶段A（僵尸化，减速器）：债务展期、借新还旧、政府协调续贷、有息负债仍增长而利息保障倍数&lt;1 → 银行续贷自保，出清被延后；阶段B（破产程序启动，加速器）：破产申请/预重整受理公告 → 银行转为申报债权核销，授信彻底断裂。<strong>分界判据 = 破产申请/预重整受理公告</strong></div>
+        <div class="tl-hist"><b>历史实证</b>　隆基 70 亿转债触发回售（2026-11）；2012 年赛维/尚德案例中授信收紧发生在企业实质死亡之后 —— 是确认而非触发，印证阶段A的存在<br>
+          <b>说明</b>　★v2.1 修正（Kimi K2）：原设 18 个月且把银行当作『不受政策约束的最有效加速器』，与僵尸借贷文献（Caballero-Hoshi-Kashyap 2008 / BIS 2020 / IMF WP/17/266）方向相反 —— 银行对已资不抵债企业续贷自保是僵尸化第一机制。修正为状态依赖两段模型，并加入 8-12 个月僵尸化期 → 26-30 个月。新增监测：僵尸化指数（利息保障倍数&lt;1 且有息负债同比增长的家数占比，季度）</div>
       </div>
     </div>
     <div class="tl-item tl-warn">
@@ -940,6 +952,51 @@ body {
       </span>
     </div>
   </div>
+</div><div class="section-label">出清判据 · 不可逆性</div>
+<div class="card">
+  <div class="note" style="margin-bottom:16px">
+    <strong>判据已从「物理退出」改为「不可逆性」</strong>　一条产线哪怕原地矗立、设备完好，只要其边际成本永久高于新一代产品售价，它对有效供给的贡献就永久归零 —— 在产业经济学上就是退出。反之，一条宣布关停但明天就能重开的产线，根本没退出。
+    <br><br><b>三条等价路径</b>　每条路径的判定机制、历史先例、本轮对应物如下。
+    <span style="color:var(--text-muted)">注：路径二（技术替代）与路径三（资本断流），
+    是本轮框架此前完全缺失的部分 —— 原命题只覆盖了路径一。</span>
+  </div>
+  <div class="tug-grid">
+    <div class="tug-side" style="border-top:3px solid var(--emo-neu)">
+      <div class="tug-label">路径 1 · 物理退出</div>
+      <div class="tug-motive" style="margin-top:8px">破产清算、拆除、强标出局</div>
+      <div class="fg-rows" style="margin-top:10px">
+        <dt>历史先例</dt><dd>钢铁 2016、赛维/尚德 2013</dd>
+        <dt>本轮对应</dt><dd>强标 2027-01、尾部破产</dd>
+      </div>
+    </div>
+    <div class="tug-side" style="border-top:3px solid var(--emo-neu)">
+      <div class="tug-label">路径 2 · 经济性死亡（技术替代）</div>
+      <div class="tug-motive" style="margin-top:8px">旧产能边际成本 &gt; 新产品售价，复产无意义</div>
+      <div class="fg-rows" style="margin-top:10px">
+        <dt>历史先例</dt><dd>LCD 旧世代线、PERC 被 TOPCon 替代</dd>
+        <dt>本轮对应</dt><dd>钙钛矿叠层对 N 型的潜在减值（2027-2029 平价窗口）</dd>
+      </div>
+    </div>
+    <div class="tug-side" style="border-top:3px solid var(--emo-neu)">
+      <div class="tug-label">路径 3 · 资本断流 + 产能纪律</div>
+      <div class="tug-motive" style="margin-top:8px">capex 坍缩 → 在建取消 → 存量自然衰减；高集中度下寡头控产可持续</div>
+      <div class="fg-rows" style="margin-top:10px">
+        <dt>历史先例</dt><dd>海运、航空、LCD 2023 后</dd>
+        <dt>本轮对应</dt><dd>光伏玻璃双寡头（信义/福莱特）</dd>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:16px">
+    <div class="about-title" style="margin-bottom:8px"><span class="emo emo-warn" style="font-size:12.5px;background:var(--emo-warn-bg);color:var(--emo-warn);border-color:var(--emo-warn-line)">事前预警层</span>　事前_预警层</div>
+    <ul class="tug-list" style="margin:0"><li>资产减值计提公告（会计确认的『经济性死亡』，领先拆除公告 1-2 季度，可自动扫描）—— 权重 4</li><li>在建工程余额同比下降 &gt;50% 且持续两季（资本断流硬读数，F19 落地后直接取数）</li><li>该环节开工率连续两季低于现金成本线 + 无新增产能公告</li></ul>
+  </div>
+  <div style="margin-top:16px">
+    <div class="about-title" style="margin-bottom:8px"><span class="emo emo-neu" style="font-size:12.5px;background:var(--emo-neu-bg);color:var(--emo-neu);border-color:var(--emo-neu-line)">事后确认层</span>　事后_确认层</div>
+    <ul class="tug-list" style="margin:0"><li>复产成本（玻璃冷修需半年 → 不可逆；硅料炉型可重启 → 可逆）</li><li>复产经济性（产品世代是否已被跨越）</li><li>资本是否断流（capex 为零、不再复产）</li></ul>
+  </div>
+  <div class="note" style="margin-top:16px">
+    <strong>已知缺口</strong>　三检验中『复产经济性』仍无法事前判定 —— 这是当前框架的已知缺口
+  </div>
 </div><div class="section-label">政府介入 · 双向拉锯模型</div>
 <div class="card">
   <div class="note" style="margin-bottom:16px">
@@ -1056,7 +1113,7 @@ body {
     <div class="scen-card bull" style="background:var(--emo-pos-bg);border-color:var(--emo-pos-line)">
       <div class="scen-head">
         <span class="scen-label" style="color:var(--emo-pos)">乐观情形</span>
-        <span class="scen-prob" style="color:var(--emo-pos)">25%</span>
+        <span class="scen-prob" style="color:var(--emo-pos)">22</span>
       </div>
       <div class="scen-weight" style="color:var(--emo-pos);opacity:.75">需要一点运气</div>
       <div class="scen-headline" style="color:var(--text)">玻璃剧本复制到主链 —— 2027 上半年价格与开工率双升</div>
@@ -1077,12 +1134,12 @@ body {
     <div class="scen-card base" style="background:var(--emo-neu-bg);border-color:var(--emo-neu-line)">
       <div class="scen-head">
         <span class="scen-label" style="color:var(--emo-neu)">基准情形</span>
-        <span class="scen-prob" style="color:var(--emo-neu)">55%</span>
+        <span class="scen-prob" style="color:var(--emo-neu)">50</span>
       </div>
       <div class="scen-weight" style="color:var(--emo-neu);opacity:.75">最可能</div>
-      <div class="scen-headline" style="color:var(--text)">磨底延续，拉锯渐次收敛 —— 出清在 2027 年中确认</div>
-      <div class="scen-window">时间窗　2027 年中至 2027 年末</div>
-      <div class="scen-narr">政府救助端与治理端继续对冲半年以上，主链产能退出零散推进（年化 30-50GW），强标 2027-01 执行后落后产能分批出局。价格先于产能修复：组件价格 2027H1 站上完全成本线，但幅度温和。</div>
+      <div class="scen-headline" style="color:var(--text)">拉锯延续至 2027 下半年 —— 出清在 2028 上半年确认</div>
+      <div class="scen-window">时间窗　2027 年末至 2028 年上半年</div>
+      <div class="scen-narr">政府救助端与治理端继续对冲，主链产能退出零散推进（年化 30-50GW）。阶段二因银行僵尸化期（状态A：展期/借新还旧）而延长 8-12 个月；强标 2027-01 执行后落后产能分批出局，但价格修复滞后于产能退出。组件价格 2027H2 站上完全成本线，幅度温和。</div>
       <div class="scen-block">
         <div class="sb-label"><span class="dot dot-neu"></span>触发条件</div>
         <ul class="scen-trigger"><li>3 项强制国标按期执行并出现实际核减公告</li><li>银行授信收紧范围扩大至二三线厂商</li><li>组件价格站上完全成本线 0.82 元/W</li><li>季度开工率回升至 50% 以上</li></ul>
@@ -1098,12 +1155,12 @@ body {
     <div class="scen-card bear" style="background:var(--emo-neg-bg);border-color:var(--emo-neg-line)">
       <div class="scen-head">
         <span class="scen-label" style="color:var(--emo-neg)">悲观情形</span>
-        <span class="scen-prob" style="color:var(--emo-neg)">20%</span>
+        <span class="scen-prob" style="color:var(--emo-neg)">28</span>
       </div>
       <div class="scen-weight" style="color:var(--emo-neg);opacity:.75">尾部风险</div>
-      <div class="scen-headline" style="color:var(--text)">救助端全面占优 —— 2028 年仍在纠缠</div>
-      <div class="scen-window">时间窗　2028 年，甚至更久</div>
-      <div class="scen-narr">宏观转向稳增长、地方政府密集接盘、债务展期成规模；叠加全球需求不及预期（IEA/IEA 2026 已下调至 612GW）。出清时钟被拖长，僵尸产能固化，2027 出现二次探底。类比钢铁 2016：4 月见顶后跌回原点，行情反复 8 个月。</div>
+      <div class="scen-headline" style="color:var(--text)">救助端全面占优 —— 2028-2029 仍在纠缠</div>
+      <div class="scen-window">时间窗　2028 年中至 2029 年</div>
+      <div class="scen-narr">宏观转向稳增长、地方政府密集接盘、债务展期成规模（僵尸化固化）；叠加全球需求不及预期或二次下修。强标虽执行但执行力度受地方阻力制约，僵尸产能固化，2027-2028 两次探底。参照钢铁 2016：行情反复 8 个月。</div>
       <div class="scen-block">
         <div class="sb-label"><span class="dot dot-neg"></span>触发条件</div>
         <ul class="scen-trigger"><li>政府/国资接盘成为重组主流模式</li><li>需求预测连续下调至 500GW 以下</li><li>组件价格持续低于现金成本线</li><li>重整投资人以地方国资为主</li></ul>
@@ -1150,8 +1207,8 @@ body {
         <b>基础权重</b>（规则定义 1-5 分）× <b>广度加成</b>（同规则被 N 家触发则 ×(1+0.15×(N−1))，上限 2.0）
         × <b>时间衰减</b>（0.5^(事件天数/45)，半衰期 45 天）= <b>有效权重</b>，
         正负分别封顶 60，单事件封顶 12。
-        <br>本期读数：利好权重 20.5 / 利空权重 0，
-        净分 <b>95</b>（0-100，50 为中性），命中 7 条事件。
+        <br>本期读数：利好权重 33.9 / 利空权重 0，
+        净分 <b>95</b>（0-100，50 为中性），命中 10 条事件。
         <br><b>怎么读</b>　数值高说明<b>近期</b>出清相关事件以利好为主；低说明利空事件（政府救助、
         低水平重组）占优，即出清被延后。<b>它不直接进总分</b>，而是对 F1/F9/F10 三个因子施加
         ±7 分以内的调节（本期调节 +6.75 分）——避免与产能退出因子重复计权。
@@ -1168,8 +1225,8 @@ body {
         与 F5 的「负现金流家数占比」。
         <br><b>路径二 · 尾部传染传导</b>　尾部高危标的（负债率&gt;90% 或 权益为负）家数占比越高，
         说明出清已从价格端传导到信用端。公式 <code>tail_penalty = scale(tail_ratio, 0, 0.15) × 8</code>，
-        对<b>出清进度轴</b>扣分。本期 3/18 家
-        （17%）→ 已超锚点，扣满 8 分。
+        对<b>出清进度轴</b>扣分。本期 3/16 家
+        （19%）→ 已超锚点，扣满 8 分。
         <br><b>路径三 · 事件印证传导</b>　面板中的高危标的若在公告中出现破产/重整/抽贷事件，
         事件流按上述调节机制额外扣分。<b>财务恶化是因，事件是果，两者共振说明出清进入实质阶段。</b>
       </div>
@@ -1215,7 +1272,7 @@ body {
   <div class="mini-stats">
     <div class="mini-stat">
       <div class="ms-label">已结算 / 可结算</div>
-      <div class="ms-value" style="color:var(--text)">0/7</div>
+      <div class="ms-value" style="color:var(--text)">0/14</div>
       <div class="ms-sub">第 1 轮 · 2026-11-08</div>
     </div>
     <div class="mini-stat">
@@ -1225,7 +1282,7 @@ body {
     </div>
     <div class="mini-stat">
       <div class="ms-label">自身先验基线</div>
-      <div class="ms-value" style="color:var(--text)">0.45</div>
+      <div class="ms-value" style="color:var(--text)">50</div>
       <div class="ms-sub">永远选基准情形的得分</div>
     </div>
     <div class="mini-stat">
@@ -1299,8 +1356,70 @@ body {
         <td><span style="font-size:12.5px;color:var(--text-secondary)">公司公告</span></td>
         <td><span class="emo emo-neu" style="font-size:12.5px;background:var(--emo-neu-bg);color:var(--emo-neu);border-color:var(--emo-neu-line)">待结算</span></td>
       </tr>
+      <tr>
+        <td><span style="font-family:var(--mono);font-size:13px">P1</span></td>
+        <td><div style="font-size:13.5px;line-height:1.6">出现首份强标实际核减产能公告</div></td>
+        <td><span style="font-family:var(--mono);font-size:14px">55%</span></td>
+        <td><span style="font-family:var(--mono);font-size:12.5px">2027-03-31</span></td>
+        <td><span style="font-size:12.5px;color:var(--text-secondary)">工信部/企业公告</span></td>
+        <td><span class="emo emo-neu" style="font-size:12.5px;background:var(--emo-neu-bg);color:var(--emo-neu);border-color:var(--emo-neu-line)">待结算</span></td>
+      </tr>
+      <tr>
+        <td><span style="font-family:var(--mono);font-size:13px">P2</span></td>
+        <td><div style="font-size:13.5px;line-height:1.6">组件价格站上 0.82 元/W</div></td>
+        <td><span style="font-family:var(--mono);font-size:14px">25%</span></td>
+        <td><span style="font-family:var(--mono);font-size:12.5px">2027-06-30</span></td>
+        <td><span style="font-size:12.5px;color:var(--text-secondary)">InfoLink 周报价</span></td>
+        <td><span class="emo emo-neu" style="font-size:12.5px;background:var(--emo-neu-bg);color:var(--emo-neu);border-color:var(--emo-neu-line)">待结算</span></td>
+      </tr>
+      <tr>
+        <td><span style="font-family:var(--mono);font-size:13px">P3</span></td>
+        <td><div style="font-size:13.5px;line-height:1.6">监测池内 ≥2 家进入破产清算（非重整）或产线永久关停</div></td>
+        <td><span style="font-family:var(--mono);font-size:14px">35%</span></td>
+        <td><span style="font-family:var(--mono);font-size:12.5px">2027-12-31</span></td>
+        <td><span style="font-size:12.5px;color:var(--text-secondary)">公司公告</span></td>
+        <td><span class="emo emo-neu" style="font-size:12.5px;background:var(--emo-neu-bg);color:var(--emo-neu);border-color:var(--emo-neu-line)">待结算</span></td>
+      </tr>
+      <tr>
+        <td><span style="font-family:var(--mono);font-size:13px">P4</span></td>
+        <td><div style="font-size:13.5px;line-height:1.6">出现一次『价格站上成本线后被复产压回』的伪反弹</div></td>
+        <td><span style="font-family:var(--mono);font-size:14px">45%</span></td>
+        <td><span style="font-family:var(--mono);font-size:12.5px">2027-12-31</span></td>
+        <td><span style="font-size:12.5px;color:var(--text-secondary)">InfoLink 组件价格</span></td>
+        <td><span class="emo emo-neu" style="font-size:12.5px;background:var(--emo-neu-bg);color:var(--emo-neu);border-color:var(--emo-neu-line)">待结算</span></td>
+      </tr>
+      <tr>
+        <td><span style="font-family:var(--mono);font-size:13px">P5</span></td>
+        <td><div style="font-size:13.5px;line-height:1.6">组件供需比降至 1.8 以下</div></td>
+        <td><span style="font-family:var(--mono);font-size:14px">40%</span></td>
+        <td><span style="font-family:var(--mono);font-size:12.5px">2028-06-30</span></td>
+        <td><span style="font-size:12.5px;color:var(--text-secondary)">InfoLink 产能 + CPIA 需求</span></td>
+        <td><span class="emo emo-neu" style="font-size:12.5px;background:var(--emo-neu-bg);color:var(--emo-neu);border-color:var(--emo-neu-line)">待结算</span></td>
+      </tr>
+      <tr>
+        <td><span style="font-family:var(--mono);font-size:13px">P6</span></td>
+        <td><div style="font-size:13.5px;line-height:1.6">2027 年全球新增装机 ≥ 700GW</div></td>
+        <td><span style="font-family:var(--mono);font-size:14px">35%</span></td>
+        <td><span style="font-family:var(--mono);font-size:12.5px">2028-01-31</span></td>
+        <td><span style="font-size:12.5px;color:var(--text-secondary)">CPIA 年度统计（SPE 口径作对照）</span></td>
+        <td><span class="emo emo-neu" style="font-size:12.5px;background:var(--emo-neu-bg);color:var(--emo-neu);border-color:var(--emo-neu-line)">待结算</span></td>
+      </tr>
+      <tr>
+        <td><span style="font-family:var(--mono);font-size:13px">W8</span></td>
+        <td><div style="font-size:13.5px;line-height:1.6">2027 年全球光伏新增装机 ≥ 750GW</div></td>
+        <td><span style="font-family:var(--mono);font-size:14px">45%</span></td>
+        <td><span style="font-family:var(--mono);font-size:12.5px">2028-01-31</span></td>
+        <td><span style="font-size:12.5px;color:var(--text-secondary)">CPIA 年度统计（SPE 口径作对照）</span></td>
+        <td><span class="emo emo-neu" style="font-size:12.5px;background:var(--emo-neu-bg);color:var(--emo-neu);border-color:var(--emo-neu-line)">待结算</span></td>
+      </tr>
     </tbody>
   </table>
+  </div>
+  <div class="note" style="margin-top:18px">
+    <strong>Pre-mortem（如果我错，最可能是因为什么）</strong><br>
+    <b>WB</b>　如果我的基准情形（2027末-2028上半年出清确认）错了，最可能是因为：① 政府救助端全面占优导致僵尸产能固化（对应 W6 兑现、W7 不兑现）；② 2027 全球装机低于 700GW，需求二次下修使价格修复推迟（对应 P6 兑现、W8 不兑现）；③ 强标执行力度不足，310GW 测算产能实际核减远低于预期（对应 W1 不兑现）<br>
+    <b>Kimi</b>　（待 Kimi 03 轮补写）
+    <br><span style="font-size:12.5px;color:var(--text-muted)">Kimi Q11 机制③：每条冲突预测附 pre-mortem，结算时对照 —— 分数分高下，pre-mortem 改进模型</span>
   </div>
 </div>
 <div class="section-label">判断框架 · Framework</div>
@@ -1418,8 +1537,8 @@ body {
         <td><div class="f-val">通威集团质押占总股本 16.54%、占其持股 36.56%（2026-11-06）；*ST亿晶、协鑫集成等尾部标的高位</div></td>
         <td><span class="freq">日（公告）+ 周（两融）</span></td>
         <td class="score-cell">
-          <div class="score-num" style="color:#6b8e6b">70.0</div>
-          <div class="score-bar"><span style="width:70.0%;background:#6b8e6b"></span></div>
+          <div class="score-num" style="color:#4a7a5a">76.2</div>
+          <div class="score-bar"><span style="width:76.2%;background:#4a7a5a"></span></div>
         </td>
       </tr>
       <tr>
@@ -1493,8 +1612,8 @@ body {
         <td><div class="f-val">2026-11-04 TrendForce：硅料 57 万吨+（累库放缓但趋势不变）、硅片 27GW、电池片 6-7 天（生产天数口径）、组件 26.7GW。按去化天数测算：硅料约 150 天、硅片约 19 天、电池片约 7 天、组件约 25 天——★最差环节是硅料，而硅料恰是唯一仍在累库的一段</div></td>
         <td><span class="freq">周（TrendForce 每周更新）</span></td>
         <td class="score-cell">
-          <div class="score-num" style="color:#B69C91">29.4</div>
-          <div class="score-bar"><span style="width:29.4%;background:#B69C91"></span></div>
+          <div class="score-num" style="color:#6b8e6b">70.6</div>
+          <div class="score-bar"><span style="width:70.6%;background:#6b8e6b"></span></div>
         </td>
       </tr>
       <tr>
@@ -1508,8 +1627,8 @@ body {
         <td><div class="f-val">全池加权约 74.5%；尾部组中位数约 95%（协鑫集成 95.08%、海源复材 94.96%）；最高 *ST亿晶 109.07%（资不抵债）</div></td>
         <td><span class="freq">季（财报后 3 个工作日）</span></td>
         <td class="score-cell">
-          <div class="score-num" style="color:#6b8e6b">67.9</div>
-          <div class="score-bar"><span style="width:67.9%;background:#6b8e6b"></span></div>
+          <div class="score-num" style="color:#9a8a80">41.8</div>
+          <div class="score-bar"><span style="width:41.8%;background:#9a8a80"></span></div>
         </td>
       </tr>
       <tr>
@@ -1598,8 +1717,8 @@ body {
         <td><div class="f-val">经营现金流为负家数占比 6/18（33%）；全池净现金流合计约 -78 亿元（隆基 -34.67 亿、通威 +20.24 亿、晶澳 +39.81 亿）</div></td>
         <td><span class="freq">季（财报节点）</span></td>
         <td class="score-cell">
-          <div class="score-num" style="color:#6b8e6b">62.2</div>
-          <div class="score-bar"><span style="width:62.2%;background:#6b8e6b"></span></div>
+          <div class="score-num" style="color:#6b8e6b">65.0</div>
+          <div class="score-bar"><span style="width:65.0%;background:#6b8e6b"></span></div>
         </td>
       </tr>
       <tr>
@@ -1681,7 +1800,7 @@ body {
         <span class="fg-item-meta">F3 · 权重 4.8</span>
         <span class="fg-item-name">产业链库存去化天数</span>
         
-        <span class="fg-item-meta">得分 29.4 · 周（TrendForce 每周更新）</span>
+        <span class="fg-item-meta">得分 70.6 · 周（TrendForce 每周更新）</span>
         
       </div>
       <dl class="fg-rows">
@@ -1734,7 +1853,7 @@ body {
       
       
       <div class="fg-threshold"><b>判定阈值</b>　累计退出 ≥ 250GW（25%）视为进入出清确认期；&lt; 10% 为出清尚未启动</div>
-      <div class="fg-threshold"><b>口径说明</b>　★只统计『物理退出』：永久关停/冷修/拆除/破产清算/标准出局。『长期闲置不开工』（约 320GW）可随时复产，**不计入**。v2 修正：原将关停+兼并重组+闲置合计 360GW 计入，导致 F1 直接满分 100 分 —— 逻辑错误，因为 36% 的『退出』若含闲置，与组件供需比 2.4:1 严重过剩的判断自相矛盾</div>
+      <div class="fg-threshold"><b>口径说明</b>　★只统计『物理退出』：永久关停/冷修/拆除/破产清算/标准出局。『长期闲置不开工』（约 320GW）可随时复产，<strong>不计入</strong>。v2 修正：原将关停+兼并重组+闲置合计 360GW 计入，导致 F1 直接满分 100 分 —— 逻辑错误，因为 36% 的『退出』若含闲置，与组件供需比 2.4:1 严重过剩的判断自相矛盾</div>
     </div>
   </div>
   <div class="factor-group">
@@ -1749,8 +1868,8 @@ body {
         <span class="fg-item-meta">F8 · 权重 3.4</span>
         <span class="fg-item-name">股权质押与两融（群体口径）</span>
         <span class="lead-flag">领先</span>
-        <span class="fg-item-meta">得分 70.0 · 日（公告）+ 周（两融）</span>
-        
+        <span class="fg-item-meta">得分 76.2 · 日（公告）+ 周（两融）</span>
+        <span class="emo emo-pos" style="font-size:12px;background:var(--emo-pos-bg);color:var(--emo-pos);border-color:var(--emo-pos-line)">确认</span>
       </div>
       <dl class="fg-rows">
         <dt>观测对象</dt><dd>监测池控股股东质押比例分布 + 两融余额变化，按家数占比<br><span style="color:var(--text-muted)">聚合方式：质押高危家数占比 + 两融余额环比</span></dd>
@@ -1789,7 +1908,7 @@ body {
         <span class="fg-item-meta">F4 · 权重 4.8</span>
         <span class="fg-item-name">监测池资产负债率</span>
         
-        <span class="fg-item-meta">得分 67.9 · 季（财报后 3 个工作日）</span>
+        <span class="fg-item-meta">得分 41.8 · 季（财报后 3 个工作日）</span>
         
       </div>
       <dl class="fg-rows">
@@ -1829,7 +1948,7 @@ body {
         <span class="fg-item-meta">F5 · 权重 7.4</span>
         <span class="fg-item-name">经营性现金流（群体口径）</span>
         <span class="lead-flag">领先</span>
-        <span class="fg-item-meta">得分 62.2 · 季（财报节点）</span>
+        <span class="fg-item-meta">得分 65.0 · 季（财报节点）</span>
         
       </div>
       <dl class="fg-rows">
@@ -2124,43 +2243,19 @@ body {
     </thead>
     <tbody>
       <tr>
-        <td><div class="f-name">协鑫集成</div><div class="f-id">sz002506 · 2026-09-30</div></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#d68910">95.08%</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">1.01亿</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-6.21亿</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">7.21亿</span></td>
-        <td><span class="emo emo-warn" style="background:var(--emo-warn-bg);color:var(--emo-warn);border-color:var(--emo-warn-line)">负债率超警戒</span></td>
-      </tr>
-      <tr>
-        <td><div class="f-name">*ST亿晶</div><div class="f-id">sh600537 · 2026-09-30</div></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#d68910">109.07%</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">1.79亿</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-2.04亿</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-3.27亿</span></td>
-        <td><span class="emo emo-sev" style="background:var(--emo-sev-bg);color:var(--emo-sev);border-color:var(--emo-sev-line)">资不抵债</span></td>
-      </tr>
-      <tr>
-        <td><div class="f-name">海源复材</div><div class="f-id">sz002529 · 2026-09-30</div></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#d68910">94.96%</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-0.95亿</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-0.71亿</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">0.34亿</span></td>
+        <td><div class="f-name">大全能源</div><div class="f-id">sh688303 · 2026-09-30</div></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">10.27%</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-23.35亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-20.06亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">369.63亿</span></td>
         <td><span class="emo emo-neg" style="background:var(--emo-neg-bg);color:var(--emo-neg);border-color:var(--emo-neg-line)">经营现金流为负</span></td>
       </tr>
       <tr>
-        <td><div class="f-name">东方日升</div><div class="f-id">sz300118 · 2026-09-30</div></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">73.58%</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">4.33亿</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-14.17亿</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">71.74亿</span></td>
-        <td><span style="color:var(--text-muted);font-size:12.5px">—</span></td>
-      </tr>
-      <tr>
-        <td><div class="f-name">爱旭股份</div><div class="f-id">sh600732 · 2026-09-30</div></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#d68910">79.49%</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">19.47亿</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-7.09亿</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">78.78亿</span></td>
+        <td><div class="f-name">福斯特</div><div class="f-id">sh603806 · 2026-09-30</div></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">19.61%</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">6.76亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">11.31亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">174.81亿</span></td>
         <td><span style="color:var(--text-muted);font-size:12.5px">—</span></td>
       </tr>
       <tr>
@@ -2172,20 +2267,68 @@ body {
         <td><span class="emo emo-neg" style="background:var(--emo-neg-bg);color:var(--emo-neg);border-color:var(--emo-neg-line)">经营现金流为负</span></td>
       </tr>
       <tr>
-        <td><div class="f-name">大全能源</div><div class="f-id">sh688303 · 2026-09-30</div></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">10.27%</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-23.35亿</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-20.06亿</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">369.63亿</span></td>
-        <td><span class="emo emo-neg" style="background:var(--emo-neg-bg);color:var(--emo-neg);border-color:var(--emo-neg-line)">经营现金流为负</span></td>
+        <td><div class="f-name">福莱特</div><div class="f-id">sh601865 · 2026-09-30</div></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">47.72%</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">17.51亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-8.36亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">213.39亿</span></td>
+        <td><span style="color:var(--text-muted);font-size:12.5px">—</span></td>
       </tr>
       <tr>
-        <td><div class="f-name">晶澳科技</div><div class="f-id">sz002459 · 2026-09-30</div></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#d68910">79.95%</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">39.81亿</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-36.40亿</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">199.29亿</span></td>
+        <td><div class="f-name">捷佳伟创</div><div class="f-id">sz300724 · 2026-09-30</div></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">50.58%</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">28.75亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">6.33亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">135.55亿</span></td>
         <td><span style="color:var(--text-muted);font-size:12.5px">—</span></td>
+      </tr>
+      <tr>
+        <td><div class="f-name">阳光电源</div><div class="f-id">sz300274 · 2026-09-30</div></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">61.64%</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">36.48亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">65.99亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">524.57亿</span></td>
+        <td><span style="color:var(--text-muted);font-size:12.5px">—</span></td>
+      </tr>
+      <tr>
+        <td><div class="f-name">协鑫集成</div><div class="f-id">sz002506 · 2026-09-30</div></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#d68910">95.08%</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">1.01亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-6.21亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">7.21亿</span></td>
+        <td><span class="emo emo-warn" style="background:var(--emo-warn-bg);color:var(--emo-warn);border-color:var(--emo-warn-line)">负债率超警戒</span></td>
+      </tr>
+      <tr>
+        <td><div class="f-name">爱旭股份</div><div class="f-id">sh600732 · 2026-09-30</div></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#d68910">79.49%</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">19.47亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-7.09亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">78.78亿</span></td>
+        <td><span style="color:var(--text-muted);font-size:12.5px">—</span></td>
+      </tr>
+      <tr>
+        <td><div class="f-name">*ST亿晶</div><div class="f-id">sh600537 · 2026-09-30</div></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#d68910">109.07%</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">1.79亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-2.04亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-3.27亿</span></td>
+        <td><span class="emo emo-sev" style="background:var(--emo-sev-bg);color:var(--emo-sev);border-color:var(--emo-sev-line)">资不抵债</span></td>
+      </tr>
+      <tr>
+        <td><div class="f-name">TCL中环</div><div class="f-id">sz002129 · 2026-09-30</div></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">73.44%</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">4.31亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-45.56亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">326.20亿</span></td>
+        <td><span style="color:var(--text-muted);font-size:12.5px">—</span></td>
+      </tr>
+      <tr>
+        <td><div class="f-name">海源复材</div><div class="f-id">sz002529 · 2026-09-30</div></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#d68910">94.96%</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-0.95亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-0.71亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">0.34亿</span></td>
+        <td><span class="emo emo-neg" style="background:var(--emo-neg-bg);color:var(--emo-neg);border-color:var(--emo-neg-line)">经营现金流为负</span></td>
       </tr>
       <tr>
         <td><div class="f-name">钧达股份</div><div class="f-id">sz002865 · 2026-09-30</div></td>
@@ -2196,19 +2339,19 @@ body {
         <td><span class="emo emo-neg" style="background:var(--emo-neg-bg);color:var(--emo-neg);border-color:var(--emo-neg-line)">经营现金流为负</span></td>
       </tr>
       <tr>
-        <td><div class="f-name">正泰电器</div><div class="f-id">sh601877 · 2026-09-30</div></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">64.16%</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">180.73亿</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">42.25亿</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">557.09亿</span></td>
-        <td><span style="color:var(--text-muted);font-size:12.5px">—</span></td>
-      </tr>
-      <tr>
         <td><div class="f-name">通威股份</div><div class="f-id">sh600438 · 2026-09-30</div></td>
         <td class="score-cell"><span style="font-family:var(--mono);color:#d68910">75.60%</span></td>
         <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">20.24亿</span></td>
         <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-67.59亿</span></td>
         <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">423.75亿</span></td>
+        <td><span style="color:var(--text-muted);font-size:12.5px">—</span></td>
+      </tr>
+      <tr>
+        <td><div class="f-name">晶澳科技</div><div class="f-id">sz002459 · 2026-09-30</div></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#d68910">79.95%</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">39.81亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-36.40亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">199.29亿</span></td>
         <td><span style="color:var(--text-muted);font-size:12.5px">—</span></td>
       </tr>
       <tr>
@@ -2227,55 +2370,15 @@ body {
         <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">237.05亿</span></td>
         <td><span style="color:var(--text-muted);font-size:12.5px">—</span></td>
       </tr>
-      <tr>
-        <td><div class="f-name">福斯特</div><div class="f-id">sh603806 · 2026-09-30</div></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">19.61%</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">6.76亿</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">11.31亿</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">174.81亿</span></td>
-        <td><span style="color:var(--text-muted);font-size:12.5px">—</span></td>
-      </tr>
-      <tr>
-        <td><div class="f-name">TCL中环</div><div class="f-id">sz002129 · 2026-09-30</div></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">73.44%</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">4.31亿</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-45.56亿</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">326.20亿</span></td>
-        <td><span style="color:var(--text-muted);font-size:12.5px">—</span></td>
-      </tr>
-      <tr>
-        <td><div class="f-name">阳光电源</div><div class="f-id">sz300274 · 2026-09-30</div></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">61.64%</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">36.48亿</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">65.99亿</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">524.57亿</span></td>
-        <td><span style="color:var(--text-muted);font-size:12.5px">—</span></td>
-      </tr>
-      <tr>
-        <td><div class="f-name">福莱特</div><div class="f-id">sh601865 · 2026-09-30</div></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">47.72%</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">17.51亿</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-8.36亿</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">213.39亿</span></td>
-        <td><span style="color:var(--text-muted);font-size:12.5px">—</span></td>
-      </tr>
-      <tr>
-        <td><div class="f-name">捷佳伟创</div><div class="f-id">sz300724 · 2026-09-30</div></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">50.58%</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">28.75亿</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">6.33亿</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">135.55亿</span></td>
-        <td><span style="color:var(--text-muted);font-size:12.5px">—</span></td>
-      </tr>
     </tbody>
   </table>
   </div>
   <div class="note" style="margin-top:16px">
     <strong>银行收贷判读：</strong>经营现金流为负且资产负债率超 75% 的企业，其授信续作概率显著下降，
     是「银行收贷 → 债务危机 → 破产重整」传导链的起点。股东权益为负即<strong>资不抵债</strong>，
-    直接进入破产程序概率最高。本期共 18 只标的纳入信用观察，
+    直接进入破产程序概率最高。本期共 16 只标的纳入信用观察，
     其中尾部高危（负债率&gt;90% 或权益为负）3 只
-    （占比 17%），
+    （占比 19%），
     <strong>已超过 15% 的连锁出清警戒锚点</strong>，对出清进度轴扣满 8 分。
   </div>
 </div><div class="section-label">资金面 · Capital Flow</div>
@@ -2361,7 +2464,7 @@ body {
   </div>
 </div><div class="section-label">出清事件流 · Event Feed</div>
 <div class="card">
-      <div style="margin-bottom:12px;font-size:15px;color:var(--text-secondary)">本期扫描命中 <strong>7</strong> 条出清相关事件（含公告与舆情）。分类依据：物理性退出判利好，政府救助与低水平重组判利空。有效权重 = 基础权重 × 广度加成 × 时间衰减。</div>
+      <div style="margin-bottom:12px;font-size:15px;color:var(--text-secondary)">本期扫描命中 <strong>10</strong> 条出清相关事件（含公告与舆情）。分类依据：物理性退出判利好，政府救助与低水平重组判利空。有效权重 = 基础权重 × 广度加成 × 时间衰减。</div>
       <div class="ev-item">
         <div style="flex:0 0 auto"><span class="emo emo-pos" style="background:var(--emo-pos-bg);color:var(--emo-pos);border-color:var(--emo-pos-line)">出清利好</span></div>
         <div>
@@ -2400,6 +2503,36 @@ body {
             × 广度 1.0 × 衰减 0.898（7天）
             = 有效权重 <strong>5.39</strong>
             </div>
+        </div>
+      </div>
+      <div class="ev-item">
+        <div style="flex:0 0 auto"><span class="emo emo-pos" style="background:var(--emo-pos-bg);color:var(--emo-pos);border-color:var(--emo-pos-line)">出清利好</span></div>
+        <div>
+          <div class="ev-title">隆基绿能：关于2026年前三季度计提资产减值准备的公告<span class="ev-tag">资产减值（经济性死亡的会计确认）</span></div>
+          <div class="ev-meta">sh601012 · 公告 · 基础权重 4
+            × 广度 1.3 × 衰减 0.871（9天）
+            = 有效权重 <strong>4.53</strong>
+            · 同规则触发 3 家</div>
+        </div>
+      </div>
+      <div class="ev-item">
+        <div style="flex:0 0 auto"><span class="emo emo-pos" style="background:var(--emo-pos-bg);color:var(--emo-pos);border-color:var(--emo-pos-line)">出清利好</span></div>
+        <div>
+          <div class="ev-title">福莱特：福莱特玻璃集团股份有限公司关于计提2026年第三季度资产减值准备的公告<span class="ev-tag">资产减值（经济性死亡的会计确认）</span></div>
+          <div class="ev-meta">sh601865 · 公告 · 基础权重 4
+            × 广度 1.3 × 衰减 0.871（9天）
+            = 有效权重 <strong>4.53</strong>
+            · 同规则触发 3 家</div>
+        </div>
+      </div>
+      <div class="ev-item">
+        <div style="flex:0 0 auto"><span class="emo emo-pos" style="background:var(--emo-pos-bg);color:var(--emo-pos);border-color:var(--emo-pos-line)">出清利好</span></div>
+        <div>
+          <div class="ev-title">大全能源：大全能源关于2026年第三季度计提资产减值准备的公告<span class="ev-tag">资产减值（经济性死亡的会计确认）</span></div>
+          <div class="ev-meta">sh688303 · 公告 · 基础权重 4
+            × 广度 1.3 × 衰减 0.831（12天）
+            = 有效权重 <strong>4.32</strong>
+            · 同规则触发 3 家</div>
         </div>
       </div>
       <div class="ev-item">
@@ -2445,7 +2578,7 @@ body {
     因子权重、阈值与分类规则均可配置，随行业阶段演进调整。
   </p>
   <p class="disclaimer">
-    数据截至 2026-11-08，评分生成于 2026-11-08T16:37:49。
+    数据截至 2026-11-08，评分生成于 2026-11-08T17:14:19。
     本报告为个人研究记录，不构成投资建议。市场有风险，决策需谨慎。
     评分模型输出的是结构化信号，不替代独立判断。
   </p>
