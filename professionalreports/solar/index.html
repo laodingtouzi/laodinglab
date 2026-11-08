@@ -700,9 +700,9 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
 <main class="main">
 <div class="ver-strip">
   <span class="ver-badge">版本 v2.1</span>
-  <span class="ver-item">构建 2026-11-08 23:02</span>
+  <span class="ver-item">构建 2026-11-08 23:10</span>
   <span class="ver-item">数据截至 2026-11-08</span>
-  <span class="ver-item">出清压力指数 40.5 · 投资时机指数 21.4 · 综合 32.9</span>
+  <span class="ver-item">出清压力指数 39.6 · 投资时机指数 21.4 · 综合 32.3</span>
 </div>
 
 <div class="section-label">核心结论 · Verdict</div>
@@ -712,7 +712,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
       <div class="axis-name">Axis 1 · 出清压力指数</div>
       <div class="axis-q">出清压力已经显现到什么程度？</div>
       <div class="axis-score-row">
-        <span class="axis-score" style="color:#9a8a80">40.5</span>
+        <span class="axis-score" style="color:#9a8a80">39.6</span>
         <span style="font-size:20px;color:var(--text-muted)">/100</span>
         <span class="axis-act" style="background:#7f8c8d18;color:#7f8c8d;border-color:#7f8c8d44">压力初步显现</span>
       </div>
@@ -767,13 +767,13 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
     </div>
     <div class="mini-stat">
       <div class="ms-label">领先因子评分</div>
-      <div class="ms-value" style="color:var(--text)">30.4</div>
+      <div class="ms-value" style="color:var(--text)">30.1</div>
       <div class="ms-sub">边际改善早于价格修复 3-6 个月</div>
     </div>
     <div class="mini-stat">
       <div class="ms-label">尾部高危标的</div>
       <div class="ms-value" style="color:var(--text)">
-        3/17
+        3/18
       </div>
       <div class="ms-sub">家数占比 · 负债率&gt;90% 或 权益为负（连锁出清证据）</div>
     </div>
@@ -1270,8 +1270,8 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         与 F5 的「负现金流家数占比」。
         <br><b>路径二 · 尾部传染传导</b>　尾部高危标的（负债率&gt;90% 或 权益为负）家数占比越高，
         说明出清已从价格端传导到信用端。公式 <code>tail_penalty = scale(tail_ratio, 0, 0.15) × 8</code>，
-        对<b>出清进度轴</b>扣分。本期 3/17 家
-        （18%）→ 已超锚点，扣满 8 分。
+        对<b>出清压力指数（进度轴）</b>扣分。本期 3/18 家
+        （17%）→ 已超锚点，扣满 8 分。
         <br><b>路径三 · 事件印证传导</b>　面板中的高危标的若在公告中出现破产/重整/抽贷事件，
         事件流按上述调节机制额外扣分。<b>财务恶化是因，事件是果，两者共振说明出清进入实质阶段。</b>
       </div>
@@ -1319,7 +1319,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
   <div class="mini-stats">
     <div class="mini-stat">
       <div class="ms-label">已结算 / 可结算</div>
-      <div class="ms-value" style="color:var(--text)">0/14</div>
+      <div class="ms-value" style="color:var(--text)">0/15</div>
       <div class="ms-sub">第 1 轮 · 2026-11-08</div>
     </div>
     <div class="mini-stat">
@@ -1328,9 +1328,9 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
       <div class="ms-sub">越低越好 · 0=完美预测 1=完全错误</div>
     </div>
     <div class="mini-stat">
-      <div class="ms-label">自身先验基线</div>
-      <div class="ms-value" style="color:var(--text)">50</div>
-      <div class="ms-sub">永远选基准情形的得分</div>
+      <div class="ms-label">冻结基线</div>
+      <div class="ms-value" style="color:var(--text)">0.5</div>
+      <div class="ms-sub">无信息基线 0.5 · 结算前冻结</div>
     </div>
     <div class="mini-stat">
       <div class="ms-label">相对基线优势</div>
@@ -1459,6 +1459,14 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <td><span style="font-size:14px;color:var(--text-secondary)">CPIA 年度统计（SPE 口径作对照）</span></td>
         <td><span class="emo emo-neu" style="font-size:14px;background:var(--emo-neu-bg);color:var(--emo-neu);border-color:var(--emo-neu-line)">待结算</span></td>
       </tr>
+      <tr>
+        <td><span style="font-family:var(--mono);font-size:14.5px">P7</span></td>
+        <td><div style="font-size:15px;line-height:1.6">在 2028-01-31 前，SPE 最新版《全球光伏市场展望》与 CPIA 最新版《路线图》各自对 2027 全球新增装机的中性/中情景预测值均 &lt; 750GW</div></td>
+        <td><span style="font-family:var(--mono);font-size:14px">70%</span></td>
+        <td><span style="font-family:var(--mono);font-size:14px">2028-01-31</span></td>
+        <td><span style="font-size:14px;color:var(--text-secondary)">SPE/CPIA 最新版文本（机构停更则以最后版本结算）</span></td>
+        <td><span class="emo emo-neu" style="font-size:14px;background:var(--emo-neu-bg);color:var(--emo-neu);border-color:var(--emo-neu-line)">待结算</span></td>
+      </tr>
     </tbody>
   </table>
   </div>
@@ -1470,7 +1478,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
     以自律限产方式约束产能利用、协助行业走出底部并实现价格回升与盈利恢复的路径，<strong>已被事实证伪</strong>——
     2026 年 1 月工信部明确将「反内卷」界定为行业规范治理的<strong>主要矛盾</strong>，
     监管同时约谈行业协会与企业通报垄断风险，人民网社论亦明确「严禁企业串通定价、抱团控产、联合投标」。
-    <strong>回归市场经济的逻辑，产能的真正出清必须以一定体量的产能物理性退出市场为标志</strong>
+    <strong>回归市场经济的逻辑，产能的真正出清必须以一定体量的产能不可逆地退出市场为标志</strong>
     ——形式包括产能废弃与企业破产注销，或因政策标准提高而落入落后产能被动出清。
     本模型据此建立事件判别规则：<span style="color:var(--pos)">真出清=利好</span>，
     <span style="color:var(--neg)">政府救企业/低水平重组=利空</span>（延后出清、增加行业纠缠）。
@@ -1535,7 +1543,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
 <div class="section-label">因子体系 · Factors</div>
 <div class="card">
   <div style="font-size:15px;color:var(--text-secondary);line-height:1.75;margin-bottom:18px">
-    18 项因子分五组，按<b>出清进度轴 / 投资时机轴</b>双轴分配权重（60% / 40%）。
+    18 项因子分五组，按<b>出清压力指数 / 投资时机指数</b>双轴分配权重（60% / 40%）。
     下表为决策参数总览（权重 / 观测对象 / 当前读数 / 监控频率 / 得分），
     逐项定义、计算公式、判读依据与阈值见下方分组说明 —— <strong>有异议的因子可直接在下方对应条目下批注</strong>。
   </div>
@@ -1578,8 +1586,8 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <td><div class="f-val">通威集团质押占总股本 16.54%、占其持股 36.56%（2026-11-06）；*ST亿晶、协鑫集成等尾部标的高位</div></td>
         <td><span class="freq">日（公告）+ 周（两融）</span></td>
         <td class="score-cell">
-          <div class="score-num" style="color:#6b8e6b">72.9</div>
-          <div class="score-bar"><span style="width:72.9%;background:#6b8e6b"></span></div>
+          <div class="score-num" style="color:#6b8e6b">70.0</div>
+          <div class="score-bar"><span style="width:70.0%;background:#6b8e6b"></span></div>
         </td>
       </tr>
       <tr>
@@ -1668,8 +1676,8 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <td><div class="f-val">全池加权约 74.5%；尾部组中位数约 95%（协鑫集成 95.08%、海源复材 94.96%）；最高 *ST亿晶 109.07%（资不抵债）</div></td>
         <td><span class="freq">季（财报后 3 个工作日）</span></td>
         <td class="score-cell">
-          <div class="score-num" style="color:#76819C">47.4</div>
-          <div class="score-bar"><span style="width:47.4%;background:#76819C"></span></div>
+          <div class="score-num" style="color:#9a8a80">41.2</div>
+          <div class="score-bar"><span style="width:41.2%;background:#9a8a80"></span></div>
         </td>
       </tr>
       <tr>
@@ -1758,8 +1766,8 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <td><div class="f-val">经营现金流为负家数占比 6/18（33%）；全池净现金流合计约 -78 亿元（隆基 -34.67 亿、通威 +20.24 亿、晶澳 +39.81 亿）</div></td>
         <td><span class="freq">季（财报节点）</span></td>
         <td class="score-cell">
-          <div class="score-num" style="color:#6b8e6b">63.5</div>
-          <div class="score-bar"><span style="width:63.5%;background:#6b8e6b"></span></div>
+          <div class="score-num" style="color:#6b8e6b">62.2</div>
+          <div class="score-bar"><span style="width:62.2%;background:#6b8e6b"></span></div>
         </td>
       </tr>
       <tr>
@@ -1851,7 +1859,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <dt>当前读数</dt><dd>2026-11-04 TrendForce：硅料 57 万吨+（累库放缓但趋势不变）、硅片 27GW、电池片 6-7 天（生产天数口径）、组件 26.7GW。按去化天数测算：硅料约 150 天、硅片约 19 天、电池片约 7 天、组件约 25 天——★最差环节是硅料，而硅料恰是唯一仍在累库的一段</dd>
         <dt>判读依据</dt><dd>四段分化明显：硅片/电池片真去库、硅料仍累库。取四段去化天数的最差值评分，并按库存变化识别传导方向</dd>
       </dl>
-      <div class="fg-formula"><b>计算公式</b>　去化天数_i = 库存存量_i ÷ 日均消耗量_i（硅料按拉晶耗量、硅片按电池耗量、电池片按组件耗量、组件按终端出货量）；score = scale(最差环节去化天数, 200天, 30天)（越短越好）；方向项：若上游去库而下游累库 → 额外扣 8 分（压力向上传导，尚未传导到终端）</div>
+      <div class="fg-formula"><b>计算公式</b>　去化天数_i = 库存存量_i ÷ 日均消耗量_i（硅料按拉晶耗量、硅片按电池耗量、电池片按组件耗量、组件按终端出货量）；score = scale(days, 30, 200)：30 天→100 分、200 天→0 分（去化越慢压力越高，与 axis_semantics=pressure 一致）；方向项：若上游去库而下游累库 → 额外扣 8 分（压力向上传导，尚未传导到终端）</div>
       
       
       <div class="fg-threshold"><b>判定阈值</b>　去化天数 &gt; 150 天为严重过剩（当前水平）；&lt; 60 天接近正常（历史 2023 前为 14 天）；30 天以内视为已回到常态流转</div>
@@ -1910,7 +1918,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <span class="fg-item-meta">F8 · 权重 3.4</span>
         <span class="fg-item-name">股权质押与两融（群体口径）</span>
         <span class="lead-flag">领先</span>
-        <span class="fg-item-meta">得分 72.9 · 日（公告）+ 周（两融）</span>
+        <span class="fg-item-meta">得分 70.0 · 日（公告）+ 周（两融）</span>
         
       </div>
       <dl class="fg-rows">
@@ -1950,7 +1958,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <span class="fg-item-meta">F4 · 权重 4.8</span>
         <span class="fg-item-name">监测池资产负债率</span>
         
-        <span class="fg-item-meta">得分 47.4 · 季（财报后 3 个工作日）</span>
+        <span class="fg-item-meta">得分 41.2 · 季（财报后 3 个工作日）</span>
         
       </div>
       <dl class="fg-rows">
@@ -1990,7 +1998,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <span class="fg-item-meta">F5 · 权重 7.4</span>
         <span class="fg-item-name">经营性现金流（群体口径）</span>
         <span class="lead-flag">领先</span>
-        <span class="fg-item-meta">得分 63.5 · 季（财报节点）</span>
+        <span class="fg-item-meta">得分 62.2 · 季（财报节点）</span>
         
       </div>
       <dl class="fg-rows">
@@ -2344,6 +2352,14 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <td><span style="color:var(--text-muted);font-size:14px">—</span></td>
       </tr>
       <tr>
+        <td><div class="f-name">阳光电源</div><div class="f-id">sz300274 · 2026-09-30</div></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">61.64%</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">36.48亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">65.99亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">524.57亿</span></td>
+        <td><span style="color:var(--text-muted);font-size:14px">—</span></td>
+      </tr>
+      <tr>
         <td><div class="f-name">协鑫集成</div><div class="f-id">sz002506 · 2026-09-30</div></td>
         <td class="score-cell"><span style="font-family:var(--mono);color:#d68910">95.08%</span></td>
         <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">1.01亿</span></td>
@@ -2429,10 +2445,10 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
   <div class="note" style="margin-top:16px">
     <strong>银行收贷判读：</strong>经营现金流为负且资产负债率超 75% 的企业，其授信续作概率显著下降，
     是「银行收贷 → 债务危机 → 破产重整」传导链的起点。股东权益为负即<strong>资不抵债</strong>，
-    直接进入破产程序概率最高。本期共 17 只标的纳入信用观察，
+    直接进入破产程序概率最高。本期共 18 只标的纳入信用观察，
     其中尾部高危（负债率&gt;90% 或权益为负）3 只
-    （占比 18%），
-    <strong>已超过 15% 的连锁出清警戒锚点</strong>，对出清进度轴扣满 8 分。
+    （占比 17%），
+    <strong>已超过 15% 的连锁出清警戒锚点</strong>，对出清压力指数（进度轴）扣满 8 分。
   </div>
 </div><div class="section-label">资金面 · Capital Flow</div>
 <div class="card">
@@ -2517,7 +2533,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
   </div>
 </div><div class="section-label">出清事件流 · Event Feed</div>
 <div class="card">
-      <div style="margin-bottom:12px;font-size:16.5px;color:var(--text-secondary)">本期扫描命中 <strong>10</strong> 条出清相关事件（含公告与舆情）。分类依据：物理性退出判利好，政府救助与低水平重组判利空。有效权重 = 基础权重 × 广度加成 × 时间衰减。</div>
+      <div style="margin-bottom:12px;font-size:16.5px;color:var(--text-secondary)">本期扫描命中 <strong>10</strong> 条出清相关事件（含公告与舆情）。分类依据：不可逆退出判利好，政府救助与低水平重组判利空。有效权重 = 基础权重 × 广度加成 × 时间衰减。</div>
       <div class="ev-item">
         <div style="flex:0 0 auto"><span class="emo emo-pos" style="background:var(--emo-pos-bg);color:var(--emo-pos);border-color:var(--emo-pos-line)">出清利好</span></div>
         <div>
@@ -2625,13 +2641,15 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
   <p class="about-text">
     本报告由自动化监控模型生成（v2 双轴架构），数据源包括上市公司公告与定期报告、交易所与评级机构披露、
     光伏行业协会与硅业分会产业数据、ETF 与板块资金流及估值数据。核心判据为
-    「产能是否发生物理性退出」——这是区分真出清与伪出清的唯一标准。
-    模型采用事件驱动 + 双轴因子加权架构：出清进度轴衡量出清推进速度，投资时机轴衡量当前买入性价比，
+    「产能是否发生不可逆退出」（产能废弃、破产清算注销、或政策标准强制淘汰）——
+    这是区分真出清与伪出清的根本标准。
+    模型采用事件驱动 + 双轴因子加权架构：出清压力指数衡量出清条件的成熟程度（状态），
+    投资时机指数衡量当前买入性价比（状态），阶段 1-5 为演化路径，
     两者经决策矩阵合成行动建议。领先因子边际改善用于构建提前 3-6 个月的建仓提示。
     因子权重、阈值与分类规则均可配置，随行业阶段演进调整。
   </p>
   <p class="disclaimer">
-    数据截至 2026-11-08，评分生成于 2026-11-08T23:02:35。
+    数据截至 2026-11-08，评分生成于 2026-11-08T23:10:35。
     本报告为个人研究记录，不构成投资建议。市场有风险，决策需谨慎。
     评分模型输出的是结构化信号，不替代独立判断。
   </p>
