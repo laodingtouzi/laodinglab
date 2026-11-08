@@ -326,6 +326,24 @@ body {
   line-height: 1.6; word-break: break-word;
 }
 
+/* 版本标识条 —— 便于判断是否为最新版本（应对 CDN/浏览器缓存） */
+.ver-strip {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px;
+  background: #fff; border: 1px solid var(--border); border-left: 3px solid var(--accent-2);
+  border-radius: 8px; padding: 11px 16px; margin-bottom: 20px;
+  font-size: 13px; color: var(--text-secondary);
+}
+.ver-badge {
+  font-family: var(--mono); font-size: 12.5px; font-weight: 600;
+  background: var(--emo-neu-bg); color: var(--emo-neu);
+  border: 1px solid var(--emo-neu-line); border-radius: 4px; padding: 2px 9px;
+}
+.ver-item { font-family: var(--mono); font-size: 12.5px; color: var(--text-secondary); }
+.ver-tip {
+  flex: 1 1 100%; font-size: 12px; color: var(--text-muted);
+  padding-top: 7px; border-top: 1px dashed var(--border); line-height: 1.6;
+}
+
 /* 跨行业校准表 */
 .ci-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .ci-table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-top: 10px; }
@@ -660,6 +678,13 @@ body {
 </header>
 
 <main class="main">
+<div class="ver-strip">
+  <span class="ver-badge">版本 v2</span>
+  <span class="ver-item">构建 2026-11-08 22:39</span>
+  <span class="ver-item">数据截至 2026-11-08</span>
+  <span class="ver-item">出清压力指数 41.4 · 投资时机指数 21.4 · 综合 33.4</span>
+  <span class="ver-tip">若显示的版本或数据日期与预期不符，请强制刷新页面（Safari：长按刷新按钮 → 重新加载，或设置 → 清除历史记录与网站数据）</span>
+</div>
 
 <div class="section-label">核心结论 · Verdict</div>
 <div class="card">
@@ -668,7 +693,7 @@ body {
       <div class="axis-name">Axis 1 · 出清压力指数</div>
       <div class="axis-q">出清压力已经显现到什么程度？</div>
       <div class="axis-score-row">
-        <span class="axis-score" style="color:#9a8a80">40.4</span>
+        <span class="axis-score" style="color:#9a8a80">41.4</span>
         <span style="font-size:18px;color:var(--text-muted)">/100</span>
         <span class="axis-act" style="background:#7f8c8d18;color:#7f8c8d;border-color:#7f8c8d44">压力初步显现</span>
       </div>
@@ -723,13 +748,13 @@ body {
     </div>
     <div class="mini-stat">
       <div class="ms-label">领先因子评分</div>
-      <div class="ms-value" style="color:var(--text)">30.7</div>
+      <div class="ms-value" style="color:var(--text)">31.0</div>
       <div class="ms-sub">边际改善早于价格修复 3-6 个月</div>
     </div>
     <div class="mini-stat">
       <div class="ms-label">尾部高危标的</div>
       <div class="ms-value" style="color:var(--text)">
-        3/16
+        3/15
       </div>
       <div class="ms-sub">家数占比 · 负债率&gt;90% 或 权益为负（连锁出清证据）</div>
     </div>
@@ -1225,8 +1250,8 @@ body {
         与 F5 的「负现金流家数占比」。
         <br><b>路径二 · 尾部传染传导</b>　尾部高危标的（负债率&gt;90% 或 权益为负）家数占比越高，
         说明出清已从价格端传导到信用端。公式 <code>tail_penalty = scale(tail_ratio, 0, 0.15) × 8</code>，
-        对<b>出清进度轴</b>扣分。本期 3/16 家
-        （19%）→ 已超锚点，扣满 8 分。
+        对<b>出清进度轴</b>扣分。本期 3/15 家
+        （20%）→ 已超锚点，扣满 8 分。
         <br><b>路径三 · 事件印证传导</b>　面板中的高危标的若在公告中出现破产/重整/抽贷事件，
         事件流按上述调节机制额外扣分。<b>财务恶化是因，事件是果，两者共振说明出清进入实质阶段。</b>
       </div>
@@ -1537,8 +1562,8 @@ body {
         <td><div class="f-val">通威集团质押占总股本 16.54%、占其持股 36.56%（2026-11-06）；*ST亿晶、协鑫集成等尾部标的高位</div></td>
         <td><span class="freq">日（公告）+ 周（两融）</span></td>
         <td class="score-cell">
-          <div class="score-num" style="color:#4a7a5a">76.2</div>
-          <div class="score-bar"><span style="width:76.2%;background:#4a7a5a"></span></div>
+          <div class="score-num" style="color:#4a7a5a">80.0</div>
+          <div class="score-bar"><span style="width:80.0%;background:#4a7a5a"></span></div>
         </td>
       </tr>
       <tr>
@@ -1627,8 +1652,8 @@ body {
         <td><div class="f-val">全池加权约 74.5%；尾部组中位数约 95%（协鑫集成 95.08%、海源复材 94.96%）；最高 *ST亿晶 109.07%（资不抵债）</div></td>
         <td><span class="freq">季（财报后 3 个工作日）</span></td>
         <td class="score-cell">
-          <div class="score-num" style="color:#9a8a80">41.8</div>
-          <div class="score-bar"><span style="width:41.8%;background:#9a8a80"></span></div>
+          <div class="score-num" style="color:#76819C">49.3</div>
+          <div class="score-bar"><span style="width:49.3%;background:#76819C"></span></div>
         </td>
       </tr>
       <tr>
@@ -1717,8 +1742,8 @@ body {
         <td><div class="f-val">经营现金流为负家数占比 6/18（33%）；全池净现金流合计约 -78 亿元（隆基 -34.67 亿、通威 +20.24 亿、晶澳 +39.81 亿）</div></td>
         <td><span class="freq">季（财报节点）</span></td>
         <td class="score-cell">
-          <div class="score-num" style="color:#6b8e6b">65.0</div>
-          <div class="score-bar"><span style="width:65.0%;background:#6b8e6b"></span></div>
+          <div class="score-num" style="color:#6b8e6b">66.7</div>
+          <div class="score-bar"><span style="width:66.7%;background:#6b8e6b"></span></div>
         </td>
       </tr>
       <tr>
@@ -1868,7 +1893,7 @@ body {
         <span class="fg-item-meta">F8 · 权重 3.4</span>
         <span class="fg-item-name">股权质押与两融（群体口径）</span>
         <span class="lead-flag">领先</span>
-        <span class="fg-item-meta">得分 76.2 · 日（公告）+ 周（两融）</span>
+        <span class="fg-item-meta">得分 80.0 · 日（公告）+ 周（两融）</span>
         <span class="emo emo-pos" style="font-size:12px;background:var(--emo-pos-bg);color:var(--emo-pos);border-color:var(--emo-pos-line)">确认</span>
       </div>
       <dl class="fg-rows">
@@ -1908,7 +1933,7 @@ body {
         <span class="fg-item-meta">F4 · 权重 4.8</span>
         <span class="fg-item-name">监测池资产负债率</span>
         
-        <span class="fg-item-meta">得分 41.8 · 季（财报后 3 个工作日）</span>
+        <span class="fg-item-meta">得分 49.3 · 季（财报后 3 个工作日）</span>
         
       </div>
       <dl class="fg-rows">
@@ -1948,7 +1973,7 @@ body {
         <span class="fg-item-meta">F5 · 权重 7.4</span>
         <span class="fg-item-name">经营性现金流（群体口径）</span>
         <span class="lead-flag">领先</span>
-        <span class="fg-item-meta">得分 65.0 · 季（财报节点）</span>
+        <span class="fg-item-meta">得分 66.7 · 季（财报节点）</span>
         
       </div>
       <dl class="fg-rows">
@@ -2267,11 +2292,11 @@ body {
         <td><span class="emo emo-neg" style="background:var(--emo-neg-bg);color:var(--emo-neg);border-color:var(--emo-neg-line)">经营现金流为负</span></td>
       </tr>
       <tr>
-        <td><div class="f-name">福莱特</div><div class="f-id">sh601865 · 2026-09-30</div></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">47.72%</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">17.51亿</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-8.36亿</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">213.39亿</span></td>
+        <td><div class="f-name">正泰电器</div><div class="f-id">sh601877 · 2026-09-30</div></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">64.16%</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">180.73亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">42.25亿</span></td>
+        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">557.09亿</span></td>
         <td><span style="color:var(--text-muted);font-size:12.5px">—</span></td>
       </tr>
       <tr>
@@ -2280,14 +2305,6 @@ body {
         <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">28.75亿</span></td>
         <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">6.33亿</span></td>
         <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">135.55亿</span></td>
-        <td><span style="color:var(--text-muted);font-size:12.5px">—</span></td>
-      </tr>
-      <tr>
-        <td><div class="f-name">阳光电源</div><div class="f-id">sz300274 · 2026-09-30</div></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">61.64%</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">36.48亿</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">65.99亿</span></td>
-        <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">524.57亿</span></td>
         <td><span style="color:var(--text-muted);font-size:12.5px">—</span></td>
       </tr>
       <tr>
@@ -2376,9 +2393,9 @@ body {
   <div class="note" style="margin-top:16px">
     <strong>银行收贷判读：</strong>经营现金流为负且资产负债率超 75% 的企业，其授信续作概率显著下降，
     是「银行收贷 → 债务危机 → 破产重整」传导链的起点。股东权益为负即<strong>资不抵债</strong>，
-    直接进入破产程序概率最高。本期共 16 只标的纳入信用观察，
+    直接进入破产程序概率最高。本期共 15 只标的纳入信用观察，
     其中尾部高危（负债率&gt;90% 或权益为负）3 只
-    （占比 19%），
+    （占比 20%），
     <strong>已超过 15% 的连锁出清警戒锚点</strong>，对出清进度轴扣满 8 分。
   </div>
 </div><div class="section-label">资金面 · Capital Flow</div>
@@ -2578,7 +2595,7 @@ body {
     因子权重、阈值与分类规则均可配置，随行业阶段演进调整。
   </p>
   <p class="disclaimer">
-    数据截至 2026-11-08，评分生成于 2026-11-08T17:14:19。
+    数据截至 2026-11-08，评分生成于 2026-11-08T22:39:10。
     本报告为个人研究记录，不构成投资建议。市场有风险，决策需谨慎。
     评分模型输出的是结构化信号，不替代独立判断。
   </p>
