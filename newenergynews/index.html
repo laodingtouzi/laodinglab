@@ -451,37 +451,38 @@
             .region-grid { grid-template-columns: 1fr; }
         }
 
-        /* ── 复制到豆包朗读按钮 ── */
-        .copy-btn {
-            margin-top: 20px;
-            padding: 15px 34px;
-            font-size: 16.5px;
-            font-weight: 600;
-            font-family: inherit;
-            color: #ffffff;
-            background: linear-gradient(135deg, #2c5f7c 0%, #1a4f7a 100%);
+        /* ── 复制正文浮动按钮（右上角小图标，低调） ── */
+        .copy-fab {
+            position: fixed;
+            top: 14px;
+            right: 14px;
+            z-index: 9998;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
             border: none;
-            border-radius: 999px;
             cursor: pointer;
-            box-shadow: 0 4px 16px rgba(44, 95, 124, 0.38);
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            font-size: 18px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.85);
+            color: #2c5f7c;
+            box-shadow: 0 2px 10px rgba(22, 38, 54, 0.16);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            opacity: 0.6;
+            transition: opacity 0.15s ease, transform 0.15s ease, background 0.2s ease, color 0.2s ease;
             -webkit-tap-highlight-color: transparent;
             touch-action: manipulation;
         }
-        .copy-btn:hover {
-            box-shadow: 0 6px 20px rgba(44, 95, 124, 0.48);
-            transform: translateY(-1px);
-        }
-        .copy-btn:active {
-            transform: scale(0.95);
-        }
-        .copy-btn.done {
-            background: linear-gradient(135deg, #2e8b57 0%, #1a6b3a 100%);
-        }
-        .copy-hint {
-            margin-top: 10px;
-            font-size: 12.5px;
-            color: var(--text-muted, #718096);
+        .copy-fab:hover { opacity: 1; transform: scale(1.07); }
+        .copy-fab:active { transform: scale(0.9); }
+        .copy-fab.done {
+            opacity: 1;
+            background: #2e8b57;
+            color: #ffffff;
         }
         .toast {
             position: fixed;
@@ -508,12 +509,10 @@
             opacity: 1;
             transform: translateX(-50%) translateY(0);
         }
-        @media (max-width: 768px) {
-            .copy-btn { font-size: 16px; padding: 16px 30px; width: min(88%, 340px); }
-        }
-    </style>
+            </style>
 </head>
 <body>
+<button class="copy-fab" id="copyFab" onclick="copyBrief()" title="复制全文，到豆包朗读" aria-label="复制全文到豆包朗读">📋</button>
 <header class="site-header">
   <div class="header-inner">
     <div class="logo-group">
@@ -539,8 +538,6 @@
     <h1 class="hero-title">新能源要闻简报</h1>
     <div class="hero-date">第114期 · 2026-11-08 周日</div>
     <p class="hero-desc">覆盖光伏、风电、储能、氢能、电力体系等领域的每日要闻</p>
-    <button class="copy-btn" id="copyBtn" onclick="copyBrief()">📋 复制全文 · 到豆包朗读</button>
-    <div class="copy-hint">一键复制正文 → 自动唤起豆包 App → 粘贴即可朗读</div>
   </div>
 </section>
 
@@ -843,51 +840,56 @@
     }
 
     function legacyCopy(text) {
+        /* iOS/Android 兼容的同步复制：必须在用户手势内同步执行 */
         var ta = document.createElement('textarea');
         ta.value = text;
+        ta.setAttribute('readonly', '');
         ta.style.position = 'fixed';
-        ta.style.opacity = '0';
+        ta.style.top = '0';
+        ta.style.left = '0';
+        ta.style.width = '2em';
+        ta.style.height = '2em';
+        ta.style.padding = '0';
+        ta.style.border = 'none';
+        ta.style.outline = 'none';
+        ta.style.background = 'transparent';
+        ta.style.fontSize = '16px';
         document.body.appendChild(ta);
+        ta.focus();
         ta.select();
-        ta.setSelectionRange(0, text.length);
-        try {
-            document.execCommand('copy');
-            return true;
-        } catch (e) {
-            return false;
-        } finally {
-            document.body.removeChild(ta);
-        }
+        try { ta.setSelectionRange(0, text.length); } catch (e) {}
+        var ok = false;
+        try { ok = document.execCommand('copy'); } catch (e) {}
+        document.body.removeChild(ta);
+        return ok;
     }
 
     window.copyBrief = function () {
         var scope = document.getElementById('copy-scope');
         if (!scope) return;
         var text = cleanText(scope.innerText);
+        var fab = document.getElementById('copyFab');
 
         function onCopied(ok) {
             if (!ok) {
                 showToast('❌ 复制失败，请长按页面手动全选复制', 3500);
                 return;
             }
-            var btn = document.getElementById('copyBtn');
-            if (btn) {
-                btn.classList.add('done');
-                btn.textContent = '✅ 已复制 ' + text.length + ' 字';
+            if (fab) {
+                fab.classList.add('done');
+                fab.textContent = '✓';
                 setTimeout(function () {
-                    btn.classList.remove('done');
-                    btn.textContent = '📋 复制全文 · 到豆包朗读';
-                }, 4000);
+                    fab.classList.remove('done');
+                    fab.textContent = '📋';
+                }, 2000);
             }
             showToast('✅ 正文已复制（' + text.length + ' 字）
-正在尝试打开豆包 App…', 2600);
+正在尝试打开豆包 App…', 2400);
 
-            // 尝试唤起豆包 App（iOS/Android scheme；不保证各版本有效）
             setTimeout(function () {
                 window.location.href = 'doubao://';
-            }, 700);
+            }, 600);
 
-            // 若 3 秒后页面仍在前台，说明未唤起成功，提示手动切换
             setTimeout(function () {
                 if (!document.hidden) {
                     showToast('如豆包未自动打开：
@@ -896,13 +898,18 @@
             }, 3200);
         }
 
+        /* 优先同步 execCommand（iOS Safari 手势内最可靠），失败立即兜 clipboard API */
+        if (legacyCopy(text)) {
+            onCopied(true);
+            return;
+        }
         if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(text).then(
                 function () { onCopied(true); },
-                function () { onCopied(legacyCopy(text)); }
+                function () { onCopied(false); }
             );
         } else {
-            onCopied(legacyCopy(text));
+            onCopied(false);
         }
     };
 })();
