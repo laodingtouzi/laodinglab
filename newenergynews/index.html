@@ -820,8 +820,7 @@
     }
 
     function cleanText(raw) {
-        var lines = raw.split('
-');
+        var lines = raw.split('\n');
         var out = [];
         var prevBlank = false;
         for (var i = 0; i < lines.length; i++) {
@@ -835,8 +834,7 @@
             }
         }
         while (out.length > 0 && out[out.length - 1] === '') out.pop();
-        return out.join('
-');
+        return out.join('\n');
     }
 
     function legacyCopy(text) {
@@ -883,8 +881,7 @@
                     fab.textContent = '📋';
                 }, 2000);
             }
-            showToast('✅ 正文已复制（' + text.length + ' 字）
-正在尝试打开豆包 App…', 2400);
+            showToast('✅ 正文已复制（' + text.length + ' 字）\n正在尝试打开豆包 App…', 2400);
 
             setTimeout(function () {
                 window.location.href = 'doubao://';
@@ -892,8 +889,7 @@
 
             setTimeout(function () {
                 if (!document.hidden) {
-                    showToast('如豆包未自动打开：
-请手动切换到豆包 App，长按输入框粘贴即可朗读', 5200);
+                    showToast('如豆包未自动打开：\n请手动切换到豆包 App，长按输入框粘贴即可朗读', 5200);
                 }
             }, 3200);
         }
