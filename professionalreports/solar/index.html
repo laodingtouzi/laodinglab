@@ -62,7 +62,7 @@
 
   /* 字号阶梯 — 参照《中国储能市场头部玩家调研》调校，并按 iPad 阅读场景整体上浮一档
      层级：主标题 44 / 章节 28 / 小节 21 / 正文 19 / 表格 18 / 表头 15 / 辅助 15 / 最小标注 13.5
-     ★ 下限 13.5px —— 2026-11-08 按老丁反馈整体再上调一档（iPad 阅读字号偏小） */
+     ★ 下限 13.5px —— 2026-11-08 按 iPad 阅读场景整体上调一档 */
   --fs-hero: 44px;
   --fs-section: 28px;
   --fs-sub: 21px;
@@ -456,6 +456,26 @@ body {
   .regime-days { text-align: left; }
 }
 
+/* 折叠说明区（口径/因子定义等说明性内容，默认收起不占正文） */
+details.collapse {
+  background: var(--bg-surface); border: 1px solid var(--border); border-radius: 10px;
+  margin-bottom: 18px; box-shadow: var(--shadow);
+}
+details.collapse > summary {
+  cursor: pointer; padding: 18px 24px; list-style: none; user-select: none;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+details.collapse > summary::-webkit-details-marker { display: none; }
+details.collapse > summary::after {
+  content: '展开 ▾'; font-family: var(--mono); font-size: 14px; color: var(--text-secondary);
+  flex-shrink: 0; background: #fff; border: 1px solid var(--border);
+  border-radius: 5px; padding: 3px 12px;
+}
+details.collapse[open] > summary::after { content: '收起 ▴'; }
+details.collapse > summary .section-label { margin-bottom: 0; }
+details.collapse[open] { padding-bottom: 8px; }
+details.collapse[open] > summary { border-bottom: 1px dashed var(--border); margin-bottom: 6px; }
+
 /* ═══ 情绪语义标签（全局通用）═══ */
 .emo {
   display: inline-block; padding: 2px 9px; border-radius: 4px;
@@ -680,10 +700,9 @@ body {
 <main class="main">
 <div class="ver-strip">
   <span class="ver-badge">版本 v2.1</span>
-  <span class="ver-item">构建 2026-11-08 22:47</span>
+  <span class="ver-item">构建 2026-11-08 23:02</span>
   <span class="ver-item">数据截至 2026-11-08</span>
   <span class="ver-item">出清压力指数 40.5 · 投资时机指数 21.4 · 综合 32.9</span>
-  <span class="ver-tip">若显示的版本或数据日期与预期不符，请强制刷新页面（Safari：长按刷新按钮 → 重新加载，或设置 → 清除历史记录与网站数据）</span>
 </div>
 
 <div class="section-label">核心结论 · Verdict</div>
@@ -700,7 +719,7 @@ body {
       <div class="axis-desc">信号初现但规模有限，出清刚起步</div>
       <div class="axis-formula">
         <b>口径</b>　10 项供给侧与政策侧因子加权（F1-F10）。<br>
-        <b>含义</b>　★v2.1 语义修正：进度轴不再是『出清进度百分比』，而是<strong>压力水位</strong>——分数高 = 财务/库存/信用/政策四类压力已充分显现 = 出清条件趋成熟。注意：高分不是『行业很好』，而是『风险已充分释放、出清条件成熟』，这是建仓的前提条件。
+        <b>含义</b>　进度轴语义：不是『出清进度百分比』，而是<strong>压力水位</strong>——分数高 = 财务/库存/信用/政策四类压力已充分显现 = 出清条件趋成熟。注意：高分不是『行业很好』，而是『风险已充分释放、出清条件成熟』，这是建仓的前提条件。
       </div>
     </div>
     <div class="axis-card timing">
@@ -787,10 +806,10 @@ body {
       <div class="tl-lead">提前 26-30 个月<span class="tl-unit">至出清确认</span></div>
       <div>
         <div class="tl-stage">阶段 2 · 银行收贷（状态依赖）</div>
-        <div class="tl-conf">置信度：中高（经 Kimi K2 修正：含 8-12 个月僵尸化期）</div>
+        <div class="tl-conf">置信度：中高（含 8-12 个月僵尸化期）</div>
         <div class="tl-obs"><b>可观测信号</b>　阶段A（僵尸化，减速器）：债务展期、借新还旧、政府协调续贷、有息负债仍增长而利息保障倍数&lt;1 → 银行续贷自保，出清被延后；阶段B（破产程序启动，加速器）：破产申请/预重整受理公告 → 银行转为申报债权核销，授信彻底断裂。<strong>分界判据 = 破产申请/预重整受理公告</strong></div>
         <div class="tl-hist"><b>历史实证</b>　隆基 70 亿转债触发回售（2026-11）；2012 年赛维/尚德案例中授信收紧发生在企业实质死亡之后 —— 是确认而非触发，印证阶段A的存在<br>
-          <b>说明</b>　★v2.1 修正（Kimi K2）：原设 18 个月且把银行当作『不受政策约束的最有效加速器』，与僵尸借贷文献（Caballero-Hoshi-Kashyap 2008 / BIS 2020 / IMF WP/17/266）方向相反 —— 银行对已资不抵债企业续贷自保是僵尸化第一机制。修正为状态依赖两段模型，并加入 8-12 个月僵尸化期 → 26-30 个月。新增监测：僵尸化指数（利息保障倍数&lt;1 且有息负债同比增长的家数占比，季度）</div>
+          <b>说明</b>　银行收贷为状态依赖的两段模型：先经历 8-12 个月僵尸化期（银行对已资不抵债企业续贷自保是僵尸化第一机制，见 Caballero-Hoshi-Kashyap 2008 / BIS 2020 / IMF WP/17/266），再进入实质收贷，合计 26-30 个月。监测新增：僵尸化指数（利息保障倍数&lt;1 且有息负债同比增长的家数占比，季度）</div>
       </div>
     </div>
     <div class="tl-item tl-warn">
@@ -1203,7 +1222,8 @@ body {
     <strong>行动窗口</strong>　当前处于阶段 1-2 区间（财务恶化已现、银行收贷初现），对应『观察等待』档位；建仓窗口在阶段 3-4 信号确认后，即 2027 年上半年前后
   </div>
 </div>
-<div class="section-label">口径说明 · Specifications</div>
+<details class="collapse">
+<summary><span class="section-label">口径说明 · Specifications</span></summary>
 <div class="card">
   <div class="spec-list">
 
@@ -1267,8 +1287,6 @@ body {
         资产负债率（流通市值加权）、质押高危家数占比、龙头亏损收敛家数占比。
         <br><b>composite（复合）</b>　多来源合成，如供需缺口（有效产能 ÷ 全球需求）。
         <br><b>single（单点）</b>　市场级单一数值。
-        <br><b>⚠️ v1 的缺陷已修正</b>　原 F5（现金流）、F8（质押）用<b>单只标的</b>（通威质押率 36.56%）
-        代表全组打分 —— 现已改为家数占比口径。这正是老丁指出的问题。
       </div>
     </div>
 
@@ -1286,14 +1304,18 @@ body {
 
   </div>
 </div>
+</details>
 <div class="section-label">预测成绩单 · Forecast Scorecard</div>
 <div class="card">
-  <div class="note" style="margin-bottom:16px">
-    <strong>为什么要成绩单：</strong>没有计分系统的预测不是预测，是观点。
+  <details class="collapse" style="margin-bottom:16px">
+  <summary>计分方法说明（Brier · 基线口径）</summary>
+  <div class="note" style="margin:14px 0 6px">
+    没有计分系统的预测不是预测，是观点。
     本栏目对已到期的可结算预测自动结算，滚动公布 Brier 分数。
     基线为<strong>自身先验分布</strong>（永远选概率最高的基准情形），
     而非外部的 0.25 瞎猜基线——后者会让模型显得比实际更强。
   </div>
+  </details>
   <div class="mini-stats">
     <div class="mini-stat">
       <div class="ms-label">已结算 / 可结算</div>
@@ -1439,12 +1461,6 @@ body {
       </tr>
     </tbody>
   </table>
-  </div>
-  <div class="note" style="margin-top:18px">
-    <strong>Pre-mortem（如果我错，最可能是因为什么）</strong><br>
-    <b>WB</b>　如果我的基准情形（2027末-2028上半年出清确认）错了，最可能是因为：① 政府救助端全面占优导致僵尸产能固化（对应 W6 兑现、W7 不兑现）；② 2027 全球装机低于 700GW，需求二次下修使价格修复推迟（对应 P6 兑现、W8 不兑现）；③ 强标执行力度不足，310GW 测算产能实际核减远低于预期（对应 W1 不兑现）<br>
-    <b>Kimi</b>　（待 Kimi 03 轮补写）
-    <br><span style="font-size:14px;color:var(--text-muted)">Kimi Q11 机制③：每条冲突预测附 pre-mortem，结算时对照 —— 分数分高下，pre-mortem 改进模型</span>
   </div>
 </div>
 <div class="section-label">判断框架 · Framework</div>
@@ -1709,7 +1725,7 @@ body {
         </td>
         <td><span style="font-family:var(--mono);font-size:16.5px">5.5</span></td>
         <td><span style="font-family:var(--mono);font-size:14px;color:var(--text-secondary)">population</span></td>
-        <td><div class="f-val">主链四段全部低于成本线：硅料 3.35 万元/吨（成本 4.0-4.8，比值 0.78）、硅片 0.98 元/片（0.92-1.05，0.98）、电池片 0.29 元/W（0.38-0.44，0.71）、组件 0.70 元/W（0.82-0.93，0.85）。辅材（2026-01 成本占比）：银浆 16-17%、铝边框 14%、光伏玻璃 13.1% —— ★玻璃是本轮出清最狠的环节（9 家停产 + 4 家破产重整），原版却完全未纳入</div></td>
+        <td><div class="f-val">主链四段全部低于成本线：硅料 3.35 万元/吨（成本 4.0-4.8，比值 0.78）、硅片 0.98 元/片（0.92-1.05，0.98）、电池片 0.29 元/W（0.38-0.44，0.71）、组件 0.70 元/W（0.82-0.93，0.85）。辅材（2026-01 成本占比）：银浆 16-17%、铝边框 14%、光伏玻璃 13.1% —— ★玻璃是本轮出清最狠的环节（9 家停产 + 4 家破产重整）</div></td>
         <td><span class="freq">周（price-tracker 周日 21:00 已自动化）</span></td>
         <td class="score-cell">
           <div class="score-num" style="color:#B69C91">0.0</div>
@@ -1811,7 +1827,8 @@ body {
   </div>
 </div>
 
-<div class="section-label">因子逐条说明 · Factor Details</div>
+<details class="collapse">
+<summary><span class="section-label">因子逐条说明 · Factor Details</span></summary>
 <div class="card">
   <div class="factor-group">
     <div class="fg-head emo-neu">
@@ -1832,7 +1849,7 @@ body {
         <dt>观测对象</dt><dd>主链四段（硅料/硅片/电池片/组件）各自的库存存量与日均消耗<br><span style="color:var(--text-muted)">聚合方式：四段分别测算「库存去化天数」，取最差环节；并识别产业链库存传导方向</span></dd>
         <dt>指标定义</dt><dd></dd>
         <dt>当前读数</dt><dd>2026-11-04 TrendForce：硅料 57 万吨+（累库放缓但趋势不变）、硅片 27GW、电池片 6-7 天（生产天数口径）、组件 26.7GW。按去化天数测算：硅料约 150 天、硅片约 19 天、电池片约 7 天、组件约 25 天——★最差环节是硅料，而硅料恰是唯一仍在累库的一段</dd>
-        <dt>判读依据</dt><dd>★v2 修正：原版只取多晶硅单一指标，且把「累库」误读为整体库存压力。实际四段分化：硅片/电池片真去库、硅料仍累库 —— 单选硅料恰好选中唯一坏的那段，方向也反了。改为四段去化天数取最差，并识别传导方向</dd>
+        <dt>判读依据</dt><dd>四段分化明显：硅片/电池片真去库、硅料仍累库。取四段去化天数的最差值评分，并按库存变化识别传导方向</dd>
       </dl>
       <div class="fg-formula"><b>计算公式</b>　去化天数_i = 库存存量_i ÷ 日均消耗量_i（硅料按拉晶耗量、硅片按电池耗量、电池片按组件耗量、组件按终端出货量）；score = scale(最差环节去化天数, 200天, 30天)（越短越好）；方向项：若上游去库而下游累库 → 额外扣 8 分（压力向上传导，尚未传导到终端）</div>
       
@@ -2014,7 +2031,7 @@ body {
       
       
       <div class="fg-threshold"><b>判定阈值</b>　任一政府接盘事件 → 单独扣 5 分（触发即警报）；累计净利空 &gt; 15 分 → 出清失败判定</div>
-      <div class="fg-threshold"><b>口径说明</b>　本因子是模型的『伪出清识别器』。★v2 修正：原将『预重整协议/重整投资人签署』误判为低水平重组利空 —— 实为破产程序启动（出清利好）。已把这类关键词移入 EXIT_BANKRUPTCY。</div>
+      <div class="fg-threshold"><b>口径说明</b>　本因子是模型的『伪出清识别器』。『预重整协议/重整投资人签署』实为破产程序启动（出清利好），归入 EXIT_BANKRUPTCY 规则，不判为低水平重组利空。</div>
     </div>
     <div class="fg-item">
       <div class="fg-item-head">
@@ -2034,7 +2051,7 @@ body {
       
       
       <div class="fg-threshold"><b>判定阈值</b>　2027-01-01 为硬节点；执行后每月核减产能 &gt; 10GW 为加速信号</div>
-      <div class="fg-threshold"><b>口径说明</b>　标准发布 ≠ 产能出局，需跟踪实际核减公告。⚠️ 本因子当前为 0（标准 2027-01-01 执行），但权重 7.6 分 —— 属『已知的未来利好』，会系统性压低当前评分。老丁若认为应反映预期，可改为『预期计入』模式（标准发布即给 60 分，核减公告后按实际进度上调）</div>
+      <div class="fg-threshold"><b>口径说明</b>　标准发布 ≠ 产能出局，需跟踪实际核减公告。本因子当前为 0（标准 2027-01-01 执行），但权重 7.6 分 —— 属『已知的未来利好』，会系统性压低当前评分；是否改为『预期计入』模式（标准发布即给 60 分，核减公告后按实际进度上调）待评估。</div>
     </div>
   </div>
   <div class="factor-group">
@@ -2075,14 +2092,14 @@ body {
       <dl class="fg-rows">
         <dt>观测对象</dt><dd>主链四段（硅料/硅片/电池片/组件）+ 三类关键辅材（光伏玻璃/银浆/铝边框）<br><span style="color:var(--text-muted)">聚合方式：七环节各算价格/成本比，取最小值（瓶颈逻辑）</span></dd>
         <dt>指标定义</dt><dd></dd>
-        <dt>当前读数</dt><dd>主链四段全部低于成本线：硅料 3.35 万元/吨（成本 4.0-4.8，比值 0.78）、硅片 0.98 元/片（0.92-1.05，0.98）、电池片 0.29 元/W（0.38-0.44，0.71）、组件 0.70 元/W（0.82-0.93，0.85）。辅材（2026-01 成本占比）：银浆 16-17%、铝边框 14%、光伏玻璃 13.1% —— ★玻璃是本轮出清最狠的环节（9 家停产 + 4 家破产重整），原版却完全未纳入</dd>
-        <dt>判读依据</dt><dd>★v2 修正：① 辅材必须纳入 —— 2026 年硅料成本占比已降至 9.9%（2023 高点 15%），银浆/边框/玻璃合计超 40%，只看主链四段等于漏掉四成成本；且玻璃本轮已实质出清却不在监控内。② 取最小值因为瓶颈环节决定全链盈利 —— 四段全倒挂时，深度信息在 0-100 区间会丢失，故另设倒挂深度调节项</dd>
+        <dt>当前读数</dt><dd>主链四段全部低于成本线：硅料 3.35 万元/吨（成本 4.0-4.8，比值 0.78）、硅片 0.98 元/片（0.92-1.05，0.98）、电池片 0.29 元/W（0.38-0.44，0.71）、组件 0.70 元/W（0.82-0.93，0.85）。辅材（2026-01 成本占比）：银浆 16-17%、铝边框 14%、光伏玻璃 13.1% —— ★玻璃是本轮出清最狠的环节（9 家停产 + 4 家破产重整）</dd>
+        <dt>判读依据</dt><dd>① 辅材必须纳入 —— 2026 年硅料成本占比已降至 9.9%（2023 高点 15%），银浆/边框/玻璃合计超 40%，只看主链四段等于漏掉四成成本；② 取最小值，因为瓶颈环节决定全链盈利 —— 四段全倒挂时，深度信息在 0-100 区间会丢失，故另设倒挂深度调节项</dd>
       </dl>
       <div class="fg-formula"><b>计算公式</b>　s_i = scale(价格_i ÷ 成本线_i, 0.85, 1.05)；score = min(s_i) 覆盖 7 环节；★倒挂深度调节项：inversion_depth = 1 − min(价格/成本)，对时机轴总分施加 Δ = −(inversion_depth − 0.15) × 10（上限 −8 分）</div>
       
       
       <div class="fg-threshold"><b>判定阈值</b>　组件价格站上完全成本（约 0.82-0.93 元/W）为盈利修复前提；任一环节价格/成本 &lt; 0.85 即为深度倒挂，触发调节扣分</div>
-      <div class="fg-threshold"><b>口径说明</b>　★装备（设备）不纳入本因子：设备不是组件成本的一部分，其景气由产能扩张意愿驱动（扩产期订单好、出清期订单差），属先行指标而非成本指标，语义与「价格/成本」不匹配；设备景气更适合放在 F1（产能退出）的辅助判据。★v2 修正：原版四段全倒挂时评分一律为 0，丢失「倒挂 5%」与「倒挂 30%」的差别；现由倒挂深度调节项承载，落在时机轴（倒挂越深 → 现金流崩溃越近 → 对当下买入越不利）</div>
+      <div class="fg-threshold"><b>口径说明</b>　★装备（设备）不纳入本因子：设备不是组件成本的一部分，其景气由产能扩张意愿驱动（扩产期订单好、出清期订单差），属先行指标而非成本指标，语义与「价格/成本」不匹配；设备景气更适合放在 F1（产能退出）的辅助判据。倒挂深浅的差异由倒挂深度调节项承载，落在时机轴（倒挂越深 → 现金流崩溃越近 → 对当下买入越不利）</div>
     </div>
   </div>
   <div class="factor-group">
@@ -2218,11 +2235,13 @@ body {
       
       
       <div class="fg-threshold"><b>判定阈值</b>　供需比 ≤ 1.3 为新均衡达成；≥ 2.0 为严重过剩（当前 2.42:1）</div>
-      <div class="fg-threshold"><b>口径说明</b>　★v2 权重 7.2 → 10.0（时机轴内占比 18% → 25%）：供需比是判断「出清够不够」的唯一终局判据（其他均为过程指标），且天然是未来敏感型 —— 随出清推进持续改善，正是复苏进程监控的核心读数。老丁指出其在「复苏进程监控中会有一定敏感性」，认同并上调。</div>
+      <div class="fg-threshold"><b>口径说明</b>　供需比是判断「出清够不够」的唯一终局判据（其他均为过程指标），且天然是未来敏感型 —— 随出清推进持续改善，是复苏进程监控的核心读数；时机轴内占比 25%。</div>
     </div>
   </div>
 </div>
-<div class="section-label">监控频率建议 · Cadence</div>
+</details>
+<details class="collapse">
+<summary><span class="section-label">监控频率建议 · Cadence</span></summary>
 <div class="card">
   <div class="two-col">
     <div>
@@ -2252,6 +2271,7 @@ body {
     </div>
   </div>
 </div>
+</details>
 <div class="section-label">财务与信用面板 · Credit Panel</div>
 <div class="card">
   <div class="f-table-wrap">
@@ -2611,7 +2631,7 @@ body {
     因子权重、阈值与分类规则均可配置，随行业阶段演进调整。
   </p>
   <p class="disclaimer">
-    数据截至 2026-11-08，评分生成于 2026-11-08T22:47:49。
+    数据截至 2026-11-08，评分生成于 2026-11-08T23:02:35。
     本报告为个人研究记录，不构成投资建议。市场有风险，决策需谨慎。
     评分模型输出的是结构化信号，不替代独立判断。
   </p>
