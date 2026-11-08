@@ -301,6 +301,116 @@ body {
   line-height: 1.6; word-break: break-word;
 }
 
+/* 跨行业校准表 */
+.ci-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.ci-table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-top: 10px; }
+@media (max-width: 900px) {
+  .ci-table { min-width: 940px; }
+  .ci-table .ci-key { font-size: 13px; }
+}
+.ci-table th {
+  text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--border);
+  font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--text-secondary); font-weight: 500; white-space: nowrap;
+}
+.ci-table td { padding: 11px 10px; border-bottom: 1px solid #e5e1dc; vertical-align: top; line-height: 1.65; }
+.ci-table tr:last-child td { border-bottom: none; }
+.ci-table .ci-name { font-weight: 600; font-size: 14.5px; white-space: nowrap; }
+.ci-table .ci-cycle { font-size: 12.5px; color: var(--text-muted); }
+.ci-table .ci-key {
+  display: block; margin-top: 5px; font-size: 12.5px; color: var(--text-secondary);
+  background: #fff; border-left: 2px solid var(--accent); padding: 5px 9px; border-radius: 0 4px 4px 0;
+}
+
+/* 政府拉锯 */
+.tug { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 12px; }
+.tug-side { border-radius: 9px; padding: 16px 18px; border: 1px solid var(--border); background: #fff; }
+.tug-side.rescue { border-top: 3px solid var(--warn); }
+.tug-side.governance { border-top: 3px solid var(--accent-2); }
+.tug-label { font-size: 15.5px; font-weight: 700; margin-bottom: 3px; }
+.tug-dir { font-family: var(--mono); font-size: 12.5px; margin-bottom: 10px; }
+.tug-motive { font-size: 13px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+.tug-list { margin: 0; padding-left: 18px; }
+.tug-list li { font-size: 13px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 3px; }
+.tug-effect {
+  margin-top: 10px; font-size: 13px; padding: 8px 11px; border-radius: 5px; line-height: 1.65;
+  background: #f0ede9; color: var(--text-secondary);
+}
+.tug-formula {
+  margin-top: 14px; font-family: var(--mono); font-size: 12.5px; color: var(--text-secondary);
+  background: #e8e4df; border-radius: 6px; padding: 11px 14px; line-height: 1.75;
+}
+.regime-list { display: flex; flex-direction: column; gap: 9px; margin-top: 12px; }
+.regime-row {
+  display: grid; grid-template-columns: 168px 1fr 96px; gap: 12px; align-items: center;
+  background: #fff; border: 1px solid var(--border); border-radius: 7px; padding: 11px 14px;
+}
+.regime-name { font-size: 14px; font-weight: 600; }
+.regime-desc { font-size: 12.5px; color: var(--text-muted); line-height: 1.6; }
+.regime-days { font-family: var(--mono); font-size: 13.5px; text-align: right; }
+.regime-active { box-shadow: inset 3px 0 0 var(--accent-2); background: #fbfaf9; }
+
+/* 情景卡 */
+.scen-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 14px; }
+.scen-card { border-radius: 10px; padding: 18px 20px; border: 1px solid var(--border); background: #fff; position: relative; overflow: hidden; }
+.scen-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
+.scen-card.bull::before { background: #c0392b; }
+.scen-card.base::before { background: #76819C; }
+.scen-card.bear::before { background: #4a7a5a; }
+.scen-card.bull { background: #fdf9f7; }
+.scen-card.bear { background: #f7faf8; }
+.scen-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+.scen-label { font-size: 16px; font-weight: 700; }
+.scen-prob { font-family: var(--mono); font-size: 20px; font-weight: 500; }
+.scen-bull .scen-prob { color: #c0392b; }
+.scen-base .scen-prob { color: #76819C; }
+.scen-bear .scen-prob { color: #4a7a5a; }
+.scen-weight { font-family: var(--mono); font-size: 12.5px; color: var(--text-muted); margin-bottom: 8px; }
+.scen-headline { font-size: 14.5px; font-weight: 600; line-height: 1.55; margin-bottom: 9px; }
+.scen-window {
+  font-family: var(--mono); font-size: 12.5px; color: var(--text-secondary);
+  background: rgba(255,255,255,.75); border: 1px solid var(--border); border-radius: 5px;
+  padding: 6px 10px; margin-bottom: 10px;
+}
+.scen-narr { font-size: 13px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 11px; }
+.scen-block { margin-bottom: 11px; }
+.scen-block .sb-label {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-muted); margin-bottom: 5px;
+}
+.scen-trigger { margin: 0; padding-left: 16px; }
+.scen-trigger li { font-size: 12.5px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 2px; }
+.scen-do {
+  font-size: 12.5px; line-height: 1.7; padding: 9px 11px; border-radius: 5px;
+  background: rgba(255,255,255,.8); border-left: 2px solid var(--accent-2); color: var(--text-secondary);
+}
+.scen-emotion {
+  margin-top: 11px; font-size: 13px; font-style: italic; line-height: 1.6;
+  color: var(--text-secondary); padding-top: 9px; border-top: 1px dashed var(--border);
+}
+
+/* 阶段并行 */
+.parallel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 12px; }
+.par-card { background: #fff; border: 1px solid var(--border); border-radius: 9px; padding: 16px 18px; }
+.par-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+.par-role { font-family: var(--mono); font-size: 12px; color: var(--text-muted); margin-bottom: 10px; }
+.par-days { font-family: var(--mono); font-size: 26px; font-weight: 500; margin-bottom: 4px; }
+.par-days-label { font-size: 12.5px; color: var(--text-muted); margin-bottom: 11px; }
+.par-list { margin: 0; padding-left: 17px; }
+.par-list li { font-size: 12.5px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 3px; }
+.par-combined {
+  margin-top: 14px; background: #f0ede9; border-radius: 7px; padding: 13px 15px;
+  font-size: 13px; color: var(--text-secondary); line-height: 1.75;
+}
+.par-combined b { color: var(--text); }
+@media (max-width: 900px) {
+  .tug { grid-template-columns: 1fr; }
+  .scen-grid { grid-template-columns: 1fr; }
+  .parallel-grid { grid-template-columns: 1fr; }
+  .regime-row { grid-template-columns: 1fr; gap: 6px; }
+  .regime-days { text-align: left; }
+}
+
 /* 因子分组说明（逐条下钻） */
 .factor-group { margin-top: 26px; }
 .factor-group:first-of-type { margin-top: 0; }
@@ -601,23 +711,6 @@ body {
       </div>
     </div>
   </div>
-  <div class="tl-window">
-    <div class="tl-win">
-      <div class="tw-label">乐观情形</div>
-      <div class="tw-value">2027 年上半年（强标执行 + 玻璃式冷修潮复制到主链）</div>
-      <div class="tw-note"></div>
-    </div>
-    <div class="tl-win">
-      <div class="tw-label">基准情形</div>
-      <div class="tw-value">2027 年中至 2027 年末出现『出清确认 + 价格站上完全成本』的组合信号</div>
-      <div class="tw-note">当前处于阶段 1-2 区间（财务恶化已现、银行收贷初现），对应『观察等待』档位；建仓窗口在阶段 3-4 信号确认后，即 2027 年上半年前后</div>
-    </div>
-    <div class="tl-win">
-      <div class="tw-label">悲观情形</div>
-      <div class="tw-value">2028 年（政府接盘或需求进一步塌方导致出清延后）</div>
-      <div class="tw-note"></div>
-    </div>
-  </div>
   <div class="tl-bench">
     <b>历史周期基准（提前量测算的实证依据）</b>
     <table>
@@ -648,6 +741,302 @@ body {
     </table>
     <div style="margin-top:12px"><b>本轮实证锚点</b>　2026-07 光伏玻璃：冷修6650吨/日、9家完全停产、4家破产重整、在产日熔量从8.3万吨降至7.1万吨（-12%）、库存天数54→45天、价格8.5→10.25元/平（+24%）。从冷修加速到价格修复约 3 个月，从停产到价格修复约 6 个月</div>
     <div style="margin-top:9px"><b>行动窗口</b>　当前处于阶段 1-2 区间（财务恶化已现、银行收贷初现），对应『观察等待』档位；建仓窗口在阶段 3-4 信号确认后，即 2027 年上半年前后</div>
+  </div>
+</div><div class="section-label">跨行业校准 · Cross-Industry Calibration</div>
+<div class="card">
+  <div class="note" style="margin-bottom:16px">
+    <strong>为什么要跨行业：</strong>光伏本轮是「绝对过剩」（名义产能是全球需求 2.4 倍），
+    历史上三轮光伏周期的经验不足以直接外推。这里引入钢铁、煤炭、电解铝、LCD 面板、生猪五个
+    <strong>已完成出清或正在出清</strong>的案例做交叉校准，得到「信号 → 兑现」的普适时滞，
+    用于校准阶段提前量——而非用光伏自己的历史去验证光伏自己的模型。
+  </div>
+  <div class="ci-wrap">
+  <table class="ci-table">
+    <thead>
+      <tr>
+        <th style="width:11%">行业</th>
+        <th style="width:16%">周期</th>
+        <th style="width:15%">底部时长</th>
+        <th style="width:26%">信号 → 价格修复时滞</th>
+        <th style="width:14%">股价领先</th>
+        <th style="width:18%">对本轮的校准启示</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="ci-name">钢铁</span></td>
+        <td><div class="ci-cycle">2016 供给侧改革</div><div class="ci-cycle">政策定调去产能 + 地条钢清理</div></td>
+        <td>约 2 年（产能利用率 2016-03 见底，3 年回 43.8%）</td>
+        <td>政策定调 2015-11 → 股价 2016-04 见顶（5.5 个月）；因『僵尸产能未实质影响供需』指数跌回原点，2016-06 重组公告后重启上涨</td>
+        <td>反复 8 个月（首轮信号失效后二次启动）</td>
+        <td>
+          <span class="ci-key">★ 僵尸产能未实质退出 → 政策信号失效、行情反复。这正是政府介入拉锯的代价</span>
+          <div class="ci-cycle" style="margin-top:6px">→ 本轮光伏最可比：国资接盘/低水平重组若成为主流，等价于『僵尸产能未出清』，需警惕信号反复</div>
+        </td>
+      </tr>
+      <tr>
+        <td><span class="ci-name">煤炭</span></td>
+        <td><div class="ci-cycle">2016 供给侧结构性改革</div><div class="ci-cycle">3-5 年退出产能 5 亿吨目标</div></td>
+        <td>约 2 年（2015 底价格谷底 → 2017 全行业扭亏）</td>
+        <td>政策目标明确后约 12-18 个月价格回稳至 500-600 元/吨良性区间</td>
+        <td>—</td>
+        <td>
+          <span class="ci-key">行政标准 + 市场化倒逼双轮，与本轮『强标 + 银行收贷』结构一致</span>
+          <div class="ci-cycle" style="margin-top:6px">→ 验证『强标 + 收贷』组合的出清耗时约 2 年</div>
+        </td>
+      </tr>
+      <tr>
+        <td><span class="ci-name">电解铝</span></td>
+        <td><div class="ci-cycle">2021 双碳限电</div><div class="ci-cycle">能耗双控 + 产能天花板 4500 万吨</div></td>
+        <td>约 9 个月（2016 政策至今，2021 为高峰）</td>
+        <td>限电升级 2021-05 → 铝价 2021-10 见顶（5 个月）；股价领先铝价见顶（云铝 +189%）</td>
+        <td>股价领先商品价格拐点</td>
+        <td>
+          <span class="ci-key">★ 供给收缩行情启动需看到『壮士断腕』决心；产能天花板（行政约束）是不可逆出清机制</span>
+          <div class="ci-cycle" style="margin-top:6px">→ 本轮『产能天花板/能耗限额』= 光伏版的行政闸门；且复产成本高（电解槽重启 3 个月）→ 与光伏冷修半年重启同构</div>
+        </td>
+      </tr>
+      <tr>
+        <td><span class="ci-name">LCD 面板</span></td>
+        <td><div class="ci-cycle">2022-2024</div><div class="ci-cycle">需求断崖 + 日韩厂商退出</div></td>
+        <td>约 18 个月（2022-10 触底 → 2024 持续上行）</td>
+        <td>价格 2022-10 触底 → 2023-03 七连涨（5 个月）→ LGD 广州卖厂/夏普停产（2024H1）</td>
+        <td>价格底领先盈利修复 3-4 个季度</td>
+        <td>
+          <span class="ci-key">★ 海外产能退出是硬信号；『按需生产』的产能纪律替代了物理退出</span>
+          <div class="ci-cycle" style="margin-top:6px">→ 对应本轮『出口 + 海外产能』维度；印证 5 个月是『价格拐点→价格修复」的典型时滞</div>
+        </td>
+      </tr>
+      <tr>
+        <td><span class="ci-name">生猪</span></td>
+        <td><div class="ci-cycle">2018-2021 非瘟</div><div class="ci-cycle">疫病导致的供给断崖</div></td>
+        <td>4 年（含上行）；去化 13 个月（2018-08 → 2019-09 去化 39.2%）</td>
+        <td>产能去化见底 2019-09 → 猪价高点 2020-08（11 个月）</td>
+        <td>★ 股价在『第一段价格上涨期间反而下跌』——价格已涨但市场不信反转</td>
+        <td>
+          <span class="ci-key">★ 至少 3 次亏损底；猪粮比需到 5 以下才可能触底；下行期约为上行期 2 倍</span>
+          <div class="ci-cycle" style="margin-top:6px">→ 警示：底部可能反复多次，单次信号不足以确认；本轮光伏若 2027 二次探底属正常，不应过早判断失败</div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="about-title" style="margin-top:24px;margin-bottom:10px">跨行业普适规律（用于校准提前量）</div>
+  <div class="stat-list">
+    <div class="stat-row" style="align-items:flex-start;padding:11px 0">
+      <span class="sr-label" style="flex:0 0 30px;font-family:var(--mono);color:var(--accent-4)">01</span>
+      <span style="flex:1">
+        <b style="color:var(--text)">政策信号 → 市场共识存在时滞</b><br>
+        <span style="font-size:12.5px;color:var(--text-muted)">广发证券复盘 2010 限电/2016 供改/2021 双碳三段：市场从『将信将疑』到逐步确认，股价滞后于政策定调</span><br>
+        <span style="font-size:13px;color:var(--text-secondary)"><b>校准值</b>　阶段 1-2 信号 → 市场共识形成，平均 5-6 个月</span>
+      </span>
+    </div>
+    <div class="stat-row" style="align-items:flex-start;padding:11px 0">
+      <span class="sr-label" style="flex:0 0 30px;font-family:var(--mono);color:var(--accent-4)">02</span>
+      <span style="flex:1">
+        <b style="color:var(--text)">股价上涨需要看到直接的『涨价信号』</b><br>
+        <span style="font-size:12.5px;color:var(--text-muted)">即使产量下降，股价对供给收缩也不敏感；需工业品价格拐点或资产周转率提升</span><br>
+        <span style="font-size:13px;color:var(--text-secondary)"><b>校准值</b>　阶段 3-4 信号 → 价格拐点确认，5-6 个月（面板 5 个月、电解铝 5 个月高度一致）</span>
+      </span>
+    </div>
+    <div class="stat-row" style="align-items:flex-start;padding:11px 0">
+      <span class="sr-label" style="flex:0 0 30px;font-family:var(--mono);color:var(--accent-4)">03</span>
+      <span style="flex:1">
+        <b style="color:var(--text)">僵尸产能未实质退出则政策信号失效，行情反复</b><br>
+        <span style="font-size:12.5px;color:var(--text-muted)">钢铁 2016：2016-04 见顶后跌回原点，2016-06 重组公告后第二轮启动，反复 8 个月</span><br>
+        <span style="font-size:13px;color:var(--text-secondary)"><b>校准值</b>　政府介入拉锯若偏救助端，出清确认需额外 +8~12 个月</span>
+      </span>
+    </div>
+    <div class="stat-row" style="align-items:flex-start;padding:11px 0">
+      <span class="sr-label" style="flex:0 0 30px;font-family:var(--mono);color:var(--accent-4)">04</span>
+      <span style="flex:1">
+        <b style="color:var(--text)">终结信号 = 政策退潮 或 需求证伪，且股价下跌领先价格拐点</b><br>
+        <span style="font-size:12.5px;color:var(--text-muted)">2010/2021 两轮供给收缩行情均由『保供稳价』类政策纠偏终结</span><br>
+        <span style="font-size:13px;color:var(--text-secondary)"><b>校准值</b>　本轮风险点：2027 需求若不达预期或政策转向宽松 → 提前量需整体后移</span>
+      </span>
+    </div>
+    <div class="stat-row" style="align-items:flex-start;padding:11px 0">
+      <span class="sr-label" style="flex:0 0 30px;font-family:var(--mono);color:var(--accent-4)">05</span>
+      <span style="flex:1">
+        <b style="color:var(--text)">底部可能多次（至少 2-3 次），单次信号不足以确认</b><br>
+        <span style="font-size:12.5px;color:var(--text-muted)">生猪前三轮周期底部均出现 2-3 个『亏损底』；猪粮比需 &lt;5 才可能触底</span><br>
+        <span style="font-size:13px;color:var(--text-secondary)"><b>校准值</b>　出清确认应以『连续两次财报节点同向』为准，不采信单次</span>
+      </span>
+    </div>
+  </div>
+</div><div class="section-label">政府介入 · 双向拉锯模型</div>
+<div class="card">
+  <div class="note" style="margin-bottom:16px">
+    <strong>核心修正：</strong>政府介入的目的和方向是<strong>双向</strong>的——
+    一方面有投资介入与地方 GDP、税收、就业的考量（<span style="color:var(--warn)">救助端</span>）；
+    另一方面有上位下达的治理要求（防止进一步过剩产能，<span style="color:var(--accent-2)">治理端</span>）。
+    这两端形成<strong>拉扯</strong>，在某个评估时点要看哪一种成为主流。
+    宏观事件的主基调可用来微调两端权重。
+  </div>
+  <div class="tug">
+      <div class="tug-side rescue">
+        <div class="tug-label">救助端（延后出清）</div>
+        <div class="tug-dir" style="color:#d68910">利空 · 出清时钟延后</div>
+        <div class="tug-motive"><b>动机</b>　稳就业、保税收、避免地方GDP失速、避免系统性金融风险</div>
+        <ul class="tug-list"><li>国资入股/控股</li><li>纾困基金设立</li><li>政府接盘资产</li><li>债务展期</li><li>以股抵债</li><li>低水平重组</li><li>保住就业与税收</li></ul>
+        <div class="tug-effect"><b>净效应</b>　产能未退出，僵尸化 → 出清时钟延后</div>
+      </div>
+      <div class="tug-side governance">
+        <div class="tug-label">治理端（加速出清）</div>
+        <div class="tug-dir" style="color:#76819C">利好 · 出清时钟加速</div>
+        <div class="tug-motive"><b>动机</b>　中央治理要求、防止无序扩产、供给侧改革经验、稳物价</div>
+        <ul class="tug-list"><li>强制性能效/能耗国标</li><li>行业规范条件修订</li><li>产能置换/新增严控</li><li>价格与成本监管执法</li><li>反垄断与反内卷执法</li></ul>
+        <div class="tug-effect"><b>净效应</b>　落后产能被动出局 → 出清时钟加速</div>
+      </div>
+  </div>
+  <div class="about-title" style="margin-top:22px;margin-bottom:8px">宏观基调倾斜 · Macro Tilt</div>
+  <div class="regime-list">
+    <div class="regime-row">
+      <span class="regime-name">宽松/稳增长优先</span>
+      <span class="regime-desc">货币政策宽松、专项债发力、稳就业压力大、地产企稳诉求强<br>
+        <span style="color:var(--text-secondary)">倾斜：救助端 +20pct　地方政府保就业保税收动机强，出清易被延后</span></span>
+      <span class="regime-days">+60 天（延后）</span>
+    </div>
+    <div class="regime-row">
+      <span class="regime-name">中性</span>
+      <span class="regime-desc">政策常规运行，无强刺激亦无强收紧<br>
+        <span style="color:var(--text-secondary)">倾斜：持平　按已观测事件净值计</span></span>
+      <span class="regime-days">0 天</span>
+    </div>
+    <div class="regime-row">
+      <span class="regime-name">紧/治理优先</span>
+      <span class="regime-desc">物价目标约束强、能耗双控加码、中央稳物价压产能、反内卷执法持续<br>
+        <span style="color:var(--text-secondary)">倾斜：治理端 +20pct　上位治理要求压倒地方保就业诉求</span></span>
+      <span class="regime-days">−45 天（加速）</span>
+    </div>
+  </div>
+  <div class="tug-formula">
+    <b>净效应公式</b>　阶段净效应天数 = 救助端信号权重和 × 拖延系数 + 治理端信号权重和 × 加速系数 + 宏观倾斜调整天数<br>
+    救助端系数：+45 天/权重点（救助 → 延后）　|
+    治理端系数：−30 天/权重点（治理 → 加速）　|
+    宏观倾斜：±45~60 天（见 macro_tilt.regimes）<br>
+    <span style="color:var(--text-muted)">用于修正阶段 1-4 的实际完成时间 → 推导出出清确认日与建仓窗口</span>
+  </div>
+  <div class="note" style="margin-top:16px">
+    <strong>当前评估（2026-11-08）</strong><br>
+    救助端权重：12（2026 年 9 起并购重整：TCL中环控股一道新能、通威收购丽豪、弘元绿能接手无锡尚德重整、ST棒杰以股抵债等）<br>
+    治理端权重：18（3 项强制国标 2027-01-01 执行 + 反内卷执法 + 规范条件修订在途）<br>
+    宏观基调：中性 → 治理端略占优（政策连续性看反内卷攻坚，但地方救助动机仍在）<br>
+    净效应：救助 12×45=540 天，治理 18×(−30)=−540 天，宏观 0 → 净 0 天；但结构上两端同时施力，实际是『拉锯态』而非单向<br>
+    <br><b>含义</b>　★ 拉锯态的含义：出清时钟被双向拉扯，实际完成时间会晚于单边推进的直觉估计；需以『治理端信号是否转为实际核减公告』作为拉锯结束的判据
+    <br><b>观察判据</b>　治理端从『文件发布』转为『实际核减产能公告』= 拉锯结束、出清加速；救助端从『重组公告』转为『产线关停公告』= 伪出清、时钟重启
+  </div>
+</div><div class="section-label">阶段 3 与阶段 4 的时序关系 · Parallel Model</div>
+<div class="card">
+  <div class="note" style="margin-bottom:14px">
+    <strong>结论：</strong>两者<strong>不是严格先后</strong>，而是「并行进程 + 净效应天数」关系。
+    各自独立地对同一条出清时间轴施加拖延/加速天数。
+  </div>
+  <div class="stat-list" style="margin-bottom:16px">
+    <div class="stat-row" style="align-items:flex-start;padding:9px 0">
+      <span class="sr-label" style="flex:1;color:var(--text-secondary)">现实案例：钢铁 2016 —— 政策定调（阶段3）与武钢宝钢重组（阶段4）相隔 4 个月，但重组同时是政策执行的一部分，两者互为因果</span>
+    </div>
+    <div class="stat-row" style="align-items:flex-start;padding:9px 0">
+      <span class="sr-label" style="flex:1;color:var(--text-secondary)">现实案例：光伏玻璃 2026 —— 冷修停产（阶段4）与地方国资接盘/产线出售（阶段3救助端）同期发生，同一环节上两端同时作用</span>
+    </div>
+    <div class="stat-row" style="align-items:flex-start;padding:9px 0">
+      <span class="sr-label" style="flex:1;color:var(--text-secondary)">现实案例：*ST亿晶 2026 —— 预重整协议（阶段4）与地方国资/产业方接盘（阶段3）实为同一事件的两个侧面</span>
+    </div>
+  </div>
+  <div class="parallel-grid">
+    <div class="par-card">
+      <div class="par-name">阶段 3 · 政府介入</div>
+      <div class="par-role">净效应天数</div>
+      <div class="par-days" style="color:#7f8c8d">0</div>
+      <div class="par-days-label">0（拉锯态：救助 540 天 与 治理 −540 天对冲）</div>
+      <ul class="par-list">
+        <li>= 救助权重×45 + 治理权重×(−30) + 宏观倾斜（±45~60）</li>
+      </ul>
+    </div>
+    <div class="par-card">
+      <div class="par-name">阶段 4 · 企业互动</div>
+      <div class="par-role">净效应天数</div>
+      <div class="par-days" style="color:#d68910">−180 天</div>
+      <div class="par-days-label">−180 天（2026 年 9 起并购重整中，判定为真退出的约 3 起、伪退出约 6 起 → 净拖延）</div>
+      <ul class="par-list">
+        <li>= 真退出事件权重×(−60) + 低水平重组权重×(+50)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="par-combined">
+    <b>合成</b>　出清确认日 = 基准日 + Σ(各阶段基准提前量) − 阶段3净效应 − 阶段4净效应<br>
+    <b>收敛判据</b>　★ 收敛判据 = 阶段3 净效应与阶段4 净效应符号一致且绝对值均 &lt; 30 天 → 说明两端已不再互相抵消，出清进入线性推进
+  </div>
+  <div class="note" style="margin-top:14px">
+    <strong>当前推论</strong>　在阶段3 拉锯未收敛前，阶段4 的真实退出进展会被系统性掩盖 —— 这解释了为何『光伏玻璃已实质出清』而『主链看起来没动静』
+  </div>
+</div><div class="section-label">情景推演 · Scenarios</div>
+<div class="card">
+  <div class="note" style="margin-bottom:4px">
+    三种情形各有<b>概率、触发条件、时间窗、该做什么</b>。概率为主观赋值，
+    随阶段推进与新证据滚动修正。
+  </div>
+  <div class="scen-grid">
+    <div class="scen-card bull">
+      <div class="scen-head">
+        <span class="scen-label">乐观情形</span>
+        <span class="scen-prob">25%</span>
+      </div>
+      <div class="scen-weight">需要一点运气</div>
+      <div class="scen-headline">玻璃剧本复制到主链 —— 2027 上半年价格与开工率双升</div>
+      <div class="scen-window">时间窗　2027 年上半年</div>
+      <div class="scen-narr">玻璃的冷修潮蔓延至硅料/硅片/电池：窑炉式刚性（冷修重启需半年）叠加强标一次性出局，产能退出速度超预期。价格自下而上修复，龙头先修复、尾部先出清。类比 2021 电解铝（限电升级后 5 个月价格见顶）与 2024 LCD（日韩退厂后 3 个季度盈利爆发）。</div>
+      <div class="scen-block">
+        <div class="sb-label">触发条件</div>
+        <ul class="scen-trigger"><li>主链出现与光伏玻璃同量级的冷修/停产潮</li><li>治理端信号从文件转为实际核减公告</li><li>地方国资接盘案例明显减少</li><li>海外产能开始实质退出</li></ul>
+      </div>
+      <div class="scen-block">
+        <div class="sb-label">该做什么</div>
+        <div class="scen-do">★ 提前布局窗口 —— 龙头在价格与开工率同步上行确认时介入，可至 50% 仓位</div>
+      </div>
+      <div class="scen-emotion">终于等到的那口气 —— 但别赌成常态</div>
+    </div>
+    <div class="scen-card base">
+      <div class="scen-head">
+        <span class="scen-label">基准情形</span>
+        <span class="scen-prob">55%</span>
+      </div>
+      <div class="scen-weight">最可能</div>
+      <div class="scen-headline">磨底延续，拉锯渐次收敛 —— 出清在 2027 年中确认</div>
+      <div class="scen-window">时间窗　2027 年中至 2027 年末</div>
+      <div class="scen-narr">政府救助端与治理端继续对冲半年以上，主链产能退出零散推进（年化 30-50GW），强标 2027-01 执行后落后产能分批出局。价格先于产能修复：组件价格 2027H1 站上完全成本线，但幅度温和。</div>
+      <div class="scen-block">
+        <div class="sb-label">触发条件</div>
+        <ul class="scen-trigger"><li>3 项强制国标按期执行并出现实际核减公告</li><li>银行授信收紧范围扩大至二三线厂商</li><li>组件价格站上完全成本线 0.82 元/W</li><li>季度开工率回升至 50% 以上</li></ul>
+      </div>
+      <div class="scen-block">
+        <div class="sb-label">该做什么</div>
+        <div class="scen-do">观察仓为主，等价格确认信号；可在价格站上成本线后以 20-30% 试探</div>
+      </div>
+      <div class="scen-emotion">不痛不痒的半年 —— 该来的会来，但别指望V型</div>
+    </div>
+    <div class="scen-card bear">
+      <div class="scen-head">
+        <span class="scen-label">悲观情形</span>
+        <span class="scen-prob">20%</span>
+      </div>
+      <div class="scen-weight">尾部风险</div>
+      <div class="scen-headline">救助端全面占优 —— 2028 年仍在纠缠</div>
+      <div class="scen-window">时间窗　2028 年，甚至更久</div>
+      <div class="scen-narr">宏观转向稳增长、地方政府密集接盘、债务展期成规模；叠加全球需求不及预期（IEA/IEA 2026 已下调至 612GW）。出清时钟被拖长，僵尸产能固化，2027 出现二次探底。类比钢铁 2016：4 月见顶后跌回原点，行情反复 8 个月。</div>
+      <div class="scen-block">
+        <div class="sb-label">触发条件</div>
+        <ul class="scen-trigger"><li>政府/国资接盘成为重组主流模式</li><li>需求预测连续下调至 500GW 以下</li><li>组件价格持续低于现金成本线</li><li>重整投资人以地方国资为主</li></ul>
+      </div>
+      <div class="scen-block">
+        <div class="sb-label">该做什么</div>
+        <div class="scen-do">规避或仅保留观察仓；不参与『低估值抄底』—— 无出清确认的低估值是价值陷阱</div>
+      </div>
+      <div class="scen-emotion">最怕的那种 —— 不是跌，是时间被偷走</div>
+    </div>
+  </div>
+  <div class="note" style="margin-top:18px">
+    <strong>行动窗口</strong>　当前处于阶段 1-2 区间（财务恶化已现、银行收贷初现），对应『观察等待』档位；建仓窗口在阶段 3-4 信号确认后，即 2027 年上半年前后
   </div>
 </div>
 <div class="section-label">口径说明 · Specifications</div>
@@ -1822,7 +2211,7 @@ body {
     因子权重、阈值与分类规则均可配置，随行业阶段演进调整。
   </p>
   <p class="disclaimer">
-    数据截至 2026-11-08，评分生成于 2026-11-08T10:55:25。
+    数据截至 2026-11-08，评分生成于 2026-11-08T11:29:11。
     本报告为个人研究记录，不构成投资建议。市场有风险，决策需谨慎。
     评分模型输出的是结构化信号，不替代独立判断。
   </p>
