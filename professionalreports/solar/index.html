@@ -35,18 +35,19 @@
   --serif: 'Noto Serif SC', Georgia, serif;
   --mono: 'Roboto Mono', monospace;
 
-  /* 字号阶梯 — 参照《中国储能市场头部玩家调研》调校，保证阅读舒适度
-     层级：标题 42 / 章节 27 / 小节 19 / 正文 16 / 表格 15.5 / 表头 12.5 / 辅助 13.5 / 最小标注 11 */
+  /* 字号阶梯 — 参照《中国储能市场头部玩家调研》调校，并按 iPad 阅读场景整体上浮一档
+     层级：主标题 42 / 章节 26 / 小节 19 / 正文 17 / 表格 16.5 / 表头 13.5 / 辅助 13.5 / 最小标注 12
+     ★ 下限 12px —— iPad 屏小、阅读距离近，11px 在该场景下偏小 */
   --fs-hero: 42px;
-  --fs-section: 20px;
-  --fs-sub: 17px;
-  --fs-body: 15px;
-  --fs-table: 14px;
-  --fs-table-head: 12px;
-  --fs-meta: 12px;
-  --fs-mini: 11px;
-  --lh-body: 1.75;
-  --lh-tight: 1.6;
+  --fs-section: 26px;
+  --fs-sub: 19px;
+  --fs-body: 17px;
+  --fs-table: 16.5px;
+  --fs-table-head: 13.5px;
+  --fs-meta: 13.5px;
+  --fs-mini: 12px;
+  --lh-body: 1.8;
+  --lh-tight: 1.65;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -71,7 +72,7 @@ body {
 }
 .site-name { font-size: 18.5px; font-weight: 600; color: var(--text-on-dark); line-height: 1.2; }
 .site-name-en {
-  font-family: var(--mono); font-size: 11px; font-weight: 400; color: var(--text-on-dark-muted);
+  font-family: var(--mono); font-size: 12px; font-weight: 400; color: var(--text-on-dark-muted);
   letter-spacing: .12em; text-transform: uppercase; display: block; margin-top: 1px;
 }
 .site-nav { display: flex; gap: 20px; align-items: center; }
@@ -101,7 +102,7 @@ body {
 }
 .page-hero-inner { max-width: 680px; margin: 0 auto; position: relative; z-index: 1; }
 .page-hero-eyebrow {
-  font-family: var(--mono); font-size: 12.5px; letter-spacing: .2em; text-transform: uppercase;
+  font-family: var(--mono); font-size: 13.5px; letter-spacing: .2em; text-transform: uppercase;
   color: var(--text-on-dark-muted); margin-bottom: 10px;
 }
 .page-hero-title {
@@ -109,13 +110,13 @@ body {
   font-family: var(--serif); line-height: 1.2; margin-bottom: 12px;
 }
 .page-hero-desc {
-  font-size: 16px; color: var(--text-on-dark-muted); line-height: 1.8; font-weight: 300;
+  font-size: 17px; color: var(--text-on-dark-muted); line-height: 1.8; font-weight: 300;
   max-width: 560px; margin: 0 auto;
 }
 
 .main { flex: 1; max-width: 1000px; margin: 0 auto; padding: 40px 24px 60px; width: 100%; }
 .section-label {
-  font-family: var(--mono); font-size: 12.5px; letter-spacing: .2em; text-transform: uppercase;
+  font-family: var(--mono); font-size: 15px; letter-spacing: .2em; text-transform: uppercase;
   color: var(--text-secondary); margin-bottom: 22px; display: flex; align-items: center; gap: 10px;
 }
 .section-label::before {
@@ -141,31 +142,31 @@ body {
   height: 9px; background: #e2ded9; border-radius: 5px; margin-top: 20px; overflow: hidden;
 }
 .gauge-fill { height: 100%; border-radius: 5px; transition: width .6s; }
-.gauge-caption { font-size: 14px; color: var(--text-secondary); margin-top: 12px; }
+.gauge-caption { font-size: 15px; color: var(--text-secondary); margin-top: 12px; }
 .verdict {
   display: inline-block; margin-top: 16px; padding: 9px 22px; border-radius: 6px;
   font-size: 17px; font-weight: 700; letter-spacing: .04em;
 }
-.verdict-note { font-size: 13.5px; color: var(--text-secondary); margin-top: 12px; line-height: 1.7; }
+.verdict-note { font-size: 15px; color: var(--text-secondary); margin-top: 12px; line-height: 1.7; }
 .lead-box {
   border-left: 3px solid var(--accent-2); padding: 6px 0 6px 18px; margin-bottom: 18px;
 }
 .lead-box .lead-title {
-  font-family: var(--mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
+  font-family: var(--mono); font-size: 13px; letter-spacing: .12em; text-transform: uppercase;
   color: var(--text-secondary); margin-bottom: 8px;
 }
 .lead-box .lead-val { font-family: var(--mono); font-size: 30px; font-weight: 500; }
-.lead-box .lead-note { font-size: 13px; color: var(--text-secondary); margin-top: 6px; line-height: 1.7; }
+.lead-box .lead-note { font-size: 14px; color: var(--text-secondary); margin-top: 6px; line-height: 1.7; }
 .mini-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 4px; }
 .mini-stat {
   background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px;
 }
 .mini-stat .ms-label {
-  font-size: 12px; color: var(--text-secondary); margin-bottom: 6px;
+  font-size: 13px; color: var(--text-secondary); margin-bottom: 6px;
   font-family: var(--mono); letter-spacing: .04em;
 }
 .mini-stat .ms-value { font-family: var(--mono); font-size: 18px; font-weight: 500; }
-.mini-stat .ms-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; line-height: 1.5; }
+.mini-stat .ms-sub { font-size: 13px; color: var(--text-muted); margin-top: 4px; line-height: 1.5; }
 
 /* 因子表 */
 .f-table { width: 100%; border-collapse: collapse; font-size: var(--fs-table); }
@@ -177,17 +178,27 @@ body {
 .f-table td { padding: 13px 10px; border-bottom: 1px solid #e5e1dc; vertical-align: top; line-height: 1.7; }
 .f-table tr:last-child td { border-bottom: none; }
 .f-table tr:hover td { background: rgba(255,255,255,.55); }
-.f-id { font-family: var(--mono); color: var(--text-secondary); font-size: 12px; }
-.f-name { font-weight: 600; font-size: 15px; }
+.f-id { font-family: var(--mono); color: var(--text-secondary); font-size: 13px; }
+.f-name { font-weight: 600; font-size: 17px; line-height: 1.45; }
+.f-table td:first-child { min-width: 168px; }
+/* 观测对象：窄屏下不逐字换行 */
+.f-table td:nth-child(3) { white-space: nowrap; }
+.f-table td:nth-child(3) span { font-size: 12.5px; }
+/* 窄屏（iPad 竖屏等）：表格横向滚动而非挤压 */
+.f-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+@media (max-width: 900px) {
+  .f-table { min-width: 860px; }
+  .f-table td:first-child { min-width: 200px; }
+}
 .f-name .lead-flag {
   display: inline-block; margin-left: 8px; padding: 2px 7px; border-radius: 3px;
-  font-family: var(--mono); font-size: 11px; letter-spacing: .06em;
+  font-family: var(--mono); font-size: 12px; letter-spacing: .06em;
   background: var(--accent-2-light); color: #3f4a63; font-weight: 600;
 }
-.f-group { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
-.f-val { font-size: 13.5px; color: var(--text-secondary); margin-top: 5px; line-height: 1.65; }
-.f-rat { font-size: 13px; color: var(--text-secondary); margin-top: 6px; max-width: 340px; line-height: 1.7; }
-.freq { font-family: var(--mono); font-size: 12px; color: var(--text-secondary); white-space: nowrap; }
+.f-group { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+.f-val { font-size: 15px; color: var(--text-secondary); margin-top: 5px; line-height: 1.65; }
+.f-rat { font-size: 15px; color: var(--text-secondary); margin-top: 6px; max-width: 340px; line-height: 1.7; }
+.freq { font-family: var(--mono); font-size: 13px; color: var(--text-secondary); white-space: nowrap; }
 .score-cell { white-space: nowrap; text-align: right; }
 .score-num { font-family: var(--mono); font-size: 17px; font-weight: 500; }
 .score-bar {
@@ -206,24 +217,24 @@ body {
 .axis-card.progress { border-top: 3px solid var(--accent-2); }
 .axis-card.timing { border-top: 3px solid var(--accent); }
 .axis-name {
-  font-family: var(--mono); font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase;
+  font-family: var(--mono); font-size: 12.5px; letter-spacing: .12em; text-transform: uppercase;
   color: var(--text-secondary); margin-bottom: 4px;
 }
-.axis-q { font-size: 15px; font-weight: 600; margin-bottom: 14px; }
+.axis-q { font-size: 17px; font-weight: 600; margin-bottom: 14px; }
 .axis-score-row { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; }
 .axis-score { font-family: var(--mono); font-size: 44px; font-weight: 500; line-height: 1; }
 .axis-act {
-  padding: 5px 14px; border-radius: 5px; font-size: 14px; font-weight: 600;
+  padding: 5px 14px; border-radius: 5px; font-size: 15.5px; font-weight: 600;
   border: 1px solid transparent;
 }
-.axis-desc { font-size: 12.5px; color: var(--text-secondary); line-height: 1.65; margin-top: 8px; }
-.axis-factors { font-size: 11.5px; color: var(--text-muted); margin-top: 10px; }
+.axis-desc { font-size: 14.5px; color: var(--text-secondary); line-height: 1.65; margin-top: 8px; }
+.axis-factors { font-size: 12.5px; color: var(--text-muted); margin-top: 10px; }
 .axis-formula {
-  margin-top: 10px; font-size: 12px; color: var(--text-secondary);
+  margin-top: 10px; font-size: 13.5px; color: var(--text-secondary);
   background: #f0ede9; border-radius: 5px; padding: 8px 11px; line-height: 1.6;
 }
 .matrix-note {
-  font-size: 13px; color: var(--text-secondary); background: #fff;
+  font-size: 15px; color: var(--text-secondary); background: #fff;
   border-left: 3px solid var(--accent-2); padding: 13px 16px; border-radius: 0 6px 6px 0; line-height: 1.75;
 }
 
@@ -240,19 +251,19 @@ body {
 }
 .tl-item.is-current::before { background: var(--accent-2); box-shadow: 0 0 0 4px var(--accent-2-light); }
 .tl-lead {
-  font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--accent-4);
+  font-family: var(--mono); font-size: 14px; font-weight: 600; color: var(--accent-4);
   text-align: right; padding-top: 2px;
 }
-.tl-lead .tl-unit { display: block; font-size: 11px; color: var(--text-muted); font-weight: 400; }
-.tl-stage { font-size: 16px; font-weight: 600; margin-bottom: 3px; }
+.tl-lead .tl-unit { display: block; font-size: 12px; color: var(--text-muted); font-weight: 400; }
+.tl-stage { font-size: 18px; font-weight: 600; margin-bottom: 3px; }
 .tl-stage .tl-current {
   display: inline-block; margin-left: 8px; padding: 2px 8px; border-radius: 3px;
-  font-size: 11px; background: var(--accent-2-light); color: #3f4a63; font-weight: 600;
+  font-size: 12px; background: var(--accent-2-light); color: #3f4a63; font-weight: 600;
 }
-.tl-conf { font-family: var(--mono); font-size: 11.5px; color: var(--text-muted); margin-bottom: 7px; }
-.tl-obs { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+.tl-conf { font-family: var(--mono); font-size: 12.5px; color: var(--text-muted); margin-bottom: 7px; }
+.tl-obs { font-size: 15px; color: var(--text-secondary); line-height: 1.7; }
 .tl-hist {
-  font-size: 12px; color: var(--text-muted); margin-top: 7px; padding-top: 7px;
+  font-size: 13.5px; color: var(--text-muted); margin-top: 7px; padding-top: 7px;
   border-top: 1px dashed var(--border); line-height: 1.65;
 }
 .tl-window {
@@ -261,17 +272,17 @@ body {
 .tl-win {
   background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 13px 15px;
 }
-.tl-win .tw-label { font-size: 12px; color: var(--text-secondary); margin-bottom: 5px; }
-.tl-win .tw-value { font-size: 14.5px; font-weight: 600; margin-bottom: 5px; }
-.tl-win .tw-note { font-size: 11.5px; color: var(--text-muted); line-height: 1.6; }
+.tl-win .tw-label { font-size: 13.5px; color: var(--text-secondary); margin-bottom: 5px; }
+.tl-win .tw-value { font-size: 16px; font-weight: 600; margin-bottom: 5px; }
+.tl-win .tw-note { font-size: 12.5px; color: var(--text-muted); line-height: 1.6; }
 .tl-bench {
-  margin-top: 16px; font-size: 12.5px; color: var(--text-secondary);
+  margin-top: 16px; font-size: 14px; color: var(--text-secondary);
   background: #f0ede9; border-radius: 7px; padding: 14px 16px; line-height: 1.75;
 }
-.tl-bench table { width: 100%; border-collapse: collapse; margin-top: 9px; font-size: 12px; }
+.tl-bench table { width: 100%; border-collapse: collapse; margin-top: 9px; font-size: 13.5px; }
 .tl-bench th {
   text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border);
-  font-family: var(--mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase;
+  font-family: var(--mono); font-size: 12.5px; letter-spacing: .06em; text-transform: uppercase;
   color: var(--text-secondary); font-weight: 500;
 }
 .tl-bench td { padding: 8px; border-bottom: 1px solid #e0dcd7; vertical-align: top; line-height: 1.6; }
@@ -281,11 +292,11 @@ body {
 .spec-item {
   background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px;
 }
-.spec-q { font-size: 14.5px; font-weight: 600; margin-bottom: 8px; }
-.spec-a { font-size: 13.5px; color: var(--text-secondary); line-height: 1.75; }
+.spec-q { font-size: 16.5px; font-weight: 600; margin-bottom: 8px; }
+.spec-a { font-size: 15.5px; color: var(--text-secondary); line-height: 1.75; }
 .spec-a b { color: var(--text); }
 .spec-formula {
-  font-family: var(--mono); font-size: 11.5px; color: var(--text-secondary);
+  font-family: var(--mono); font-size: 13px; color: var(--text-secondary);
   background: #f0ede9; border-radius: 4px; padding: 7px 10px; margin-top: 8px;
   line-height: 1.6; word-break: break-word;
 }
@@ -299,11 +310,11 @@ body {
   padding-bottom: 9px; margin-bottom: 4px; border-bottom: 2px solid var(--border);
 }
 .fg-title {
-  font-family: var(--serif); font-size: 17px; font-weight: 700; color: var(--text);
+  font-family: var(--serif); font-size: 19px; font-weight: 700; color: var(--text);
 }
-.fg-count { font-family: var(--mono); font-size: 12px; color: var(--text-muted); }
+.fg-count { font-family: var(--mono); font-size: 13px; color: var(--text-muted); }
 .fg-weight {
-  font-family: var(--mono); font-size: 12px; color: var(--accent-4);
+  font-family: var(--mono); font-size: 13px; color: var(--accent-4);
   background: #fff; border: 1px solid var(--border); border-radius: 4px; padding: 2px 9px;
 }
 .fg-item {
@@ -317,22 +328,22 @@ body {
 .fg-item-head {
   display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 7px;
 }
-.fg-item-name { font-size: 15px; font-weight: 600; }
-.fg-item-meta { font-family: var(--mono); font-size: 12px; color: var(--text-muted); }
+.fg-item-name { font-size: 17px; font-weight: 600; }
+.fg-item-meta { font-family: var(--mono); font-size: 13px; color: var(--text-muted); }
 .fg-rows { display: grid; grid-template-columns: 78px 1fr; gap: 4px 12px; margin-top: 6px; }
 .fg-rows dt {
-  font-family: var(--mono); font-size: 11.5px; color: var(--text-muted);
+  font-family: var(--mono); font-size: 12.5px; color: var(--text-muted);
   letter-spacing: .04em; padding-top: 2px;
 }
-.fg-rows dd { font-size: 13.5px; color: var(--text-secondary); line-height: 1.7; }
+.fg-rows dd { font-size: 15px; color: var(--text-secondary); line-height: 1.7; }
 .fg-formula {
-  margin-top: 8px; font-family: var(--mono); font-size: 11.5px; color: var(--text-secondary);
+  margin-top: 8px; font-family: var(--mono); font-size: 13px; color: var(--text-secondary);
   background: #e8e4df; border-radius: 5px; padding: 8px 11px; line-height: 1.65;
   word-break: break-word;
 }
 .fg-formula b { color: var(--text); letter-spacing: .04em; }
 .fg-threshold {
-  margin-top: 8px; font-size: 12.5px; color: var(--text-muted);
+  margin-top: 8px; font-size: 14px; color: var(--text-muted);
   background: #f0ede9; border-radius: 5px; padding: 7px 11px; line-height: 1.65;
 }
 .fg-threshold b { font-family: var(--mono); color: var(--text-secondary); letter-spacing: .04em; }
@@ -345,13 +356,13 @@ body {
 .ev-item:last-child { border-bottom: none; }
 .ev-badge {
   flex-shrink: 0; width: 72px; text-align: center; padding: 4px 0; border-radius: 4px;
-  font-size: 12px; font-weight: 700; font-family: var(--mono); letter-spacing: .04em;
+  font-size: 13px; font-weight: 700; font-family: var(--mono); letter-spacing: .04em;
 }
-.ev-title { font-size: 14.5px; line-height: 1.65; }
-.ev-meta { font-size: 12px; color: var(--text-muted); margin-top: 5px; font-family: var(--mono); }
+.ev-title { font-size: 16px; line-height: 1.65; }
+.ev-meta { font-size: 13px; color: var(--text-muted); margin-top: 5px; font-family: var(--mono); }
 .ev-tag {
   display: inline-block; margin-left: 8px; padding: 2px 8px; border-radius: 3px;
-  background: #e8e4df; color: var(--text-secondary); font-size: 12px;
+  background: #e8e4df; color: var(--text-secondary); font-size: 13px;
 }
 
 /* 传导链 */
@@ -367,25 +378,25 @@ body {
 }
 .chain-step.is-key::before { background: var(--accent-2); }
 .chain-stage {
-  font-family: var(--mono); font-size: 12.5px; letter-spacing: .06em; text-transform: uppercase;
+  font-family: var(--mono); font-size: 13.5px; letter-spacing: .06em; text-transform: uppercase;
   color: var(--accent-4); font-weight: 600; padding-top: 3px;
 }
-.chain-stage .cs-lead { display: block; font-size: 13px; color: var(--text-muted);
+.chain-stage .cs-lead { display: block; font-size: 14px; color: var(--text-muted);
   letter-spacing: 0; text-transform: none; margin-top: 4px; font-weight: 400; }
-.chain-body { font-size: 14.5px; line-height: 1.75; }
+.chain-body { font-size: 16px; line-height: 1.75; }
 .chain-body strong { color: var(--text); }
 .chain-signal {
-  margin-top: 8px; font-size: 13px; color: var(--text-secondary); background: #fff;
+  margin-top: 8px; font-size: 14.5px; color: var(--text-secondary); background: #fff;
   border: 1px solid var(--border); border-radius: 6px; padding: 9px 12px; line-height: 1.7;
 }
-.chain-signal b { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; }
+.chain-signal b { font-family: var(--mono); font-size: 13px; letter-spacing: .06em; }
 
 /* 两栏 */
 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .stat-list { display: flex; flex-direction: column; gap: 10px; }
 .stat-row {
   display: flex; justify-content: space-between; align-items: baseline; gap: 14px;
-  padding: 9px 0; border-bottom: 1px solid #e5e1dc; font-size: 14px;
+  padding: 9px 0; border-bottom: 1px solid #e5e1dc; font-size: 15.5px;
 }
 .stat-row:last-child { border-bottom: none; }
 .stat-row .sr-label { color: var(--text-secondary); line-height: 1.6; }
@@ -393,7 +404,7 @@ body {
 
 .tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
 .tag {
-  padding: 5px 12px; border-radius: 5px; font-size: 13px; font-family: var(--mono);
+  padding: 5px 12px; border-radius: 5px; font-size: 14px; font-family: var(--mono);
   background: #e8e4df; color: var(--text-secondary); border: 1px solid var(--border);
 }
 .tag.t-pos { background: #fbe9e7; color: var(--pos); border-color: #f0c9c4; }
@@ -405,16 +416,16 @@ body {
 }
 .note strong { color: var(--text); }
 .disclaimer {
-  font-size: 12.5px; color: var(--text-muted); line-height: 1.8; margin-top: 22px;
+  font-size: 14px; color: var(--text-muted); line-height: 1.8; margin-top: 22px;
   padding-top: 18px; border-top: 1px solid var(--border);
 }
 
 .about { margin-top: 34px; }
 .about-title {
-  font-family: var(--mono); font-size: 12.5px; letter-spacing: .2em; text-transform: uppercase;
+  font-family: var(--mono); font-size: 13.5px; letter-spacing: .2em; text-transform: uppercase;
   color: var(--text-secondary); margin-bottom: 12px;
 }
-.about-text { font-size: 14px; color: var(--text-secondary); line-height: 1.85; }
+.about-text { font-size: 16px; color: var(--text-secondary); line-height: 1.85; }
 
 .site-footer {
   background: var(--bg-dark); padding: 20px 24px; border-top: 1px solid var(--border-dark);
@@ -424,7 +435,7 @@ body {
   align-items: center; flex-wrap: wrap; gap: 8px;
 }
 .footer-brand { font-size: 16px; color: var(--text-on-dark); }
-.footer-note { font-size: 12.5px; color: var(--text-on-dark-muted); font-family: var(--mono); }
+.footer-note { font-size: 14px; color: var(--text-on-dark-muted); font-family: var(--mono); }
 
 @media (max-width: 760px) {
   .gauge-wrap { grid-template-columns: 1fr; gap: 24px; }
@@ -510,7 +521,7 @@ body {
     <div class="mini-stat">
       <div class="ms-label">出清事件净分</div>
       <div class="ms-value" style="color:var(--text)">95</div>
-      <div class="ms-sub">利好权重 20.8 / 利空权重 0 · 命中 7 条</div>
+      <div class="ms-sub">0-100，50 为中性 · 利好权重 20.5 / 利空 0</div>
     </div>
     <div class="mini-stat">
       <div class="ms-label">领先因子评分</div>
@@ -519,10 +530,10 @@ body {
     </div>
     <div class="mini-stat">
       <div class="ms-label">尾部高危标的</div>
-      <div class="ms-value" style="color:#c0392b">
+      <div class="ms-value" style="color:var(--text)">
         3/18
       </div>
-      <div class="ms-sub">负债率&gt;90% 或 权益为负 · 连锁出清证据</div>
+      <div class="ms-sub">家数占比 · 负债率&gt;90% 或 权益为负（连锁出清证据）</div>
     </div>
     <div class="mini-stat">
       <div class="ms-label">当前阶段</div>
@@ -668,7 +679,7 @@ body {
         <b>基础权重</b>（规则定义 1-5 分）× <b>广度加成</b>（同规则被 N 家触发则 ×(1+0.15×(N−1))，上限 2.0）
         × <b>时间衰减</b>（0.5^(事件天数/45)，半衰期 45 天）= <b>有效权重</b>，
         正负分别封顶 60，单事件封顶 12。
-        <br>本期读数：利好权重 20.8 / 利空权重 0，
+        <br>本期读数：利好权重 20.5 / 利空权重 0，
         净分 <b>95</b>（0-100，50 为中性），命中 7 条事件。
         <br><b>怎么读</b>　数值高说明<b>近期</b>出清相关事件以利好为主；低说明利空事件（政府救助、
         低水平重组）占优，即出清被延后。<b>它不直接进总分</b>，而是对 F1/F9/F10 三个因子施加
@@ -803,12 +814,12 @@ body {
   <table class="f-table">
     <thead>
       <tr>
-        <th style="width:22%">因子</th>
-        <th style="width:7%">权重</th>
-        <th style="width:9%">观测对象</th>
-        <th style="width:31%">当前读数</th>
-        <th style="width:12%">监控频率</th>
-        <th style="width:10%">得分</th>
+        <th style="width:26%">因子</th>
+        <th style="width:6%">权重</th>
+        <th style="width:8%">观测对象</th>
+        <th style="width:32%">当前读数</th>
+        <th style="width:11%">监控频率</th>
+        <th style="width:9%">得分</th>
       </tr>
     </thead>
     <tbody>
@@ -818,8 +829,8 @@ body {
           <div class="f-name">出口与海外需求</div>
           <div class="f-group">需求侧</div>
         </td>
-        <td><span style="font-family:var(--mono);font-size:14px">3.1</span></td>
-        <td><span style="font-family:var(--mono);font-size:11px;color:var(--text-secondary)">population</span></td>
+        <td><span style="font-family:var(--mono);font-size:15px">3.1</span></td>
+        <td><span style="font-family:var(--mono);font-size:12.5px;color:var(--text-secondary)">population</span></td>
         <td><div class="f-val">2026H1 光伏产品出口额 171.83 亿美元、同比 +24.3%；电池片出口 +36.8%，组件出口量 −2.5%；东南亚中转占比 22%</div></td>
         <td><span class="freq">月</span></td>
         <td class="score-cell">
@@ -833,8 +844,8 @@ body {
           <div class="f-name">股权质押与两融（群体口径）<span class="lead-flag">领先</span></div>
           <div class="f-group">金融与债务</div>
         </td>
-        <td><span style="font-family:var(--mono);font-size:14px">3.4</span></td>
-        <td><span style="font-family:var(--mono);font-size:11px;color:var(--text-secondary)">cohort</span></td>
+        <td><span style="font-family:var(--mono);font-size:15px">3.4</span></td>
+        <td><span style="font-family:var(--mono);font-size:12.5px;color:var(--text-secondary)">cohort</span></td>
         <td><div class="f-val">通威集团质押占总股本 16.54%、占其持股 36.56%（2026-11-06）；*ST亿晶、协鑫集成等尾部标的高位</div></td>
         <td><span class="freq">日（公告）+ 周（两融）</span></td>
         <td class="score-cell">
@@ -848,8 +859,8 @@ body {
           <div class="f-name">板块估值分位</div>
           <div class="f-group">资本与资金</div>
         </td>
-        <td><span style="font-family:var(--mono);font-size:14px">3.7</span></td>
-        <td><span style="font-family:var(--mono);font-size:11px;color:var(--text-secondary)">population</span></td>
+        <td><span style="font-family:var(--mono);font-size:15px">3.7</span></td>
+        <td><span style="font-family:var(--mono);font-size:12.5px;color:var(--text-secondary)">population</span></td>
         <td><div class="f-val">PB 分位：辅材 27.19% / 电池组件 36.98% / 设备 42.85% / 加工设备 58.73%，均值 41.44%（近一年）</div></td>
         <td><span class="freq">周</span></td>
         <td class="score-cell">
@@ -863,8 +874,8 @@ body {
           <div class="f-name">个股资金与估值分化<span class="lead-flag">领先</span></div>
           <div class="f-group">资本与资金</div>
         </td>
-        <td><span style="font-family:var(--mono);font-size:14px">3.7</span></td>
-        <td><span style="font-family:var(--mono);font-size:11px;color:var(--text-secondary)">cohort</span></td>
+        <td><span style="font-family:var(--mono);font-size:15px">3.7</span></td>
+        <td><span style="font-family:var(--mono);font-size:12.5px;color:var(--text-secondary)">cohort</span></td>
         <td><div class="f-val">东方日升单日 +15.26%、*ST亿晶 +10.22%（尾部异动，风险信号）；钧达 +2.11%、通威 −1.13%</div></td>
         <td><span class="freq">日</span></td>
         <td class="score-cell">
@@ -878,8 +889,8 @@ body {
           <div class="f-name">信用与债券事件<span class="lead-flag">领先</span></div>
           <div class="f-group">金融与债务</div>
         </td>
-        <td><span style="font-family:var(--mono);font-size:14px">4.1</span></td>
-        <td><span style="font-family:var(--mono);font-size:11px;color:var(--text-secondary)">population</span></td>
+        <td><span style="font-family:var(--mono);font-size:15px">4.1</span></td>
+        <td><span style="font-family:var(--mono);font-size:12.5px;color:var(--text-secondary)">population</span></td>
         <td><div class="f-val">隆基绿能 70 亿转债触发回售（拒绝低价转股）；监测池内信用事件标的占比约 1/18</div></td>
         <td><span class="freq">日（公告扫描）</span></td>
         <td class="score-cell">
@@ -893,8 +904,8 @@ body {
           <div class="f-name">龙头亏损收敛（群体口径）</div>
           <div class="f-group">价格与盈利</div>
         </td>
-        <td><span style="font-family:var(--mono);font-size:14px">4.4</span></td>
-        <td><span style="font-family:var(--mono);font-size:11px;color:var(--text-secondary)">cohort</span></td>
+        <td><span style="font-family:var(--mono);font-size:15px">4.4</span></td>
+        <td><span style="font-family:var(--mono);font-size:12.5px;color:var(--text-secondary)">cohort</span></td>
         <td><div class="f-val">2026Q3：晶科环比减亏 83%、隆基 41.66%、晶澳 39%、TCL中环 13.2%（扣非 40.4%）；通威亏损收窄至 16.39 亿；天合由盈转亏 −16.72 亿 → 收敛 4/6</div></td>
         <td><span class="freq">季</span></td>
         <td class="score-cell">
@@ -908,8 +919,8 @@ body {
           <div class="f-name">多晶硅库存水平</div>
           <div class="f-group">产能出清</div>
         </td>
-        <td><span style="font-family:var(--mono);font-size:14px">4.8</span></td>
-        <td><span style="font-family:var(--mono);font-size:11px;color:var(--text-secondary)">population</span></td>
+        <td><span style="font-family:var(--mono);font-size:15px">4.8</span></td>
+        <td><span style="font-family:var(--mono);font-size:12.5px;color:var(--text-secondary)">population</span></td>
         <td><div class="f-val">约 57.2 万吨（2026-09 末）</div></td>
         <td><span class="freq">月</span></td>
         <td class="score-cell">
@@ -923,8 +934,8 @@ body {
           <div class="f-name">监测池资产负债率</div>
           <div class="f-group">金融与债务</div>
         </td>
-        <td><span style="font-family:var(--mono);font-size:14px">4.8</span></td>
-        <td><span style="font-family:var(--mono);font-size:11px;color:var(--text-secondary)">cohort</span></td>
+        <td><span style="font-family:var(--mono);font-size:15px">4.8</span></td>
+        <td><span style="font-family:var(--mono);font-size:12.5px;color:var(--text-secondary)">cohort</span></td>
         <td><div class="f-val">全池加权约 74.5%；尾部组中位数约 95%（协鑫集成 95.08%、海源复材 94.96%）；最高 *ST亿晶 109.07%（资不抵债）</div></td>
         <td><span class="freq">季（财报后 3 个工作日）</span></td>
         <td class="score-cell">
@@ -938,8 +949,8 @@ body {
           <div class="f-name">三角债压力（群体口径）<span class="lead-flag">领先</span></div>
           <div class="f-group">金融与债务</div>
         </td>
-        <td><span style="font-family:var(--mono);font-size:14px">4.8</span></td>
-        <td><span style="font-family:var(--mono);font-size:11px;color:var(--text-secondary)">population</span></td>
+        <td><span style="font-family:var(--mono);font-size:15px">4.8</span></td>
+        <td><span style="font-family:var(--mono);font-size:12.5px;color:var(--text-secondary)">population</span></td>
         <td><div class="f-val">近 150 家光伏上市企业应收约 3.5 万亿、应付约 5,500 亿（2026-06 底口径），应付增速显著高于应收</div></td>
         <td><span class="freq">季 + 事件驱动</span></td>
         <td class="score-cell">
@@ -953,8 +964,8 @@ body {
           <div class="f-name">产品价格相对成本线</div>
           <div class="f-group">价格与盈利</div>
         </td>
-        <td><span style="font-family:var(--mono);font-size:14px">5.9</span></td>
-        <td><span style="font-family:var(--mono);font-size:11px;color:var(--text-secondary)">population</span></td>
+        <td><span style="font-family:var(--mono);font-size:15px">5.9</span></td>
+        <td><span style="font-family:var(--mono);font-size:12.5px;color:var(--text-secondary)">population</span></td>
         <td><div class="f-val">多晶硅 3.35 万元/吨（成本线约 4.0-4.8）；硅片 0.98 元/片（0.92-1.05）；电池片 0.29 元/W（0.38-0.44）；组件 0.70 元/W（0.82-0.93）→ 四环节全部低于成本线</div></td>
         <td><span class="freq">周（price-tracker 周日 21:00 已自动化）</span></td>
         <td class="score-cell">
@@ -968,8 +979,8 @@ body {
           <div class="f-name">ETF 资金流（动态三指标）<span class="lead-flag">领先</span></div>
           <div class="f-group">资本与资金</div>
         </td>
-        <td><span style="font-family:var(--mono);font-size:14px">5.9</span></td>
-        <td><span style="font-family:var(--mono);font-size:11px;color:var(--text-secondary)">population</span></td>
+        <td><span style="font-family:var(--mono);font-size:15px">5.9</span></td>
+        <td><span style="font-family:var(--mono);font-size:12.5px;color:var(--text-secondary)">population</span></td>
         <td><div class="f-val">9 只合计 5 日主力净流入 −1.517 亿元；仅 159864 国泰逆势 +190 万，其余 8 只全为净流出</div></td>
         <td><span class="freq">日（收盘后）</span></td>
         <td class="score-cell">
@@ -983,8 +994,8 @@ body {
           <div class="f-name">需求增速与装机<span class="lead-flag">领先</span></div>
           <div class="f-group">需求侧</div>
         </td>
-        <td><span style="font-family:var(--mono);font-size:14px">5.9</span></td>
-        <td><span style="font-family:var(--mono);font-size:11px;color:var(--text-secondary)">population</span></td>
+        <td><span style="font-family:var(--mono);font-size:15px">5.9</span></td>
+        <td><span style="font-family:var(--mono);font-size:12.5px;color:var(--text-secondary)">population</span></td>
         <td><div class="f-val">2026H1 中国新增 72.07GW（同比 −66%，vs 2025H1 抢装高基数 212GW）；CPIA 预计全年 180-240GW（2025 为 315GW，为 2019 年以来首次年度下滑）；全球 2026 预计 612GW（−8%），2027 年重回增长（755GW+）</div></td>
         <td><span class="freq">月（装机）+ 季（预测修订）</span></td>
         <td class="score-cell">
@@ -998,8 +1009,8 @@ body {
           <div class="f-name">政府介入方向（伪出清识别器）<span class="lead-flag">领先</span></div>
           <div class="f-group">政策与标准</div>
         </td>
-        <td><span style="font-family:var(--mono);font-size:14px">6.0</span></td>
-        <td><span style="font-family:var(--mono);font-size:11px;color:var(--text-secondary)">population</span></td>
+        <td><span style="font-family:var(--mono);font-size:15px">6.0</span></td>
+        <td><span style="font-family:var(--mono);font-size:12.5px;color:var(--text-secondary)">population</span></td>
         <td><div class="f-val">2026 年已 9 起并购重整（历史新高）：TCL中环 12.58 亿控股一道新能、通威收购丽豪、弘元绿能 6.3 亿接手无锡尚德重整、ST棒杰以股抵债</div></td>
         <td><span class="freq">日（事件扫描）</span></td>
         <td class="score-cell">
@@ -1013,8 +1024,8 @@ body {
           <div class="f-name">供需缺口（有效产能 vs 需求）<span class="lead-flag">领先</span></div>
           <div class="f-group">需求侧</div>
         </td>
-        <td><span style="font-family:var(--mono);font-size:14px">7.2</span></td>
-        <td><span style="font-family:var(--mono);font-size:11px;color:var(--text-secondary)">composite</span></td>
+        <td><span style="font-family:var(--mono);font-size:15px">7.2</span></td>
+        <td><span style="font-family:var(--mono);font-size:12.5px;color:var(--text-secondary)">composite</span></td>
         <td><div class="f-val">全球硅料 330 万吨(1738GW)/硅片 1273GW/电池 1315GW/组件 1482GW（InfoLink，2026-06 末）；全球需求约 612GW → 组件供需比约 2.4:1</div></td>
         <td><span class="freq">季</span></td>
         <td class="score-cell">
@@ -1028,8 +1039,8 @@ body {
           <div class="f-name">经营性现金流（群体口径）<span class="lead-flag">领先</span></div>
           <div class="f-group">金融与债务</div>
         </td>
-        <td><span style="font-family:var(--mono);font-size:14px">7.4</span></td>
-        <td><span style="font-family:var(--mono);font-size:11px;color:var(--text-secondary)">cohort</span></td>
+        <td><span style="font-family:var(--mono);font-size:15px">7.4</span></td>
+        <td><span style="font-family:var(--mono);font-size:12.5px;color:var(--text-secondary)">cohort</span></td>
         <td><div class="f-val">经营现金流为负家数占比 6/18（33%）；全池净现金流合计约 -78 亿元（隆基 -34.67 亿、通威 +20.24 亿、晶澳 +39.81 亿）</div></td>
         <td><span class="freq">季（财报节点）</span></td>
         <td class="score-cell">
@@ -1043,8 +1054,8 @@ body {
           <div class="f-name">强制标准执行进度<span class="lead-flag">领先</span></div>
           <div class="f-group">政策与标准</div>
         </td>
-        <td><span style="font-family:var(--mono);font-size:14px">7.4</span></td>
-        <td><span style="font-family:var(--mono);font-size:11px;color:var(--text-secondary)">composite</span></td>
+        <td><span style="font-family:var(--mono);font-size:15px">7.4</span></td>
+        <td><span style="font-family:var(--mono);font-size:12.5px;color:var(--text-secondary)">composite</span></td>
         <td><div class="f-val">3 项强制国标（硅多晶/硅片能耗限额、组件能效）2027-01-01 实施；测算出清 310GW（华泰）</div></td>
         <td><span class="freq">事件驱动 + 月</span></td>
         <td class="score-cell">
@@ -1058,8 +1069,8 @@ body {
           <div class="f-name">全产业链产能利用率<span class="lead-flag">领先</span></div>
           <div class="f-group">产能出清</div>
         </td>
-        <td><span style="font-family:var(--mono);font-size:14px">8.1</span></td>
-        <td><span style="font-family:var(--mono);font-size:11px;color:var(--text-secondary)">population</span></td>
+        <td><span style="font-family:var(--mono);font-size:15px">8.1</span></td>
+        <td><span style="font-family:var(--mono);font-size:12.5px;color:var(--text-secondary)">population</span></td>
         <td><div class="f-val">硅料约 35%（2026-10）；全产业链平均 40-50%</div></td>
         <td><span class="freq">月（硅业分会）</span></td>
         <td class="score-cell">
@@ -1073,8 +1084,8 @@ body {
           <div class="f-name">有效产能退出率<span class="lead-flag">领先</span></div>
           <div class="f-group">产能出清</div>
         </td>
-        <td><span style="font-family:var(--mono);font-size:14px">9.4</span></td>
-        <td><span style="font-family:var(--mono);font-size:11px;color:var(--text-secondary)">population</span></td>
+        <td><span style="font-family:var(--mono);font-size:15px">9.4</span></td>
+        <td><span style="font-family:var(--mono);font-size:12.5px;color:var(--text-secondary)">population</span></td>
         <td><div class="f-val">物理退出（关停/冷修/拆除/破产清算/标准出局）：华泰测强制国标可淘汰 310GW，已实际确认部分以公告核减为准，当前按 0 计（标准 2027-01-01 才执行）；名义产能约 1482GW（组件口径，InfoLink 2026-06 末）</div></td>
         <td><span class="freq">周（事件）/ 季（核实）</span></td>
         <td class="score-cell">
@@ -1450,21 +1461,21 @@ body {
     <div>
       <div class="about-title" style="margin-bottom:12px">分级监控策略</div>
       <div class="stat-list">
-        <div class="stat-row"><span class="sr-label">① 事件驱动（实时）<br><span style="font-size:12.5px;color:var(--text-muted)">公告/舆情扫描</span></span><span class="sr-value" style="color:var(--accent-4)">每日</span></div>
-        <div class="stat-row"><span class="sr-label">② 资金面（收盘后）<br><span style="font-size:12.5px;color:var(--text-muted)">ETF 份额/主力净流</span></span><span class="sr-value" style="color:var(--accent-4)">每日</span></div>
-        <div class="stat-row"><span class="sr-label">③ 产业链价格与排产<br><span style="font-size:12.5px;color:var(--text-muted)">多晶硅/硅片/电池/组件</span></span><span class="sr-value" style="color:var(--accent-4)">每周</span></div>
-        <div class="stat-row"><span class="sr-label">④ 开工率与库存<br><span style="font-size:12.5px;color:var(--text-muted)">硅业分会口径</span></span><span class="sr-value" style="color:var(--accent-4)">每月</span></div>
-        <div class="stat-row"><span class="sr-label">⑤ 财报敏感节点<br><span style="font-size:12.5px;color:var(--text-muted)">负债/现金流/担保/质押</span></span><span class="sr-value" style="color:var(--accent-4)">每季</span></div>
-        <div class="stat-row"><span class="sr-label">⑥ 政策与标准日历<br><span style="font-size:12.5px;color:var(--text-muted)">强标/规范条件/行业会议</span></span><span class="sr-value" style="color:var(--accent-4)">按节点</span></div>
+        <div class="stat-row"><span class="sr-label">① 事件驱动（实时）<br><span style="font-size:13px;color:var(--text-muted)">公告/舆情扫描</span></span><span class="sr-value" style="color:var(--accent-4)">每日</span></div>
+        <div class="stat-row"><span class="sr-label">② 资金面（收盘后）<br><span style="font-size:13px;color:var(--text-muted)">ETF 份额/主力净流</span></span><span class="sr-value" style="color:var(--accent-4)">每日</span></div>
+        <div class="stat-row"><span class="sr-label">③ 产业链价格与排产<br><span style="font-size:13px;color:var(--text-muted)">多晶硅/硅片/电池/组件</span></span><span class="sr-value" style="color:var(--accent-4)">每周</span></div>
+        <div class="stat-row"><span class="sr-label">④ 开工率与库存<br><span style="font-size:13px;color:var(--text-muted)">硅业分会口径</span></span><span class="sr-value" style="color:var(--accent-4)">每月</span></div>
+        <div class="stat-row"><span class="sr-label">⑤ 财报敏感节点<br><span style="font-size:13px;color:var(--text-muted)">负债/现金流/担保/质押</span></span><span class="sr-value" style="color:var(--accent-4)">每季</span></div>
+        <div class="stat-row"><span class="sr-label">⑥ 政策与标准日历<br><span style="font-size:13px;color:var(--text-muted)">强标/规范条件/行业会议</span></span><span class="sr-value" style="color:var(--accent-4)">按节点</span></div>
       </div>
     </div>
     <div>
       <div class="about-title" style="margin-bottom:12px">关键时间锚点</div>
       <div class="stat-list">
-        <div class="stat-row"><span class="sr-label">三项能耗能效强制国标执行<br><span style="font-size:12.5px;color:var(--text-muted)">非达标产能丧失准入资格</span></span><span class="sr-value" style="color:var(--pos)">2027-01-01</span></div>
-        <div class="stat-row"><span class="sr-label">《光伏制造行业规范条件》<br><span style="font-size:12.5px;color:var(--text-muted)">2026年本征求意见中</span></span><span class="sr-value" style="color:var(--warn)">待定稿</span></div>
-        <div class="stat-row"><span class="sr-label">光伏出口增值税退税取消<br><span style="font-size:12.5px;color:var(--text-muted)">削弱低价出口，抑制复产</span></span><span class="sr-value" style="color:var(--text-secondary)">已生效</span></div>
-        <div class="stat-row"><span class="sr-label">《光伏行业成本核算模型通则》<br><span style="font-size:12.5px;color:var(--text-muted)">统一成本口径，价格执法基础</span></span><span class="sr-value" style="color:var(--text-secondary)">已发布</span></div>
+        <div class="stat-row"><span class="sr-label">三项能耗能效强制国标执行<br><span style="font-size:13px;color:var(--text-muted)">非达标产能丧失准入资格</span></span><span class="sr-value" style="color:var(--pos)">2027-01-01</span></div>
+        <div class="stat-row"><span class="sr-label">《光伏制造行业规范条件》<br><span style="font-size:13px;color:var(--text-muted)">2026年本征求意见中</span></span><span class="sr-value" style="color:var(--warn)">待定稿</span></div>
+        <div class="stat-row"><span class="sr-label">光伏出口增值税退税取消<br><span style="font-size:13px;color:var(--text-muted)">削弱低价出口，抑制复产</span></span><span class="sr-value" style="color:var(--text-secondary)">已生效</span></div>
+        <div class="stat-row"><span class="sr-label">《光伏行业成本核算模型通则》<br><span style="font-size:13px;color:var(--text-muted)">统一成本口径，价格执法基础</span></span><span class="sr-value" style="color:var(--text-secondary)">已发布</span></div>
       </div>
       <div class="note" style="margin-top:16px">
         <strong>频率设计原则：</strong>事件驱动置于最高优先级——破产重整、收贷、政府接盘等事件具有
@@ -1519,7 +1530,7 @@ body {
         <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">4.33亿</span></td>
         <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-14.17亿</span></td>
         <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">71.74亿</span></td>
-        <td><span style="color:var(--text-muted);font-size:11px">—</span></td>
+        <td><span style="color:var(--text-muted);font-size:12.5px">—</span></td>
       </tr>
       <tr>
         <td><div class="f-name">爱旭股份</div><div class="f-id">sh600732 · 2026-09-30</div></td>
@@ -1527,7 +1538,7 @@ body {
         <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">19.47亿</span></td>
         <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-7.09亿</span></td>
         <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">78.78亿</span></td>
-        <td><span style="color:var(--text-muted);font-size:11px">—</span></td>
+        <td><span style="color:var(--text-muted);font-size:12.5px">—</span></td>
       </tr>
       <tr>
         <td><div class="f-name">隆基绿能</div><div class="f-id">sh601012 · 2026-09-30</div></td>
@@ -1551,7 +1562,7 @@ body {
         <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">39.81亿</span></td>
         <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-36.40亿</span></td>
         <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">199.29亿</span></td>
-        <td><span style="color:var(--text-muted);font-size:11px">—</span></td>
+        <td><span style="color:var(--text-muted);font-size:12.5px">—</span></td>
       </tr>
       <tr>
         <td><div class="f-name">钧达股份</div><div class="f-id">sz002865 · 2026-09-30</div></td>
@@ -1567,7 +1578,7 @@ body {
         <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">180.73亿</span></td>
         <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">42.25亿</span></td>
         <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">557.09亿</span></td>
-        <td><span style="color:var(--text-muted);font-size:11px">—</span></td>
+        <td><span style="color:var(--text-muted);font-size:12.5px">—</span></td>
       </tr>
       <tr>
         <td><div class="f-name">通威股份</div><div class="f-id">sh600438 · 2026-09-30</div></td>
@@ -1575,7 +1586,7 @@ body {
         <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">20.24亿</span></td>
         <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-67.59亿</span></td>
         <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">423.75亿</span></td>
-        <td><span style="color:var(--text-muted);font-size:11px">—</span></td>
+        <td><span style="color:var(--text-muted);font-size:12.5px">—</span></td>
       </tr>
       <tr>
         <td><div class="f-name">晶科能源</div><div class="f-id">sh688223 · 2026-09-30</div></td>
@@ -1583,7 +1594,7 @@ body {
         <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">6.11亿</span></td>
         <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-33.67亿</span></td>
         <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">269.27亿</span></td>
-        <td><span style="color:var(--text-muted);font-size:11px">—</span></td>
+        <td><span style="color:var(--text-muted);font-size:12.5px">—</span></td>
       </tr>
       <tr>
         <td><div class="f-name">天合光能</div><div class="f-id">sh688599 · 2026-09-30</div></td>
@@ -1591,7 +1602,7 @@ body {
         <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">47.03亿</span></td>
         <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-19.42亿</span></td>
         <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">237.05亿</span></td>
-        <td><span style="color:var(--text-muted);font-size:11px">—</span></td>
+        <td><span style="color:var(--text-muted);font-size:12.5px">—</span></td>
       </tr>
       <tr>
         <td><div class="f-name">福斯特</div><div class="f-id">sh603806 · 2026-09-30</div></td>
@@ -1599,7 +1610,7 @@ body {
         <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">6.76亿</span></td>
         <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">11.31亿</span></td>
         <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">174.81亿</span></td>
-        <td><span style="color:var(--text-muted);font-size:11px">—</span></td>
+        <td><span style="color:var(--text-muted);font-size:12.5px">—</span></td>
       </tr>
       <tr>
         <td><div class="f-name">TCL中环</div><div class="f-id">sz002129 · 2026-09-30</div></td>
@@ -1607,7 +1618,7 @@ body {
         <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">4.31亿</span></td>
         <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-45.56亿</span></td>
         <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">326.20亿</span></td>
-        <td><span style="color:var(--text-muted);font-size:11px">—</span></td>
+        <td><span style="color:var(--text-muted);font-size:12.5px">—</span></td>
       </tr>
       <tr>
         <td><div class="f-name">阳光电源</div><div class="f-id">sz300274 · 2026-09-30</div></td>
@@ -1615,7 +1626,7 @@ body {
         <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">36.48亿</span></td>
         <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">65.99亿</span></td>
         <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">524.57亿</span></td>
-        <td><span style="color:var(--text-muted);font-size:11px">—</span></td>
+        <td><span style="color:var(--text-muted);font-size:12.5px">—</span></td>
       </tr>
       <tr>
         <td><div class="f-name">福莱特</div><div class="f-id">sh601865 · 2026-09-30</div></td>
@@ -1623,7 +1634,7 @@ body {
         <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">17.51亿</span></td>
         <td class="score-cell"><span style="font-family:var(--mono);color:#c0392b">-8.36亿</span></td>
         <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">213.39亿</span></td>
-        <td><span style="color:var(--text-muted);font-size:11px">—</span></td>
+        <td><span style="color:var(--text-muted);font-size:12.5px">—</span></td>
       </tr>
       <tr>
         <td><div class="f-name">捷佳伟创</div><div class="f-id">sz300724 · 2026-09-30</div></td>
@@ -1631,7 +1642,7 @@ body {
         <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">28.75亿</span></td>
         <td class="score-cell"><span style="font-family:var(--mono);color:#27ae60">6.33亿</span></td>
         <td class="score-cell"><span style="font-family:var(--mono);color:var(--text)">135.55亿</span></td>
-        <td><span style="color:var(--text-muted);font-size:11px">—</span></td>
+        <td><span style="color:var(--text-muted);font-size:12.5px">—</span></td>
       </tr>
     </tbody>
   </table>
@@ -1651,39 +1662,39 @@ body {
       <div class="about-title" style="margin-bottom:12px">光伏 ETF 主力资金流（万元）</div>
       <div class="stat-list">
         <div class="stat-row">
-          <span class="sr-label">光伏ETF国泰<br><span style="font-size:12.5px;color:var(--text-muted)">20日累计 665 万元</span></span>
+          <span class="sr-label">光伏ETF国泰<br><span style="font-size:13px;color:var(--text-muted)">20日累计 665 万元</span></span>
           <span class="sr-value" style="color:#c0392b">190<span style="font-size:12.5px;color:var(--text-muted);font-weight:400"> 万</span></span>
         </div>
         <div class="stat-row">
-          <span class="sr-label">光伏ETF招商<br><span style="font-size:12.5px;color:var(--text-muted)">20日累计 -110 万元</span></span>
+          <span class="sr-label">光伏ETF招商<br><span style="font-size:13px;color:var(--text-muted)">20日累计 -110 万元</span></span>
           <span class="sr-value" style="color:#27ae60">-74<span style="font-size:12.5px;color:var(--text-muted);font-weight:400"> 万</span></span>
         </div>
         <div class="stat-row">
-          <span class="sr-label">光伏ETF富国<br><span style="font-size:12.5px;color:var(--text-muted)">20日累计 -197 万元</span></span>
+          <span class="sr-label">光伏ETF富国<br><span style="font-size:13px;color:var(--text-muted)">20日累计 -197 万元</span></span>
           <span class="sr-value" style="color:#27ae60">-145<span style="font-size:12.5px;color:var(--text-muted);font-weight:400"> 万</span></span>
         </div>
         <div class="stat-row">
-          <span class="sr-label">光伏ETF汇添富<br><span style="font-size:12.5px;color:var(--text-muted)">20日累计 -1,242 万元</span></span>
+          <span class="sr-label">光伏ETF汇添富<br><span style="font-size:13px;color:var(--text-muted)">20日累计 -1,242 万元</span></span>
           <span class="sr-value" style="color:#27ae60">-1,287<span style="font-size:12.5px;color:var(--text-muted);font-weight:400"> 万</span></span>
         </div>
         <div class="stat-row">
-          <span class="sr-label">光伏ETF易方达<br><span style="font-size:12.5px;color:var(--text-muted)">20日累计 -1,565 万元</span></span>
+          <span class="sr-label">光伏ETF易方达<br><span style="font-size:13px;color:var(--text-muted)">20日累计 -1,565 万元</span></span>
           <span class="sr-value" style="color:#27ae60">-1,728<span style="font-size:12.5px;color:var(--text-muted);font-weight:400"> 万</span></span>
         </div>
         <div class="stat-row">
-          <span class="sr-label">光伏龙头ETF广发<br><span style="font-size:12.5px;color:var(--text-muted)">20日累计 -2,375 万元</span></span>
+          <span class="sr-label">光伏龙头ETF广发<br><span style="font-size:13px;color:var(--text-muted)">20日累计 -2,375 万元</span></span>
           <span class="sr-value" style="color:#27ae60">-2,577<span style="font-size:12.5px;color:var(--text-muted);font-weight:400"> 万</span></span>
         </div>
         <div class="stat-row">
-          <span class="sr-label">光伏ETF天弘<br><span style="font-size:12.5px;color:var(--text-muted)">20日累计 -3,274 万元</span></span>
+          <span class="sr-label">光伏ETF天弘<br><span style="font-size:13px;color:var(--text-muted)">20日累计 -3,274 万元</span></span>
           <span class="sr-value" style="color:#27ae60">-2,061<span style="font-size:12.5px;color:var(--text-muted);font-weight:400"> 万</span></span>
         </div>
         <div class="stat-row">
-          <span class="sr-label">光伏ETF华夏<br><span style="font-size:12.5px;color:var(--text-muted)">20日累计 -4,098 万元</span></span>
+          <span class="sr-label">光伏ETF华夏<br><span style="font-size:13px;color:var(--text-muted)">20日累计 -4,098 万元</span></span>
           <span class="sr-value" style="color:#27ae60">-3,986<span style="font-size:12.5px;color:var(--text-muted);font-weight:400"> 万</span></span>
         </div>
         <div class="stat-row">
-          <span class="sr-label">光伏ETF华泰柏瑞<br><span style="font-size:12.5px;color:var(--text-muted)">20日累计 -5,944 万元</span></span>
+          <span class="sr-label">光伏ETF华泰柏瑞<br><span style="font-size:13px;color:var(--text-muted)">20日累计 -5,944 万元</span></span>
           <span class="sr-value" style="color:#27ae60">-3,501<span style="font-size:12.5px;color:var(--text-muted);font-weight:400"> 万</span></span>
         </div>
       </div>
@@ -1692,19 +1703,19 @@ body {
       <div class="about-title" style="margin-bottom:12px">板块估值分位</div>
       <div class="stat-list">
         <div class="stat-row">
-          <span class="sr-label">光伏设备<br><span style="font-size:12.5px;color:var(--text-muted)">PB 2.4591倍 · PE -27.5412</span></span>
+          <span class="sr-label">光伏设备<br><span style="font-size:13px;color:var(--text-muted)">PB 2.4591倍 · PE -27.5412</span></span>
           <span class="sr-value" style="color:#c0392b">PE(负)分位 7.8%</span>
         </div>
         <div class="stat-row">
-          <span class="sr-label">光伏电池组件<br><span style="font-size:12.5px;color:var(--text-muted)">PB 2.2489倍 · PE -10.3503</span></span>
+          <span class="sr-label">光伏电池组件<br><span style="font-size:13px;color:var(--text-muted)">PB 2.2489倍 · PE -10.3503</span></span>
           <span class="sr-value" style="color:#c0392b">PE(负)分位 9.9%</span>
         </div>
         <div class="stat-row">
-          <span class="sr-label">光伏加工设备<br><span style="font-size:12.5px;color:var(--text-muted)">PB 3.0999倍 · PE 99.5407</span></span>
+          <span class="sr-label">光伏加工设备<br><span style="font-size:13px;color:var(--text-muted)">PB 3.0999倍 · PE 99.5407</span></span>
           <span class="sr-value" style="color:#7f8c8d">PB分位 58.7%</span>
         </div>
         <div class="stat-row">
-          <span class="sr-label">光伏辅材<br><span style="font-size:12.5px;color:var(--text-muted)">PB 1.9298倍 · PE -216.1958</span></span>
+          <span class="sr-label">光伏辅材<br><span style="font-size:13px;color:var(--text-muted)">PB 1.9298倍 · PE -216.1958</span></span>
           <span class="sr-value" style="color:#c0392b">PE(负)分位 2.2%</span>
         </div>
       </div>
@@ -1719,7 +1730,7 @@ body {
         说明<strong>预期已充分反映悲观情形</strong>；但资金仍在流出，
         反映机构对出清兑现节奏存疑。<strong>估值底已现，资金底未现</strong>——
         这是当前不宜重仓、但应建立观察仓的关键理由。
-        <br><span style="font-size:12.5px;color:var(--text-muted)">
+        <br><span style="font-size:13px;color:var(--text-muted)">
         注：行业普遍亏损，多数板块 PE 为负，其 PE 历史分位不具跨板块可比性；
         综合评分采用 PB 分位作为统一口径。</span>
       </div>
@@ -1727,14 +1738,14 @@ body {
   </div>
 </div><div class="section-label">出清事件流 · Event Feed</div>
 <div class="card">
-      <div style="margin-bottom:12px;font-size:13.5px;color:var(--text-secondary)">本期扫描命中 <strong>7</strong> 条出清相关事件（含公告与舆情）。分类依据：物理性退出判利好，政府救助与低水平重组判利空。有效权重 = 基础权重 × 广度加成 × 时间衰减。</div>
+      <div style="margin-bottom:12px;font-size:15px;color:var(--text-secondary)">本期扫描命中 <strong>7</strong> 条出清相关事件（含公告与舆情）。分类依据：物理性退出判利好，政府救助与低水平重组判利空。有效权重 = 基础权重 × 广度加成 × 时间衰减。</div>
       <div class="ev-item">
         <div class="ev-badge" style="background:#c0392b18;color:#c0392b">出清利好</div>
         <div>
           <div class="ev-title">多晶硅龙头集体减产，现在最怕的是再出“内鬼”！<span class="ev-tag">产能关停/停产/废弃</span></div>
           <div class="ev-meta">sh688303 · 舆情 · 基础权重 4
-            × 广度 1.0 × 衰减 1.0（0天）
-            = 有效权重 <strong>4.0</strong>
+            × 广度 1.0 × 衰减 0.985（1天）
+            = 有效权重 <strong>3.94</strong>
             </div>
         </div>
       </div>
@@ -1743,8 +1754,8 @@ body {
         <div>
           <div class="ev-title">通威股份：通威股份有限公司关于控股股东股份质押的公告<span class="ev-tag">现金流/负债恶化信号</span></div>
           <div class="ev-meta">sh600438 · 公告 · 基础权重 2
-            × 广度 1.45 × 衰减 0.985（1天）
-            = 有效权重 <strong>2.86</strong>
+            × 广度 1.45 × 衰减 0.97（2天）
+            = 有效权重 <strong>2.81</strong>
             · 同规则触发 4 家</div>
         </div>
       </div>
@@ -1753,8 +1764,8 @@ body {
         <div>
           <div class="ev-title">隆基绿能：关于“隆22转债”回售结果的公告<span class="ev-tag">银行收贷/信用收缩</span></div>
           <div class="ev-meta">sh601012 · 公告 · 基础权重 4
-            × 广度 1.0 × 衰减 0.955（3天）
-            = 有效权重 <strong>3.82</strong>
+            × 广度 1.0 × 衰减 0.94（4天）
+            = 有效权重 <strong>3.76</strong>
             </div>
         </div>
       </div>
@@ -1763,8 +1774,8 @@ body {
         <div>
           <div class="ev-title">*ST亿晶：亿晶光电科技股份有限公司关于与重整投资人签署预重整投资协议之补充协议的公告<span class="ev-tag">企业破产/重整清算</span></div>
           <div class="ev-meta">sh600537 · 公告 · 基础权重 6
-            × 广度 1.0 × 衰减 0.912（6天）
-            = 有效权重 <strong>5.47</strong>
+            × 广度 1.0 × 衰减 0.898（7天）
+            = 有效权重 <strong>5.39</strong>
             </div>
         </div>
       </div>
@@ -1773,8 +1784,8 @@ body {
         <div>
           <div class="ev-title">*ST亿晶：亿晶光电科技股份有限公司关于孙公司收到《民事判决书》暨诉讼进展公告<span class="ev-tag">现金流/负债恶化信号</span></div>
           <div class="ev-meta">sh600537 · 公告 · 基础权重 2
-            × 广度 1.45 × 衰减 0.758（18天）
-            = 有效权重 <strong>2.2</strong>
+            × 广度 1.45 × 衰减 0.746（19天）
+            = 有效权重 <strong>2.16</strong>
             · 同规则触发 4 家</div>
         </div>
       </div>
@@ -1783,8 +1794,8 @@ body {
         <div>
           <div class="ev-title">东方日升：关于股东部分股份质押的公告<span class="ev-tag">现金流/负债恶化信号</span></div>
           <div class="ev-meta">sz300118 · 公告 · 基础权重 2
-            × 广度 1.45 × 衰减 0.548（39天）
-            = 有效权重 <strong>1.59</strong>
+            × 广度 1.45 × 衰减 0.54（40天）
+            = 有效权重 <strong>1.57</strong>
             · 同规则触发 4 家</div>
         </div>
       </div>
@@ -1793,8 +1804,8 @@ body {
         <div>
           <div class="ev-title">海源复材：关于累计诉讼、仲裁情况的进展公告<span class="ev-tag">现金流/负债恶化信号</span></div>
           <div class="ev-meta">sz002529 · 公告 · 基础权重 2
-            × 广度 1.45 × 衰减 0.296（79天）
-            = 有效权重 <strong>0.86</strong>
+            × 广度 1.45 × 衰减 0.292（80天）
+            = 有效权重 <strong>0.85</strong>
             · 同规则触发 4 家</div>
         </div>
       </div>
@@ -1811,7 +1822,7 @@ body {
     因子权重、阈值与分类规则均可配置，随行业阶段演进调整。
   </p>
   <p class="disclaimer">
-    数据截至 2026-11-07，评分生成于 2026-11-07T23:28:33。
+    数据截至 2026-11-08，评分生成于 2026-11-08T10:55:25。
     本报告为个人研究记录，不构成投资建议。市场有风险，决策需谨慎。
     评分模型输出的是结构化信号，不替代独立判断。
   </p>
