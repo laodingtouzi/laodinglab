@@ -700,7 +700,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
 <main class="main">
 <div class="ver-strip">
   <span class="ver-badge">版本 v2.1</span>
-  <span class="ver-item">构建 2026-11-09 11:25</span>
+  <span class="ver-item">构建 2026-11-09 15:21</span>
   <span class="ver-item">数据截至 2026-11-08</span>
   <span class="ver-item">出清压力指数 39.6 · 投资时机指数 21.4 · 综合 32.3</span>
 </div>
@@ -1312,14 +1312,15 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
   <div class="note" style="margin:14px 0 6px">
     没有计分系统的预测不是预测，是观点。
     本栏目对已到期的可结算预测自动结算，滚动公布 Brier 分数。
-    基线为<strong>自身先验分布</strong>（永远选概率最高的基准情形），
-    而非外部的 0.25 瞎猜基线——后者会让模型显得比实际更强。
+    参照为<strong>事前冻结的气候学基线</strong>：等价于「对每条预测恒报其冻结概率」，
+    其期望 Brier = p(1−p)。当前 15 条预测全部冻结在 0.5（无可核验历史频率），故参照分为
+    <strong>0.25</strong>；技能分 BSS = 1 − BS/0.25，<strong>与基线持平即为 0</strong>，大于 0 才算真有信息。
   </div>
   </details>
   <div class="mini-stats">
     <div class="mini-stat">
       <div class="ms-label">已结算 / 可结算</div>
-      <div class="ms-value" style="color:var(--text)">0/15</div>
+      <div class="ms-value" style="color:var(--text)">0/16</div>
       <div class="ms-sub">第 1 轮 · 2026-11-08</div>
     </div>
     <div class="mini-stat">
@@ -1329,8 +1330,8 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
     </div>
     <div class="mini-stat">
       <div class="ms-label">冻结基线</div>
-      <div class="ms-value" style="color:var(--text)">0.5</div>
-      <div class="ms-sub">无信息基线 0.5 · 结算前冻结</div>
+      <div class="ms-value" style="color:var(--text)">0.25</div>
+      <div class="ms-sub">恒 0.5 预测的期望 Brier · 结算前冻结</div>
     </div>
     <div class="mini-stat">
       <div class="ms-label">相对基线优势</div>
@@ -1465,6 +1466,14 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <td><span style="font-family:var(--mono);font-size:14px">70%</span></td>
         <td><span style="font-family:var(--mono);font-size:14px">2028-01-31</span></td>
         <td><span style="font-size:14px;color:var(--text-secondary)">SPE/CPIA 最新版文本（机构停更则以最后版本结算）</span></td>
+        <td><span class="emo emo-neu" style="font-size:14px;background:var(--emo-neu-bg);color:var(--emo-neu);border-color:var(--emo-neu-line)">待结算</span></td>
+      </tr>
+      <tr>
+        <td><span style="font-family:var(--mono);font-size:14.5px">P8</span></td>
+        <td><div style="font-size:15px;line-height:1.6">2026-12-08 前，日频采集快照至少触发 1 次 universe_alert（finance 标的数 &lt; universe 定义数 18）</div></td>
+        <td><span style="font-family:var(--mono);font-size:14px">60%</span></td>
+        <td><span style="font-family:var(--mono);font-size:14px">2026-12-08</span></td>
+        <td><span style="font-size:14px;color:var(--text-secondary)">data/snapshot_*.json 的 universe_alert 字段（或 finance 键数 &lt; 18）；期间若 collect.py 加入重试机制则以改造后的首次采集起算</span></td>
         <td><span class="emo emo-neu" style="font-size:14px;background:var(--emo-neu-bg);color:var(--emo-neu);border-color:var(--emo-neu-line)">待结算</span></td>
       </tr>
     </tbody>
@@ -1718,7 +1727,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         </td>
         <td><span style="font-family:var(--mono);font-size:16.5px">5.4</span></td>
         <td><span style="font-family:var(--mono);font-size:14px;color:var(--text-secondary)">population</span></td>
-        <td><div class="f-val">2026H1 中国新增 72.07GW（同比 −66%，vs 2025H1 抢装高基数 212GW）；CPIA 预计全年 180-240GW（2025 为 315GW，为 2019 年以来首次年度下滑）；全球 2026 预计 612GW（−8%），2027 年重回增长（755GW+）</div></td>
+        <td><div class="f-val">2026H1 中国新增 72.07GW（同比 −66%，vs 2025H1 抢装高基数 212GW）；CPIA 预计全年 180-240GW（2025 为 315GW，为 2019 年以来首次年度下滑）；全球 2026 预计 612GW（−8%），2027 年重回增长（旧锚 755GW，三源已有下修，见后）；【锚点分歧】SPE 2025-05 版 755GW → SPE 2026-06 版 689GW、BNEF 2026-12 版 688GW（两处转引一致，待一手文本核验后正式改锚），分歧由预测 P7 结算</div></td>
         <td><span class="freq">月（装机）+ 季（预测修订）</span></td>
         <td class="score-cell">
           <div class="score-num" style="color:#B69C91">14.3</div>
@@ -1859,7 +1868,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <dt>当前读数</dt><dd>2026-11-04 TrendForce：硅料 57 万吨+（累库放缓但趋势不变）、硅片 27GW、电池片 6-7 天（生产天数口径）、组件 26.7GW。按去化天数测算：硅料约 150 天、硅片约 19 天、电池片约 7 天、组件约 25 天——★最差环节是硅料，而硅料恰是唯一仍在累库的一段</dd>
         <dt>判读依据</dt><dd>四段分化明显：硅片/电池片真去库、硅料仍累库。取四段去化天数的最差值评分，并按库存变化识别传导方向</dd>
       </dl>
-      <div class="fg-formula"><b>计算公式</b>　去化天数_i = 库存存量_i ÷ 日均消耗量_i（硅料按拉晶耗量、硅片按电池耗量、电池片按组件耗量、组件按终端出货量）；score = scale(days, 30, 200)：30 天→100 分、200 天→0 分（去化越慢压力越高，与 axis_semantics=pressure 一致）；方向项：若上游去库而下游累库 → 额外扣 8 分（压力向上传导，尚未传导到终端）</div>
+      <div class="fg-formula"><b>计算公式</b>　去化天数_i = 库存存量_i ÷ 日均消耗量_i（硅料按拉晶耗量、硅片按电池耗量、电池片按组件耗量、组件按终端出货量）；score = scale(worst_days, 30, 200)：30 天→100 分、200 天→0 分（去化越慢压力越高，与 axis_semantics=pressure 一致）。取四环节中最差者对全行业计价，不做加权平均。【未实现】原设计的「上游去库而下游累库 → 额外扣 8 分」方向项尚无对应字段，代码中不存在该项，声明撤回（见全库对账清单 2026-11-09）</div>
       
       
       <div class="fg-threshold"><b>判定阈值</b>　去化天数 &gt; 150 天为严重过剩（当前水平）；&lt; 60 天接近正常（历史 2023 前为 14 天）；30 天以内视为已回到常态流转</div>
@@ -1927,7 +1936,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <dt>当前读数</dt><dd>通威集团质押占总股本 16.54%、占其持股 36.56%（2026-11-06）；*ST亿晶、协鑫集成等尾部标的高位</dd>
         <dt>判读依据</dt><dd>质押是杠杆风险的直接读数。质押比例高 + 股价下跌 = 强平风险 → 加速出清</dd>
       </dl>
-      <div class="fg-formula"><b>计算公式</b>　【过渡实现，质押/两融字段未接入】s_tail = scale(尾部高危家数占比, 0, 0.20)；s_margin = 50（两融余额环比未接入，暂取中性 50）；score = s_tail×0.6 + s_margin×0.4。注意：s_tail 与 tail_penalty 部分同源，本因子权重 3.6 已按低权重控制重复计权；个股质押率与两融余额环比接入后切换正式口径（数据缺口清单新增两项）</div>
+      <div class="fg-formula"><b>计算公式</b>　【过渡实现，质押/两融字段未接入】s_tail = scale(尾部高危家数占比, 0, 0.20)；s_margin = 50（两融余额环比未接入，暂取中性 50）；score = s_tail×0.6 + s_margin×0.4。注意：s_tail 与 tail_penalty 部分同源，本因子权重 3.4 已按低权重控制重复计权；个股质押率与两融余额环比接入后切换正式口径（数据缺口清单新增两项）</div>
       
       
       <div class="fg-threshold"><b>判定阈值</b>　高危家数占比 &gt; 10%；单只质押率 &gt; 50% 为高危</div>
@@ -1947,7 +1956,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <dt>当前读数</dt><dd>隆基绿能 70 亿转债触发回售（拒绝低价转股）；监测池内信用事件标的占比约 1/18</dd>
         <dt>判读依据</dt><dd>公开市场违约是硬约束，银行抽贷的极端形式，往往伴随破产重整申请</dd>
       </dl>
-      <div class="fg-formula"><b>计算公式</b>　credit_ratio = 出现信用事件的标的数 / 监测池家数；s = scale(credit_ratio, 0, 0.30)</div>
+      <div class="fg-formula"><b>计算公式</b>　【半静态】credit_ratio 取手工观测值 1/18（隆基转债回售，2026-09）；s = scale(credit_ratio, 0, 0.30)。分母为监测池家数，分子未接入公告扫描 → 目前每到新的信用事件须人工改值。notice 扫描接入后转为动态计数</div>
       
       
       <div class="fg-threshold"><b>判定阈值</b>　信用事件标的占比 &gt; 10% 为系统性风险；出现公开市场违约即为强信号</div>
@@ -1967,7 +1976,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <dt>当前读数</dt><dd>全池加权约 74.5%；尾部组中位数约 95%（协鑫集成 95.08%、海源复材 94.96%）；最高 *ST亿晶 109.07%（资不抵债）</dd>
         <dt>判读依据</dt><dd>银行授信评估的核心指标。&gt; 80% 通常触发授信收紧，进而加速出清</dd>
       </dl>
-      <div class="fg-formula"><b>计算公式</b>　pool_score = Σ(w_i × s_i) / Σw_i，w_i = 流通市值；单只 s_i：dr≥80→15；75≤dr&lt;80→45；60≤dr&lt;75→75；dr&lt;60→92</div>
+      <div class="fg-formula"><b>计算公式</b>　pool_score = Σ(w_i × s_i) / Σw_i，w_i = 流通市值；单只 s_i = scale(dr, 55, 85)：dr=55% → 0 分（压力未显），dr=85% → 100 分（压力满格）；压力语义，与 axis_semantics=pressure 一致</div>
       
       
       <div class="fg-threshold"><b>判定阈值</b>　&gt; 80% 触发收贷；&gt; 75% 需关注；&lt; 60% 安全</div>
@@ -1987,7 +1996,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <dt>当前读数</dt><dd>近 150 家光伏上市企业应收约 3.5 万亿、应付约 5,500 亿（2026-06 底口径），应付增速显著高于应收</dd>
         <dt>判读依据</dt><dd>应付端拉长说明压力向中小供应商转移，中小企业现金流断裂引发批量停产，形成出清连锁反应</dd>
       </dl>
-      <div class="fg-formula"><b>计算公式</b>　gap = (应付合计 − 应收合计) / 营收合计；s = scale(gap, -0.05, 0.15)</div>
+      <div class="fg-formula"><b>计算公式</b>　【静态锚，未经计算】s ≡ 45.0（中性略偏压力）。设计口径为 gap = (应付合计 − 应收合计) / 营收合计；s = scale(gap, -0.05, 0.15)，但 westock 财务接口不提供行业口径应付/应收汇总，该式在代码中未落地。待公告欠款/诉讼事件扫描接入后切换正式口径（数据缺口清单）</div>
       
       
       <div class="fg-threshold"><b>判定阈值</b>　应付增速 − 应收增速 &gt; 15pct 为连锁风险；欠款诉讼事件月增 &gt; 5 起为预警</div>
@@ -2035,7 +2044,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <dt>当前读数</dt><dd>2026 年已 9 起并购重整（历史新高）：TCL中环 12.58 亿控股一道新能、通威收购丽豪、弘元绿能 6.3 亿接手无锡尚德重整、ST棒杰以股抵债</dd>
         <dt>判读依据</dt><dd>本因子是模型的『伪出清识别器』：政府注资/国资接盘/低水平重组会延后出清，必须扣分</dd>
       </dl>
-      <div class="fg-formula"><b>计算公式</b>　s = 50 + (pos_w − neg_w) / (pos_w + neg_w) × 50</div>
+      <div class="fg-formula"><b>计算公式</b>　【实现与旧文案不符，已改按实现描述】s = event_score_by_rules(GOV_RESCUE / GOV_CONTROL / RESTRUCTURE_LOWLEVEL) 的事件规则得分（基准 50，按事件权重加减，clamp 0-100），再叠加事件流调节 adj（±7 内）。原文本写的 s = 50 + (pos_w − neg_w)/(pos_w + neg_w) × 50 在代码中并不存在，撤回</div>
       
       
       <div class="fg-threshold"><b>判定阈值</b>　任一政府接盘事件 → 单独扣 5 分（触发即警报）；累计净利空 &gt; 15 分 → 出清失败判定</div>
@@ -2055,11 +2064,11 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <dt>当前读数</dt><dd>3 项强制国标（硅多晶/硅片能耗限额、组件能效）2027-01-01 实施；测算出清 310GW（华泰）</dd>
         <dt>判读依据</dt><dd>政策倒逼是唯一能『不可逆』淘汰落后产能的力量，是『被动出清』主路径</dd>
       </dl>
-      <div class="fg-formula"><b>计算公式</b>　s = scale(已确认强制出局产能 / 310, 0, 0.50) × 执行进度系数</div>
+      <div class="fg-formula"><b>计算公式</b>　【静态零值】s = scale(已核减产能 / 310, 0, 0.50) × 1.0；已核减产能当前 = 0（三项强制国标 2027-01-01 才实施），故 s = 0。【未实现】设计中的「执行进度系数」在代码中恒为 1.0，尚无按核减公告折算的逻辑；核减公告出现后须同时接入分子与系数，否则该因子会长期钉在 0 分</div>
       
       
       <div class="fg-threshold"><b>判定阈值</b>　2027-01-01 为硬节点；执行后每月核减产能 &gt; 10GW 为加速信号</div>
-      <div class="fg-threshold"><b>口径说明</b>　标准发布 ≠ 产能出局，需跟踪实际核减公告。本因子当前为 0（标准 2027-01-01 执行），但权重 7.6 分 —— 属『已知的未来利好』，会系统性压低当前评分；是否改为『预期计入』模式（标准发布即给 60 分，核减公告后按实际进度上调）待评估。</div>
+      <div class="fg-threshold"><b>口径说明</b>　标准发布 ≠ 产能出局，需跟踪实际核减公告。本因子当前为 0（标准 2027-01-01 执行），但权重 7.4 分 —— 属『已知的未来利好』，会系统性压低当前评分；是否改为『预期计入』模式（标准发布即给 60 分，核减公告后按实际进度上调）待评估。</div>
     </div>
   </div>
   <div class="factor-group">
@@ -2083,7 +2092,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <dt>当前读数</dt><dd>2026Q3：晶科环比减亏 83%、隆基 41.66%、晶澳 39%、TCL中环 13.2%（扣非 40.4%）；通威亏损收窄至 16.39 亿；天合由盈转亏 −16.72 亿 → 收敛 4/6</dd>
         <dt>判读依据</dt><dd>亏损收敛是价格回升传导到报表的验证，也是银行收贷意愿变化的反向指标</dd>
       </dl>
-      <div class="fg-formula"><b>计算公式</b>　improve_ratio = 单季亏损环比收敛家数 / 6；s = scale(improve_ratio, 0, 0.8)</div>
+      <div class="fg-formula"><b>计算公式</b>　【半静态】improve_ratio = 单季亏损环比收敛家数 / 6，当前按 2026Q3 财报实测 4/6 手工写入；s = scale(improve_ratio, 0, 0.8)。未接入多期利润表自动环比，下季财报须人工改值</div>
       
       
       <div class="fg-threshold"><b>判定阈值</b>　收敛家数占比 &gt; 67% 为修复确认；由盈转亏为恶化信号</div>
@@ -2171,7 +2180,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <dt>当前读数</dt><dd>9 只合计 5 日主力净流入 −1.517 亿元；仅 159864 国泰逆势 +190 万，其余 8 只全为净流出</dd>
         <dt>判读依据</dt><dd>机构资金对出清进度的投票。ETF 份额变化比主力资金流更可靠（不受拆单影响）</dd>
       </dl>
-      <div class="fg-formula"><b>计算公式</b>　s_dir = scale(5日净流入合计, -3亿, +3亿)；s_persist = scale(连续同向天数, 0, 5)；s_mag = scale(|5日净流入|, 0, 5亿)；score = s_dir×0.45 + s_persist×0.25 + s_mag×0.30</div>
+      <div class="fg-formula"><b>计算公式</b>　s_dir = scale(5日净流入合计, -3亿, +3亿)；s_persist = scale(同向家数, 0, 监测池家数)（按 5 日净流入排序后统计与总方向一致的家数，非「连续同向天数」——原文案量纲写错，已改）；s_mag = scale(|5日净流入|, 0, 5亿)；score = s_dir×0.45 + s_persist×0.25 + s_mag×0.30</div>
       
       
       <div class="fg-threshold"><b>判定阈值</b>　5 日净流入 &gt; +5 亿为强配置；净流出 &gt; 1 亿为撤退；连续净流出 &gt; 10 日为趋势性</div>
@@ -2216,7 +2225,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
       <dl class="fg-rows">
         <dt>观测对象</dt><dd>全球 + 中国光伏新增装机（GW）与同比增速<br><span style="color:var(--text-muted)">聚合方式：增速映射 + 绝对量映射双口径</span></dd>
         <dt>指标定义</dt><dd></dd>
-        <dt>当前读数</dt><dd>2026H1 中国新增 72.07GW（同比 −66%，vs 2025H1 抢装高基数 212GW）；CPIA 预计全年 180-240GW（2025 为 315GW，为 2019 年以来首次年度下滑）；全球 2026 预计 612GW（−8%），2027 年重回增长（755GW+）</dd>
+        <dt>当前读数</dt><dd>2026H1 中国新增 72.07GW（同比 −66%，vs 2025H1 抢装高基数 212GW）；CPIA 预计全年 180-240GW（2025 为 315GW，为 2019 年以来首次年度下滑）；全球 2026 预计 612GW（−8%），2027 年重回增长（旧锚 755GW，三源已有下修，见后）；【锚点分歧】SPE 2025-05 版 755GW → SPE 2026-06 版 689GW、BNEF 2026-12 版 688GW（两处转引一致，待一手文本核验后正式改锚），分歧由预测 P7 结算</dd>
         <dt>判读依据</dt><dd>v1 遗漏此因子 —— 需求决定出清后的新均衡能否成立。产能退出只有在需求可承接时才有意义</dd>
       </dl>
       <div class="fg-formula"><b>计算公式</b>　s_g = scale(全球新增装机同比%, -10, +10)；s_amt = scale(全球新增装机GW, 550, 850)；score = s_g×0.6 + s_amt×0.4</div>
@@ -2649,7 +2658,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
     因子权重、阈值与分类规则均可配置，随行业阶段演进调整。
   </p>
   <p class="disclaimer">
-    数据截至 2026-11-08，评分生成于 2026-11-09T11:25:53。
+    数据截至 2026-11-08，评分生成于 2026-11-09T15:21:37。
     本报告为个人研究记录，不构成投资建议。市场有风险，决策需谨慎。
     评分模型输出的是结构化信号，不替代独立判断。
   </p>
