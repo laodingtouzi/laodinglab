@@ -700,9 +700,9 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
 <main class="main">
 <div class="ver-strip">
   <span class="ver-badge">版本 v2.1</span>
-  <span class="ver-item">构建 2026-11-09 15:56</span>
-  <span class="ver-item">数据截至 2026-11-08</span>
-  <span class="ver-item">出清压力指数 39.6 · 投资时机指数 21.4 · 综合 32.3</span>
+  <span class="ver-item">构建 2026-11-09 16:56</span>
+  <span class="ver-item">数据截至 2026-11-09</span>
+  <span class="ver-item">出清压力指数 39.7 · 投资时机指数 19.6 · 综合 31.7</span>
 </div>
 
 <div class="section-label">核心结论 · Verdict</div>
@@ -712,7 +712,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
       <div class="axis-name">Axis 1 · 出清压力指数</div>
       <div class="axis-q">出清压力已经显现到什么程度？</div>
       <div class="axis-score-row">
-        <span class="axis-score" style="color:#9a8a80">39.6</span>
+        <span class="axis-score" style="color:#9a8a80">39.7</span>
         <span style="font-size:20px;color:var(--text-muted)">/100</span>
         <span class="axis-act" style="background:#7f8c8d18;color:#7f8c8d;border-color:#7f8c8d44">压力初步显现</span>
       </div>
@@ -726,7 +726,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
       <div class="axis-name">Axis 2 · 投资时机指数</div>
       <div class="axis-q">现在是不是买入时点？</div>
       <div class="axis-score-row">
-        <span class="axis-score" style="color:#B69C91">21.4</span>
+        <span class="axis-score" style="color:#B69C91">19.6</span>
         <span style="font-size:20px;color:var(--text-muted)">/100</span>
         <span class="axis-act" style="background:#7f8c8d18;color:#7f8c8d;border-color:#7f8c8d44">明确回避</span>
       </div>
@@ -763,11 +763,11 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
     <div class="mini-stat">
       <div class="ms-label">出清事件净分</div>
       <div class="ms-value" style="color:var(--text)">95</div>
-      <div class="ms-sub">0-100，50 为中性 · 利好权重 33.9 / 利空 0</div>
+      <div class="ms-sub">0-100，50 为中性 · 利好权重 37.9 / 利空 0</div>
     </div>
     <div class="mini-stat">
       <div class="ms-label">领先因子评分</div>
-      <div class="ms-value" style="color:var(--text)">30.1</div>
+      <div class="ms-value" style="color:var(--text)">29.1</div>
       <div class="ms-sub">边际改善早于价格修复 3-6 个月</div>
     </div>
     <div class="mini-stat">
@@ -1252,8 +1252,8 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <b>基础权重</b>（规则定义 1-5 分）× <b>广度加成</b>（同规则被 N 家触发则 ×(1+0.15×(N−1))，上限 2.0）
         × <b>时间衰减</b>（0.5^(事件天数/45)，半衰期 45 天）= <b>有效权重</b>，
         正负分别封顶 60，单事件封顶 12。
-        <br>本期读数：利好权重 33.9 / 利空权重 0，
-        净分 <b>95</b>（0-100，50 为中性），命中 10 条事件。
+        <br>本期读数：利好权重 37.9 / 利空权重 0，
+        净分 <b>95</b>（0-100，50 为中性），命中 12 条事件。
         <br><b>怎么读</b>　数值高说明<b>近期</b>出清相关事件以利好为主；低说明利空事件（政府救助、
         低水平重组）占优，即出清被延后。<b>它不直接进总分</b>，而是对 F1/F9/F10 三个因子施加
         ±7 分以内的调节（本期调节 +6.75 分）——避免与产能退出因子重复计权。
@@ -1297,8 +1297,8 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <b>方向</b>（5 日净流入合计，权重 45%）+ <b>持续时长</b>（连续同向家数，权重 25%）
         + <b>绝对规模</b>（|5 日净流入| 相对 5 亿阈值，权重 30%）。
         <br>阈值：5 日净流入 &gt; +5 亿为强配置；净流出 &gt; 1 亿为撤退；连续净流出 &gt; 10 日为趋势性。
-        <br>本期读数：9 只 ETF 合计 5 日主力净流入 <b>-1.52亿</b>，
-        同向家数 8/9，得分 42.4。
+        <br>本期读数：9 只 ETF 合计 5 日主力净流入 <b>-3.06亿</b>，
+        同向家数 8/9，得分 40.6。
       </div>
     </div>
 
@@ -1313,15 +1313,17 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
     没有计分系统的预测不是预测，是观点。
     本栏目对已到期的可结算预测自动结算，滚动公布 Brier 分数。
     参照为<strong>事前冻结的气候学基线</strong>：等价于「对每条预测恒报其冻结概率」，
-    其期望 Brier = p(1−p)。在册 18 条预测，其中 18 条冻结基线为 0.5（无信息基线），当前参照分为
-    <strong>0.25</strong>；技能分 BSS = 1 − BS/0.25，<strong>与基线持平即为 0</strong>，大于 0 才算真有信息。
+    其期望 Brier = p(1−p)。在册 18 条预测：16 条冻结基线 0.5，2 条按参照类标准修订（见冻结表注释）。
+    官方技能分（K9 逐条参照）：<strong>BSS = 1 − mean((p−o)²) / mean(q_i(1−q_i))</strong>，
+    <strong>与基线持平即为 0</strong>，大于 0 才算真有信息；另列 BSS@0.5 敏感性档仅作对照，
+    结论性措辞只引官方档。
   </div>
   </details>
   <div class="mini-stats">
     <div class="mini-stat">
       <div class="ms-label">已结算 / 可结算</div>
       <div class="ms-value" style="color:var(--text)">0/18</div>
-      <div class="ms-sub">第 2 轮 · 2026-11-08</div>
+      <div class="ms-sub">第 3 轮 · 2026-11-08</div>
     </div>
     <div class="mini-stat">
       <div class="ms-label">预测 Brier 分数</div>
@@ -1329,14 +1331,19 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
       <div class="ms-sub">越低越好 · 0=完美预测 1=完全错误</div>
     </div>
     <div class="mini-stat">
-      <div class="ms-label">冻结基线</div>
+      <div class="ms-label">冻结基线（官方档）</div>
       <div class="ms-value" style="color:var(--text)">0.25</div>
-      <div class="ms-sub">恒 0.5 预测的期望 Brier · 结算前冻结</div>
+      <div class="ms-sub">逐条冻结基线池化 mean q(1−q) · 结算前冻结</div>
     </div>
     <div class="mini-stat">
       <div class="ms-label">相对基线优势</div>
       <div class="ms-value" style="color:var(--text)">待结算</div>
       <div class="ms-sub">尚无已结算预测</div>
+    </div>
+    <div class="mini-stat">
+      <div class="ms-label">BSS@0.5 敏感性</div>
+      <div class="ms-value" style="color:var(--text)">待结算</div>
+      <div class="ms-sub">仅作对照 · 结论只引官方档</div>
     </div>
   </div>
   <div class="about-title" style="margin-top:18px;margin-bottom:8px">可结算预测清单</div>
@@ -1656,8 +1663,8 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <td><div class="f-val">东方日升单日 +15.26%、*ST亿晶 +10.22%（尾部异动，风险信号）；钧达 +2.11%、通威 −1.13%</div></td>
         <td><span class="freq">日</span></td>
         <td class="score-cell">
-          <div class="score-num" style="color:#B69C91">27.0</div>
-          <div class="score-bar"><span style="width:27.0%;background:#B69C91"></span></div>
+          <div class="score-num" style="color:#B69C91">9.3</div>
+          <div class="score-bar"><span style="width:9.3%;background:#B69C91"></span></div>
         </td>
       </tr>
       <tr>
@@ -1701,8 +1708,8 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <td><div class="f-val">全池加权约 74.5%；尾部组中位数约 95%（协鑫集成 95.08%、海源复材 94.96%）；最高 *ST亿晶 109.07%（资不抵债）</div></td>
         <td><span class="freq">季（财报后 3 个工作日）</span></td>
         <td class="score-cell">
-          <div class="score-num" style="color:#9a8a80">41.2</div>
-          <div class="score-bar"><span style="width:41.2%;background:#9a8a80"></span></div>
+          <div class="score-num" style="color:#9a8a80">41.4</div>
+          <div class="score-bar"><span style="width:41.4%;background:#9a8a80"></span></div>
         </td>
       </tr>
       <tr>
@@ -1731,8 +1738,8 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <td><div class="f-val">9 只合计 5 日主力净流入 −1.517 亿元；仅 159864 国泰逆势 +190 万，其余 8 只全为净流出</div></td>
         <td><span class="freq">日（收盘后）</span></td>
         <td class="score-cell">
-          <div class="score-num" style="color:#9a8a80">42.4</div>
-          <div class="score-bar"><span style="width:42.4%;background:#9a8a80"></span></div>
+          <div class="score-num" style="color:#9a8a80">40.6</div>
+          <div class="score-bar"><span style="width:40.6%;background:#9a8a80"></span></div>
         </td>
       </tr>
       <tr>
@@ -1743,7 +1750,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         </td>
         <td><span style="font-family:var(--mono);font-size:16.5px">5.4</span></td>
         <td><span style="font-family:var(--mono);font-size:14px;color:var(--text-secondary)">population</span></td>
-        <td><div class="f-val">2026H1 中国新增 72.07GW（同比 −66%，vs 2025H1 抢装高基数 212GW）；CPIA 预计全年 180-240GW（2025 为 315GW，为 2019 年以来首次年度下滑）；全球 2026 预计 612GW（−8%），2027 年重回增长（旧锚 755GW，三源已有下修，见后）；【锚点分歧】SPE 2025-05 版 755GW → SPE 2026-06 版 689GW（三处独立转引一致：易事特 2026 半年报、金辰股份年报、TaiyangNews）、BNEF 2025-12 版 688GW（独立机构收敛，与 SPE 差 1GW）；★K8-3 修正（2026-11-09）：此前误写 BNEF 2026-12 版（该版本不存在）且漏计转引数；待一手文本核验后正式改锚，分歧由预测 P7 结算</div></td>
+        <td><div class="f-val">2026H1 中国新增 72.07GW（同比 −66%，vs 2025H1 抢装高基数 212GW）；CPIA 预计全年 180-240GW（2025 为 315GW，为 2019 年以来首次年度下滑）；全球 2026 预计 612GW（−8%），2027 年重回增长（旧锚 755GW，三源已有下修，见后）；【锚点分歧】SPE 2025-05 版 755GW → SPE 2026-06 版 689GW（三处独立转引一致：易事特 2026 半年报、金辰股份年报、TaiyangNews）、BNEF 2025-12 版 688GW（独立机构收敛，与 SPE 差 1GW）；★2026-11-09 已正式改锚 689GW（证据标准满足，一手 PDF 留作 P7 终审），K8-3 引用漂移已更正</div></td>
         <td><span class="freq">月（装机）+ 季（预测修订）</span></td>
         <td class="score-cell">
           <div class="score-num" style="color:#B69C91">14.3</div>
@@ -1983,7 +1990,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <span class="fg-item-meta">F4 · 权重 4.8</span>
         <span class="fg-item-name">监测池资产负债率</span>
         
-        <span class="fg-item-meta">得分 41.2 · 季（财报后 3 个工作日）</span>
+        <span class="fg-item-meta">得分 41.4 · 季（财报后 3 个工作日）</span>
         
       </div>
       <dl class="fg-rows">
@@ -2167,8 +2174,8 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <span class="fg-item-meta">F15 · 权重 3.6</span>
         <span class="fg-item-name">个股资金与估值分化</span>
         <span class="lead-flag">领先</span>
-        <span class="fg-item-meta">得分 27.0 · 日</span>
-        
+        <span class="fg-item-meta">得分 9.3 · 日</span>
+        <span class="emo emo-neg" style="font-size:13.5px;background:var(--emo-neg-bg);color:var(--emo-neg);border-color:var(--emo-neg-line)">恶化</span>
       </div>
       <dl class="fg-rows">
         <dt>观测对象</dt><dd>监测池 18 只：资金流入家数占比 + 尾部股异动检测<br><span style="color:var(--text-muted)">聚合方式：流入家数占比 − 尾部高风险股异动扣分</span></dd>
@@ -2187,7 +2194,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <span class="fg-item-meta">F13 · 权重 5.3</span>
         <span class="fg-item-name">ETF 资金流（动态三指标）</span>
         <span class="lead-flag">领先</span>
-        <span class="fg-item-meta">得分 42.4 · 日（收盘后）</span>
+        <span class="fg-item-meta">得分 40.6 · 日（收盘后）</span>
         
       </div>
       <dl class="fg-rows">
@@ -2241,7 +2248,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
       <dl class="fg-rows">
         <dt>观测对象</dt><dd>全球 + 中国光伏新增装机（GW）与同比增速<br><span style="color:var(--text-muted)">聚合方式：增速映射 + 绝对量映射双口径</span></dd>
         <dt>指标定义</dt><dd></dd>
-        <dt>当前读数</dt><dd>2026H1 中国新增 72.07GW（同比 −66%，vs 2025H1 抢装高基数 212GW）；CPIA 预计全年 180-240GW（2025 为 315GW，为 2019 年以来首次年度下滑）；全球 2026 预计 612GW（−8%），2027 年重回增长（旧锚 755GW，三源已有下修，见后）；【锚点分歧】SPE 2025-05 版 755GW → SPE 2026-06 版 689GW（三处独立转引一致：易事特 2026 半年报、金辰股份年报、TaiyangNews）、BNEF 2025-12 版 688GW（独立机构收敛，与 SPE 差 1GW）；★K8-3 修正（2026-11-09）：此前误写 BNEF 2026-12 版（该版本不存在）且漏计转引数；待一手文本核验后正式改锚，分歧由预测 P7 结算</dd>
+        <dt>当前读数</dt><dd>2026H1 中国新增 72.07GW（同比 −66%，vs 2025H1 抢装高基数 212GW）；CPIA 预计全年 180-240GW（2025 为 315GW，为 2019 年以来首次年度下滑）；全球 2026 预计 612GW（−8%），2027 年重回增长（旧锚 755GW，三源已有下修，见后）；【锚点分歧】SPE 2025-05 版 755GW → SPE 2026-06 版 689GW（三处独立转引一致：易事特 2026 半年报、金辰股份年报、TaiyangNews）、BNEF 2025-12 版 688GW（独立机构收敛，与 SPE 差 1GW）；★2026-11-09 已正式改锚 689GW（证据标准满足，一手 PDF 留作 P7 终审），K8-3 引用漂移已更正</dd>
         <dt>判读依据</dt><dd>v1 遗漏此因子 —— 需求决定出清后的新均衡能否成立。产能退出只有在需求可承接时才有意义</dd>
       </dl>
       <div class="fg-formula"><b>计算公式</b>　【半静态：装机同比与 GW 锚为手工维护读数，季频刷新】s_g = scale(全球新增装机同比%, -10, +10)；s_amt = scale(全球新增装机GW, 550, 850)；score = s_g×0.6 + s_amt×0.4</div>
@@ -2264,7 +2271,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <dt>当前读数</dt><dd>全球硅料 330 万吨(1738GW)/硅片 1273GW/电池 1315GW/组件 1482GW（InfoLink，2026-06 末）；全球需求约 612GW → 组件供需比约 2.4:1</dd>
         <dt>判读依据</dt><dd>v2 新增。出清是否足够的判据：有效产能/需求降到 1.0-1.2 区间即达成新均衡。仅看退出量不看需求，无法判断均衡是否成立</dd>
       </dl>
-      <div class="fg-formula"><b>计算公式</b>　ratio = effective_capacity_gw / global_demand_gw；s = scale(ratio, 2.4, 1.0)</div>
+      <div class="fg-formula"><b>计算公式</b>　ratio = effective_capacity_gw / global_demand_gw；s = scale(ratio, 2.4, 1.0)。【分母口径注记 · Q41 最低标准，2026-11-09】分子 effective_capacity 仅含中国供给，分母为全球需求；海外新增产能缺席（BNEF：2026 中国以外新增约 308GW；印度组件名义产能约 233GW、利用率 35-40%）→ ratio 被低估 → F17 得分系统性偏高（出清显得比全球实际更充分）。量级：当前组件口径 ratio≈2.42，计入 308GW 后约 2.9，在 scale(2.4, 1.0) 下两端均封顶 0 分——当前无数值影响；随出清推进 ratio 回落进入 2.4 敏感区后偏差显形，恰逢建仓决策关键期，届时须先行扩口径再读数</div>
       
       
       <div class="fg-threshold"><b>判定阈值</b>　供需比 ≤ 1.3 为新均衡达成；≥ 2.0 为严重过剩（当前 2.42:1）</div>
@@ -2482,40 +2489,40 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
       <div class="about-title" style="margin-bottom:12px">光伏 ETF 主力资金流（万元）</div>
       <div class="stat-list">
         <div class="stat-row">
-          <span class="sr-label">光伏ETF国泰<br><span style="font-size:14.5px;color:var(--text-muted)">20日累计 665 万元</span></span>
-          <span class="sr-value" style="color:#c0392b">190<span style="font-size:14px;color:var(--text-muted);font-weight:400"> 万</span></span>
+          <span class="sr-label">光伏ETF国泰<br><span style="font-size:14.5px;color:var(--text-muted)">20日累计 566 万元</span></span>
+          <span class="sr-value" style="color:#c0392b">131<span style="font-size:14px;color:var(--text-muted);font-weight:400"> 万</span></span>
         </div>
         <div class="stat-row">
-          <span class="sr-label">光伏ETF招商<br><span style="font-size:14.5px;color:var(--text-muted)">20日累计 -110 万元</span></span>
-          <span class="sr-value" style="color:#27ae60">-74<span style="font-size:14px;color:var(--text-muted);font-weight:400"> 万</span></span>
+          <span class="sr-label">光伏ETF招商<br><span style="font-size:14.5px;color:var(--text-muted)">20日累计 -156 万元</span></span>
+          <span class="sr-value" style="color:#27ae60">-114<span style="font-size:14px;color:var(--text-muted);font-weight:400"> 万</span></span>
         </div>
         <div class="stat-row">
-          <span class="sr-label">光伏ETF富国<br><span style="font-size:14.5px;color:var(--text-muted)">20日累计 -197 万元</span></span>
-          <span class="sr-value" style="color:#27ae60">-145<span style="font-size:14px;color:var(--text-muted);font-weight:400"> 万</span></span>
+          <span class="sr-label">光伏ETF富国<br><span style="font-size:14.5px;color:var(--text-muted)">20日累计 -283 万元</span></span>
+          <span class="sr-value" style="color:#27ae60">-229<span style="font-size:14px;color:var(--text-muted);font-weight:400"> 万</span></span>
         </div>
         <div class="stat-row">
-          <span class="sr-label">光伏ETF汇添富<br><span style="font-size:14.5px;color:var(--text-muted)">20日累计 -1,242 万元</span></span>
-          <span class="sr-value" style="color:#27ae60">-1,287<span style="font-size:14px;color:var(--text-muted);font-weight:400"> 万</span></span>
+          <span class="sr-label">光伏ETF汇添富<br><span style="font-size:14.5px;color:var(--text-muted)">20日累计 -1,976 万元</span></span>
+          <span class="sr-value" style="color:#27ae60">-1,961<span style="font-size:14px;color:var(--text-muted);font-weight:400"> 万</span></span>
         </div>
         <div class="stat-row">
-          <span class="sr-label">光伏ETF易方达<br><span style="font-size:14.5px;color:var(--text-muted)">20日累计 -1,565 万元</span></span>
-          <span class="sr-value" style="color:#27ae60">-1,728<span style="font-size:14px;color:var(--text-muted);font-weight:400"> 万</span></span>
+          <span class="sr-label">光伏ETF易方达<br><span style="font-size:14.5px;color:var(--text-muted)">20日累计 -2,544 万元</span></span>
+          <span class="sr-value" style="color:#27ae60">-2,689<span style="font-size:14px;color:var(--text-muted);font-weight:400"> 万</span></span>
         </div>
         <div class="stat-row">
-          <span class="sr-label">光伏龙头ETF广发<br><span style="font-size:14.5px;color:var(--text-muted)">20日累计 -2,375 万元</span></span>
-          <span class="sr-value" style="color:#27ae60">-2,577<span style="font-size:14px;color:var(--text-muted);font-weight:400"> 万</span></span>
+          <span class="sr-label">光伏龙头ETF广发<br><span style="font-size:14.5px;color:var(--text-muted)">20日累计 -3,511 万元</span></span>
+          <span class="sr-value" style="color:#27ae60">-3,709<span style="font-size:14px;color:var(--text-muted);font-weight:400"> 万</span></span>
         </div>
         <div class="stat-row">
-          <span class="sr-label">光伏ETF天弘<br><span style="font-size:14.5px;color:var(--text-muted)">20日累计 -3,274 万元</span></span>
-          <span class="sr-value" style="color:#27ae60">-2,061<span style="font-size:14px;color:var(--text-muted);font-weight:400"> 万</span></span>
+          <span class="sr-label">光伏ETF天弘<br><span style="font-size:14.5px;color:var(--text-muted)">20日累计 -5,661 万元</span></span>
+          <span class="sr-value" style="color:#27ae60">-4,327<span style="font-size:14px;color:var(--text-muted);font-weight:400"> 万</span></span>
         </div>
         <div class="stat-row">
-          <span class="sr-label">光伏ETF华夏<br><span style="font-size:14.5px;color:var(--text-muted)">20日累计 -4,098 万元</span></span>
-          <span class="sr-value" style="color:#27ae60">-3,986<span style="font-size:14px;color:var(--text-muted);font-weight:400"> 万</span></span>
+          <span class="sr-label">光伏ETF华夏<br><span style="font-size:14.5px;color:var(--text-muted)">20日累计 -5,823 万元</span></span>
+          <span class="sr-value" style="color:#27ae60">-5,834<span style="font-size:14px;color:var(--text-muted);font-weight:400"> 万</span></span>
         </div>
         <div class="stat-row">
-          <span class="sr-label">光伏ETF华泰柏瑞<br><span style="font-size:14.5px;color:var(--text-muted)">20日累计 -5,944 万元</span></span>
-          <span class="sr-value" style="color:#27ae60">-3,501<span style="font-size:14px;color:var(--text-muted);font-weight:400"> 万</span></span>
+          <span class="sr-label">光伏ETF华泰柏瑞<br><span style="font-size:14.5px;color:var(--text-muted)">20日累计 -14,654 万元</span></span>
+          <span class="sr-value" style="color:#27ae60">-11,838<span style="font-size:14px;color:var(--text-muted);font-weight:400"> 万</span></span>
         </div>
       </div>
     </div>
@@ -2542,7 +2549,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
       <div class="note" style="margin-top:16px">
         <strong>资金面判读：</strong>九只光伏 ETF 5 日主力资金合计
         <span style="font-family:var(--mono);color:#27ae60;font-weight:600">
-        -15,170 万元</span>，
+        -30,569 万元</span>，
         同向家数 8/9。
         估值分位处于低位（光伏辅材 PE 分位
         2.2%、
@@ -2558,14 +2565,34 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
   </div>
 </div><div class="section-label">出清事件流 · Event Feed</div>
 <div class="card">
-      <div style="margin-bottom:12px;font-size:16.5px;color:var(--text-secondary)">本期扫描命中 <strong>10</strong> 条出清相关事件（含公告与舆情）。分类依据：不可逆退出判利好，政府救助与低水平重组判利空。有效权重 = 基础权重 × 广度加成 × 时间衰减。</div>
+      <div style="margin-bottom:12px;font-size:16.5px;color:var(--text-secondary)">本期扫描命中 <strong>12</strong> 条出清相关事件（含公告与舆情）。分类依据：不可逆退出判利好，政府救助与低水平重组判利空。有效权重 = 基础权重 × 广度加成 × 时间衰减。</div>
+      <div class="ev-item">
+        <div style="flex:0 0 auto"><span class="emo emo-pos" style="background:var(--emo-pos-bg);color:var(--emo-pos);border-color:var(--emo-pos-line)">出清利好</span></div>
+        <div>
+          <div class="ev-title">周期底部的两笔账：通威股份的单季减亏与48亿并购<span class="ev-tag">头部并购且伴随产能实际关停</span></div>
+          <div class="ev-meta">sh600438 · 舆情 · 基础权重 2
+            × 广度 1.15 × 衰减 1.0（0天）
+            = 有效权重 <strong>2.3</strong>
+            · 同规则触发 2 家</div>
+        </div>
+      </div>
+      <div class="ev-item">
+        <div style="flex:0 0 auto"><span class="emo emo-pos" style="background:var(--emo-pos-bg);color:var(--emo-pos);border-color:var(--emo-pos-line)">出清利好</span></div>
+        <div>
+          <div class="ev-title">硅片进入新一轮上行周期，TCL中环停牌加码收购中环领先<span class="ev-tag">头部并购且伴随产能实际关停</span></div>
+          <div class="ev-meta">sz002129 · 舆情 · 基础权重 2
+            × 广度 1.15 × 衰减 1.0（0天）
+            = 有效权重 <strong>2.3</strong>
+            · 同规则触发 2 家</div>
+        </div>
+      </div>
       <div class="ev-item">
         <div style="flex:0 0 auto"><span class="emo emo-pos" style="background:var(--emo-pos-bg);color:var(--emo-pos);border-color:var(--emo-pos-line)">出清利好</span></div>
         <div>
           <div class="ev-title">多晶硅龙头集体减产，现在最怕的是再出“内鬼”！<span class="ev-tag">产能关停/停产/废弃</span></div>
           <div class="ev-meta">sh688303 · 舆情 · 基础权重 4
-            × 广度 1.0 × 衰减 0.985（1天）
-            = 有效权重 <strong>3.94</strong>
+            × 广度 1.0 × 衰减 0.97（2天）
+            = 有效权重 <strong>3.88</strong>
             </div>
         </div>
       </div>
@@ -2574,8 +2601,8 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <div>
           <div class="ev-title">通威股份：通威股份有限公司关于控股股东股份质押的公告<span class="ev-tag">现金流/负债恶化信号</span></div>
           <div class="ev-meta">sh600438 · 公告 · 基础权重 2
-            × 广度 1.45 × 衰减 0.97（2天）
-            = 有效权重 <strong>2.81</strong>
+            × 广度 1.45 × 衰减 0.955（3天）
+            = 有效权重 <strong>2.77</strong>
             · 同规则触发 4 家</div>
         </div>
       </div>
@@ -2584,8 +2611,8 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <div>
           <div class="ev-title">隆基绿能：关于“隆22转债”回售结果的公告<span class="ev-tag">银行收贷/信用收缩</span></div>
           <div class="ev-meta">sh601012 · 公告 · 基础权重 4
-            × 广度 1.0 × 衰减 0.94（4天）
-            = 有效权重 <strong>3.76</strong>
+            × 广度 1.0 × 衰减 0.926（5天）
+            = 有效权重 <strong>3.7</strong>
             </div>
         </div>
       </div>
@@ -2594,8 +2621,8 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <div>
           <div class="ev-title">*ST亿晶：亿晶光电科技股份有限公司关于与重整投资人签署预重整投资协议之补充协议的公告<span class="ev-tag">企业破产/重整清算</span></div>
           <div class="ev-meta">sh600537 · 公告 · 基础权重 6
-            × 广度 1.0 × 衰减 0.898（7天）
-            = 有效权重 <strong>5.39</strong>
+            × 广度 1.0 × 衰减 0.884（8天）
+            = 有效权重 <strong>5.3</strong>
             </div>
         </div>
       </div>
@@ -2604,8 +2631,8 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <div>
           <div class="ev-title">隆基绿能：关于2026年前三季度计提资产减值准备的公告<span class="ev-tag">资产减值（经济性死亡的会计确认）</span></div>
           <div class="ev-meta">sh601012 · 公告 · 基础权重 4
-            × 广度 1.3 × 衰减 0.871（9天）
-            = 有效权重 <strong>4.53</strong>
+            × 广度 1.3 × 衰减 0.857（10天）
+            = 有效权重 <strong>4.46</strong>
             · 同规则触发 3 家</div>
         </div>
       </div>
@@ -2614,8 +2641,8 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <div>
           <div class="ev-title">福莱特：福莱特玻璃集团股份有限公司关于计提2026年第三季度资产减值准备的公告<span class="ev-tag">资产减值（经济性死亡的会计确认）</span></div>
           <div class="ev-meta">sh601865 · 公告 · 基础权重 4
-            × 广度 1.3 × 衰减 0.871（9天）
-            = 有效权重 <strong>4.53</strong>
+            × 广度 1.3 × 衰减 0.857（10天）
+            = 有效权重 <strong>4.46</strong>
             · 同规则触发 3 家</div>
         </div>
       </div>
@@ -2624,8 +2651,8 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <div>
           <div class="ev-title">大全能源：大全能源关于2026年第三季度计提资产减值准备的公告<span class="ev-tag">资产减值（经济性死亡的会计确认）</span></div>
           <div class="ev-meta">sh688303 · 公告 · 基础权重 4
-            × 广度 1.3 × 衰减 0.831（12天）
-            = 有效权重 <strong>4.32</strong>
+            × 广度 1.3 × 衰减 0.819（13天）
+            = 有效权重 <strong>4.26</strong>
             · 同规则触发 3 家</div>
         </div>
       </div>
@@ -2634,8 +2661,8 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <div>
           <div class="ev-title">*ST亿晶：亿晶光电科技股份有限公司关于孙公司收到《民事判决书》暨诉讼进展公告<span class="ev-tag">现金流/负债恶化信号</span></div>
           <div class="ev-meta">sh600537 · 公告 · 基础权重 2
-            × 广度 1.45 × 衰减 0.746（19天）
-            = 有效权重 <strong>2.16</strong>
+            × 广度 1.45 × 衰减 0.735（20天）
+            = 有效权重 <strong>2.13</strong>
             · 同规则触发 4 家</div>
         </div>
       </div>
@@ -2644,8 +2671,8 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <div>
           <div class="ev-title">东方日升：关于股东部分股份质押的公告<span class="ev-tag">现金流/负债恶化信号</span></div>
           <div class="ev-meta">sz300118 · 公告 · 基础权重 2
-            × 广度 1.45 × 衰减 0.54（40天）
-            = 有效权重 <strong>1.57</strong>
+            × 广度 1.45 × 衰减 0.532（41天）
+            = 有效权重 <strong>1.54</strong>
             · 同规则触发 4 家</div>
         </div>
       </div>
@@ -2654,8 +2681,8 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <div>
           <div class="ev-title">海源复材：关于累计诉讼、仲裁情况的进展公告<span class="ev-tag">现金流/负债恶化信号</span></div>
           <div class="ev-meta">sz002529 · 公告 · 基础权重 2
-            × 广度 1.45 × 衰减 0.292（80天）
-            = 有效权重 <strong>0.85</strong>
+            × 广度 1.45 × 衰减 0.287（81天）
+            = 有效权重 <strong>0.83</strong>
             · 同规则触发 4 家</div>
         </div>
       </div>
@@ -2674,7 +2701,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
     因子权重、阈值与分类规则均可配置，随行业阶段演进调整。
   </p>
   <p class="disclaimer">
-    数据截至 2026-11-08，评分生成于 2026-11-09T15:56:12。
+    数据截至 2026-11-09，评分生成于 2026-11-09T16:56:09。
     本报告为个人研究记录，不构成投资建议。市场有风险，决策需谨慎。
     评分模型输出的是结构化信号，不替代独立判断。
   </p>
