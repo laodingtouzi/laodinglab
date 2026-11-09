@@ -97,7 +97,7 @@ ol.ref li{margin:5px 0}
 <p class="lede" style="margin-top:14px">核心判断：<strong>出清处于「政策已介入、物理退出未启动」的僵持段</strong>。财务恶化已充分定价，三项强制国标已落文（2027-01-01 生效），但首份实质核减公告尚未出现、七环节价格全线低于现金成本。基准判断：<strong>2027 年末至 2028 年上半年确认出清（50%）</strong>；当前时点建议<strong>回避</strong>，等待三个确认信号（见第 5 节）。</p>
 <div class="meta-bar">
   <span>数据截至 2026-11-09（快照 18/18 完整）</span>
-  <span>版本 Kimi-v1.0</span>
+  <span>版本 Kimi-v1.1</span>
   <span>对照版本：<a href="/professionalreports/solar/" style="color:var(--accent)">WB 版</a></span>
 </div>
 
@@ -152,6 +152,7 @@ ol.ref li{margin:5px 0}
 <h2><span class="no">03</span>证据面板</h2>
 
 <h3>行业层（静态基线，月度刷新）</h3>
+<p style="font-size:14px;color:var(--ink2);margin-top:0">注：本组基线常量（开工率、库存、去化天数）与 WB 版共享同一 INDUSTRY_BASELINE 数据源——<strong>任何单边改值都会破坏两版可比性</strong>，改值须双方同步并附来源时间戳。</p>
 <div class="kv">
   <div class="item"><div class="v warn">57 万吨+</div><div class="k">硅料库存，去化约 150 天（TrendForce 2026-11-04）；硅片 27GW、组件 26.7GW</div></div>
   <div class="item"><div class="v warn">35% / 45%</div><div class="k">硅料开工率 / 全产业链开工率（基线静态值，待季报复核）</div></div>
@@ -404,18 +405,29 @@ ol.ref li{margin:5px 0}
 </div>
 
 <h2><span class="no">06</span>预测台账（事前冻结，到期结算）</h2>
-<p style="font-size:14.5px">每条预测有概率、结算日、可核验来源；结算用 Brier 技能分（BSS），参照为事前冻结基线（政策事件类 0.7，其余 0.5 无信息基线）；与基线持平 BSS=0，大于 0 才算真有信息。2027-03-31 首个结算日后基线绝对冻结。</p>
+<p style="font-size:14.5px">全簿 18 条（含 WB 署名 8 条，双方互搏同簿登记、分别结算）。每条预测有概率、结算日、可核验来源；结算用 Brier 技能分（BSS），参照为事前冻结基线：<strong>W1/P1 两条</strong>按行政去产能参照类基率修订为 0.7（2026-11-09 生效，附形式风险注记），<strong>其余 16 条</strong>为 0.5 无信息基线；与基线持平 BSS=0，大于 0 才算真有信息。2027-03-31 首个结算日后基线绝对冻结。下一个结算事件：<strong>P9（2026-11-16）</strong>。</p>
 <table>
-  <tr><th>#</th><th>预测</th><th style="text-align:right">概率</th><th>结算日</th><th>结算口径</th></tr>
-  <tr><td class="num">P1</td><td>出现首份强标实际核减产能公告</td><td class="num">55%</td><td class="num">2027-03-31</td><td>工信部/企业公告（基线 0.7，参照类）</td></tr>
-  <tr><td class="num">P2</td><td>组件价格站上 0.82 元/W</td><td class="num">25%</td><td class="num">2027-06-30</td><td>InfoLink 周报价</td></tr>
-  <tr><td class="num">P3</td><td>监测池 ≥2 家破产清算（非重整）或产线永久关停</td><td class="num">35%</td><td class="num">2027-12-31</td><td>公司公告</td></tr>
-  <tr><td class="num">P4</td><td>出现一次「价格站上成本线后被复产压回」的伪反弹</td><td class="num">45%</td><td class="num">2027-12-31</td><td>InfoLink 组件价格</td></tr>
-  <tr><td class="num">P5</td><td>组件供需比降至 1.8 以下</td><td class="num">40%</td><td class="num">2028-06-30</td><td>InfoLink 产能 + CPIA 需求</td></tr>
-  <tr><td class="num">P6</td><td>2027 年全球新增装机 ≥700GW</td><td class="num">35%</td><td class="num">2028-01-31</td><td>CPIA 年度统计（注明 DC/AC 口径）</td></tr>
-  <tr><td class="num">P7</td><td>SPE 与 CPIA 最新版对 2027 的中性预测均 &lt;750GW</td><td class="num">70%</td><td class="num">2028-01-31</td><td>两机构最新版文本（需求锚点漂移本身成为结算对象）</td></tr>
-  <tr><td class="num">P8</td><td>2026-12-08 前采集至少触发 1 次缺采报警</td><td class="num">60%</td><td class="num">2026-12-08</td><td>快照 universe_alert 字段（自败型预测：若促成采集层加固则预测失败而系统改善）</td></tr>
+  <tr><th>#</th><th>署名</th><th>预测</th><th style="text-align:right">概率</th><th>结算日</th><th>结算口径</th></tr>
+  <tr><td class="num">P1</td><td>Kimi</td><td>出现首份强标实际核减产能公告</td><td class="num">55%</td><td class="num">2027-03-31</td><td>工信部/企业公告（基线 0.7，参照类）</td></tr>
+  <tr><td class="num">W1</td><td>WB</td><td>同上（双方同题对峙）</td><td class="num">55%</td><td class="num">2027-03-31</td><td>同上（基线 0.7）</td></tr>
+  <tr><td class="num">P2</td><td>Kimi</td><td>组件价格站上 0.82 元/W</td><td class="num">25%</td><td class="num">2027-06-30</td><td>InfoLink 周报价（绝对价位判据，见表下注）</td></tr>
+  <tr><td class="num">W2</td><td>WB</td><td>同上</td><td class="num">30%</td><td class="num">2027-06-30</td><td>同上</td></tr>
+  <tr><td class="num">P3</td><td>Kimi</td><td>监测池 ≥2 家破产清算（非重整）或产线永久关停</td><td class="num">35%</td><td class="num">2027-12-31</td><td>公司公告</td></tr>
+  <tr><td class="num">W3</td><td>WB</td><td>同上</td><td class="num">40%</td><td class="num">2027-12-31</td><td>同上</td></tr>
+  <tr><td class="num">P4</td><td>Kimi</td><td>出现一次「价格站上成本线后被复产压回」的伪反弹</td><td class="num">45%</td><td class="num">2027-12-31</td><td>InfoLink 组件价格</td></tr>
+  <tr><td class="num">W4</td><td>WB</td><td>同上</td><td class="num">50%</td><td class="num">2027-12-31</td><td>同上</td></tr>
+  <tr><td class="num">P5</td><td>Kimi</td><td>组件供需比降至 1.8 以下</td><td class="num">40%</td><td class="num">2028-06-30</td><td>InfoLink 产能 + CPIA 需求</td></tr>
+  <tr><td class="num">W5</td><td>WB</td><td>同上</td><td class="num">45%</td><td class="num">2028-06-30</td><td>同上</td></tr>
+  <tr><td class="num">P6</td><td>Kimi</td><td>2027 年全球新增装机 ≥700GW</td><td class="num">35%</td><td class="num">2028-01-31</td><td>CPIA 年度统计（注明 DC/AC 口径）</td></tr>
+  <tr><td class="num">W8</td><td>WB</td><td>2027 年全球新增装机 ≥750GW（锚已改 689GW，预测不动由结算裁决）</td><td class="num">45%</td><td class="num">2028-01-31</td><td>同上</td></tr>
+  <tr><td class="num">P7</td><td>Kimi</td><td>SPE 与 CPIA 最新版对 2027 的中性预测均 &lt;750GW</td><td class="num">70%</td><td class="num">2028-01-31</td><td>两机构最新版文本（锚点漂移本身成为结算对象）</td></tr>
+  <tr><td class="num">W6</td><td>WB</td><td>出现「政府协调续贷/债务展期」公告（僵尸续命事件）</td><td class="num">45%</td><td class="num">2027-06-30</td><td>公司公告</td></tr>
+  <tr><td class="num">W7</td><td>WB</td><td>出现「产线永久关停」公告（区别于冷修/减产）</td><td class="num">40%</td><td class="num">2027-12-31</td><td>公司公告</td></tr>
+  <tr><td class="num">P8</td><td>Kimi</td><td>2026-12-08 前采集至少触发 1 次缺采报警</td><td class="num">60%</td><td class="num">2026-12-08</td><td>快照 universe_alert 字段（自败型预测）</td></tr>
+  <tr><td class="num">P9</td><td>Kimi</td><td>WB 批次 2 六项整改 2026-11-16 前全部落地且可核验</td><td class="num">55%</td><td class="num">2026-11-16</td><td>git log + 文件实查逐条核对（工程纪律预测）</td></tr>
+  <tr><td class="num">P10</td><td>Kimi</td><td>对账器首跑时再发现 ≥1 处「声明 ⊄ 实现」残留</td><td class="num">60%</td><td class="num">2027-01-31</td><td>结算于对账器首跑日（提前结算）；未上线按未兑现结算</td></tr>
 </table>
+<p style="font-size:14px;color:var(--ink2)">注：P2/W2 的结算判据（组件价格站上 0.82 元/W，绝对价位）与 §05 触发器的判据（连续 4 周站上现金成本线，相对条件）是两个不同口径——前者用于台账结算，后者用于改判信号；频率框架对绝对价位适配性差，P2 的 25% 已反映此折扣。</p>
 
 <h2><span class="no">07</span>方法论与局限声明</h2>
 <ol class="ref">
@@ -428,10 +440,9 @@ ol.ref li{margin:5px 0}
 <div class="disc">免责声明：本报告为研究性内容，所有数据来自公开渠道（westock 终端、TrendForce、InfoLink、CPIA、SPE、BNEF 及上市公司公告），可能存在滞后或误差。报告不构成任何投资建议，据此操作风险自负。</div>
 
 <div class="footer">
-  光伏产业出清进程监控（Kimi 版）v1.0 ｜ 数据截至 2026-11-09 ｜ 互博机制：与 <a href="/professionalreports/solar/">WB 版</a>并行互搏、分歧留痕、预测可结算 ｜ laodinglab.com
+  光伏产业出清进程监控（Kimi 版）v1.1 ｜ 数据截至 2026-11-09 ｜ v1.1 修订（应 WB 07 轮互评）：台账扩至全簿 18 条、基线表述精确化（仅 W1/P1 为 0.7）、共享基线同步纪律注记、P2 双判据注记 ｜ 互博机制：与 <a href="/professionalreports/solar/">WB 版</a>并行互搏、分歧留痕、预测可结算 ｜ laodinglab.com
 </div>
 
 </div>
-<!-- deploy-retry 2026-11-09T17:25 -->
 </body>
 </html>
