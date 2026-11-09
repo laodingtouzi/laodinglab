@@ -700,7 +700,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
 <main class="main">
 <div class="ver-strip">
   <span class="ver-badge">版本 v2.1</span>
-  <span class="ver-item">构建 2026-11-08 23:15</span>
+  <span class="ver-item">构建 2026-11-09 11:25</span>
   <span class="ver-item">数据截至 2026-11-08</span>
   <span class="ver-item">出清压力指数 39.6 · 投资时机指数 21.4 · 综合 32.3</span>
 </div>
@@ -1923,11 +1923,11 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
       </div>
       <dl class="fg-rows">
         <dt>观测对象</dt><dd>监测池控股股东质押比例分布 + 两融余额变化，按家数占比<br><span style="color:var(--text-muted)">聚合方式：质押高危家数占比 + 两融余额环比</span></dd>
-        <dt>指标定义</dt><dd></dd>
+        <dt>指标定义</dt><dd>过渡口径：尾部高危家数占比（负债率&gt;90% 或权益为负）→ 0-20% 映射；两融项缺数据取中性</dd>
         <dt>当前读数</dt><dd>通威集团质押占总股本 16.54%、占其持股 36.56%（2026-11-06）；*ST亿晶、协鑫集成等尾部标的高位</dd>
         <dt>判读依据</dt><dd>质押是杠杆风险的直接读数。质押比例高 + 股价下跌 = 强平风险 → 加速出清</dd>
       </dl>
-      <div class="fg-formula"><b>计算公式</b>　s_pledge = scale(质押率&gt;50%的家数占比, 0, 0.20)；s_margin = scale(两融余额环比%, -15, +15)；score = s_pledge×0.6 + s_margin×0.4</div>
+      <div class="fg-formula"><b>计算公式</b>　【过渡实现，质押/两融字段未接入】s_tail = scale(尾部高危家数占比, 0, 0.20)；s_margin = 50（两融余额环比未接入，暂取中性 50）；score = s_tail×0.6 + s_margin×0.4。注意：s_tail 与 tail_penalty 部分同源，本因子权重 3.6 已按低权重控制重复计权；个股质押率与两融余额环比接入后切换正式口径（数据缺口清单新增两项）</div>
       
       
       <div class="fg-threshold"><b>判定阈值</b>　高危家数占比 &gt; 10%；单只质押率 &gt; 50% 为高危</div>
@@ -2649,7 +2649,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
     因子权重、阈值与分类规则均可配置，随行业阶段演进调整。
   </p>
   <p class="disclaimer">
-    数据截至 2026-11-08，评分生成于 2026-11-08T23:15:52。
+    数据截至 2026-11-08，评分生成于 2026-11-09T11:25:53。
     本报告为个人研究记录，不构成投资建议。市场有风险，决策需谨慎。
     评分模型输出的是结构化信号，不替代独立判断。
   </p>
