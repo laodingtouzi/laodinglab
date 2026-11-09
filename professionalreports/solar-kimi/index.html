@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>光伏产业出清进程监控（Kimi 版）｜独立研究</title>
+<style>
+:root{
+  --paper:#faf8f4; --ink:#1c1a17; --ink2:#57534a; --line:#e3ddd2;
+  --accent:#0f5e52; --accent-soft:#e3efec;
+  --warn:#a33b20; --warn-soft:#f6e7e1;
+  --gold:#8a6d3b; --gold-soft:#f3ecdd;
+  --mono:"SF Mono",Menlo,monospace;
+  --serif:"Songti SC","Noto Serif CJK SC","Source Han Serif SC",serif;
+  --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.85;-webkit-font-smoothing:antialiased}
+.wrap{max-width:960px;margin:0 auto;padding:48px 28px 80px}
+h1,h2,h3,.serif{font-family:var(--serif)}
+h1{font-size:34px;letter-spacing:.02em;line-height:1.4}
+h2{font-size:24px;margin:64px 0 8px;padding-top:24px;border-top:2px solid var(--ink);letter-spacing:.03em}
+h2 .no{color:var(--accent);margin-right:10px;font-size:20px}
+h3{font-size:19px;margin:28px 0 10px}
+p{margin:12px 0;color:var(--ink2)}
+strong{color:var(--ink)}
+.lede{font-size:19px;color:var(--ink);line-height:1.9}
+.meta-bar{display:flex;flex-wrap:wrap;gap:10px 22px;margin:20px 0 0;font-size:13.5px;color:var(--ink2);font-family:var(--mono)}
+.tag{display:inline-block;background:var(--ink);color:var(--paper);font-size:13px;padding:3px 12px;border-radius:3px;letter-spacing:.12em;margin-bottom:14px}
+.verdict{background:#fff;border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:6px;padding:22px 26px;margin:28px 0}
+.verdict p{color:var(--ink);font-size:18px}
+.scen{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:24px 0}
+.scen .card{background:#fff;border:1px solid var(--line);border-radius:6px;padding:18px 18px 14px}
+.scen .prob{font-family:var(--serif);font-size:38px;line-height:1.1}
+.scen .lab{font-size:14px;letter-spacing:.15em;color:var(--ink2);margin-bottom:6px}
+.scen .win{font-size:13.5px;color:var(--ink2);margin-top:8px;border-top:1px dashed var(--line);padding-top:8px}
+.scen .desc{font-size:14.5px;color:var(--ink2);margin-top:6px;line-height:1.7}
+.c-bull{border-top:4px solid var(--accent)} .c-bull .prob{color:var(--accent)}
+.c-base{border-top:4px solid var(--gold)} .c-base .prob{color:var(--gold)}
+.c-bear{border-top:4px solid var(--warn)} .c-bear .prob{color:var(--warn)}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;background:#fff}
+th{font-family:var(--serif);text-align:left;padding:10px 10px;border-bottom:2px solid var(--ink);font-size:14px;letter-spacing:.05em;white-space:nowrap}
+td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+td.num{text-align:right;font-family:var(--mono);font-size:14px;white-space:nowrap}
+td.neg{color:var(--warn)} td.pos{color:var(--accent)}
+.c-name{font-weight:600;white-space:nowrap}
+.c-note{font-size:13px;color:var(--ink2);line-height:1.5}
+.tier{font-size:12.5px;padding:2px 8px;border-radius:3px;white-space:nowrap}
+.t1{background:var(--accent-soft);color:var(--accent)}
+.t2{background:var(--gold-soft);color:var(--gold)}
+.t3{background:#f6e0d3;color:#a35a20}
+.t4{background:var(--warn-soft);color:var(--warn);font-weight:700}
+.clock{display:flex;gap:0;margin:26px 0;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:#fff}
+.clock .stage{flex:1;padding:16px 12px;border-right:1px solid var(--line);position:relative}
+.clock .stage:last-child{border-right:none}
+.clock .s-no{font-family:var(--serif);font-size:22px;color:var(--ink2)}
+.clock .s-name{font-weight:600;font-size:15.5px;margin:4px 0}
+.clock .s-st{font-size:12.5px;color:var(--ink2);line-height:1.55}
+.stage.done{background:var(--accent-soft)} .stage.done .s-no{color:var(--accent)}
+.stage.now{background:var(--gold-soft);box-shadow:inset 0 -4px 0 var(--gold)} .stage.now .s-no{color:var(--gold)}
+.stage.todo{opacity:.62}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:20px 0}
+.kv .item{background:#fff;border:1px solid var(--line);border-radius:6px;padding:14px 16px}
+.kv .v{font-family:var(--serif);font-size:26px;color:var(--ink)}
+.kv .v.warn{color:var(--warn)} .kv .v.acc{color:var(--accent)}
+.kv .k{font-size:13.5px;color:var(--ink2);margin-top:2px;line-height:1.5}
+.note-box{background:var(--gold-soft);border:1px solid #ddceac;border-radius:6px;padding:16px 20px;margin:20px 0;font-size:15px;color:#5d4e2a}
+.note-box b{color:#4a3f22}
+.blind{background:var(--warn-soft);border:1px solid #e3c4b8;border-radius:6px;padding:16px 20px;margin:20px 0;font-size:15px;color:#6e2f1c}
+.blind b{color:#571f10}
+.trigger{background:#fff;border:1px solid var(--line);border-radius:6px;padding:18px 22px;margin:14px 0}
+.trigger h4{font-family:var(--serif);font-size:17px;margin-bottom:6px}
+.trigger ul{margin:6px 0 0 20px;font-size:15px;color:var(--ink2)}
+.trigger li{margin:4px 0}
+.trig-up{border-left:4px solid var(--accent)} .trig-down{border-left:4px solid var(--warn)} .trig-buy{border-left:4px solid var(--gold)}
+.cmp td:first-child{color:var(--ink2)}
+.cmp .k-col{color:var(--accent);font-weight:700;text-align:center}
+.cmp .w-col{color:var(--gold);text-align:center}
+.footer{margin-top:72px;padding-top:20px;border-top:1px solid var(--line);font-size:13.5px;color:var(--ink2)}
+.footer a{color:var(--accent)}
+.disc{font-size:13px;color:var(--ink2);background:#f1ede4;border-radius:6px;padding:14px 18px;margin-top:28px;line-height:1.7}
+ol.ref{margin:8px 0 8px 22px;color:var(--ink2);font-size:15px}
+ol.ref li{margin:5px 0}
+@media (max-width:760px){
+  .wrap{padding:32px 16px 60px}
+  h1{font-size:26px} .scen{grid-template-columns:1fr}
+  .clock{flex-direction:column} .clock .stage{border-right:none;border-bottom:1px solid var(--line)}
+  table{font-size:13.5px} td.num{font-size:12.5px} .c-note{display:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="tag">独立研究 · KIMI 版</div>
+<h1>光伏产业出清进程监控</h1>
+<p class="lede" style="margin-top:14px">核心判断：<strong>出清处于「政策已介入、物理退出未启动」的僵持段</strong>。财务恶化已充分定价，三项强制国标已落文（2027-01-01 生效），但首份实质核减公告尚未出现、七环节价格全线低于现金成本。基准判断：<strong>2027 年末至 2028 年上半年确认出清（50%）</strong>；当前时点建议<strong>回避</strong>，等待三个确认信号（见第 5 节）。</p>
+<div class="meta-bar">
+  <span>数据截至 2026-11-09（快照 18/18 完整）</span>
+  <span>版本 Kimi-v1.0</span>
+  <span>对照版本：<a href="/professionalreports/solar/" style="color:var(--accent)">WB 版</a></span>
+</div>
+
+<div class="verdict">
+  <p><strong>一句话：</strong>这是一轮「行政闸门 + 市场出清」双轨制去产能——闸门方向确定，但闸门落下的速度由银行续贷、地方政府、技改过渡期三个减速器决定。<strong>我把悲观情形（2028-2029 仍在纠缠）定在 35%，高于对照版本的 28%</strong>，分歧的核心是：我认为「僵尸续命」的制度性激励被系统性低估。</p>
+</div>
+
+<h2><span class="no">01</span>三情景与概率</h2>
+<div class="scen">
+  <div class="card c-bull">
+    <div class="lab">乐观 BULL</div>
+    <div class="prob">15%</div>
+    <div class="desc">玻璃剧本复制到主链：行政闸门快速落闸，核减公告 2027Q1 密集出现，价格与开工率双升。</div>
+    <div class="win">确认窗口：2027 上半年</div>
+  </div>
+  <div class="card c-base">
+    <div class="lab">基准 BASE</div>
+    <div class="prob">50%</div>
+    <div class="desc">拉锯延续：银行减速器与地方博弈拖长物理退出，2027 年末起价格有效站上成本线。</div>
+    <div class="win">出清确认：2027 年末 – 2028 上半年</div>
+  </div>
+  <div class="card c-bear">
+    <div class="lab">悲观 BEAR</div>
+    <div class="prob">35%</div>
+    <div class="desc">救助端占优：兜底重组与续贷展期固化僵尸产能，强标执行口径软化，出清被延后。</div>
+    <div class="win">纠缠期：2028 年中 – 2029 年</div>
+  </div>
+</div>
+<p style="font-size:14.5px">概率事前冻结，接受 Brier 技能分结算（见第 6 节预测台账）。与 WB 版分歧留痕：乐观 15% vs 22%，悲观 35% vs 28%。</p>
+
+<h2><span class="no">02</span>出清时钟：当前定位</h2>
+<div class="clock">
+  <div class="stage done"><div class="s-no">Ⅰ</div><div class="s-name">财务恶化</div><div class="s-st">已充分显现：亏损 14/18 家，中位负债率 75.6%，尾部 3 家</div></div>
+  <div class="stage now"><div class="s-no">Ⅱ</div><div class="s-name">政策介入</div><div class="s-st">进行中：三项强标已发布（2027-01-01 生效），物理退出闸门待落</div></div>
+  <div class="stage todo"><div class="s-no">Ⅲ</div><div class="s-name">物理退出</div><div class="s-st">未启动：首份核减公告 0 起，永久关停公告 0 起</div></div>
+  <div class="stage todo"><div class="s-no">Ⅳ</div><div class="s-name">价格修复</div><div class="s-st">未启动：七环节价格全线低于现金成本</div></div>
+  <div class="stage todo"><div class="s-no">Ⅴ</div><div class="s-name">格局重估</div><div class="s-st">未启动：剩者定价权尚未形成</div></div>
+</div>
+<p>阶段 Ⅰ 的证据强度已经足够，阶段 Ⅱ 的政策文本已经落地，<strong>但时钟卡在 Ⅱ→Ⅲ 的闸门口</strong>：行政去产能的历史经验（下表参照类）是「发文后 3-6 个月出首批核减」，而本轮强标设了 13 个月技改过渡期——这是我对「闸门落下速度」保持谨慎的制度性理由。</p>
+
+<h3>行政去产能参照类（5 案例基率）</h3>
+<table>
+  <tr><th>案例</th><th>硬性发文</th><th>首批实质核减</th><th>时滞</th></tr>
+  <tr><td>2016 钢铁去产能</td><td>6 号文（2016-02）</td><td>当年 4-5 月各省签约压减</td><td class="num">约 2-3 月</td></tr>
+  <tr><td>2016 煤炭去产能</td><td>7 号文（2016-02）</td><td>276 工作日制度 2016-04 执行</td><td class="num">约 2 月</td></tr>
+  <tr><td>2017 地条钢清理</td><td>五部委发文（2017-01）</td><td>6·30 大限全面清理</td><td class="num">约 5 月</td></tr>
+  <tr><td>2017 电解铝清理</td><td>656 号文（2017-04）</td><td>年内关停违规产能约 500 万吨</td><td class="num">约 6 月</td></tr>
+  <tr><td>2021 能耗双控</td><td>双控方案（2021-09）</td><td>当月多省限产</td><td class="num">&lt;1 月</td></tr>
+</table>
+<p style="font-size:14.5px">参照类结论：<strong>5/5 在硬性发文后 12 个月内出现首批实质核减，多数在 3-6 个月内</strong>。据此把「首份核减公告」类预测的基线设为 0.7（事前冻结、附形式风险注记：本轮淘汰形式可能是「准入资格丧失」而非「核减公告」，口径风险双向）。</p>
+
+<h2><span class="no">03</span>证据面板</h2>
+
+<h3>行业层（静态基线，月度刷新）</h3>
+<div class="kv">
+  <div class="item"><div class="v warn">57 万吨+</div><div class="k">硅料库存，去化约 150 天（TrendForce 2026-11-04）；硅片 27GW、组件 26.7GW</div></div>
+  <div class="item"><div class="v warn">35% / 45%</div><div class="k">硅料开工率 / 全产业链开工率（基线静态值，待季报复核）</div></div>
+  <div class="item"><div class="v warn">最深 −29%</div><div class="k">七环节价格/成本比全线 &lt;1，最深倒挂 0.71（InfoLink 口径）</div></div>
+  <div class="item"><div class="v warn">−66%</div><div class="k">2026H1 中国新增装机 72.07GW（2025H1 抢装高基数 212GW）</div></div>
+  <div class="item"><div class="v">612GW</div><div class="k">全球 2026E 新增装机（−8%，二十余年来首次年度收缩，CPIA/SPE 收敛）</div></div>
+  <div class="item"><div class="v">42.9 分位</div><div class="k">光伏设备板块 PB 2.46 的历史分位（电池组件 2.25 / 37.0 分位）——估值不算极端便宜</div></div>
+</div>
+
+<h3>企业层：18 只监测池逐只体检（2026 三季报）</h3>
+<p style="font-size:14.5px">四档分级为 Kimi 自定义规则：临终（负债率 &gt;90% 或资不抵债）、高危（≥75% 或现金流为负且 &gt;60%）、承压（≥60% 或亏损）、安全。审计两列：<strong>FUTL</strong>＝经营现金流/总负债（Ohlson O-score 分量代理，深度为负＝盈利崩塌）；<strong>X4</strong>＝市值/总负债（Altman 分量，&lt;1 提示市场定价股权高度折价）。当前为缺字段降级版，5 项字段补齐后切换完整 O-score / Z''。</p>
+<table>
+  <tr><th>标的</th><th>分档</th><th style="text-align:right">负债率</th><th style="text-align:right">净利(亿)</th><th style="text-align:right">经营现金流(亿)</th><th style="text-align:right">FUTL</th><th style="text-align:right">X4</th><th style="text-align:right">现金/短债</th><th>备注</th></tr>
+<tr>
+      <td class="c-name">*ST亿晶</td>
+      <td><span class="tier t4">临终</span></td>
+      <td class="num">109.1%</td>
+      <td class="num neg">-2.0</td>
+      <td class="num ">1.8</td>
+      <td class="num ">4.5%</td>
+      <td class="num">0.60</td>
+      <td class="num">3.16</td>
+      <td class="c-note">资不抵债，预重整中（产能保留）</td>
+    </tr>
+<tr>
+      <td class="c-name">协鑫集成</td>
+      <td><span class="tier t4">临终</span></td>
+      <td class="num">95.1%</td>
+      <td class="num neg">-6.2</td>
+      <td class="num ">1.0</td>
+      <td class="num ">0.7%</td>
+      <td class="num">1.04</td>
+      <td class="num">1.28</td>
+      <td class="c-note"></td>
+    </tr>
+<tr>
+      <td class="c-name">海源复材</td>
+      <td><span class="tier t4">临终</span></td>
+      <td class="num">95.0%</td>
+      <td class="num neg">-0.7</td>
+      <td class="num neg">-0.9</td>
+      <td class="num neg">-14.7%</td>
+      <td class="num">2.52</td>
+      <td class="num">0.06</td>
+      <td class="c-note">现金/短债 0.06，流动性枯竭</td>
+    </tr>
+<tr>
+      <td class="c-name">晶澳科技</td>
+      <td><span class="tier t3">高危</span></td>
+      <td class="num">79.9%</td>
+      <td class="num neg">-36.4</td>
+      <td class="num ">39.8</td>
+      <td class="num ">5.0%</td>
+      <td class="num">0.29</td>
+      <td class="num">1.80</td>
+      <td class="c-note">X4 仅 0.29——市场对其股权定价苛刻</td>
+    </tr>
+<tr>
+      <td class="c-name">天合光能</td>
+      <td><span class="tier t3">高危</span></td>
+      <td class="num">79.7%</td>
+      <td class="num neg">-19.4</td>
+      <td class="num ">47.0</td>
+      <td class="num ">5.1%</td>
+      <td class="num">0.27</td>
+      <td class="num">2.53</td>
+      <td class="c-note">X4 仅 0.27——市场对其股权定价苛刻</td>
+    </tr>
+<tr>
+      <td class="c-name">爱旭股份</td>
+      <td><span class="tier t3">高危</span></td>
+      <td class="num">79.5%</td>
+      <td class="num neg">-7.1</td>
+      <td class="num ">19.5</td>
+      <td class="num ">6.4%</td>
+      <td class="num">0.91</td>
+      <td class="num">0.80</td>
+      <td class="c-note"></td>
+    </tr>
+<tr>
+      <td class="c-name">钧达股份</td>
+      <td><span class="tier t3">高危</span></td>
+      <td class="num">77.8%</td>
+      <td class="num neg">-4.3</td>
+      <td class="num neg">-1.4</td>
+      <td class="num neg">-1.1%</td>
+      <td class="num">1.05</td>
+      <td class="num">1.49</td>
+      <td class="c-note"></td>
+    </tr>
+<tr>
+      <td class="c-name">晶科能源</td>
+      <td><span class="tier t3">高危</span></td>
+      <td class="num">76.0%</td>
+      <td class="num neg">-33.7</td>
+      <td class="num ">6.1</td>
+      <td class="num ">0.7%</td>
+      <td class="num">0.51</td>
+      <td class="num">4.04</td>
+      <td class="c-note"></td>
+    </tr>
+<tr>
+      <td class="c-name">通威股份</td>
+      <td><span class="tier t3">高危</span></td>
+      <td class="num">75.6%</td>
+      <td class="num neg">-67.6</td>
+      <td class="num ">20.2</td>
+      <td class="num ">1.5%</td>
+      <td class="num">0.41</td>
+      <td class="num">2.20</td>
+      <td class="c-note"></td>
+    </tr>
+<tr>
+      <td class="c-name">东方日升</td>
+      <td><span class="tier t2">承压</span></td>
+      <td class="num">73.6%</td>
+      <td class="num neg">-14.2</td>
+      <td class="num ">4.3</td>
+      <td class="num ">2.2%</td>
+      <td class="num">0.62</td>
+      <td class="num">0.24</td>
+      <td class="c-note"></td>
+    </tr>
+<tr>
+      <td class="c-name">TCL中环</td>
+      <td><span class="tier t2">承压</span></td>
+      <td class="num">73.4%</td>
+      <td class="num neg">-45.6</td>
+      <td class="num ">4.3</td>
+      <td class="num ">0.5%</td>
+      <td class="num">0.42</td>
+      <td class="num">13.82</td>
+      <td class="c-note"></td>
+    </tr>
+<tr>
+      <td class="c-name">隆基绿能</td>
+      <td><span class="tier t3">高危</span></td>
+      <td class="num">67.2%</td>
+      <td class="num neg">-47.1</td>
+      <td class="num neg">-34.7</td>
+      <td class="num neg">-3.5%</td>
+      <td class="num">0.91</td>
+      <td class="num">51.43</td>
+      <td class="c-note">现金/短债 51.4，弹药充足但 Q1-3 亏 47 亿</td>
+    </tr>
+<tr>
+      <td class="c-name">正泰电器</td>
+      <td><span class="tier t2">承压</span></td>
+      <td class="num">64.2%</td>
+      <td class="num pos">42.3</td>
+      <td class="num ">180.7</td>
+      <td class="num ">18.1%</td>
+      <td class="num">0.52</td>
+      <td class="num">0.86</td>
+      <td class="c-note">盈利 +42 亿、OCF 181 亿，财务稳健</td>
+    </tr>
+<tr>
+      <td class="c-name">阳光电源</td>
+      <td><span class="tier t2">承压</span></td>
+      <td class="num">61.6%</td>
+      <td class="num pos">66.0</td>
+      <td class="num ">36.5</td>
+      <td class="num ">4.3%</td>
+      <td class="num">1.92</td>
+      <td class="num">8.32</td>
+      <td class="c-note">盈利 +66 亿但 YTD −54%（板块贝塔）</td>
+    </tr>
+<tr>
+      <td class="c-name">捷佳伟创</td>
+      <td><span class="tier t1">安全</span></td>
+      <td class="num">50.6%</td>
+      <td class="num pos">6.3</td>
+      <td class="num ">28.7</td>
+      <td class="num ">20.7%</td>
+      <td class="num">1.48</td>
+      <td class="num">8.71</td>
+      <td class="c-note"></td>
+    </tr>
+<tr>
+      <td class="c-name">福莱特</td>
+      <td><span class="tier t2">承压</span></td>
+      <td class="num">47.7%</td>
+      <td class="num neg">-8.4</td>
+      <td class="num ">17.5</td>
+      <td class="num ">9.0%</td>
+      <td class="num">1.11</td>
+      <td class="num">2.76</td>
+      <td class="c-note"></td>
+    </tr>
+<tr>
+      <td class="c-name">福斯特</td>
+      <td><span class="tier t1">安全</span></td>
+      <td class="num">19.6%</td>
+      <td class="num pos">11.3</td>
+      <td class="num ">6.8</td>
+      <td class="num ">15.8%</td>
+      <td class="num">7.92</td>
+      <td class="num">—</td>
+      <td class="c-note"></td>
+    </tr>
+<tr>
+      <td class="c-name">大全能源</td>
+      <td><span class="tier t2">承压</span></td>
+      <td class="num">10.3%</td>
+      <td class="num neg">-20.1</td>
+      <td class="num neg">-23.4</td>
+      <td class="num neg">-55.2%</td>
+      <td class="num">8.78</td>
+      <td class="num">—</td>
+      <td class="c-note">⚠ 杠杆盲区样本：低负债但现金流崩塌</td>
+    </tr>
+</table>
+<div class="blind"><b>杠杆视角的盲区样本——大全能源：</b>负债率仅 10.3%（杠杆口径极安全），但 FUTL −55.2%：经营现金流/总负债深度为负。任何只看负债率的出清模型都会把它错分为「安全」。这正是本报告把现金流维度提升为一级审计列、并坚持引入 O-score / Z'' 做交叉验证的原因。</div>
+<div class="note-box"><b>市场定价与杠杆视角的背离：</b>头部晶澳（X4 0.29）、天合（X4 0.27）被市场苛刻定价，尾部海源（X4 2.52）、协鑫（X4 1.04）反而相对宽容——市场在定价「剩者股权价值」，杠杆视角在定价「破产风险」，两者度量对象不同，不构成矛盾，但提示：<strong>出清交易中「活下来的不一定涨，会死的市场还没充分定价」</strong>。</p></div>
+
+<h2><span class="no">04</span>需求锚点：三源三角验证</h2>
+<table>
+  <tr><th>来源</th><th>版本</th><th>2027E 全球新增</th><th>口径/性质</th></tr>
+  <tr><td>SPE《全球光伏市场展望》中情景</td><td>2026-06 版</td><td class="num">689GW</td><td>DC 口径；三处独立转引逐字一致（金辰年报 / TaiyangNews / 易事特半年报）</td></tr>
+  <tr><td>BNEF 全球光伏展望</td><td>2025-12 版</td><td class="num">688GW</td><td>独立方法论，与 SPE 收敛在 1GW 以内</td></tr>
+  <tr><td>CPIA（王勃华，2026-07）</td><td>2026-2030 展望</td><td class="num">约 655GW（隐含）</td><td>2026 全球 612GW + 复合增速 7% 推得，同向</td></tr>
+  <tr><td style="color:var(--ink2)">旧锚：SPE 中情景</td><td style="color:var(--ink2)">2025-05 版</td><td class="num" style="color:var(--ink2)">755GW</td><td style="color:var(--ink2)">已被发行方下修，弃用</td></tr>
+</table>
+<p style="font-size:14.5px">改锚证据标准（与 WB 版共同约定）：三处独立转引一致 + 一家独立机构同年预测收敛（±5GW）即生效，一手 PDF 留作结算终审。<strong>工作锚点：689GW</strong>。需求中枢下移约 9% 是本轮悲观侧最重要的单项证据。</p>
+
+<h2><span class="no">05</span>改判触发器：什么信号改变我的判断</h2>
+<div class="trigger trig-up">
+  <h4>上调乐观（右尾风险）</h4>
+  <ul>
+    <li>首份强标核减公告出现，且单次体量 ≥10GW 级（对应预测 P1 提前兑现）</li>
+    <li>组件价格连续 4 周站上现金成本线（当前倒挂 29%，先收复现金成本再谈完全成本）</li>
+    <li>收储平台（光和谦成）完成 ≥100 万吨级硅料产能收购关停——硅料绕开市场机制直接出清</li>
+  </ul>
+</div>
+<div class="trigger trig-down">
+  <h4>上调悲观（左尾风险）</h4>
+  <ul>
+    <li>地方政府兜底重组落地 ≥2 起（产能保留型重整，出清空转）</li>
+    <li>银行对尾部企业续贷展期规模化（僵尸续命公告，对应 W6/P4 类事件）</li>
+    <li>强标执行延期或口径软化（技改过渡期实质延长、核减口径改备案制）</li>
+  </ul>
+</div>
+<div class="trigger trig-buy">
+  <h4>买入窗口确认（三要件同时满足才行动）</h4>
+  <ul>
+    <li>组件价格站上<strong>完全成本</strong>（不仅是现金成本）并稳定一个报价月</li>
+    <li>监测池内破产清算（非重整）或产线永久关停 ≥2 家</li>
+    <li>全产业链开工率回升至 60% 以上</li>
+  </ul>
+</div>
+
+<h2><span class="no">06</span>预测台账（事前冻结，到期结算）</h2>
+<p style="font-size:14.5px">每条预测有概率、结算日、可核验来源；结算用 Brier 技能分（BSS），参照为事前冻结基线（政策事件类 0.7，其余 0.5 无信息基线）；与基线持平 BSS=0，大于 0 才算真有信息。2027-03-31 首个结算日后基线绝对冻结。</p>
+<table>
+  <tr><th>#</th><th>预测</th><th style="text-align:right">概率</th><th>结算日</th><th>结算口径</th></tr>
+  <tr><td class="num">P1</td><td>出现首份强标实际核减产能公告</td><td class="num">55%</td><td class="num">2027-03-31</td><td>工信部/企业公告（基线 0.7，参照类）</td></tr>
+  <tr><td class="num">P2</td><td>组件价格站上 0.82 元/W</td><td class="num">25%</td><td class="num">2027-06-30</td><td>InfoLink 周报价</td></tr>
+  <tr><td class="num">P3</td><td>监测池 ≥2 家破产清算（非重整）或产线永久关停</td><td class="num">35%</td><td class="num">2027-12-31</td><td>公司公告</td></tr>
+  <tr><td class="num">P4</td><td>出现一次「价格站上成本线后被复产压回」的伪反弹</td><td class="num">45%</td><td class="num">2027-12-31</td><td>InfoLink 组件价格</td></tr>
+  <tr><td class="num">P5</td><td>组件供需比降至 1.8 以下</td><td class="num">40%</td><td class="num">2028-06-30</td><td>InfoLink 产能 + CPIA 需求</td></tr>
+  <tr><td class="num">P6</td><td>2027 年全球新增装机 ≥700GW</td><td class="num">35%</td><td class="num">2028-01-31</td><td>CPIA 年度统计（注明 DC/AC 口径）</td></tr>
+  <tr><td class="num">P7</td><td>SPE 与 CPIA 最新版对 2027 的中性预测均 &lt;750GW</td><td class="num">70%</td><td class="num">2028-01-31</td><td>两机构最新版文本（需求锚点漂移本身成为结算对象）</td></tr>
+  <tr><td class="num">P8</td><td>2026-12-08 前采集至少触发 1 次缺采报警</td><td class="num">60%</td><td class="num">2026-12-08</td><td>快照 universe_alert 字段（自败型预测：若促成采集层加固则预测失败而系统改善）</td></tr>
+</table>
+
+<h2><span class="no">07</span>方法论与局限声明</h2>
+<ol class="ref">
+  <li><strong>独立性声明</strong>：本版分析框架（出清时钟、参照类基率、FUTL/X4 双审计列、触发器体系）与呈现由 Kimi 独立设计，未复用 WB 版的因子打分与双轴模型；底层数据与 WB 版共享同一采集快照（2026-11-09，18/18 完整，含三季报财务、行情、估值、公告流）。</li>
+  <li><strong>互博机制</strong>：本版与 WB 版并行维护、互相挑战，全部分歧以可结算预测的形式登记在案（当前在册 18 条），到期以 Brier 技能分裁决。分歧不是缺陷，是设计。</li>
+  <li><strong>已知局限</strong>：① 行业开工率/库存为月度刷新的静态基线，非日频实测；② O-score 为缺 5 字段（EBIT、利息费用、流动资产/负债、留存收益）的降级版，字段补齐后切换完整版并重跑全部 18 只；③ 事件流（公告/舆情）的量化未纳入本版框架，仅作触发器的定性输入；④ 海外产能（中国以外 2026E 约 308GW）未进入供需分母，本版结论的供需口径偏境内。</li>
+  <li><strong>如果我的基准判断错了</strong>（pre-mortem）：最可能是因为 ① 强标执行力度与速度超预期、核减公告 2027Q1 密集出现；② 收储平台完成 ≥100 万吨级硅料收购，硅料绕开市场机制出清；③ 我系统性低估海外承接力，需求二次下修判断整体错误。</li>
+</ol>
+
+<div class="disc">免责声明：本报告为研究性内容，所有数据来自公开渠道（westock 终端、TrendForce、InfoLink、CPIA、SPE、BNEF 及上市公司公告），可能存在滞后或误差。报告不构成任何投资建议，据此操作风险自负。</div>
+
+<div class="footer">
+  光伏产业出清进程监控（Kimi 版）v1.0 ｜ 数据截至 2026-11-09 ｜ 互博机制：与 <a href="/professionalreports/solar/">WB 版</a>并行互搏、分歧留痕、预测可结算 ｜ laodinglab.com
+</div>
+
+</div>
+</body>
+</html>
