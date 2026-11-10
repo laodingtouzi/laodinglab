@@ -700,7 +700,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
 <main class="main">
 <div class="ver-strip">
   <span class="ver-badge">版本 v2.1</span>
-  <span class="ver-item">构建 2026-11-09 17:32</span>
+  <span class="ver-item">构建 2026-11-10 12:25</span>
   <span class="ver-item">数据截至 2026-11-09</span>
   <span class="ver-item">出清压力指数 39.7 · 投资时机指数 19.6 · 综合 31.7</span>
 </div>
@@ -1221,6 +1221,41 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
   <div class="note" style="margin-top:18px">
     <strong>行动窗口</strong>　当前处于阶段 1-2 区间（财务恶化已现、银行收贷初现），对应『观察等待』档位；建仓窗口在阶段 3-4 信号确认后，即 2027 年上半年前后
   </div>
+</div><div class="section-label">行动触发器 · Action Triggers</div>
+<div class="card">
+  <div class="note" style="margin-bottom:12px">
+    <strong>改判触发器</strong>　预测概率不靠心情改，靠信号改。以下触发器与 Kimi 版共用
+    同一单一事实源（config/triggers.json，Q52/Q54 两版收敛裁决），文案机器同源，
+    对账器逐条校验一致性。<span style="color:var(--text-muted)">（借鉴自 Kimi 版 §05，
+    2026-11-10 施工）</span>
+  </div>
+  <div style="margin:14px 0 6px">
+    <span style="color:var(--emo-pos);font-weight:700">右尾·上调乐观</span>
+    <span style="color:var(--text-muted)">　什么信号出现，我会把悲观概率下调</span>
+  </div>
+  <ul style="margin:0 0 4px;padding-left:2px;list-style:none">      <li style="margin:6px 0"><span class="dot dot-pos"></span><b>首份强标核减公告出现，且单次体量 ≥10GW 级</b>　<span style='color:var(--text-muted)'>对应预测 P1 提前兑现</span>
+        <span style="color:var(--text-muted);font-size:.85em">［数据源：工信部/企业公告｜TR-R1（关联 P1/W1）］</span></li>      <li style="margin:6px 0"><span class="dot dot-pos"></span><b>组件价格连续 4 周站上现金成本线</b>　<span style='color:var(--text-muted)'>当前倒挂 29%，先收复现金成本再谈完全成本</span>
+        <span style="color:var(--text-muted);font-size:.85em">［数据源：InfoLink 周报价｜TR-R2（关联 P2/W2/P4）］</span></li>      <li style="margin:6px 0"><span class="dot dot-pos"></span><b>收储平台（光和谦成）完成 ≥100 万吨级硅料产能收购关停</b>　<span style='color:var(--text-muted)'>硅料绕开市场机制直接出清</span>
+        <span style="color:var(--text-muted);font-size:.85em">［数据源：企业公告/行业协会披露｜TR-R3］</span></li>
+  </ul>
+  <div style="margin:14px 0 6px">
+    <span style="color:var(--emo-neg);font-weight:700">左尾·上调悲观</span>
+    <span style="color:var(--text-muted)">　什么信号出现，我会承认对出清阻力估计不足</span>
+  </div>
+  <ul style="margin:0 0 4px;padding-left:2px;list-style:none">      <li style="margin:6px 0"><span class="dot dot-neg"></span><b>地方政府兜底重组落地 ≥2 起</b>　<span style='color:var(--text-muted)'>产能保留型重整，出清空转</span>
+        <span style="color:var(--text-muted);font-size:.85em">［数据源：公司公告/地方国资披露｜TR-L1（关联 W6）］</span></li>      <li style="margin:6px 0"><span class="dot dot-neg"></span><b>银行对尾部企业续贷展期规模化</b>　<span style='color:var(--text-muted)'>僵尸续命公告，对应 W6/P4 类事件</span>
+        <span style="color:var(--text-muted);font-size:.85em">［数据源：公司公告/银行公告｜TR-L2（关联 W6/P4）］</span></li>      <li style="margin:6px 0"><span class="dot dot-neg"></span><b>强标执行延期或口径软化</b>　<span style='color:var(--text-muted)'>技改过渡期实质延长、核减口径改备案制</span>
+        <span style="color:var(--text-muted);font-size:.85em">［数据源：工信部文件/行业媒体报道｜TR-L3（关联 P1/W1/P9）］</span></li>
+  </ul>
+  <div style="margin:14px 0 6px">
+    <span style="color:var(--emo-neu);font-weight:700">买入窗口·三要件</span>
+    <span style="color:var(--text-muted)">　三条同时满足才构成行动条件，缺一不可</span>
+  </div>
+  <ul style="margin:0 0 4px;padding-left:2px;list-style:none">      <li style="margin:6px 0"><span class="dot dot-neu"></span><b>组件价格站上完全成本（不仅是现金成本）并稳定一个报价月</b>　<span style='color:var(--text-muted)'>三要件同时满足才行动</span>
+        <span style="color:var(--text-muted);font-size:.85em">［数据源：InfoLink 周报价｜TR-B1（关联 P2/W2）］</span></li>      <li style="margin:6px 0"><span class="dot dot-neu"></span><b>监测池内破产清算（非重整）或产线永久关停 ≥2 家</b>　<span style='color:var(--text-muted)'>三要件同时满足才行动</span>
+        <span style="color:var(--text-muted);font-size:.85em">［数据源：公司公告｜TR-B2（关联 P3/W3/W7）］</span></li>      <li style="margin:6px 0"><span class="dot dot-neu"></span><b>全产业链开工率回升至 60% 以上</b>　<span style='color:var(--text-muted)'>三要件同时满足才行动</span>
+        <span style="color:var(--text-muted);font-size:.85em">［数据源：行业协会开工率数据｜TR-B3］</span></li>
+  </ul>
 </div>
 <details class="collapse">
 <summary><span class="section-label">口径说明 · Specifications</span></summary>
