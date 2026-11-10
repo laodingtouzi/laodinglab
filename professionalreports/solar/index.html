@@ -700,7 +700,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
 <main class="main">
 <div class="ver-strip">
   <span class="ver-badge">版本 v2.1</span>
-  <span class="ver-item">构建 2026-11-10 15:09</span>
+  <span class="ver-item">构建 2026-11-10 15:47</span>
   <span class="ver-item">数据截至 2026-11-09</span>
   <span class="ver-item">出清压力指数 39.7 · 投资时机指数 19.6 · 综合 31.7</span>
 </div>
@@ -738,6 +738,8 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
       </div>
     </div>
   </div>
+
+  <div style="background:var(--emo-warn-bg);border-left:3px solid var(--emo-warn);border-radius:0 6px 6px 0;padding:14px 16px;margin:16px 0 4px;"><b style="font-size:17px">出清时钟：卡在 Ⅱ→Ⅲ 闸门口</b>　核减/关停类公告 0 起（notices+news 标题零命中）<br><span style="font-size:15px">前序阶段已启动、下一阶段未启动；池内四档 临终 3 / 高危 7 / 承压 6 / 安全 2。这是「闸门已落、退出未到」的位置，不是「出清失败」。</span></div>
 
   <div class="matrix-note">
     <b>为什么用双轴？</b>　单轴评分会把「出清还没开始」误判为「出清不会发生」——
@@ -874,7 +876,102 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
     <div style="margin-top:12px"><b>本轮实证锚点</b>　2026-07 光伏玻璃：冷修6650吨/日、9家完全停产、4家破产重整、在产日熔量从8.3万吨降至7.1万吨（-12%）、库存天数54→45天、价格8.5→10.25元/平（+24%）。从冷修加速到价格修复约 3 个月，从停产到价格修复约 6 个月</div>
     <div style="margin-top:9px"><b>行动窗口</b>　当前处于阶段 1-2 区间（财务恶化已现、银行收贷初现），对应『观察等待』档位；建仓窗口在阶段 3-4 信号确认后，即 2027 年上半年前后</div>
   </div>
-</div><div class="section-label">跨行业校准 · Cross-Industry Calibration</div>
+</div>
+<div class="section-label">出清时钟与逐只体检 · Clearance Clock</div>
+<div class="card">
+  <div class="note" style="margin-bottom:18px">
+    <strong>这一段回答的是「现在卡在哪」</strong>　阶段时间轴说明的是路径（走到第几步会发生什么），
+    本段给的是<strong>当前位置的机器判据</strong>：每个阶段用可复算的证据判定「已启动 / 未启动 / 无法判定」，
+    卡点取第一个未启动阶段的入口。池内 18 只标的按<strong>出清阶段位置</strong>分四档
+    （临终 / 高危 / 承压 / 安全），分档规则与面板 alert 阈值不同口径，差异见本节末尾。
+  </div>
+
+  <div class="f-table-wrap">
+    <table class="f-table">
+      <thead><tr><th>阶段</th><th>状态</th><th>证据（快照 2026-11-09 实读）</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>Ⅰ · 财务恶化</b><br>
+            <span style="font-size:14px;color:var(--text-muted)">机器判据</span></td>
+          <td><span class="emo emo-neg" style="background:var(--emo-neg-bg);color:var(--emo-neg);border-color:var(--emo-neg-line)">已启动</span></td>
+          <td>亏损 14/18 家；负债率中位 75.6%；临终档 3 家</td>
+        </tr>
+        <tr>
+          <td><b>Ⅱ · 政策介入</b><br>
+            <span style="font-size:14px;color:var(--text-muted)">登记事实</span></td>
+          <td><span class="emo emo-neg" style="background:var(--emo-neg-bg);color:var(--emo-neg);border-color:var(--emo-neg-line)">已启动</span></td>
+          <td>三项光伏制造行业强制标准已发布，2027-01-01 生效</td>
+        </tr>
+        <tr>
+          <td><b>Ⅲ · 物理退出</b><br>
+            <span style="font-size:14px;color:var(--text-muted)">机器判据</span></td>
+          <td><span class="emo emo-warn" style="background:var(--emo-warn-bg);color:var(--emo-warn);border-color:var(--emo-warn-line)">未启动</span></td>
+          <td>核减/关停类公告 0 起（notices+news 标题零命中）</td>
+        </tr>
+        <tr>
+          <td><b>Ⅳ · 价格修复</b><br>
+            <span style="font-size:14px;color:var(--text-muted)">缺口·不判定</span></td>
+          <td><span class="emo emo-neu" style="background:var(--emo-neu-bg);color:var(--emo-neu);border-color:var(--emo-neu-line)">无法判定（缺口）</span></td>
+          <td>旁证：光伏设备 PB 2.4591（42.85 分位）；ETF 主力 20 日净流入合计 -3.40 亿<div style="margin-top:6px;color:var(--text-muted);font-size:15px">WB 侧无分环节（硅料/硅片/电池/组件/玻璃/胶膜/焊带）价格与现金成本数据源——不渲染该阶段判定，仅给旁证读数（板块 PB 分位、ETF 主力净流入），旁证不得用于改判阶段</div></td>
+        </tr>
+        <tr>
+          <td><b>Ⅴ · 格局重估</b><br>
+            <span style="font-size:14px;color:var(--text-muted)">缺口·不判定</span></td>
+          <td><span class="emo emo-neu" style="background:var(--emo-neu-bg);color:var(--emo-neu);border-color:var(--emo-neu-line)">无法判定（缺口）</span></td>
+          <td>定性阶段，无机器判据<div style="margin-top:6px;color:var(--text-muted);font-size:15px">定性阶段，无机器判据；在出清时钟里只作占位，不参与卡点判定</div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="background:var(--emo-warn-bg);border-left:3px solid var(--emo-warn);border-radius:0 6px 6px 0;padding:14px 16px;margin:16px 0;"><b style="font-size:17px">卡点定位：Ⅱ→Ⅲ 闸门口</b>　核减/关停类公告 0 起（notices+news 标题零命中）<br><span style="font-size:15px">前序阶段已启动、后一阶段未启动 —— 这是「行政闸门已落、物理退出未到」的位置，不是「出清失败」。</span></div>
+
+  <div class="f-table-wrap">
+    <table class="f-table">
+      <thead><tr><th>档位</th><th>家数</th><th>标的与命中判据</th><th>档位规则</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="emo emo-sev" style="background:var(--emo-sev-bg);color:var(--emo-sev);border-color:var(--emo-sev-line)">临终</span></td>
+          <td><b style="font-size:19px">3</b> 家</td>
+          <td>*ST亿晶<span style="color:var(--text-muted);font-size:14px">（权益&lt;0；负债率 109.1%&gt;90）</span>、协鑫集成<span style="color:var(--text-muted);font-size:14px">（负债率 95.1%&gt;90）</span>、海源复材<span style="color:var(--text-muted);font-size:14px">（负债率 95.0%&gt;90）</span></td>
+          <td style="color:var(--text-muted);font-size:15px">负债率 &gt; 90% 或 股东权益 &lt; 0（资不抵债）</td>
+        </tr>
+        <tr>
+          <td><span class="emo emo-warn" style="background:var(--emo-warn-bg);color:var(--emo-warn);border-color:var(--emo-warn-line)">高危</span></td>
+          <td><b style="font-size:19px">7</b> 家</td>
+          <td>晶澳科技<span style="color:var(--text-muted);font-size:14px">（负债率 79.9%≥75）</span>、天合光能<span style="color:var(--text-muted);font-size:14px">（负债率 79.7%≥75）</span>、爱旭股份<span style="color:var(--text-muted);font-size:14px">（负债率 79.5%≥75）</span>、钧达股份<span style="color:var(--text-muted);font-size:14px">（负债率 77.8%≥75）</span>、晶科能源<span style="color:var(--text-muted);font-size:14px">（负债率 76.0%≥75）</span>、通威股份<span style="color:var(--text-muted);font-size:14px">（负债率 75.6%≥75）</span>、隆基绿能<span style="color:var(--text-muted);font-size:14px">（现金流为负且负债率 67.2%&gt;60）</span></td>
+          <td style="color:var(--text-muted);font-size:15px">负债率 ≥ 75%，或（经营现金流 TTM &lt; 0 且 负债率 &gt; 60%）</td>
+        </tr>
+        <tr>
+          <td><span class="emo emo-neu" style="background:var(--emo-neu-bg);color:var(--emo-neu);border-color:var(--emo-neu-line)">承压</span></td>
+          <td><b style="font-size:19px">6</b> 家</td>
+          <td>东方日升<span style="color:var(--text-muted);font-size:14px">（负债率 73.6%≥60；归母净利为负）</span>、TCL中环<span style="color:var(--text-muted);font-size:14px">（负债率 73.4%≥60；归母净利为负）</span>、正泰电器<span style="color:var(--text-muted);font-size:14px">（负债率 64.2%≥60）</span>、阳光电源<span style="color:var(--text-muted);font-size:14px">（负债率 61.6%≥60）</span>、福莱特<span style="color:var(--text-muted);font-size:14px">（归母净利为负）</span>、大全能源<span style="color:var(--text-muted);font-size:14px">（归母净利为负）</span></td>
+          <td style="color:var(--text-muted);font-size:15px">负债率 ≥ 60% 或 归母净利润 &lt; 0</td>
+        </tr>
+        <tr>
+          <td><span class="emo emo-neg" style="background:var(--emo-neg-bg);color:var(--emo-neg);border-color:var(--emo-neg-line)">安全</span></td>
+          <td><b style="font-size:19px">2</b> 家</td>
+          <td>捷佳伟创<span style="color:var(--text-muted);font-size:14px">（负债率&lt;60 且未亏损）</span>、福斯特<span style="color:var(--text-muted);font-size:14px">（负债率&lt;60 且未亏损）</span></td>
+          <td style="color:var(--text-muted);font-size:15px">其余</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+    <div class="matrix-note" style="margin-top:18px">
+    <b>两套阈值为什么不一样（必须并列读，不能互相替代）</b>
+    <br><b>面板告警 alert 列</b>　资不抵债（权益&lt;0）/ 经营现金流为负（累计口径）/ 负债率 ≥ 80% —— 三态择一，空为无告警——单维度·单阈值，用于「这只票财务上有风险吗」的即时提示
+    <br><b>体检四档分级</b>　见 tiers.rules，负债率 + 现金流 + 盈亏 三维复合——多维度·复合分档，用于「这只票走到出清链条哪一格」的阶段定位
+    <br><b>差异后果</b>　负债率落在 75%-80% 且现金流为负的标的，WB 面板【无告警】（未过 80 线）但四档判【高危】——两套并列呈现、各自列示，不互相覆盖；读者据「要看风险提示就看 alert 列，要看阶段定位就看档位列」取用<br><b>本期实例（机器算）</b>　面板 alert 命中 6 家，四档 ≥高危 10 家；其中 5 家在 alert 线下但判高危：晶澳科技（79.9%）、天合光能（79.7%）、爱旭股份（79.5%）、晶科能源（76.0%）、通威股份（75.6%）——它们贴着 80% 警戒线但没过线，面板不告警不等于阶段不在高危格。
+    <br><b>字段口径</b>　分档用 OCF TTM 口径（看当前失血速度），F5 因子用累计净额口径（看本年累计失血）——同一家公司两列可能一正一负，属口径差异非错误
+  </div>
+    <div class="note" style="margin-top:14px">
+    <b>缺口声明（不假装已解决）</b>　本版对阶段 Ⅳ、Ⅴ 无机器判据，
+    在时钟里只作占位、不参与卡点判定；旁证读数（板块 PB 分位、ETF 主力净流入）不得用于改判阶段。
+    要把 Ⅳ 做成机器判据，需要分环节价格与现金成本数据源，属外部依赖未落地。
+  </div>
+</div>
+<div class="section-label">跨行业校准 · Cross-Industry Calibration</div>
 <div class="card">
   <div class="note" style="margin-bottom:16px">
     <strong>为什么要跨行业：</strong>光伏本轮是「绝对过剩」（名义产能是全球需求 2.4 倍），
