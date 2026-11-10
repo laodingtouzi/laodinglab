@@ -1,15 +1,15 @@
 {
- "generated_at": "2026-11-10T19:21:09",
+ "generated_at": "2026-11-10T21:00:05",
  "unread_count": 3,
  "meta": {
-  "checked_at": "2026-11-10T19:21:09",
+  "checked_at": "2026-11-10T21:00:05",
   "date": "2026-11-10",
   "trading_day": true,
   "trading_day_reason": "daily_scores(当日有评分记录)",
-  "cron_log_count": 2,
+  "cron_log_count": 3,
   "run_completed": true,
   "online_check": "online_updated(2026-11-10)",
-  "guard_alert_count": 16,
+  "guard_alert_count": 18,
   "weekly_latest": "weekly_20261107_104005.log",
   "weekly_age_days": 2,
   "monthly_latest": "月度复盘_2026-10.html",
@@ -30,34 +30,34 @@
  },
  "alerts": [
   {
-   "id": "MULTI_RUN_SEQUENTIAL_20261110_192109",
+   "id": "MULTI_RUN_SEQUENTIAL_20261110_210005",
    "level": "info",
    "code": "MULTI_RUN_SEQUENTIAL",
-   "title": "当日 2 次日跑均顺序执行（无并发）",
-   "detail": "cron_20261110_183005.log → cron_20261110_190602.log。顺序补跑属合法运维动作（如数据补齐后的重跑），不构成双实例风险。",
+   "title": "当日 3 次日跑均顺序执行（无并发）",
+   "detail": "cron_20261110_183005.log → cron_20261110_190602.log → cron_20261110_200005.log。顺序补跑属合法运维动作（如数据补齐后的重跑），不构成双实例风险。",
    "action": "无需处理",
    "date": "2026-11-10",
-   "ts": "2026-11-10T19:21:09"
+   "ts": "2026-11-10T21:00:05"
   },
   {
-   "id": "DATA_GAP_PERSIST_20261110_192109",
+   "id": "DATA_GAP_PERSIST_20261110_210005",
    "level": "warn",
    "code": "DATA_GAP_PERSIST",
    "title": "当日新出现数据缺口：market_stale",
    "detail": "行情陈旧 27.4%（阈值 >10%），样本 ['000001.SZ', '000002.SZ', '000021.SZ', '000027.SZ', '000028.SZ']（当日首次出现只 warn，跨日未解决将升级为 error）",
    "action": "观察次日 step_status 与 freshness 是否恢复",
    "date": "2026-11-10",
-   "ts": "2026-11-10T19:21:09"
+   "ts": "2026-11-10T21:00:05"
   },
   {
-   "id": "DATA_GAP_PERSIST_20261110_192109",
+   "id": "DATA_GAP_PERSIST_20261110_210005",
    "level": "warn",
    "code": "DATA_GAP_PERSIST",
    "title": "当日新出现数据缺口：step:0",
    "detail": "数据获取步骤 [0] 补偿延后：熔断冷却中（step_status 日期 2026-11-10）（当日首次出现只 warn，跨日未解决将升级为 error）",
    "action": "观察次日 step_status 与 freshness 是否恢复",
    "date": "2026-11-10",
-   "ts": "2026-11-10T19:21:09"
+   "ts": "2026-11-10T21:00:05"
   }
  ]
 }
