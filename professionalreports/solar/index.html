@@ -700,7 +700,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
 <main class="main">
 <div class="ver-strip">
   <span class="ver-badge">版本 v2.1</span>
-  <span class="ver-item">构建 2026-11-10 12:30</span>
+  <span class="ver-item">构建 2026-11-10 15:09</span>
   <span class="ver-item">数据截至 2026-11-09</span>
   <span class="ver-item">出清压力指数 39.7 · 投资时机指数 19.6 · 综合 31.7</span>
 </div>
@@ -1348,7 +1348,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
     没有计分系统的预测不是预测，是观点。
     本栏目对已到期的可结算预测自动结算，滚动公布 Brier 分数。
     参照为<strong>事前冻结的气候学基线</strong>：等价于「对每条预测恒报其冻结概率」，
-    其期望 Brier = p(1−p)。在册 18 条预测：16 条冻结基线 0.5，2 条按参照类标准修订（见冻结表注释）。
+    其期望 Brier = p(1−p)。在册 21 条预测：19 条冻结基线 0.5，2 条按参照类标准修订（见冻结表注释）。
     官方技能分（K9 逐条参照）：<strong>BSS = 1 − mean((p−o)²) / mean(q_i(1−q_i))</strong>，
     <strong>与基线持平即为 0</strong>，大于 0 才算真有信息；另列 BSS@0.5 敏感性档仅作对照，
     结论性措辞只引官方档。
@@ -1357,12 +1357,12 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
   <div class="mini-stats">
     <div class="mini-stat">
       <div class="ms-label">已结算 / 可结算</div>
-      <div class="ms-value" style="color:var(--text)">0/18</div>
-      <div class="ms-sub">第 4 轮 · 2026-11-08</div>
+      <div class="ms-value" style="color:var(--text)">1/21</div>
+      <div class="ms-sub">第 6 轮 · 2026-11-08</div>
     </div>
     <div class="mini-stat">
       <div class="ms-label">预测 Brier 分数</div>
-      <div class="ms-value" style="color:var(--text)">待结算</div>
+      <div class="ms-value" style="color:var(--text)">0.16</div>
       <div class="ms-sub">越低越好 · 0=完美预测 1=完全错误</div>
     </div>
     <div class="mini-stat">
@@ -1372,12 +1372,12 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
     </div>
     <div class="mini-stat">
       <div class="ms-label">相对基线优势</div>
-      <div class="ms-value" style="color:var(--text)">待结算</div>
-      <div class="ms-sub">尚无已结算预测</div>
+      <div class="ms-value" style="color:var(--text)">0.09</div>
+      <div class="ms-sub">优于冻结基线</div>
     </div>
     <div class="mini-stat">
       <div class="ms-label">BSS@0.5 敏感性</div>
-      <div class="ms-value" style="color:var(--text)">待结算</div>
+      <div class="ms-value" style="color:var(--text)">0.36</div>
       <div class="ms-sub">仅作对照 · 结论只引官方档</div>
     </div>
   </div>
@@ -1532,6 +1532,30 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <td><span style="font-family:var(--mono);font-size:14px">60%</span></td>
         <td><span style="font-family:var(--mono);font-size:14px">2027-01-31</span></td>
         <td><span style="font-size:14px;color:var(--text-secondary)">结算于对账器首跑日（提前结算）；若 2027-01-31（含）前对账器未上线，本条按未兑现结算。残留认定：文案声称的计算/计数/引用与实现或事实不符（双方人工复核确认）</span></td>
+        <td><span class="emo emo-pos" style="font-size:14px;background:var(--emo-pos-bg);color:var(--emo-pos);border-color:var(--emo-pos-line)">✓ 已兑现</span></td>
+      </tr>
+      <tr>
+        <td><span style="font-family:var(--mono);font-size:14.5px">P11</span></td>
+        <td><div style="font-size:15px;line-height:1.6">2026-11-20（含）前，reconcile 留档机制完成防覆写改造——首跑留档固化（拒写/改名/只读三选一）且日常运行留档迁入独立文件（reconcile_latest.json 或追加式 reconcile_runs.jsonl），流水线 reconcile 步骤不再覆写首跑留档；且 build_meta.json 增加内容指纹（sha256 字段或修正后的真实字节数）</div></td>
+        <td><span style="font-family:var(--mono);font-size:14px">75%</span></td>
+        <td><span style="font-family:var(--mono);font-size:14px">2026-11-20</span></td>
+        <td><span style="font-size:14px;color:var(--text-secondary)">git log + data/ 目录实查 + reconcile.py / build_report.py diff（双方人工复核确认）</span></td>
+        <td><span class="emo emo-neu" style="font-size:14px;background:var(--emo-neu-bg);color:var(--emo-neu);border-color:var(--emo-neu-line)">待结算</span></td>
+      </tr>
+      <tr>
+        <td><span style="font-family:var(--mono);font-size:14.5px">P12</span></td>
+        <td><div style="font-size:15px;line-height:1.6">美国第 120 届国会就职后 100 日内（2027-01-03 至 2027-04-13），含 IRA 清洁能源税收抵免恢复或延期条款的联邦法案成为法律（以 congress.gov 法案状态 = Became Law 为准）</div></td>
+        <td><span style="font-family:var(--mono);font-size:14px">10%</span></td>
+        <td><span style="font-family:var(--mono);font-size:14px">2027-04-13</span></td>
+        <td><span style="font-size:14px;color:var(--text-secondary)">congress.gov 法案状态（机读口径；IRA 恢复条款清单事前冻结于 config/tactical_signals.json TS-2027-0103）</span></td>
+        <td><span class="emo emo-neu" style="font-size:14px;background:var(--emo-neu-bg);color:var(--emo-neu);border-color:var(--emo-neu-line)">待结算</span></td>
+      </tr>
+      <tr>
+        <td><span style="font-family:var(--mono);font-size:14.5px">W9</span></td>
+        <td><div style="font-size:15px;line-height:1.6">（与 P12 同题对峙）美国第 120 届国会就职后 100 日内（2027-01-03 至 2027-04-13），含 IRA 清洁能源税收抵免恢复或延期条款的联邦法案成为法律（以 congress.gov 法案状态 = Became Law 为准）</div></td>
+        <td><span style="font-family:var(--mono);font-size:14px">8%</span></td>
+        <td><span style="font-family:var(--mono);font-size:14px">2027-04-13</span></td>
+        <td><span style="font-size:14px;color:var(--text-secondary)">同 P12（congress.gov 机读口径）</span></td>
         <td><span class="emo emo-neu" style="font-size:14px;background:var(--emo-neu-bg);color:var(--emo-neu);border-color:var(--emo-neu-line)">待结算</span></td>
       </tr>
     </tbody>
