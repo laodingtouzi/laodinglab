@@ -10,8 +10,8 @@
 <style>
 <style>
 :root {
-  --bg: #edeae6;
-  --bg-surface: #f7f6f4;
+  --bg: #f1eee8;
+  --bg-surface: #faf9f6;
   --bg-dark: #2d3a4f;
   --text: #2a3445;
   --text-secondary: #5c6b80;
@@ -141,13 +141,70 @@ body {
 
 .main { flex: 1; max-width: 1000px; margin: 0 auto; padding: 40px 24px 60px; width: 100%; }
 .section-label {
-  font-family: var(--mono); font-size:16.5px; letter-spacing: .2em; text-transform: uppercase;
-  color: var(--text-secondary); margin-bottom: 22px; display: flex; align-items: center; gap: 10px;
+  font-family: var(--serif); font-size:18px; font-weight: 600; letter-spacing: .06em;
+  color: var(--text); margin-bottom: 22px; display: flex; align-items: baseline; gap: 12px;
 }
 .section-label::before {
   content: ''; display: block; width: 12px; height: 2px;
   background: linear-gradient(90deg, var(--accent), var(--accent-2)); border-radius: 1px;
+  align-self: center;
 }
+/* 章节编号（呈现升级 2026-11-11）：mono 小号数字，研报式 01/02… */
+.sec-no {
+  font-family: var(--mono); font-size: 14px; font-weight: 500; letter-spacing: .08em;
+  color: var(--accent-2);
+}
+.sec-label-cn { font-size: 17.5px; }
+.sec-label-en { font-family: var(--mono); font-size: 13.5px; font-weight: 400;
+  letter-spacing: .12em; color: var(--text-muted); }
+.sec-label-sep { color: var(--text-muted); font-weight: 400; }
+
+/* 执行摘要（卷首核心判断块，全部机器渲染） */
+.exec-summary {
+  background: var(--bg-surface); border: 1px solid var(--border);
+  border-left: 4px solid var(--accent-2); border-radius: 10px;
+  padding: 20px 24px 18px; margin-bottom: 26px;
+}
+.exec-title {
+  font-family: var(--serif); font-size: 19px; font-weight: 700; color: var(--text);
+  margin-bottom: 10px; letter-spacing: .04em;
+}
+.exec-lead { font-size: 16.5px; line-height: 1.8; color: var(--text); }
+.exec-lead b { color: var(--text); }
+.exec-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px; margin-top: 14px; }
+.exec-item { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 10px 13px; }
+.exec-k { font-size: 13.5px; color: var(--text-muted); margin-bottom: 3px; }
+.exec-v { font-size: 16px; color: var(--text); line-height: 1.55; }
+.exec-v .mono, .mono-num { font-family: var(--mono); }
+.exec-foot { margin-top: 12px; font-size: 13.5px; color: var(--text-muted); }
+
+/* 教学性长注折叠（内容保留、默认收起，不挡研报式阅读） */
+details.fold { margin: 12px 0 4px; border: 1px dashed var(--border); border-radius: 8px;
+  background: #fff; }
+details.fold > summary {
+  cursor: pointer; padding: 10px 14px; font-size: 14.5px; color: var(--text-secondary);
+  list-style: none; display: flex; align-items: center; gap: 8px; user-select: none;
+}
+details.fold > summary::before { content: '▸'; font-size: 13.5px; color: var(--accent-2);
+  transition: transform .15s; }
+details.fold[open] > summary::before { transform: rotate(90deg); }
+details.fold > summary:hover { color: var(--text); }
+details.fold > .fold-body { padding: 2px 16px 13px; }
+
+/* 卷首目录条（章节自动编号后生成） */
+.toc-strip {
+  display: flex; flex-wrap: wrap; gap: 7px 9px; align-items: center;
+  background: #fff; border: 1px solid var(--border); border-radius: 8px;
+  padding: 11px 15px; margin: -8px 0 26px;
+}
+.toc-strip a {
+  font-size: 13.5px; color: var(--text-secondary); text-decoration: none;
+  border: 1px solid var(--border); border-radius: 5px; padding: 3px 9px;
+  transition: border-color .15s, color .15s; white-space: nowrap;
+}
+.toc-strip a:hover { border-color: var(--accent-2); color: var(--text); }
+.toc-strip a .sec-no { color: var(--accent-2); margin-right: 3px; }
 .card {
   background: var(--bg-surface); border: 1px solid var(--border); border-radius: 10px;
   padding: 22px 24px; margin-bottom: 18px; box-shadow: var(--shadow);
@@ -700,12 +757,21 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
 <main class="main">
 <div class="ver-strip">
   <span class="ver-badge">版本 v2.1</span>
-  <span class="ver-item">构建 2026-11-10 17:35</span>
+  <span class="ver-item">构建 2026-11-11 00:51</span>
   <span class="ver-item">数据截至 2026-11-10</span>
   <span class="ver-item">出清压力指数 39.7 · 投资时机指数 25.0 · 综合 33.8</span>
 </div>
 
-<div class="section-label">核心结论 · Verdict</div>
+<div class="section-label" id="sec-01"><span class="sec-no">01</span><span class="sec-label-cn">执行摘要</span><span class="sec-label-sep"> · </span><span class="sec-label-en">Executive Summary</span></div>
+<div class="exec-summary">
+  <div class="exec-lead"><b>核心判断</b>　出清时钟卡在 <b class="mono-num">Ⅱ→Ⅲ</b> 闸门口——核减/关停类公告 0 起（notices+news 标题零命中）。这是「闸门已落、退出未到」的僵持段，不是出清失败。<br><b>当前建议</b>　出清压力指数 39.7（压力初步显现）× 投资时机指数 25.0（回避）→ 综合结论 <b style="color:#27ae60">回避</b>——出清仅信号初现且买入条件差。<br><b>逐只体检</b>　监测池 18 只：临终 3 / 高危 7 / 承压 6 / 安全 2；其中 5 家在面板告警线下（贴 80% 线未过线）。</div>
+  <div class="exec-grid"><div class="exec-item"><div class="exec-k">综合结论</div><div class="exec-v"><b style="color:#27ae60">回避</b></div></div><div class="exec-item"><div class="exec-k">出清压力 / 投资时机</div><div class="exec-v"><span class="mono-num">39.7</span> / <span class="mono-num">25.0</span></div></div><div class="exec-item"><div class="exec-k">出清事件净分</div><div class="exec-v"><span class="mono-num">95</span></div></div><div class="exec-item"><div class="exec-k">尾部高危标的</div><div class="exec-v"><span class="mono-num">3/18</span></div></div><div class="exec-item"><div class="exec-k">时钟卡点</div><div class="exec-v"><b class="mono-num">Ⅱ→Ⅲ</b></div></div><div class="exec-item"><div class="exec-k">下一结算事件</div><div class="exec-v">P9 · <span class="mono-num">2026-11-16</span></div></div></div>
+  <div class="exec-foot">数据截至 2026-11-10（监测池 18/18 完整）·
+    本摘要全部读数由机器工件生成（score_latest / clearance_clock / forecast_log），口径与证据见正文对应章节。</div>
+</div>
+<nav class="toc-strip" aria-label="目录"><a href="#sec-01"><span class="sec-no">01</span> 执行摘要</a><a href="#sec-02"><span class="sec-no">02</span> 核心结论</a><a href="#sec-03"><span class="sec-no">03</span> 出清时钟与逐只体检</a><a href="#sec-04"><span class="sec-no">04</span> 阶段时间轴与提前量</a><a href="#sec-05"><span class="sec-no">05</span> 跨行业校准</a><a href="#sec-06"><span class="sec-no">06</span> 出清判据</a><a href="#sec-07"><span class="sec-no">07</span> 政府介入</a><a href="#sec-08"><span class="sec-no">08</span> 阶段 3 与阶段 4 的时序关系</a><a href="#sec-09"><span class="sec-no">09</span> 情景推演</a><a href="#sec-10"><span class="sec-no">10</span> 行动触发器</a><a href="#sec-11"><span class="sec-no">11</span> 口径说明</a><a href="#sec-12"><span class="sec-no">12</span> 预测成绩单</a><a href="#sec-13"><span class="sec-no">13</span> 判断框架</a><a href="#sec-14"><span class="sec-no">14</span> 因子体系</a><a href="#sec-15"><span class="sec-no">15</span> 因子逐条说明</a><a href="#sec-16"><span class="sec-no">16</span> 监控频率建议</a><a href="#sec-17"><span class="sec-no">17</span> 财务与信用面板</a><a href="#sec-18"><span class="sec-no">18</span> 资金面</a><a href="#sec-19"><span class="sec-no">19</span> 出清事件流</a><a href="#sec-20"><span class="sec-no">20</span> 方法论与局限声明</a></nav>
+
+<div class="section-label" id="sec-02"><span class="sec-no">02</span><span class="sec-label-cn">核心结论</span><span class="sec-label-sep"> · </span><span class="sec-label-en">Verdict</span></div>
 <div class="card">
   <div class="dual-grid">
     <div class="axis-card progress">
@@ -741,25 +807,29 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
 
   <div style="background:var(--emo-warn-bg);border-left:3px solid var(--emo-warn);border-radius:0 6px 6px 0;padding:14px 16px;margin:16px 0 4px;"><b style="font-size:17px">出清时钟：卡在 Ⅱ→Ⅲ 闸门口</b>　核减/关停类公告 0 起（notices+news 标题零命中）<br><span style="font-size:15px">前序阶段已启动、下一阶段未启动；池内四档 临终 3 / 高危 7 / 承压 6 / 安全 2。这是「闸门已落、退出未到」的位置，不是「出清失败」。</span></div>
 
-  <div class="matrix-note">
+  <details class="fold"><summary>方法论注记 · 为什么用双轴而不是单轴评分</summary>
+  <div class="fold-body"><div class="matrix-note">
     <b>为什么用双轴？</b>　单轴评分会把「出清还没开始」误判为「出清不会发生」——
     产能退出率低、强标未执行、供需仍过剩这些因子都得 0 分，总分被压到「明确回避」，
     但这实际是<strong>出清正在路上</strong>而非出清失败。
     两个轴分开看，才能区分「行业还会不会好」与「现在该不该买」——
     <strong>这正是提前 3-6 个月建仓提示的落点</strong>。
-    <br><br>
+  </div></div></details>
+
+  <div class="matrix-note" style="margin-top:12px">
     <b>当前定位</b>　出清压力指数「压力初步显现」
     × 投资时机指数「回避」
     → <strong style="color:#27ae60">回避</strong>　出清仅信号初现且买入条件差
   </div>
 
-  <div class="matrix-note" style="margin-top:14px;background:var(--emo-neu-bg);border-left-color:var(--emo-neu)">
+  <details class="fold"><summary>方法论注记 · 状态 vs 路径：两个轴为什么不矛盾（Q13 逻辑接口）</summary>
+  <div class="fold-body"><div class="matrix-note" style="margin-top:10px">
     <b>怎么读这两个数（状态 vs 路径）</b>　两个轴是<b>状态</b>（此刻条件水位），
     阶段 1→5 是<b>路径</b>（沿出清链条走到第几步）—— 两者不是同一维度，不构成矛盾。
     <br><b>为什么「阶段 1 + 压力指数高」是自洽的</b>　阶段 1（财务恶化）本身就是压力的<strong>累积结果</strong>，所以处于阶段 1 时压力指数高是完全自洽的 —— 恰恰是财务恶化把压力指数推高，而不是与它矛盾。更准确地说：<strong>阶段 1 是压力指数的主要来源之一</strong>（F4/F5/F7/F8 全部指向财务与信用压力），因此『阶段 1 + 压力指数 60』是自洽的读数。
     <br><b>「出清完成度」看哪两个读数</b>　『出清完成度』不由进度轴分数反映，而由两个独立读数承担：① <strong>F1 有效产能退出率</strong>（实际退出 GW / 名义产能）—— 唯一的结果型指标；② <strong>阶段位置</strong>（当前在第几步）。本轮曾因单轴分数把『还没开始』误判为『不会发生』，根因正是把状态与路径混在一个数里。
     <br><b>本期套用</b>　本期读数：压力指数 39.6 + 阶段 1 + 投资时机 21.4 → 结论『压力刚开始显现、且尾部风险已显性化』→ 建议：明确回避（等压力进一步显现 + 时机条件转好）。若压力指数升至 60 而时机指数仍 21 → 仍是回避（条件成熟但买点未到）；若压力指数 60 且时机指数 55 → 试探建仓。
-  </div>
+  </div></div></details>
 
   <div class="mini-stats" style="margin-top:20px">
     <div class="mini-stat">
@@ -786,98 +856,8 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
     </div>
   </div>
 </div>
-<div class="section-label">阶段时间轴与提前量 · Timeline</div>
-<div class="card">
-  <div class="note" style="margin-bottom:20px">
-    <strong>核心问题：</strong>每个阶段的信号出现后，到最终「产能出清 → 价格回升 → 盈利修复」，
-    历史上存在可量化的提前量。模型据此给出<strong>时点预测</strong>，而非仅作事后验证。
-    提前量基准来自中国光伏三轮历史周期（下方实证表），非主观设定。
-  </div>
-  <div class="tl-wrap">
-    <div class="tl-item is-current tl-neu">
-      <div class="tl-lead">提前 24 个月<span class="tl-unit">至出清确认</span></div>
-      <div>
-        <div class="tl-stage">阶段 1 · 财务恶化<span class="tl-current">当前所处阶段</span></div>
-        <div class="tl-conf">置信度：高（历史两轮均为 2 年级别）</div>
-        <div class="tl-obs"><b>可观测信号</b>　经营现金流转负家数占比 &gt; 30%、资产负债率 &gt; 80% 家数增加、存货跌价准备计提、担保余额上升</div>
-        <div class="tl-hist"><b>历史实证</b>　2011-2013 底 2 年、2018-2019 底 1 年；本轮 2026H1 六大龙头三季报已现大面积亏损<br>
-          <b>说明</b>　领先量最确定的一段：财报节点可精确捕捉</div>
-      </div>
-    </div>
-    <div class="tl-item tl-warn">
-      <div class="tl-lead">提前 26-30 个月<span class="tl-unit">至出清确认</span></div>
-      <div>
-        <div class="tl-stage">阶段 2 · 银行收贷（状态依赖）</div>
-        <div class="tl-conf">置信度：中高（含 8-12 个月僵尸化期）</div>
-        <div class="tl-obs"><b>可观测信号</b>　阶段A（僵尸化，减速器）：债务展期、借新还旧、政府协调续贷、有息负债仍增长而利息保障倍数&lt;1 → 银行续贷自保，出清被延后；阶段B（破产程序启动，加速器）：破产申请/预重整受理公告 → 银行转为申报债权核销，授信彻底断裂。<strong>分界判据 = 破产申请/预重整受理公告</strong></div>
-        <div class="tl-hist"><b>历史实证</b>　隆基 70 亿转债触发回售（2026-11）；2012 年赛维/尚德案例中授信收紧发生在企业实质死亡之后 —— 是确认而非触发，印证阶段A的存在<br>
-          <b>说明</b>　银行收贷为状态依赖的两段模型：先经历 8-12 个月僵尸化期（银行对已资不抵债企业续贷自保是僵尸化第一机制，见 Caballero-Hoshi-Kashyap 2008 / BIS 2020 / IMF WP/17/266），再进入实质收贷，合计 26-30 个月。监测新增：僵尸化指数（利息保障倍数&lt;1 且有息负债同比增长的家数占比，季度）</div>
-      </div>
-    </div>
-    <div class="tl-item tl-warn">
-      <div class="tl-lead">提前 12 个月<span class="tl-unit">至出清确认</span></div>
-      <div>
-        <div class="tl-stage">阶段 3 · 政府介入分岔</div>
-        <div class="tl-conf">置信度：中</div>
-        <div class="tl-obs"><b>可观测信号</b>　国资入股、纾困基金、政府接盘、债务展期（利空）；强标执行细则、行业规范条件定稿（利好）</div>
-        <div class="tl-hist"><b>历史实证</b>　2013-07 光伏国八条（利好，6-12 个月后行业企稳）；2026 强标已发布待执行<br>
-          <b>说明</b>　分岔本身是最大不确定性来源。若走利空分支，全链条提前量需整体后移 6-12 个月</div>
-      </div>
-    </div>
-    <div class="tl-item tl-warn">
-      <div class="tl-lead">提前 9 个月<span class="tl-unit">至出清确认</span></div>
-      <div>
-        <div class="tl-stage">阶段 4 · 企业互动与重组</div>
-        <div class="tl-conf">置信度：中高</div>
-        <div class="tl-obs"><b>可观测信号</b>　预重整/重整受理、产线拍卖、设备转让、破产清算、并购交割后产线处置</div>
-        <div class="tl-hist"><b>历史实证</b>　2026 已 9 起（历史新高）；*ST亿晶预重整、海源复材诉讼、ST棒杰以股抵债<br>
-          <b>说明</b>　提前 9 个月：2026-11 → 2027-08 区间是重组密集观察窗</div>
-      </div>
-    </div>
-    <div class="tl-item tl-warn">
-      <div class="tl-lead">提前 6 个月<span class="tl-unit">至出清确认</span></div>
-      <div>
-        <div class="tl-stage">阶段 5 · 产能实际退出与价格修复</div>
-        <div class="tl-conf">置信度：中（玻璃环节已实证）</div>
-        <div class="tl-obs"><b>可观测信号</b>　冷修/停产产能累计 &gt; 100GW、在产产能下降、开工率回升 &gt; 55%、库存天数 &lt; 40 天、组件价格站上完全成本</div>
-        <div class="tl-hist"><b>历史实证</b>　光伏玻璃实证：冷修加速→价格修复 3 个月；停产→价格修复 6 个月。2019 年教训：若只是减产未退出，价格反弹会被复产压制<br>
-          <b>说明</b>　提前 6 个月：2026-11 → 2027-05 观察价格与开工率同步性</div>
-      </div>
-    </div>
-  </div>
-  <div class="tl-bench">
-    <b>历史周期基准（提前量测算的实证依据）</b>
-    <table>
-      <thead><tr><th>周期</th><th>触发因素</th><th>底部时长</th><th>股价领先基本面</th><th>出清模式</th></tr></thead>
-      <tbody>
-        <tr>
-          <td><b>2011-2013 欧美双反</b></td>
-          <td>海外补贴退坡+双反</td>
-          <td>约 2 年</td>
-          <td>股价领先基本面 6-12 个月</td>
-          <td>市场出清为主（赛维、尚德破产重组）</td>
-        </tr>
-        <tr>
-          <td><b>2018-2019 531新政</b></td>
-          <td>补贴断崖退坡</td>
-          <td>约 1 年</td>
-          <td>领先基本面 2-3 个季度</td>
-          <td>亏损倒逼减产，无大规模破产，靠需求爆发消化</td>
-        </tr>
-        <tr>
-          <td><b>2023-2026 本轮</b></td>
-          <td>绝对过剩+需求增速中枢下移</td>
-          <td>预判 2-3 年（2026H2-2028）</td>
-          <td>待观测</td>
-          <td>市场倒逼+政策标准双轮（对标钢铁2016-17）</td>
-        </tr>
-      </tbody>
-    </table>
-    <div style="margin-top:12px"><b>本轮实证锚点</b>　2026-07 光伏玻璃：冷修6650吨/日、9家完全停产、4家破产重整、在产日熔量从8.3万吨降至7.1万吨（-12%）、库存天数54→45天、价格8.5→10.25元/平（+24%）。从冷修加速到价格修复约 3 个月，从停产到价格修复约 6 个月</div>
-    <div style="margin-top:9px"><b>行动窗口</b>　当前处于阶段 1-2 区间（财务恶化已现、银行收贷初现），对应『观察等待』档位；建仓窗口在阶段 3-4 信号确认后，即 2027 年上半年前后</div>
-  </div>
-</div>
-<div class="section-label">出清时钟与逐只体检 · Clearance Clock</div>
+
+<div class="section-label" id="sec-03"><span class="sec-no">03</span><span class="sec-label-cn">出清时钟与逐只体检</span><span class="sec-label-sep"> · </span><span class="sec-label-en">Clearance Clock</span></div>
 <div class="card">
   <div class="note" style="margin-bottom:18px">
     <strong>这一段回答的是「现在卡在哪」</strong>　阶段时间轴说明的是路径（走到第几步会发生什么），
@@ -971,7 +951,97 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
     要把 Ⅳ 做成机器判据，需要分环节价格与现金成本数据源，属外部依赖未落地。
   </div>
 </div>
-<div class="section-label">跨行业校准 · Cross-Industry Calibration</div>
+<div class="section-label" id="sec-04"><span class="sec-no">04</span><span class="sec-label-cn">阶段时间轴与提前量</span><span class="sec-label-sep"> · </span><span class="sec-label-en">Timeline</span></div>
+<div class="card">
+  <div class="note" style="margin-bottom:20px">
+    <strong>核心问题：</strong>每个阶段的信号出现后，到最终「产能出清 → 价格回升 → 盈利修复」，
+    历史上存在可量化的提前量。模型据此给出<strong>时点预测</strong>，而非仅作事后验证。
+    提前量基准来自中国光伏三轮历史周期（下方实证表），非主观设定。
+  </div>
+  <div class="tl-wrap">
+    <div class="tl-item is-current tl-neu">
+      <div class="tl-lead">提前 24 个月<span class="tl-unit">至出清确认</span></div>
+      <div>
+        <div class="tl-stage">阶段 1 · 财务恶化<span class="tl-current">当前所处阶段</span></div>
+        <div class="tl-conf">置信度：高（历史两轮均为 2 年级别）</div>
+        <div class="tl-obs"><b>可观测信号</b>　经营现金流转负家数占比 &gt; 30%、资产负债率 &gt; 80% 家数增加、存货跌价准备计提、担保余额上升</div>
+        <div class="tl-hist"><b>历史实证</b>　2011-2013 底 2 年、2018-2019 底 1 年；本轮 2026H1 六大龙头三季报已现大面积亏损<br>
+          <b>说明</b>　领先量最确定的一段：财报节点可精确捕捉</div>
+      </div>
+    </div>
+    <div class="tl-item tl-warn">
+      <div class="tl-lead">提前 26-30 个月<span class="tl-unit">至出清确认</span></div>
+      <div>
+        <div class="tl-stage">阶段 2 · 银行收贷（状态依赖）</div>
+        <div class="tl-conf">置信度：中高（含 8-12 个月僵尸化期）</div>
+        <div class="tl-obs"><b>可观测信号</b>　阶段A（僵尸化，减速器）：债务展期、借新还旧、政府协调续贷、有息负债仍增长而利息保障倍数&lt;1 → 银行续贷自保，出清被延后；阶段B（破产程序启动，加速器）：破产申请/预重整受理公告 → 银行转为申报债权核销，授信彻底断裂。<strong>分界判据 = 破产申请/预重整受理公告</strong></div>
+        <div class="tl-hist"><b>历史实证</b>　隆基 70 亿转债触发回售（2026-11）；2012 年赛维/尚德案例中授信收紧发生在企业实质死亡之后 —— 是确认而非触发，印证阶段A的存在<br>
+          <b>说明</b>　银行收贷为状态依赖的两段模型：先经历 8-12 个月僵尸化期（银行对已资不抵债企业续贷自保是僵尸化第一机制，见 Caballero-Hoshi-Kashyap 2008 / BIS 2020 / IMF WP/17/266），再进入实质收贷，合计 26-30 个月。监测新增：僵尸化指数（利息保障倍数&lt;1 且有息负债同比增长的家数占比，季度）</div>
+      </div>
+    </div>
+    <div class="tl-item tl-warn">
+      <div class="tl-lead">提前 12 个月<span class="tl-unit">至出清确认</span></div>
+      <div>
+        <div class="tl-stage">阶段 3 · 政府介入分岔</div>
+        <div class="tl-conf">置信度：中</div>
+        <div class="tl-obs"><b>可观测信号</b>　国资入股、纾困基金、政府接盘、债务展期（利空）；强标执行细则、行业规范条件定稿（利好）</div>
+        <div class="tl-hist"><b>历史实证</b>　2013-07 光伏国八条（利好，6-12 个月后行业企稳）；2026 强标已发布待执行<br>
+          <b>说明</b>　分岔本身是最大不确定性来源。若走利空分支，全链条提前量需整体后移 6-12 个月</div>
+      </div>
+    </div>
+    <div class="tl-item tl-warn">
+      <div class="tl-lead">提前 9 个月<span class="tl-unit">至出清确认</span></div>
+      <div>
+        <div class="tl-stage">阶段 4 · 企业互动与重组</div>
+        <div class="tl-conf">置信度：中高</div>
+        <div class="tl-obs"><b>可观测信号</b>　预重整/重整受理、产线拍卖、设备转让、破产清算、并购交割后产线处置</div>
+        <div class="tl-hist"><b>历史实证</b>　2026 已 9 起（历史新高）；*ST亿晶预重整、海源复材诉讼、ST棒杰以股抵债<br>
+          <b>说明</b>　提前 9 个月：2026-11 → 2027-08 区间是重组密集观察窗</div>
+      </div>
+    </div>
+    <div class="tl-item tl-warn">
+      <div class="tl-lead">提前 6 个月<span class="tl-unit">至出清确认</span></div>
+      <div>
+        <div class="tl-stage">阶段 5 · 产能实际退出与价格修复</div>
+        <div class="tl-conf">置信度：中（玻璃环节已实证）</div>
+        <div class="tl-obs"><b>可观测信号</b>　冷修/停产产能累计 &gt; 100GW、在产产能下降、开工率回升 &gt; 55%、库存天数 &lt; 40 天、组件价格站上完全成本</div>
+        <div class="tl-hist"><b>历史实证</b>　光伏玻璃实证：冷修加速→价格修复 3 个月；停产→价格修复 6 个月。2019 年教训：若只是减产未退出，价格反弹会被复产压制<br>
+          <b>说明</b>　提前 6 个月：2026-11 → 2027-05 观察价格与开工率同步性</div>
+      </div>
+    </div>
+  </div>
+  <div class="tl-bench">
+    <b>历史周期基准（提前量测算的实证依据）</b>
+    <table>
+      <thead><tr><th>周期</th><th>触发因素</th><th>底部时长</th><th>股价领先基本面</th><th>出清模式</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>2011-2013 欧美双反</b></td>
+          <td>海外补贴退坡+双反</td>
+          <td>约 2 年</td>
+          <td>股价领先基本面 6-12 个月</td>
+          <td>市场出清为主（赛维、尚德破产重组）</td>
+        </tr>
+        <tr>
+          <td><b>2018-2019 531新政</b></td>
+          <td>补贴断崖退坡</td>
+          <td>约 1 年</td>
+          <td>领先基本面 2-3 个季度</td>
+          <td>亏损倒逼减产，无大规模破产，靠需求爆发消化</td>
+        </tr>
+        <tr>
+          <td><b>2023-2026 本轮</b></td>
+          <td>绝对过剩+需求增速中枢下移</td>
+          <td>预判 2-3 年（2026H2-2028）</td>
+          <td>待观测</td>
+          <td>市场倒逼+政策标准双轮（对标钢铁2016-17）</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="margin-top:12px"><b>本轮实证锚点</b>　2026-07 光伏玻璃：冷修6650吨/日、9家完全停产、4家破产重整、在产日熔量从8.3万吨降至7.1万吨（-12%）、库存天数54→45天、价格8.5→10.25元/平（+24%）。从冷修加速到价格修复约 3 个月，从停产到价格修复约 6 个月</div>
+    <div style="margin-top:9px"><b>行动窗口</b>　当前处于阶段 1-2 区间（财务恶化已现、银行收贷初现），对应『观察等待』档位；建仓窗口在阶段 3-4 信号确认后，即 2027 年上半年前后</div>
+  </div>
+</div><div class="section-label" id="sec-05"><span class="sec-no">05</span><span class="sec-label-cn">跨行业校准</span><span class="sec-label-sep"> · </span><span class="sec-label-en">Cross-Industry Calibration</span></div>
 <div class="card">
   <div class="note" style="margin-bottom:16px">
     <strong>为什么要跨行业：</strong>光伏本轮是「绝对过剩」（名义产能是全球需求 2.4 倍），
@@ -1093,7 +1163,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
       </span>
     </div>
   </div>
-</div><div class="section-label">出清判据 · 不可逆性</div>
+</div><div class="section-label" id="sec-06"><span class="sec-no">06</span><span class="sec-label-cn">出清判据 · 不可逆性</span></div>
 <div class="card">
   <div class="note" style="margin-bottom:16px">
     <strong>判据已从「物理退出」改为「不可逆性」</strong>　一条产线哪怕原地矗立、设备完好，只要其边际成本永久高于新一代产品售价，它对有效供给的贡献就永久归零 —— 在产业经济学上就是退出。反之，一条宣布关停但明天就能重开的产线，根本没退出。
@@ -1138,7 +1208,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
   <div class="note" style="margin-top:16px">
     <strong>已知缺口</strong>　三检验中『复产经济性』仍无法事前判定 —— 这是当前框架的已知缺口
   </div>
-</div><div class="section-label">政府介入 · 双向拉锯模型</div>
+</div><div class="section-label" id="sec-07"><span class="sec-no">07</span><span class="sec-label-cn">政府介入 · 双向拉锯模型</span></div>
 <div class="card">
   <div class="note" style="margin-bottom:16px">
     <strong>核心修正：</strong>政府介入的目的和方向是<strong>双向</strong>的——
@@ -1200,7 +1270,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
     <br><b>含义</b>　★ 拉锯态的含义：出清时钟被双向拉扯，实际完成时间会晚于单边推进的直觉估计；需以『治理端信号是否转为实际核减公告』作为拉锯结束的判据
     <br><b>观察判据</b>　治理端从『文件发布』转为『实际核减产能公告』= 拉锯结束、出清加速；救助端从『重组公告』转为『产线关停公告』= 伪出清、时钟重启
   </div>
-</div><div class="section-label">阶段 3 与阶段 4 的时序关系 · Parallel Model</div>
+</div><div class="section-label" id="sec-08"><span class="sec-no">08</span><span class="sec-label-cn">阶段 3 与阶段 4 的时序关系</span><span class="sec-label-sep"> · </span><span class="sec-label-en">Parallel Model</span></div>
 <div class="card">
   <div class="note" style="margin-bottom:14px">
     <strong>结论：</strong>两者<strong>不是严格先后</strong>，而是「并行进程 + 净效应天数」关系。
@@ -1244,7 +1314,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
   <div class="note" style="margin-top:14px">
     <strong>当前推论</strong>　在阶段3 拉锯未收敛前，阶段4 的真实退出进展会被系统性掩盖 —— 这解释了为何『光伏玻璃已实质出清』而『主链看起来没动静』
   </div>
-</div><div class="section-label">情景推演 · Scenarios</div>
+</div><div class="section-label" id="sec-09"><span class="sec-no">09</span><span class="sec-label-cn">情景推演</span><span class="sec-label-sep"> · </span><span class="sec-label-en">Scenarios</span></div>
 <div class="card">
   <div class="note" style="margin-bottom:4px">
     三种情形各有<b>概率、触发条件、时间窗、该做什么</b>。概率为主观赋值，
@@ -1318,7 +1388,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
   <div class="note" style="margin-top:18px">
     <strong>行动窗口</strong>　当前处于阶段 1-2 区间（财务恶化已现、银行收贷初现），对应『观察等待』档位；建仓窗口在阶段 3-4 信号确认后，即 2027 年上半年前后
   </div>
-</div><div class="section-label">行动触发器 · Action Triggers</div>
+</div><div class="section-label" id="sec-10"><span class="sec-no">10</span><span class="sec-label-cn">行动触发器</span><span class="sec-label-sep"> · </span><span class="sec-label-en">Action Triggers</span></div>
 <div class="card">
   <div class="note" style="margin-bottom:12px">
     <strong>改判触发器</strong>　预测概率不靠心情改，靠信号改。以下触发器与 Kimi 版共用
@@ -1355,7 +1425,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
   </ul>
 </div>
 <details class="collapse">
-<summary><span class="section-label">口径说明 · Specifications</span></summary>
+<summary><span class="section-label" id="sec-11"><span class="sec-no">11</span><span class="sec-label-cn">口径说明</span><span class="sec-label-sep"> · </span><span class="sec-label-en">Specifications</span></span></summary>
 <div class="card">
   <div class="spec-list">
 
@@ -1437,7 +1507,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
   </div>
 </div>
 </details>
-<div class="section-label">预测成绩单 · Forecast Scorecard</div>
+<div class="section-label" id="sec-12"><span class="sec-no">12</span><span class="sec-label-cn">预测成绩单</span><span class="sec-label-sep"> · </span><span class="sec-label-en">Forecast Scorecard</span></div>
 <div class="card">
   <details class="collapse" style="margin-bottom:16px">
   <summary>计分方法说明（Brier · 基线口径）</summary>
@@ -1659,7 +1729,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
   </table>
   </div>
 </div>
-<div class="section-label">判断框架 · Framework</div>
+<div class="section-label" id="sec-13"><span class="sec-no">13</span><span class="sec-label-cn">判断框架</span><span class="sec-label-sep"> · </span><span class="sec-label-en">Framework</span></div>
 <div class="card">
   <div class="note" style="margin-bottom:16px">
     <strong>核心命题：</strong>2024 年初以来，由中国光伏行业协会牵头、多个主要部委指导的头部企业自律联盟，
@@ -1728,7 +1798,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
     </div>
   </div>
 </div>
-<div class="section-label">因子体系 · Factors</div>
+<div class="section-label" id="sec-14"><span class="sec-no">14</span><span class="sec-label-cn">因子体系</span><span class="sec-label-sep"> · </span><span class="sec-label-en">Factors</span></div>
 <div class="card">
   <div style="font-size:15px;color:var(--text-secondary);line-height:1.75;margin-bottom:18px">
     18 项因子分五组，按<b>出清压力指数 / 投资时机指数</b>双轴分配权重（60% / 40%）。
@@ -2024,7 +2094,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
 </div>
 
 <details class="collapse">
-<summary><span class="section-label">因子逐条说明 · Factor Details</span></summary>
+<summary><span class="section-label" id="sec-15"><span class="sec-no">15</span><span class="sec-label-cn">因子逐条说明</span><span class="sec-label-sep"> · </span><span class="sec-label-en">Factor Details</span></span></summary>
 <div class="card">
   <div class="factor-group">
     <div class="fg-head emo-neu">
@@ -2437,7 +2507,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
 </div>
 </details>
 <details class="collapse">
-<summary><span class="section-label">监控频率建议 · Cadence</span></summary>
+<summary><span class="section-label" id="sec-16"><span class="sec-no">16</span><span class="sec-label-cn">监控频率建议</span><span class="sec-label-sep"> · </span><span class="sec-label-en">Cadence</span></span></summary>
 <div class="card">
   <div class="two-col">
     <div>
@@ -2468,7 +2538,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
   </div>
 </div>
 </details>
-<div class="section-label">财务与信用面板 · Credit Panel</div>
+<div class="section-label" id="sec-17"><span class="sec-no">17</span><span class="sec-label-cn">财务与信用面板</span><span class="sec-label-sep"> · </span><span class="sec-label-en">Credit Panel</span></div>
 <div class="card">
   <div class="f-table-wrap">
   <table class="f-table">
@@ -2638,7 +2708,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
     （占比 17%），
     <strong>已超过 15% 的连锁出清警戒锚点</strong>，对出清压力指数（进度轴）扣满 8 分。
   </div>
-</div><div class="section-label">资金面 · Capital Flow</div>
+</div><div class="section-label" id="sec-18"><span class="sec-no">18</span><span class="sec-label-cn">资金面</span><span class="sec-label-sep"> · </span><span class="sec-label-en">Capital Flow</span></div>
 <div class="card">
   <div class="two-col">
     <div>
@@ -2719,7 +2789,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
       </div>
     </div>
   </div>
-</div><div class="section-label">出清事件流 · Event Feed</div>
+</div><div class="section-label" id="sec-19"><span class="sec-no">19</span><span class="sec-label-cn">出清事件流</span><span class="sec-label-sep"> · </span><span class="sec-label-en">Event Feed</span></div>
 <div class="card">
       <div style="margin-bottom:12px;font-size:16.5px;color:var(--text-secondary)">本期扫描命中 <strong>10</strong> 条出清相关事件（含公告与舆情）。分类依据：不可逆退出判利好，政府救助与低水平重组判利空。有效权重 = 基础权重 × 广度加成 × 时间衰减。</div>
       <div class="ev-item">
@@ -2824,6 +2894,35 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
       </div>
     </div>
   </div>
+<div class="section-label" id="sec-20"><span class="sec-no">20</span><span class="sec-label-cn">方法论与局限声明</span><span class="sec-label-sep"> · </span><span class="sec-label-en">Limitations</span></div>
+<div class="card">
+  <div class="note" style="margin-bottom:14px">
+    <strong>放在最后的诚实清单</strong>　专业研究报告的惯例是把「这套方法不能做什么」写明白。
+    以下各条均有人工件或互博记录在案，不是免责套话。
+  </div>
+  <div class="f-table-wrap"><table class="f-table">
+    <thead><tr><th style="min-width:150px">局限</th><th>说明与现行处置</th></tr></thead>
+    <tbody>
+      <tr><td><b>样本即监测池</b></td>
+        <td>企业层结论基于 18 只监测池（头部 + 尾部组合，非全市场）；池构成变化会改变四档分布与压力读数。行业层因子不受单池影响。</td></tr>
+      <tr><td><b>小样本结算纪律</b></td>
+        <td>预测台账在册 21 条、已结算样本极小：BSS 在 n&lt;10 时<strong>不作技能结论</strong>，以校准表为主（brier_note 纪律在案）；当前 +0.36 为单条战绩，不是模型技能。</td></tr>
+      <tr><td><b>政策阶段的证据成色</b></td>
+        <td>出清时钟阶段Ⅱ为<strong>登记事实</strong>（转录自独立对照报告，verified_by_wb=false），非机器判据——WB 采集侧暂无部委文本扫描源；该阶段不计入任何可结算预测判据。</td></tr>
+      <tr><td><b>两个无判据阶段</b></td>
+        <td>阶段Ⅳ（价格修复，缺分环节价格与现金成本数据源）与Ⅴ（格局重估，定性）在时钟中只占位、不判定；旁证读数禁止用于改判。</td></tr>
+      <tr><td><b>现金流双口径</b></td>
+        <td>因子 F5 用累计净额口径（本年累计失血），逐只体检分档用 TTM 口径（当前失血速度）——同一家公司两列可一正一负，属口径差异非错误（K11 事故的固化遗产）。</td></tr>
+      <tr><td><b>预测基线的性质</b></td>
+        <td>除 W1/P1 按参照类修订为 0.7 外，其余在册预测均为 0.5 无信息基线——结算技能分要过「跑赢无信息」这一关才有意义。</td></tr>
+      <tr><td><b>上游数据依赖</b></td>
+        <td>行情/财务来自第三方接口，2026-11-09 曾发生总市值量纲静默漂移（11-10 抢修在案）；现有量值窗断言 + 审计自探测为已知漂移形态设防，<strong>不排除未来新字段新形态漂移</strong>。</td></tr>
+      <tr><td><b>机器校验的边界</b></td>
+        <td>对账器覆盖公式/计数/时间戳/触发器与档位文本等可机检项；概率、政策原文等非机器工件事实仍依赖人工复核（S-2 覆盖范围声明在案）。</td></tr>
+    </tbody>
+  </table></div>
+</div>
+
 <div class="about">
   <div class="about-title">关于本报告</div>
   <p class="about-text">
