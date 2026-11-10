@@ -700,7 +700,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
 <main class="main">
 <div class="ver-strip">
   <span class="ver-badge">版本 v2.1</span>
-  <span class="ver-item">构建 2026-11-10 12:28</span>
+  <span class="ver-item">构建 2026-11-10 12:30</span>
   <span class="ver-item">数据截至 2026-11-09</span>
   <span class="ver-item">出清压力指数 39.7 · 投资时机指数 19.6 · 综合 31.7</span>
 </div>
@@ -2029,12 +2029,12 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         
       </div>
       <dl class="fg-rows">
-        <dt>观测对象</dt><dd>监测池 18 只（龙头组 + 尾部组 + 设备辅材组），按流通市值加权<br><span style="color:var(--text-muted)">聚合方式：市值加权平均；同时单独报告尾部组中位数与高危家数</span></dd>
+        <dt>观测对象</dt><dd>监测池 18 只（龙头组 + 尾部组 + 设备辅材组），按总市值加权（total_market_cap；2026-11-10 清零对齐，原&#x27;流通市值&#x27;为声明失准）<br><span style="color:var(--text-muted)">聚合方式：市值加权平均；同时单独报告尾部组中位数与高危家数</span></dd>
         <dt>指标定义</dt><dd></dd>
         <dt>当前读数</dt><dd>全池加权约 74.5%；尾部组中位数约 95%（协鑫集成 95.08%、海源复材 94.96%）；最高 *ST亿晶 109.07%（资不抵债）</dd>
         <dt>判读依据</dt><dd>银行授信评估的核心指标。&gt; 80% 通常触发授信收紧，进而加速出清</dd>
       </dl>
-      <div class="fg-formula"><b>计算公式</b>　pool_score = Σ(w_i × s_i) / Σw_i，w_i = 流通市值；单只 s_i = scale(dr, 55, 85)：dr=55% → 0 分（压力未显），dr=85% → 100 分（压力满格）；压力语义，与 axis_semantics=pressure 一致</div>
+      <div class="fg-formula"><b>计算公式</b>　pool_score = Σ(w_i × s_i) / Σw_i，w_i = 总市值（total_market_cap；2026-11-10 清零对齐：原文&#x27;流通市值&#x27;为声明失准，实现自始消费 total_market_cap @score.py L242，按实现改声明，零数值变化——Kimi 08 轮清零候选，WB 09 轮采纳）；单只 s_i = scale(dr, 55, 85)：dr=55% → 0 分（压力未显），dr=85% → 100 分（压力满格）；压力语义，与 axis_semantics=pressure 一致</div>
       
       
       <div class="fg-threshold"><b>判定阈值</b>　&gt; 80% 触发收贷；&gt; 75% 需关注；&lt; 60% 安全</div>
@@ -2736,7 +2736,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
     因子权重、阈值与分类规则均可配置，随行业阶段演进调整。
   </p>
   <p class="disclaimer">
-    数据截至 2026-11-09，评分生成于 2026-11-09T17:32:34。
+    数据截至 2026-11-09，评分生成于 2026-11-10T12:29:54。
     本报告为个人研究记录，不构成投资建议。市场有风险，决策需谨慎。
     评分模型输出的是结构化信号，不替代独立判断。
   </p>
