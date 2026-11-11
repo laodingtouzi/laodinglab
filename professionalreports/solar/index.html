@@ -8,7 +8,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-<style>
+
 :root {
   --bg: #f1eee8;
   --bg-surface: #faf9f6;
@@ -142,12 +142,13 @@ body {
 .main { flex: 1; max-width: 1000px; margin: 0 auto; padding: 40px 24px 60px; width: 100%; }
 .section-label {
   font-family: var(--serif); font-size:18px; font-weight: 600; letter-spacing: .06em;
-  color: var(--text); margin-bottom: 22px; display: flex; align-items: baseline; gap: 12px;
+  color: var(--text); margin: 34px 0 22px; display: flex; align-items: baseline; gap: 12px;
 }
+/* 章节视觉锚点：竖条（外显强化 2026-11-11，原为 12×2 横线，辨识度不足） */
 .section-label::before {
-  content: ''; display: block; width: 12px; height: 2px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-2)); border-radius: 1px;
-  align-self: center;
+  content: ''; display: block; width: 3px; align-self: stretch; min-height: 18px;
+  background: linear-gradient(180deg, var(--accent-2), var(--accent)); border-radius: 2px;
+  transform: translateY(2px);
 }
 /* 章节编号（呈现升级 2026-11-11）：mono 小号数字，研报式 01/02… */
 .sec-no {
@@ -159,25 +160,77 @@ body {
   letter-spacing: .12em; color: var(--text-muted); }
 .sec-label-sep { color: var(--text-muted); font-weight: 400; }
 
-/* 执行摘要（卷首核心判断块，全部机器渲染） */
+/* 执行摘要（卷首核心判断块，全部机器渲染）
+   外显强化 2026-11-11：左侧色条 4→6px、底色转纯白加投影、核心判断独立成块 21px */
 .exec-summary {
-  background: var(--bg-surface); border: 1px solid var(--border);
-  border-left: 4px solid var(--accent-2); border-radius: 10px;
-  padding: 20px 24px 18px; margin-bottom: 26px;
+  background: #fff; border: 1px solid var(--border);
+  border-left: 6px solid var(--accent-2); border-radius: 10px;
+  padding: 24px 28px 20px; margin-bottom: 26px;
+  box-shadow: 0 2px 12px var(--shadow);
 }
 .exec-title {
   font-family: var(--serif); font-size: 19px; font-weight: 700; color: var(--text);
   margin-bottom: 10px; letter-spacing: .04em;
 }
-.exec-lead { font-size: 16.5px; line-height: 1.8; color: var(--text); }
+.exec-lead { font-size: 17px; line-height: 1.85; color: var(--text); }
 .exec-lead b { color: var(--text); }
-.exec-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 12px; margin-top: 14px; }
-.exec-item { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 10px 13px; }
-.exec-k { font-size: 13.5px; color: var(--text-muted); margin-bottom: 3px; }
+/* 核心判断：卷首唯一用衬线大字的一句，视觉权重最高 */
+.lead-main {
+  font-family: var(--serif); font-size: 21px; line-height: 1.62; font-weight: 600;
+  letter-spacing: .01em; color: var(--text);
+  padding: 0 0 13px; margin-bottom: 13px; border-bottom: 1px solid var(--border);
+}
+.lead-tag {
+  display: inline-block; vertical-align: 3px; margin-right: 10px; padding: 2px 8px;
+  font-family: var(--mono); font-size: 13.5px; font-weight: 500; letter-spacing: .1em;
+  color: #fff; background: var(--accent-2); border-radius: 3px;
+}
+.lead-main .mono-num { font-family: var(--mono); font-weight: 500; }
+.lead-sub { margin-top: 9px; }
+.lead-sub > b:first-child {
+  display: inline-block; min-width: 84px;
+  font-family: var(--mono); font-size: 13.5px; letter-spacing: .08em;
+  color: var(--text-secondary); font-weight: 500;
+}
+.exec-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px; margin-top: 20px; }
+.exec-item { background: var(--bg-surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: 12px 15px; }
+.exec-k { font-size: 13.5px; color: var(--text-muted); margin-bottom: 4px; letter-spacing: .04em; }
 .exec-v { font-size: 16px; color: var(--text); line-height: 1.55; }
+.exec-v b { font-size: 18px; }
 .exec-v .mono, .mono-num { font-family: var(--mono); }
-.exec-foot { margin-top: 12px; font-size: 13.5px; color: var(--text-muted); }
+.exec-v .mono-num { font-size: 19px; font-weight: 500; }
+.exec-foot { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border);
+  font-size: 13.5px; color: var(--text-muted); }
+
+/* 四档分档条形图（卷首，外显强化 2026-11-11）
+   段宽按家数比例分配；配色沿用情绪语义色系、略压暗以保证白字对比度 */
+.exec-tiers { margin-top: 18px; }
+.et-head { display: flex; justify-content: space-between; align-items: baseline;
+  gap: 12px; margin-bottom: 8px; }
+.et-title { font-size: 13.5px; font-weight: 600; letter-spacing: .06em; color: var(--text-secondary); }
+.et-sub { font-size: 13.5px; color: var(--text-muted); }
+.et-bar { display: flex; gap: 3px; }
+.et-seg {
+  display: flex; align-items: baseline; justify-content: center; gap: 6px;
+  padding: 11px 8px; border-radius: 4px; color: #fff; min-width: 0; overflow: hidden;
+}
+.et-seg b { font-family: var(--mono); font-size: 19px; font-weight: 600; line-height: 1; }
+.et-seg span { font-size: 13.5px; letter-spacing: .1em; white-space: nowrap; }
+.et-sev  { background: #8b1a1a; }
+.et-warn { background: #b06a08; }
+.et-neu  { background: #66718c; }
+.et-neg  { background: #3f6b4e; }
+.et-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 8px;
+  font-size: 13.5px; color: var(--text-muted); }
+.et-legend i { display: inline-block; width: 9px; height: 9px; border-radius: 2px;
+  margin-right: 5px; vertical-align: -1px; }
+@media (max-width: 640px) {
+  /* 手机：横条太窄会把标签挤掉，改为竖排阶梯 */
+  .et-bar { flex-direction: column; }
+  .et-seg { justify-content: flex-start; padding: 9px 12px; }
+}
 
 /* 教学性长注折叠（内容保留、默认收起，不挡研报式阅读） */
 details.fold { margin: 12px 0 4px; border: 1px dashed var(--border); border-radius: 8px;
@@ -311,6 +364,8 @@ details.fold > .fold-body { padding: 2px 16px 13px; }
 .dual-grid {
   display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 18px;
 }
+/* 手机：两卡并排 min-content 撑破容器（实测溢出 ~150px），折叠为单列 */
+@media (max-width: 640px) { .dual-grid { grid-template-columns: 1fr; } }
 .axis-card {
   background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 20px 22px;
 }
@@ -748,7 +803,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
   .gauge-value { font-size:62px; }
   .page-hero-title { font-size:32px; }
 }
-</style>
+
 </style>
 </head>
 <body>
@@ -775,14 +830,20 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
 <main class="main">
 <div class="ver-strip">
   <span class="ver-badge">版本 v2.1</span>
-  <span class="ver-item">构建 2026-11-11 09:53</span>
+  <span class="ver-item">构建 2026-11-11 10:11</span>
   <span class="ver-item">数据截至 2026-11-10</span>
   <span class="ver-item">出清压力指数 39.7 · 投资时机指数 25.0 · 综合 33.8</span>
 </div>
 
 <div class="section-label" id="sec-01"><span class="sec-no">01</span><span class="sec-label-cn">执行摘要</span><span class="sec-label-sep"> · </span><span class="sec-label-en">Executive Summary</span></div>
 <div class="exec-summary">
-  <div class="exec-lead"><b>核心判断</b>　出清时钟卡在 <b class="mono-num">Ⅱ→Ⅲ</b> 闸门口——核减/关停类公告 0 起（notices+news 标题零命中）。这是「闸门已落、退出未到」的僵持段，不是出清失败。<br><b>当前建议</b>　出清压力指数 39.7（压力初步显现）× 投资时机指数 25.0（回避）→ 综合结论 <b style="color:#27ae60">回避</b>——出清仅信号初现且买入条件差。<br><b>逐只体检</b>　监测池 18 只：临终 3 / 高危 7 / 承压 6 / 安全 2；其中 5 家在面板告警线下（贴 80% 线未过线）。</div>
+  <div class="exec-lead"><div class="lead-main"><span class="lead-tag">核心判断</span>出清时钟卡在 <b class="mono-num">Ⅱ→Ⅲ</b> 闸门口——核减/关停类公告 0 起（notices+news 标题零命中）。这是「闸门已落、退出未到」的僵持段，不是出清失败。</div><div class="lead-sub"><b>当前建议</b>出清压力指数 39.7（压力初步显现）× 投资时机指数 25.0（回避）→ 综合结论 <b style="color:#27ae60">回避</b>——出清仅信号初现且买入条件差。</div><div class="lead-sub"><b>逐只体检</b>监测池 18 只：临终 3 / 高危 7 / 承压 6 / 安全 2；其中 5 家在面板告警线下（贴 80% 线未过线）。</div></div>
+  <div class="exec-tiers">
+    <div class="et-head"><span class="et-title">监测池 18 只 · 四档分布</span>
+      <span class="et-sub">按出清阶段位置分档（与面板 alert 阈值不同口径）</span></div>
+    <div class="et-bar"><div class="et-seg et-sev" style="flex:3"><b>3</b><span>临终</span></div><div class="et-seg et-warn" style="flex:7"><b>7</b><span>高危</span></div><div class="et-seg et-neu" style="flex:6"><b>6</b><span>承压</span></div><div class="et-seg et-neg" style="flex:2"><b>2</b><span>安全</span></div></div>
+    <div class="et-legend"><span><i class="et-sev"></i>临终 3 只</span><span><i class="et-warn"></i>高危 7 只</span><span><i class="et-neu"></i>承压 6 只</span><span><i class="et-neg"></i>安全 2 只</span></div>
+  </div>
   <div class="exec-grid"><div class="exec-item"><div class="exec-k">综合结论</div><div class="exec-v"><b style="color:#27ae60">回避</b></div></div><div class="exec-item"><div class="exec-k">出清压力 / 投资时机</div><div class="exec-v"><span class="mono-num">39.7</span> / <span class="mono-num">25.0</span></div></div><div class="exec-item"><div class="exec-k">出清事件净分</div><div class="exec-v"><span class="mono-num">95</span></div></div><div class="exec-item"><div class="exec-k">尾部高危标的</div><div class="exec-v"><span class="mono-num">3/18</span></div></div><div class="exec-item"><div class="exec-k">时钟卡点</div><div class="exec-v"><b class="mono-num">Ⅱ→Ⅲ</b></div></div><div class="exec-item"><div class="exec-k">下一结算事件</div><div class="exec-v">P9 · <span class="mono-num">2026-11-16</span></div></div></div>
   <div class="exec-foot">数据截至 2026-11-10（监测池 18/18 完整）·
     本摘要全部读数由机器工件生成（score_latest / clearance_clock / forecast_log），口径与证据见正文对应章节。</div>
