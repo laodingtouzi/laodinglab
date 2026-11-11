@@ -830,7 +830,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
 <main class="main">
 <div class="ver-strip">
   <span class="ver-badge">版本 v2.1</span>
-  <span class="ver-item">构建 2026-11-11 12:08</span>
+  <span class="ver-item">构建 2026-11-11 14:54</span>
   <span class="ver-item">数据截至 2026-11-10</span>
   <span class="ver-item">出清压力指数 39.7 · 投资时机指数 25.0 · 综合 33.8</span>
 </div>
@@ -1025,6 +1025,16 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
     <br><b>体检四档分级</b>　见 tiers.rules，负债率 + 现金流 + 盈亏 三维复合——多维度·复合分档，用于「这只票走到出清链条哪一格」的阶段定位
     <br><b>差异后果</b>　负债率落在 75%-80% 且现金流为负的标的，WB 面板【无告警】（未过 80 线）但四档判【高危】——两套并列呈现、各自列示，不互相覆盖；读者据「要看风险提示就看 alert 列，要看阶段定位就看档位列」取用<br><b>本期实例（机器算）</b>　面板 alert 命中 6 家，四档 ≥高危 10 家；其中 5 家在 alert 线下但判高危：晶澳科技（79.9%）、天合光能（79.7%）、爱旭股份（79.5%）、晶科能源（76.0%）、通威股份（75.6%）——它们贴着 80% 警戒线但没过线，面板不告警不等于阶段不在高危格。
     <br><b>字段口径</b>　分档用 OCF TTM 口径（看当前失血速度），F5 因子用累计净额口径（看本年累计失血）——同一家公司两列可能一正一负，属口径差异非错误
+  </div>
+    <div class="note" style="margin-top:14px">
+    <b>阶段Ⅲ 词表观察（评估态 · 只观察零判定影响）</b>　全量回溯公告扫描
+    （2026-01-01 起 3300 条，一手机读源，替代滚动窗口「事件滚出盲区」）：
+    出清性退出候选 <b>7</b>（*ST亿晶：亿晶光电科技股份有限公司关于公司破产重整具有重大不确定性暨退市风；*ST亿晶：亿晶光电科技股份有限公司关于与重整投资人签署预重整投资协议之补充——主体重整类，
+    与产能物理退出语义区分评估中）· 准入出清 0（无机读名单源）
+    · 技改性调减 <b>3</b>（不构成出清，出清压力的响应变量）。
+    <span style="color:var(--text-muted)">词表 v1 三类语义与上下文规则冻结于
+    config/clearance_clock.json → stage3_lexicon；评估态误报率人工核验通过后才参与
+    Ⅲ 判定（两步纪律），本轮卡点判定未因本台账改变。</span>
   </div>
     <div class="note" style="margin-top:14px">
     <b>缺口声明（不假装已解决）</b>　本版对阶段 Ⅳ、Ⅴ 无机器判据，
