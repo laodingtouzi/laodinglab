@@ -272,6 +272,24 @@ details.fold > .fold-body { padding: 2px 16px 13px; }
   .f-table { min-width: 860px; }
   .f-table td:first-child { min-width: 200px; }
 }
+/* ─── 出清时钟 / 四档分级表（2026-11-11 修正横向溢出）───────────────
+   上面三条 nowrap / min-width 是为因子表设的（其第 3 列是观测对象短标签，
+   撑开是设计意图）。出清时钟两张表第 3 列是长句与长名单，沿用会把表撑到
+   约 1.8 倍页宽、必须左右拖动。故本表改为 table-layout:fixed +
+   colgroup 百分比列宽，宽度恒等于容器宽；选择器带 .cc-table 提权，
+   与源序无关都能压过上面的规则。 */
+.f-table.cc-table { table-layout: fixed; min-width: 0; }
+.f-table.cc-table th, .f-table.cc-table td { white-space: normal; }
+.f-table.cc-table td:first-child { min-width: 0; }
+.f-table.cc-table td { overflow-wrap: anywhere; }
+@media (max-width: 900px) {
+  .f-table.cc-table, .f-table.cc-table td:first-child { min-width: 0; }
+}
+/* 手机（≤640px）：固定列宽下药丸列只剩 ~40px，表头竖排折行、标签挤烂，
+   故回落到与全站其他表格一致的「窄屏横向滚动」行为（wrap 已有 overflow-x） */
+@media (max-width: 640px) {
+  .f-table.cc-table { min-width: 620px; }
+}
 .f-name .lead-flag {
   display: inline-block; margin-left: 8px; padding: 2px 7px; border-radius: 3px;
   font-family: var(--mono); font-size:13.5px; letter-spacing: .06em;
@@ -757,7 +775,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
 <main class="main">
 <div class="ver-strip">
   <span class="ver-badge">版本 v2.1</span>
-  <span class="ver-item">构建 2026-11-11 00:51</span>
+  <span class="ver-item">构建 2026-11-11 09:53</span>
   <span class="ver-item">数据截至 2026-11-10</span>
   <span class="ver-item">出清压力指数 39.7 · 投资时机指数 25.0 · 综合 33.8</span>
 </div>
@@ -867,7 +885,8 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
   </div>
 
   <div class="f-table-wrap">
-    <table class="f-table">
+    <table class="f-table cc-table">
+      <colgroup><col style="width:21%"><col style="width:10%"><col style="width:69%"></colgroup>
       <thead><tr><th>阶段</th><th>状态</th><th>证据（快照 2026-11-10 实读）</th></tr></thead>
       <tbody>
         <tr>
@@ -907,7 +926,8 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
   <div style="background:var(--emo-warn-bg);border-left:3px solid var(--emo-warn);border-radius:0 6px 6px 0;padding:14px 16px;margin:16px 0;"><b style="font-size:17px">卡点定位：Ⅱ→Ⅲ 闸门口</b>　核减/关停类公告 0 起（notices+news 标题零命中）<br><span style="font-size:15px">前序阶段已启动、后一阶段未启动 —— 这是「行政闸门已落、物理退出未到」的位置，不是「出清失败」。</span></div>
 
   <div class="f-table-wrap">
-    <table class="f-table">
+    <table class="f-table cc-table">
+      <colgroup><col style="width:11%"><col style="width:9%"><col style="width:45%"><col style="width:35%"></colgroup>
       <thead><tr><th>档位</th><th>家数</th><th>标的与命中判据</th><th>档位规则</th></tr></thead>
       <tbody>
         <tr>
