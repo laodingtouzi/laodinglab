@@ -1,47 +1,73 @@
 {
- "generated_at": "2026-11-13T21:00:05",
- "unread_count": 2,
+ "generated_at": "2026-11-14T19:08:54",
+ "unread_count": 4,
  "meta": {
-  "checked_at": "2026-11-13T21:00:05",
-  "date": "2026-11-13",
-  "trading_day": true,
-  "trading_day_reason": "daily_scores(当日有评分记录)",
+  "checked_at": "2026-11-14T19:08:54",
+  "date": "2026-11-14",
+  "trading_day": false,
+  "trading_day_reason": "weekend(当日无评分,本不该跑)",
   "cron_log_count": 2,
   "run_completed": true,
-  "online_check": "online_updated(2026-11-13)",
-  "guard_alert_count": 18,
-  "weekly_latest": "weekly_20261107_104005.log",
-  "weekly_age_days": 5,
+  "online_check": "stale(2026-11-13<2026-11-14)",
+  "guard_alert_count": 12,
+  "weekly_latest": "weekly_20261114_104005.log",
+  "weekly_age_days": -1,
   "monthly_latest": "月度复盘_2026-10.html",
-  "monthly_age_days": 12,
+  "monthly_age_days": 13,
   "launchd_status": "loaded(last_exit=0)",
   "admin_server": "up(200)",
   "admin_code_fresh": "ok",
-  "post_sell_recon": "drift(2)",
+  "post_sell_recon": "ok_or_skipped",
   "sentiment_cache": "fresh",
-  "data_gap_today": [],
-  "pending_gaps": []
+  "data_gap_today": [
+   "market_stale",
+   "step:0"
+  ],
+  "pending_gaps": [
+   "market_stale",
+   "step:0"
+  ]
  },
  "alerts": [
   {
-   "id": "MULTI_RUN_SEQUENTIAL_20261113_210005",
+   "id": "MULTI_RUN_SEQUENTIAL_20261114_190854",
    "level": "info",
    "code": "MULTI_RUN_SEQUENTIAL",
    "title": "当日 2 次日跑均顺序执行（无并发）",
-   "detail": "cron_20261113_183005.log → cron_20261113_190711.log。顺序补跑属合法运维动作（如数据补齐后的重跑），不构成双实例风险。",
+   "detail": "cron_20261114_183004.log → cron_20261114_190217.log。顺序补跑属合法运维动作（如数据补齐后的重跑），不构成双实例风险。",
    "action": "无需处理",
-   "date": "2026-11-13",
-   "ts": "2026-11-13T21:00:05"
+   "date": "2026-11-14",
+   "ts": "2026-11-14T19:08:54"
   },
   {
-   "id": "POST_SELL_DRIFT_20261113_210005",
+   "id": "ONLINE_STALE_20261114_190854",
+   "level": "error",
+   "code": "ONLINE_STALE",
+   "title": "线上报告日期滞后于本地最新日志",
+   "detail": "线上首页日期 2026-11-13 < 本地最新日志日期 2026-11-14，部署可能失败或 CDN 缓存滞后（3-5 分钟）。",
+   "action": "检查 deploy_gh_v2.py 当日部署日志；若刚部署请 5 分钟后复查",
+   "date": "2026-11-14",
+   "ts": "2026-11-14T19:08:54"
+  },
+  {
+   "id": "DATA_GAP_PERSIST_20261114_190854",
    "level": "warn",
-   "code": "POST_SELL_DRIFT",
-   "title": "沽后对账发现双写漂移 2 条",
-   "detail": "当日日志 [沽后对账] 修复双写漂移 2 条（JSON↔DB 曾不一致）。",
-   "action": "关注 post_sell JSON 与 DB 一致性，必要时人工核对",
-   "date": "2026-11-13",
-   "ts": "2026-11-13T21:00:05"
+   "code": "DATA_GAP_PERSIST",
+   "title": "当日新出现数据缺口：market_stale",
+   "detail": "行情陈旧 25.0%（阈值 >10%），样本 ['00001.HK', '00002.HK', '00003.HK', '00004.HK', '00005.HK']（当日首次出现只 warn，跨日未解决将升级为 error）",
+   "action": "观察次日 step_status 与 freshness 是否恢复",
+   "date": "2026-11-14",
+   "ts": "2026-11-14T19:08:54"
+  },
+  {
+   "id": "DATA_GAP_PERSIST_20261114_190854",
+   "level": "warn",
+   "code": "DATA_GAP_PERSIST",
+   "title": "当日新出现数据缺口：step:0",
+   "detail": "数据获取步骤 [0] 补偿延后：熔断冷却中（step_status 日期 2026-11-14）（当日首次出现只 warn，跨日未解决将升级为 error）",
+   "action": "观察次日 step_status 与 freshness 是否恢复",
+   "date": "2026-11-14",
+   "ts": "2026-11-14T19:08:54"
   }
  ]
 }
