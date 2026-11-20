@@ -1,43 +1,43 @@
 {
-  "generated_at": "2026-11-19T08:30:22",
-  "unread_count": 20,
+  "generated_at": "2026-11-20T08:30:08",
+  "unread_count": 19,
   "meta": {
-    "checked_at": "2026-11-19T08:30:00",
-    "date": "2026-11-19",
+    "checked_at": "2026-11-20T08:30:01",
+    "date": "2026-11-20",
     "trading_day": true,
     "trading_day_reason": "trading_day",
     "cron_log_count": 1,
     "run_completed": true,
-    "online_check": "curl_failed_rc=28",
-    "guard_alert_count": 2,
+    "online_check": "online_updated(2026-11-20)",
+    "guard_alert_count": 4,
     "weekly_latest": "weekly_20261114_101000.log",
-    "weekly_age_days": 5,
-    "pf5_size_local": 727646,
-    "pf5_size_remote": 727646,
+    "weekly_age_days": 6,
+    "pf5_size_local": 723888,
+    "pf5_size_remote": 723888,
     "metrics": {
       "holdings_total": 249,
-      "post_sell_total": 704,
+      "post_sell_total": 707,
       "watch_total": 15,
-      "guard_alerts": 2,
+      "guard_alerts": 4,
       "guard_checks": 13,
-      "report_size_kb": 1082
+      "report_size_kb": 1086
     },
     "drift_count": 0,
     "shougugou": "200 OK",
     "weekly_completed": true,
-    "code_stale_check": "/health 自报（pid 22446），进程已运行 43h12m18s",
+    "code_stale_check": "/health 自报（pid 22446），进程已运行 67h12m04s",
     "code_stale_files": 0
   },
   "alerts": [
     {
-      "id": "ONLINE_CHECK_FAILED_20261119_083000",
-      "level": "warn",
-      "code": "ONLINE_CHECK_FAILED",
-      "title": "无法确认线上报告状态",
-      "detail": "检查失败：curl_failed_rc=28。可能是网络问题或页面结构变化。",
-      "action": "手动打开线上主页确认日期",
-      "date": "2026-11-19",
-      "ts": "2026-11-19T08:30:00"
+      "id": "GUARD_ALERT_20261120_083001",
+      "level": "error",
+      "code": "GUARD_ALERT",
+      "title": "数据守门告警 4 条",
+      "detail": "1. 2026-11-20 07:14:13 [GUARD-ALERT] 守门1 告警: 全量刷新标记异常（2026-11-20 07:14:12，ok=2748/3133）：aborted=true（中途熔断，未跑完） ← 判据D；2. 2026-11-20 07:14:13 [GUARD-ALERT] 守门1 告警: US: 按交易日历今日应到货 K 线日期=2026-11-19，实际到货 289/673（42.9%）< 阈值 90% ← 判据E：到货率不足（calendar_status=complete）；3. 2026-11-20 07:14:20 [GUARD-ALERT] 守门4 告警: 扫描 DB 3140 只 / 4114936 行：非法价 78 行（零价 78 行/4 只，负价 0 行/0 只）；零价最多：AZN.N.US(60)、FERG.N.US(16)、HLN.N.US(1)、SN.N.US(1)；高低价不自洽（>0.1%，观察项）714 行；OHLC 含 NULL 字段 78 行（观测；4. 2026-11-20 07:14:27 [GUARD-ALERT] 守门5 告警: 扫描相邻交易日对：涉及 112 只标的；另有 ≥5× 断层 27 处 → 复权口径污染｜G2 成对反向 3 只：02477.HK(5次)、02617.HK(3次)、688615.SH(2次)；另 1 只已核实为**源限制**（根因不在写入端、重灌零收益，不重复告警）：600546.SH(4次)；样例 02477.H",
+      "action": "查看 logs/guard_alerts.log 全文",
+      "date": "2026-11-20",
+      "ts": "2026-11-20T08:30:01"
     },
     {
       "id": "GUARD_ALERT_20261119_083000",
@@ -48,16 +48,6 @@
       "action": "查看 logs/guard_alerts.log 全文",
       "date": "2026-11-19",
       "ts": "2026-11-19T08:30:00"
-    },
-    {
-      "id": "ONLINE_CHECK_FAILED_20261118_083000",
-      "level": "warn",
-      "code": "ONLINE_CHECK_FAILED",
-      "title": "无法确认线上报告状态",
-      "detail": "检查失败：curl_failed_rc=28。可能是网络问题或页面结构变化。",
-      "action": "手动打开线上主页确认日期",
-      "date": "2026-11-18",
-      "ts": "2026-11-18T08:30:00"
     },
     {
       "id": "GUARD_ALERT_20261118_083000",
