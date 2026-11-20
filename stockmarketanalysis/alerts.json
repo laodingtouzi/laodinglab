@@ -1,8 +1,8 @@
 {
- "generated_at": "2026-11-20T19:22:05",
+ "generated_at": "2026-11-20T21:00:03",
  "unread_count": 3,
  "meta": {
-  "checked_at": "2026-11-20T19:22:05",
+  "checked_at": "2026-11-20T21:00:03",
   "date": "2026-11-20",
   "trading_day": true,
   "trading_day_reason": "daily_scores(当日有评分记录)",
@@ -24,34 +24,34 @@
  },
  "alerts": [
   {
-   "id": "MULTI_RUN_SEQUENTIAL_20261120_192205",
+   "id": "MULTI_RUN_SEQUENTIAL_20261120_210003",
    "level": "info",
    "code": "MULTI_RUN_SEQUENTIAL",
    "title": "当日 2 次日跑均顺序执行（无并发）",
    "detail": "cron_20261120_183003.log → cron_20261120_190633.log。顺序补跑属合法运维动作（如数据补齐后的重跑），不构成双实例风险。",
    "action": "无需处理",
    "date": "2026-11-20",
-   "ts": "2026-11-20T19:22:05"
+   "ts": "2026-11-20T21:00:03"
   },
   {
-   "id": "ADMIN_SERVER_DOWN_20261120_192205",
+   "id": "ADMIN_SERVER_DOWN_20261120_210003",
    "level": "warn",
    "code": "ADMIN_SERVER_DOWN",
    "title": "手搓股服务无响应（HTTP 000）",
    "detail": "http://localhost:8788/ 返回 000，手动剔除入口不可用。",
    "action": "检查 admin_server 进程（start_admin_server.sh）",
    "date": "2026-11-20",
-   "ts": "2026-11-20T19:22:05"
+   "ts": "2026-11-20T21:00:03"
   },
   {
-   "id": "POST_SELL_DRIFT_20261120_192205",
+   "id": "POST_SELL_DRIFT_20261120_210003",
    "level": "warn",
    "code": "POST_SELL_DRIFT",
    "title": "沽后对账发现双写漂移 3 条",
    "detail": "当日日志 [沽后对账] 修复双写漂移 3 条（JSON↔DB 曾不一致）。",
    "action": "关注 post_sell JSON 与 DB 一致性，必要时人工核对",
    "date": "2026-11-20",
-   "ts": "2026-11-20T19:22:05"
+   "ts": "2026-11-20T21:00:03"
   }
  ]
 }
