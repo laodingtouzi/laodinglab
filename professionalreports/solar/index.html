@@ -839,7 +839,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
 <main class="main">
 <div class="ver-strip">
   <span class="ver-badge">版本 v2.1</span>
-  <span class="ver-item">构建 2026-11-23 17:34</span>
+  <span class="ver-item">构建 2026-11-23 17:45</span>
   <span class="ver-item">数据截至 2026-11-23</span>
   <span class="ver-item">出清压力指数 40.0 · 投资时机指数 29.1 · 综合 35.6</span>
 </div>
@@ -923,7 +923,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
     <div class="mini-stat">
       <div class="ms-label">出清事件净分</div>
       <div class="ms-value" style="color:var(--text)">95</div>
-      <div class="ms-sub">0-100，50 为中性 · 利好权重 31.1 / 利空 0</div>
+      <div class="ms-sub">0-100，50 为中性 · 利好权重 24.2 / 利空 0</div>
     </div>
     <div class="mini-stat">
       <div class="ms-label">领先因子评分</div>
@@ -1580,8 +1580,8 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <b>基础权重</b>（规则定义 1-5 分）× <b>广度加成</b>（同规则被 N 家触发则 ×(1+0.15×(N−1))，上限 2.0）
         × <b>时间衰减</b>（0.5^(事件天数/45)，半衰期 45 天）= <b>有效权重</b>，
         正负分别封顶 60，单事件封顶 12。
-        <br>本期读数：利好权重 31.1 / 利空权重 0，
-        净分 <b>95</b>（0-100，50 为中性），命中 11 条事件。
+        <br>本期读数：利好权重 24.2 / 利空权重 0，
+        净分 <b>95</b>（0-100，50 为中性），命中 9 条事件。
         <br><b>怎么读</b>　数值高说明<b>近期</b>出清相关事件以利好为主；低说明利空事件（政府救助、
         低水平重组）占优，即出清被延后。<b>它不直接进总分</b>，而是对 F1/F9/F10 三个因子施加
         ±7 分以内的调节（本期调节 +6.75 分）——避免与产能退出因子重复计权。
@@ -2933,35 +2933,15 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
   </div>
 </div><div class="section-label" id="sec-19"><span class="sec-no">19</span><span class="sec-label-cn">出清事件流</span><span class="sec-label-sep"> · </span><span class="sec-label-en">Event Feed</span></div>
 <div class="card">
-      <div style="margin-bottom:12px;font-size:16.5px;color:var(--text-secondary)">本期扫描命中 <strong>11</strong> 条出清相关事件（含公告与舆情）。分类依据：不可逆退出判利好，政府救助与低水平重组判利空。有效权重 = 基础权重 × 广度加成 × 时间衰减。</div>
-      <div class="ev-item">
-        <div style="flex:0 0 auto"><span class="emo emo-pos" style="background:var(--emo-pos-bg);color:var(--emo-pos);border-color:var(--emo-pos-line)">出清利好</span></div>
-        <div>
-          <div class="ev-title">TCL中环获主力净流入1815.98万元 半导体硅片涨价预期受关注<span class="ev-tag">价格回升至成本线以上</span></div>
-          <div class="ev-meta">sz002129 · 舆情 · 基础权重 3
-            × 广度 1.0 × 衰减 1.0（0天）
-            = 有效权重 <strong>3.0</strong>
-            </div>
-        </div>
-      </div>
-      <div class="ev-item">
-        <div style="flex:0 0 auto"><span class="emo emo-pos" style="background:var(--emo-pos-bg);color:var(--emo-pos);border-color:var(--emo-pos-line)">出清利好</span></div>
-        <div>
-          <div class="ev-title">专利诉讼再起，光伏靠知识产权挣脱内卷困局？<span class="ev-tag">现金流/负债恶化信号</span></div>
-          <div class="ev-meta">sz002459 · 舆情 · 基础权重 2
-            × 广度 1.6 × 衰减 0.985（1天）
-            = 有效权重 <strong>3.15</strong>
-            · 同规则触发 5 家</div>
-        </div>
-      </div>
+      <div style="margin-bottom:12px;font-size:16.5px;color:var(--text-secondary)">本期扫描命中 <strong>9</strong> 条出清相关事件（含公告与舆情）。分类依据：不可逆退出判利好，政府救助与低水平重组判利空。有效权重 = 基础权重 × 广度加成 × 时间衰减。</div>
       <div class="ev-item">
         <div style="flex:0 0 auto"><span class="emo emo-pos" style="background:var(--emo-pos-bg);color:var(--emo-pos);border-color:var(--emo-pos-line)">出清利好</span></div>
         <div>
           <div class="ev-title">通威股份：通威股份有限公司关于控股股东股份质押的公告<span class="ev-tag">现金流/负债恶化信号</span></div>
           <div class="ev-meta">sh600438 · 公告 · 基础权重 2
-            × 广度 1.6 × 衰减 0.94（4天）
-            = 有效权重 <strong>3.01</strong>
-            · 同规则触发 5 家</div>
+            × 广度 1.45 × 衰减 0.94（4天）
+            = 有效权重 <strong>2.73</strong>
+            · 同规则触发 4 家</div>
         </div>
       </div>
       <div class="ev-item">
@@ -3019,9 +2999,9 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <div>
           <div class="ev-title">*ST亿晶：亿晶光电科技股份有限公司关于孙公司收到《民事判决书》暨诉讼进展公告<span class="ev-tag">现金流/负债恶化信号</span></div>
           <div class="ev-meta">sh600537 · 公告 · 基础权重 2
-            × 广度 1.6 × 衰减 0.592（34天）
-            = 有效权重 <strong>1.9</strong>
-            · 同规则触发 5 家</div>
+            × 广度 1.45 × 衰减 0.592（34天）
+            = 有效权重 <strong>1.72</strong>
+            · 同规则触发 4 家</div>
         </div>
       </div>
       <div class="ev-item">
@@ -3029,9 +3009,9 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <div>
           <div class="ev-title">东方日升：关于股东部分股份质押的公告<span class="ev-tag">现金流/负债恶化信号</span></div>
           <div class="ev-meta">sz300118 · 公告 · 基础权重 2
-            × 广度 1.6 × 衰减 0.429（55天）
-            = 有效权重 <strong>1.37</strong>
-            · 同规则触发 5 家</div>
+            × 广度 1.45 × 衰减 0.429（55天）
+            = 有效权重 <strong>1.24</strong>
+            · 同规则触发 4 家</div>
         </div>
       </div>
       <div class="ev-item">
@@ -3039,9 +3019,9 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
         <div>
           <div class="ev-title">海源复材：关于累计诉讼、仲裁情况的进展公告<span class="ev-tag">现金流/负债恶化信号</span></div>
           <div class="ev-meta">sz002529 · 公告 · 基础权重 2
-            × 广度 1.6 × 衰减 0.231（95天）
-            = 有效权重 <strong>0.74</strong>
-            · 同规则触发 5 家</div>
+            × 广度 1.45 × 衰减 0.231（95天）
+            = 有效权重 <strong>0.67</strong>
+            · 同规则触发 4 家</div>
         </div>
       </div>
     </div>
@@ -3088,7 +3068,7 @@ details.collapse[open] > summary { border-bottom: 1px dashed var(--border); marg
     因子权重、阈值与分类规则均可配置，随行业阶段演进调整。
   </p>
   <p class="disclaimer">
-    数据截至 2026-11-23，评分生成于 2026-11-23T17:34:19。
+    数据截至 2026-11-23，评分生成于 2026-11-23T17:45:52。
     本报告为个人研究记录，不构成投资建议。市场有风险，决策需谨慎。
     评分模型输出的是结构化信号，不替代独立判断。
   </p>
