@@ -1,11 +1,47 @@
 {
- "generated_at": "2026-11-22T21:00:05",
- "unread_count": 0,
+ "generated_at": "2026-11-23T19:01:08",
+ "unread_count": 2,
  "meta": {
-  "checked_at": "2026-11-22T21:00:05",
-  "date": "2026-11-22",
-  "trading_day": false,
-  "trading_day_reason": "weekend(当日无评分,本不该跑)"
+  "checked_at": "2026-11-23T19:01:08",
+  "date": "2026-11-23",
+  "trading_day": true,
+  "trading_day_reason": "weekday_fallback(非周末,当日无评分)",
+  "cron_log_count": 1,
+  "run_completed": true,
+  "online_check": "stale(2026-11-20<2026-11-23)",
+  "guard_alert_count": 16,
+  "weekly_latest": "weekly_20261121_104005.log",
+  "weekly_age_days": 1,
+  "monthly_latest": "月度复盘_2026-10.html",
+  "monthly_age_days": 22,
+  "launchd_status": "loaded(last_exit=0)",
+  "admin_server": "down(000)",
+  "admin_code_fresh": "ok",
+  "post_sell_recon": "ok_or_skipped",
+  "sentiment_cache": "fresh",
+  "data_gap_today": [],
+  "pending_gaps": []
  },
- "alerts": []
+ "alerts": [
+  {
+   "id": "ONLINE_STALE_20261123_190108",
+   "level": "error",
+   "code": "ONLINE_STALE",
+   "title": "线上报告日期滞后于本地最新日志",
+   "detail": "线上首页日期 2026-11-20 < 本地最新日志日期 2026-11-23，部署可能失败或 CDN 缓存滞后（3-5 分钟）。",
+   "action": "检查 deploy_gh_v2.py 当日部署日志；若刚部署请 5 分钟后复查",
+   "date": "2026-11-23",
+   "ts": "2026-11-23T19:01:08"
+  },
+  {
+   "id": "ADMIN_SERVER_DOWN_20261123_190108",
+   "level": "warn",
+   "code": "ADMIN_SERVER_DOWN",
+   "title": "手搓股服务无响应（HTTP 000）",
+   "detail": "http://localhost:8788/ 返回 000，手动剔除入口不可用。",
+   "action": "检查 admin_server 进程（start_admin_server.sh）",
+   "date": "2026-11-23",
+   "ts": "2026-11-23T19:01:08"
+  }
+ ]
 }
