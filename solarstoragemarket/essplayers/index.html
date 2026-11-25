@@ -276,7 +276,7 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: 15.5px; }
   <h3 class="sub-h">2.2 电芯厂出货排名（2025 全年）</h3>
   <div class="chart-card">
     <div class="chart-title">2025 全球储能电芯出货（GWh，SNE 口径）</div>
-    <div class="chart-desc">全球合计约 550GWh（+79%）· Top7 全部为中国企业，合计 458GWh、占 83.3% <span class="badge b-estimate">推算</span></div>
+    <div class="chart-desc">全球合计约 550GWh（+79%）· Top7 全部为中国企业，合计 458GWh、占 83.3%；条端标注出货量与市占率（市占率 = 出货 ÷ 550GWh）<span class="badge b-estimate">推算</span></div>
     <div class="chart-box tall"><canvas id="chart-cell"></canvas></div>
   </div>
 
@@ -731,6 +731,7 @@ new Chart(document.getElementById('chart-install'), {
 });
 
 // 2. 2025 全球电芯出货 (SNE)
+const cellShare = [30.4, 12.5, 12.0, 8.7, 7.8, 7.3, 4.5]; // 市占率 = 出货 / 全球合计约550GWh
 new Chart(document.getElementById('chart-cell'), {
   type: 'bar',
   data: {
@@ -742,7 +743,32 @@ new Chart(document.getElementById('chart-cell'), {
       borderRadius: 6
     }]
   },
-  options: { ...baseOpt, indexAxis: 'y', plugins: { ...baseOpt.plugins, legend: { display: false } } }
+  options: {
+    ...baseOpt, indexAxis: 'y',
+    plugins: { ...baseOpt.plugins,
+      legend: { display: false },
+      tooltip: { callbacks: { label: (c) => `出货 ${c.parsed.x} GWh · 市占率 ${cellShare[c.dataIndex]}%` } }
+    },
+    scales: { ...baseOpt.scales, x: { ...baseOpt.scales.x, max: 215 } }
+  },
+  plugins: [{
+    id: 'cellBarLabels',
+    afterDatasetsDraw(chart) {
+      const { ctx } = chart;
+      const meta = chart.getDatasetMeta(0);
+      chart.data.datasets[0].data.forEach((v, i) => {
+        const bar = meta.data[i];
+        if (!bar) return;
+        ctx.save();
+        ctx.font = "12.5px 'Roboto Mono', monospace";
+        ctx.fillStyle = '#5c6b80';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(`${v} GWh · ${cellShare[i]}%`, bar.x + 6, bar.y);
+        ctx.restore();
+      });
+    }
+  }]
 });
 
 // 3. 海外 vs 中国
