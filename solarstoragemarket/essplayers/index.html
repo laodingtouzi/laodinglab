@@ -754,17 +754,27 @@ new Chart(document.getElementById('chart-cell'), {
   plugins: [{
     id: 'cellBarLabels',
     afterDatasetsDraw(chart) {
-      const { ctx } = chart;
+      const { ctx, chartArea } = chart;
       const meta = chart.getDatasetMeta(0);
       chart.data.datasets[0].data.forEach((v, i) => {
         const bar = meta.data[i];
         if (!bar) return;
+        const text = `${v} GWh · ${cellShare[i]}%`;
         ctx.save();
         ctx.font = "12.5px 'Roboto Mono', monospace";
-        ctx.fillStyle = '#5c6b80';
-        ctx.textAlign = 'left';
         ctx.textBaseline = 'middle';
-        ctx.fillText(`${v} GWh · ${cellShare[i]}%`, bar.x + 6, bar.y);
+        const w = ctx.measureText(text).width;
+        if (bar.x - 8 - w > chartArea.left + 4) {
+          // 长条：条内右对齐，浅色字
+          ctx.fillStyle = '#f7f6f4';
+          ctx.textAlign = 'right';
+          ctx.fillText(text, bar.x - 8, bar.y);
+        } else {
+          // 短条：条端外侧标注
+          ctx.fillStyle = '#5c6b80';
+          ctx.textAlign = 'left';
+          ctx.fillText(text, bar.x + 6, bar.y);
+        }
         ctx.restore();
       });
     }
