@@ -1,34 +1,44 @@
 {
-  "generated_at": "2026-11-25T08:30:16",
-  "unread_count": 22,
+  "generated_at": "2026-11-26T08:30:12",
+  "unread_count": 23,
   "meta": {
-    "checked_at": "2026-11-25T08:30:01",
-    "date": "2026-11-25",
+    "checked_at": "2026-11-26T08:30:00",
+    "date": "2026-11-26",
     "trading_day": true,
     "trading_day_reason": "trading_day",
     "cron_log_count": 1,
     "run_completed": true,
-    "online_check": "online_updated(2026-11-25)",
-    "guard_alert_count": 2,
+    "online_check": "online_updated(2026-11-26)",
+    "guard_alert_count": 4,
     "weekly_latest": "weekly_20261121_101000.log",
-    "weekly_age_days": 4,
-    "pf5_size_local": 738612,
-    "pf5_size_remote": 738612,
+    "weekly_age_days": 5,
+    "pf5_size_local": 739914,
+    "pf5_size_remote": 739914,
     "metrics": {
-      "holdings_total": 252,
-      "post_sell_total": 717,
+      "holdings_total": 254,
+      "post_sell_total": 719,
       "watch_total": 15,
-      "guard_alerts": 2,
+      "guard_alerts": 4,
       "guard_checks": 13,
-      "report_size_kb": 1103
+      "report_size_kb": 1110
     },
     "drift_count": 0,
     "shougugou": "200 OK",
     "weekly_completed": true,
-    "code_stale_check": "/health 自报（pid 22446），进程已运行 187h12m12s",
+    "code_stale_check": "/health 自报（pid 22446），进程已运行 211h12m08s",
     "code_stale_files": 0
   },
   "alerts": [
+    {
+      "id": "GUARD_ALERT_20261126_083000",
+      "level": "error",
+      "code": "GUARD_ALERT",
+      "title": "数据守门告警 4 条",
+      "detail": "1. 2026-11-26 07:09:24 [GUARD-ALERT] 守门1 告警: 全量刷新标记异常（2026-11-26 07:09:23，ok=2749/3133）：aborted=true（中途熔断，未跑完） ← 判据D；2. 2026-11-26 07:09:24 [GUARD-ALERT] 守门1 告警: US: 按交易日历今日应到货 K 线日期=2026-11-25，实际到货 289/673（42.9%）< 阈值 90% ← 判据E：到货率不足（calendar_status=complete）；3. 2026-11-26 07:09:31 [GUARD-ALERT] 守门4 告警: 扫描 DB 3140 只 / 4127422 行：非法价 78 行（零价 78 行/4 只，负价 0 行/0 只）；零价最多：AZN.N.US(60)、FERG.N.US(16)、HLN.N.US(1)、SN.N.US(1)；高低价不自洽（>0.1%，观察项）720 行；OHLC 含 NULL 字段 78 行（观测；4. 2026-11-26 07:09:38 [GUARD-ALERT] 守门5 告警: 扫描相邻交易日对：涉及 113 只标的；另有 ≥5× 断层 28 处 → 复权口径污染｜G2 成对反向 3 只：02477.HK(5次)、02617.HK(3次)、688615.SH(2次)；另 1 只已核实为**源限制**（根因不在写入端、重灌零收益，不重复告警）：600546.SH(4次)；样例 02477.H",
+      "action": "查看 logs/guard_alerts.log 全文",
+      "date": "2026-11-26",
+      "ts": "2026-11-26T08:30:00"
+    },
     {
       "id": "GUARD_ALERT_20261125_083001",
       "level": "error",
