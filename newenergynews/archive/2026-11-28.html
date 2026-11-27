@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新能源要闻 · 第126期 · 2026-11-28 · 老丁实验室</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f8f9fa;
+            --bg-surface: #ffffff;
+            --text: #1a1a2e;
+            --text-secondary: #4a5568;
+            --text-muted: #718096;
+            --border: #e2e8f0;
+            --border-light: #edf2f7;
+            --accent: #2c5f7c;
+            --accent-light: #e8f0f5;
+            --accent-warm: #8b5a2b;
+            --shadow: rgba(0, 0, 0, 0.04);
+            --shadow-hover: rgba(0, 0, 0, 0.08);
+            --sans: 'Inter', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            --serif: 'Noto Serif SC', Georgia, 'Songti SC', serif;
+            --tag-policy: #1a6b3a;
+            --tag-policy-bg: #e8f0e8;
+            --tag-market: #2c5f7c;
+            --tag-market-bg: #e8f0f5;
+            --tag-tech: #744c9e;
+            --tag-tech-bg: #f0e8f5;
+            --tag-sentiment: #b85c38;
+            --tag-sentiment-bg: #f5ebe8;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            width: 100%;
+        }
+
+        /* ── HEADER ── */
+        .site-header {
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .logo-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo-mark {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #2c5f7c, #5a8fa8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            flex-shrink: 0;
+        }
+        .site-name {
+            font-family: var(--serif);
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            color: var(--text);
+            line-height: 1.2;
+        }
+        .site-name-en {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 11px;
+            font-weight: 400;
+            color: var(--text-muted);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            display: block;
+            margin-top: 1px;
+        }
+        .site-nav {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+        .site-nav a {
+            font-family: var(--sans);
+            font-size: 13px;
+            font-weight: 400;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+            position: relative;
+            padding-bottom: 2px;
+        }
+        .site-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #2c5f7c, #5a8fa8);
+            transition: width 0.2s;
+            border-radius: 1px;
+        }
+        .site-nav a:hover { color: var(--accent); }
+        .site-nav a:hover::after { width: 100%; }
+
+        /* ── HERO ── */
+        .hero {
+            background: linear-gradient(135deg, #f8fafc 0%, #e8f0f5 50%, #f0f5f8 100%);
+            padding: 40px 24px 32px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%; right: 10%;
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(44, 95, 124, 0.06) 0%, transparent 70%);
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+        .hero-inner {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-eyebrow {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 13px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+        .hero-title {
+            font-family: var(--serif);
+            font-size: 38px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            line-height: 1.2;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+        .hero-date {
+            font-size: 16px;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        .hero-desc {
+            font-size: 9px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-weight: 300;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+        .hero-stats {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-stat {
+            text-align: center;
+            padding: 12px 24px;
+            background: var(--bg-surface);
+            border-radius: 10px;
+            min-width: 100px;
+            border: 1px solid var(--border);
+        }
+        .hero-stat .number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .hero-stat .label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* ── MAIN ── */
+        .main {
+            flex: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px 24px 56px;
+            width: 100%;
+        }
+        
+        .section-divider {
+            text-align: center;
+            margin: 48px 0;
+            position: relative;
+        }
+        .section-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+        }
+        .section-divider-text {
+            display: inline-block;
+            padding: 0 24px;
+            background: var(--bg);
+            position: relative;
+            font-family: var(--serif);
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--accent);
+            letter-spacing: 0.05em;
+        }
+        .section-divider-sub {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+        
+        .content-section {
+            margin-bottom: 40px;
+        }
+        .section-title {
+            font-family: var(--serif);
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--accent-light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+        .summary-box {
+            background: var(--accent-light);
+            border-left: 4px solid var(--accent);
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 24px;
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+        .summary-box strong {
+            color: var(--accent);
+        }
+        
+        .subsection-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--accent);
+            margin: 24px 0 12px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .news-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            transition: box-shadow 0.2s, transform 0.1s;
+        }
+        .news-card:hover {
+            box-shadow: 0 2px 8px var(--shadow-hover);
+            transform: translateY(-1px);
+        }
+        .news-card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+        .tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+        .tag-policy { background: var(--tag-policy-bg); color: var(--tag-policy); }
+        .tag-market { background: var(--tag-market-bg); color: var(--tag-market); }
+        .tag-tech { background: var(--tag-tech-bg); color: var(--tag-tech); }
+        .tag-sentiment { background: var(--tag-sentiment-bg); color: var(--tag-sentiment); }
+        .source {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        .news-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 6px;
+            line-height: 1.5;
+        }
+        .news-summary {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        .text-muted {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        
+        .region-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .region-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+        }
+        .region-card h4 {
+            font-family: var(--serif);
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .sources-section {
+            margin-top: 48px;
+            padding-top: 32px;
+            border-top: 2px solid var(--border);
+        }
+        .sources-section h3 {
+            font-family: var(--serif);
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 20px;
+        }
+        .source-category {
+            margin-bottom: 16px;
+        }
+        .source-category h5 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+        .source-category ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .source-category li {
+            font-size: 14px;
+            color: var(--text-muted);
+            background: var(--border-light);
+            padding: 4px 10px;
+            border-radius: 4px;
+        }
+        
+        /* ── FOOTER ── */
+        .site-footer {
+            padding: 20px 24px;
+            border-top: 1px solid var(--border);
+            background: var(--bg-surface);
+            margin-top: 20px;
+        }
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-brand {
+            font-family: var(--serif);
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+        .footer-note {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 10px;
+            color: var(--text-muted);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .footer-disclaimer {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            max-width: 800px;
+        }
+        
+        @media (max-width: 768px) {
+            .hero { padding: 24px 20px 20px; }
+            .hero-title { font-size: 28px; }
+            .main { padding: 20px 16px 40px; }
+            .section-divider-text { font-size: 18px; }
+            .section-title { font-size: 20px; }
+            .news-card { padding: 12px 16px; }
+            .site-nav { display: none; }
+            .header-inner { justify-content: center; text-align: center; }
+            .footer-inner { justify-content: center; text-align: center; flex-direction: column; }
+            .region-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ── 复制正文浮动按钮（右上角小图标，低调） ── */
+        .copy-fab {
+            position: fixed;
+            top: 14px;
+            right: 14px;
+            z-index: 9998;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.85);
+            color: #2c5f7c;
+            box-shadow: 0 2px 10px rgba(22, 38, 54, 0.16);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            opacity: 0.6;
+            transition: opacity 0.15s ease, transform 0.15s ease, background 0.2s ease, color 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+        .copy-fab:hover { opacity: 1; transform: scale(1.07); }
+        .copy-fab:active { transform: scale(0.9); }
+        .copy-fab.done {
+            opacity: 1;
+            background: #2e8b57;
+            color: #ffffff;
+        }
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 52px;
+            transform: translateX(-50%) translateY(24px);
+            background: rgba(22, 38, 54, 0.94);
+            color: #ffffff;
+            padding: 13px 22px;
+            border-radius: 12px;
+            font-size: 14.5px;
+            line-height: 1.6;
+            max-width: 86vw;
+            box-sizing: border-box;
+            text-align: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 9999;
+            white-space: pre-line;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.28);
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        @media (max-width: 768px) {
+            .toast { font-size: 13.5px; bottom: 32px; }
+        }
+    </style>
+</head>
+<body>
+<button class="copy-fab" id="copyFab" onclick="copyBrief()" title="复制全文，到豆包朗读" aria-label="复制全文到豆包朗读">📋</button>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo-group">
+      <div class="logo-mark">L</div>
+      <div>
+        <div class="site-name">老丁实验室</div>
+        <div class="site-name-en">Laodinglab</div>
+      </div>
+    </div>
+    <nav class="site-nav" style="display:none;">
+      <a href="/">首页</a>
+      <a href="/stockmarketanalysis">选股模型</a>
+      <a href="/globalnewenergydata">装机数据</a>
+      <a href="/newenergynews">新能源要闻</a>
+    </nav>
+  </div>
+</header>
+
+<div id="copy-scope">
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">New Energy Daily Brief · 第126期 · 2026-11-28 周六</div>
+    <h1 class="hero-title">新能源要闻简报</h1>
+    <div class="hero-date">第126期 · 2026-11-28 周六</div>
+    <p class="hero-desc">覆盖光伏、风电、储能、氢能、电力体系等领域的每日要闻</p>
+  </div>
+</section>
+
+<main class="main">
+    <div class="container">
+    
+        <!-- 中国市场 -->
+        <div class="content-section">
+            <h2 class="section-title">🇨🇳 国内新能源动态</h2>
+            <p class="section-subtitle">中国市场 · 光伏 · 风电 · 储能 · 氢能</p>
+            
+            <div class="summary-box">
+                <strong>今日要闻摘要</strong><br>
+                国家发改委、国家能源局印发《"十五五"新型储能实施方案》，明确到2030年全国新型储能装机达3亿千瓦、平均储能时长约3小时，并部署容量电价机制与多元应用场景。市场端，国电电力鲁北盐碱滩涂500MW光伏EPC开标，全口径单价约2.41元/W；晶科能源100MW/400MWh独立储能项目投运；中国首条超百公里氢能管道投运，输氢成本下降约77%。舆情方面，机构预测2026年全球光伏新增装机将迎2018年以来首次下滑，中国电价市场化改革被视为主要影响因素。
+            </div>
+            
+            <h3 class="subsection-title">📋 官方政策</h3>
+            <div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-policy">政策</span>
+                <span class="source">新华社/国家发改委</span>
+            </div>
+            <h4 class="news-title">两部门印发《"十五五"新型储能实施方案》：2030年全国新型储能装机达3亿千瓦</h4>
+            <p class="news-summary">11月13日，国家发展改革委、国家能源局印发《"十五五"新型储能实施方案》。方案提出，到2030年新型储能从规模化发展阶段步入市场化发展阶段，全国装机规模达到3亿千瓦，平均储能时长3小时左右，主要满足系统源网荷侧日内调节需求，促进源网荷储各环节融合互动。</p>
+        </div>
+<div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-policy">政策</span>
+                <span class="source">储能中国网/国家发改委</span>
+            </div>
+            <h4 class="news-title">实施方案明确细分指引：新能源基地配储5000万—6000万千瓦，电网侧独立储能约1.4亿千瓦</h4>
+            <p class="news-summary">《实施方案》部署多元应用场景，明确到2030年新能源基地配置新型储能约5000万—6000万千瓦，可承担顶峰保供作用的电网侧独立新型储能约1.4亿千瓦；同时提出建立电网侧独立储能容量电价机制，完善充放电价格机制，推动储能公平参与电力现货与辅助服务市场。</p>
+        </div>
+<div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-policy">政策</span>
+                <span class="source">光动百科/秦皇岛市发改委</span>
+            </div>
+            <h4 class="news-title">秦皇岛市公示2026年独立储能项目优选结果</h4>
+            <p class="news-summary">河北省秦皇岛市发改委公示2026年独立储能项目优选结果，标志着地方独立储能项目优选与备案工作持续推进。华北多地近期密集出台储能项目清单与容量补偿细则，独立储能正加速纳入地方电力规划与市场化收益框架。</p>
+        </div>
+            
+            <h3 class="subsection-title">🏭 行业动态</h3>
+            <div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-market">市场</span>
+                <span class="source">国家能源局/人民日报</span>
+            </div>
+            <h4 class="news-title">国家能源局：2025年新型储能利用小时数达1195小时，市场化发展成效显现</h4>
+            <p class="news-summary">国家能源局有关负责人介绍，2025年全国新型储能利用小时数达1195小时，多个30万千瓦级压缩空气储能、10万千瓦级液流电池与钠离子电池储能、单体兆瓦级飞轮储能项目相继投运，一批构网型储能项目落地实施，储能在促进新能源消纳、电力保供和系统安全稳定运行方面作用持续增强。</p>
+        </div>
+<div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-market">市场</span>
+                <span class="source">光伏盒子/国家能源集团电子商务平台</span>
+            </div>
+            <h4 class="news-title">国电电力鲁北盐碱滩涂500MW光伏EPC开标：全口径约2.41元/W，66.75%电量锁定机制电价</h4>
+            <p class="news-summary">11月23日，国电电力山东鲁北盐碱滩涂风光储输一体化基地W9-1地块光伏项目（一期500MW）EPC总承包公示中标候选人，两标段合计约12.06亿元，折算全口径单价约2.41元/W。项目要求2027年6月30日前全容量并网，66.75%电量获得0.261元/千瓦时机制电价、执行10年，为项目收益提供托底。</p>
+        </div>
+<div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-tech">技术</span>
+                <span class="source">Hydrogen Central</span>
+            </div>
+            <h4 class="news-title">中国首条超100公里氢能管道投入运营，输氢成本下降约77%</h4>
+            <p class="news-summary">中国首条长度超过100公里的氢能管道正式投入运营，长距离管道输氢使运输成本下降约77%，标志着中国氢能储运基础设施建设取得突破性进展。管道输氢相较管束车运输大幅降低成本，为绿氢规模化跨区域输送和下游工业、交通应用打开空间。</p>
+        </div>
+<div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-policy">政策</span>
+                <span class="source">TaiyangNews</span>
+            </div>
+            <h4 class="news-title">首批强制性光伏组件国标证书颁发：11家头部企业获证，2027年6月实施</h4>
+            <p class="news-summary">全国太阳光伏系统标准化技术委员会在江苏盐城颁发首批强制性国家标准证书，晶科、晶澳、隆基、天合、TCL中环、通威等11家企业获证。证书覆盖《光伏组件安全要求》（GB 47739-2026）和《光伏组件铭牌标识要求》（GB 47740-2026）两项标准，将于2027年6月1日起实施，系中国首批针对光伏组件的强制性国标。</p>
+        </div>
+            
+            <h3 class="subsection-title">🏢 企业动态</h3>
+            <div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-market">市场</span>
+                <span class="source">国家太阳能光热产业技术创新战略联盟</span>
+            </div>
+            <h4 class="news-title">河北建投能源竞得三峡蒙能22%股权，参股库布齐千万千瓦级新能源基地</h4>
+            <p class="news-summary">河北建投能源投资股份有限公司公告，在北京产权交易所竞得三峡陆上能投公司与蒙能集团转让的三峡蒙能22%股权，参股内蒙古库布齐沙漠鄂尔多斯中北部新能源基地项目。该基地规划建设光伏800万千瓦、风电400万千瓦，配套400万千瓦煤电、500万千瓦时新型储能及20万千瓦光热。</p>
+        </div>
+<div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-market">市场</span>
+                <span class="source">国际能源网</span>
+            </div>
+            <h4 class="news-title">晶科能源100MW/400MWh独立储能项目正式投运</h4>
+            <p class="news-summary">晶科能源投资建设的100MW/400MWh独立储能项目正式投入运行，进一步拓展其"光伏+储能"一体化布局。同期中广核宁夏灵武共享储能电站EPC总承包中标结果公示，计划2027年5月10日前完成全容量并网，总工期172日历日，独立与共享储能项目建设节奏持续加快。</p>
+        </div>
+<div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-tech">技术</span>
+                <span class="source">国家太阳能光热产业技术创新战略联盟</span>
+            </div>
+            <h4 class="news-title">华能烟台八角二氧化碳热力电池储能示范项目浇筑首方混凝土</h4>
+            <p class="news-summary">华能烟台八角新型热力电池储能项目举行首方混凝土浇筑仪式。该项目是目前国内规模最大、参数最高的同类工程，为国家科技重大专项"二氧化碳热力电池关键技术开发与工程示范"载体工程，首期规划建设1台50兆瓦超临界二氧化碳发电机组，配套100兆瓦/400兆瓦时熔盐储能系统，熔盐储热时长达4小时。</p>
+        </div>
+            
+            <h3 class="subsection-title">📊 舆情速递</h3>
+            <div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-sentiment">舆情</span>
+                <span class="source">GlobalData</span>
+            </div>
+            <h4 class="news-title">GlobalData：2026年全球光伏新增装机将迎2018年以来首次下滑，中国电价改革为主要因素</h4>
+            <p class="news-summary">GlobalData最新《光伏市场报告（2026版）》预测，2026年全球光伏年新增装机将自2018年以来首次下降，主要受中国新能源上网电价市场化改革、美国政策变化及巴基斯坦需求放缓影响。机构认为下滑是暂时性的，2027年起将恢复增长，2025—2035年全球累计装机复合增长率约12.5%。</p>
+        </div>
+<div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-sentiment">舆情</span>
+                <span class="source">首都电力交易中心/E-HOT电力市场日报</span>
+            </div>
+            <h4 class="news-title">电力市场化交易电量占全社会用电量64%，注册主体突破109万家</h4>
+            <p class="news-summary">首都电力交易中心文章指出，电力市场通过现货价格信号引导企业错峰用电与储能充放电，2025年全国电力市场注册主体突破109万家，市场化交易电量达6.6万亿千瓦时，占全社会用电量64%。未来还将推动碳排放总量与强度等因素逐步纳入电力市场出清机制，还原电力商品属性。</p>
+        </div>
+        </div>
+        
+        <div class="section-divider">
+            <span class="section-divider-text">⋅ ⋅ ⋅</span>
+        </div>
+        
+        <!-- 充电与电网 -->
+        <div class="content-section">
+            <h2 class="section-title">⚡ 充电与电网</h2>
+            <p class="section-subtitle">充电桩 · 电力市场 · 虚拟电厂 · 分布式能源 · 智能微网</p>
+            
+            <div class="summary-box">
+                <strong>今日要闻摘要</strong><br>
+                宁夏印发电力现货市场连续结算试运行方案V3.0；国网甘肃公示电网侧独立储能容量补偿项目清单；华北能监局修订并网运行与辅助服务实施细则；广州电力交易中心绿证周交易量超525万个。
+            </div>
+            
+            <div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-policy">政策</span>
+                <span class="source">宁夏自治区发改委/光动百科</span>
+            </div>
+            <h4 class="news-title">宁夏印发《电力现货市场连续结算试运行工作方案V3.0》</h4>
+            <p class="news-summary">宁夏自治区发改委印发《宁夏电力现货市场连续结算试运行工作方案V3.0》（宁发改电力〔2026〕617号），对国网宁夏电力、宁夏电力交易中心及有关经营主体提出明确要求，标志着宁夏电力现货市场向连续结算试运行阶段稳步推进，西部省份现货市场建设持续提速。</p>
+        </div>
+<div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-policy">政策</span>
+                <span class="source">国网甘肃省电力公司/光动百科</span>
+            </div>
+            <h4 class="news-title">国网甘肃公示2026年11月可享受容量补偿的电网侧独立新型储能项目清单</h4>
+            <p class="news-summary">国网甘肃省电力公司按照甘肃省能源局、发改委及国家能源局甘肃监管办相关文件要求，公示2026年11月可享受容量补偿的电网侧独立新型储能项目清单。容量补偿机制落地为独立储能提供稳定收益预期，是"十五五"储能市场化收益框架的重要组成部分。</p>
+        </div>
+<div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-policy">政策</span>
+                <span class="source">华北能源监管局/光动百科</span>
+            </div>
+            <h4 class="news-title">华北能源监管局印发华北区域电力并网运行与辅助服务管理实施细则（2026修订版）</h4>
+            <p class="news-summary">华北能源监管局印发《华北区域电力并网运行管理实施细则》《华北区域电力辅助服务管理实施细则》（2026修订版），面向国网华北分部及京津等区域电网企业执行。细则修订进一步规范并网运行管理和辅助服务市场秩序，为新能源与储能等新型主体参与调节服务提供制度依据。</p>
+        </div>
+<div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-market">市场</span>
+                <span class="source">中国储能网/广州电力交易中心</span>
+            </div>
+            <h4 class="news-title">广州电力交易中心第44周绿证交易525.19万个，风电占46%</h4>
+            <p class="news-summary">2026年10月26日—11月1日，广州电力交易中心平台绿证交易525.19万个，环比增加3.92%，交易均价4.29元/个。其中风电项目交易规模243.63万个占46.39%，均价4.95元/个；光伏项目197.25万个占37.56%，均价3.93元/个。2026年累计交易量达2.33亿个，绿证市场活跃度持续提升。</p>
+        </div>
+        </div>
+        
+        <div class="section-divider">
+            <span class="section-divider-text">⋅ ⋅ ⋅</span>
+        </div>
+        
+        <!-- 全球动态 -->
+        <div class="content-section">
+            <h2 class="section-title">🌍 全球新能源市场</h2>
+            <p class="section-subtitle">欧洲 · 北美 · 亚太 · 政策与市场动态</p>
+            
+            <div class="summary-box">
+                <strong>今日要闻摘要</strong><br>
+                IEA下调欧盟分布式光伏与海上风电预测；欧洲氢银行1.4亿欧元拨款推进绿氢项目；美国太阳能制造生态成形，约40家企业覆盖硅基全产业链；澳大利亚家用电池计划累计安装16.8GWh。
+            </div>
+            
+            <div class="region-grid">
+                <div class="region-card">
+                    <h4>🇪🇺 欧洲 / Europe</h4>
+                    <div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-market">市场</span>
+                <span class="source">IEA</span>
+            </div>
+            <h4 class="news-title">IEA《可再生能源2026》：欧盟分布式光伏与海上风电预测下调，集中式光伏上调</h4>
+            <p class="news-summary">IEA发布《Renewables 2026》报告，因荷兰取消净计量、德国EEG2027上网电价与净计费削减、波兰补贴退坡、意大利装修退税取消等因素，下调欧盟主要市场分布式光伏预测；同时因德国、意大利、波兰和法国拍卖放量，上调集中式光伏预期。海上风电因竞价机制成本上升亦被下调。</p>
+        </div>
+<div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-policy">政策</span>
+                <span class="source">Hydrogen Central</span>
+            </div>
+            <h4 class="news-title">HY2GEN签署1.398亿欧元欧洲氢银行拨款协议，推进ALBATROS绿氢项目</h4>
+            <p class="news-summary">HY2GEN与欧洲氢银行签署总额1.398亿欧元的拨款协议，用于推进其ALBATROS绿氢项目。这是欧洲氢银行支持规模化绿氢生产的最新落地案例，显示欧盟正以直接资金拨付方式弥补绿氢成本竞争力缺口，推动项目走向最终投资决策。</p>
+        </div>
+<div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-tech">技术</span>
+                <span class="source">Hydrogen Central</span>
+            </div>
+            <h4 class="news-title">Técnicas Reunidas将为RWE在德国执行三座氢就绪联合循环燃气电站</h4>
+            <p class="news-summary">西班牙工程公司Técnicas Reunidas宣布将为德国RWE执行三座"氢就绪"联合循环燃气电站。电站设计预留未来改用氢气燃料能力，契合德国电力系统脱碳路径中"氢就绪"气电的过渡定位，为新能源高占比系统提供灵活调节与顶峰保供能力。</p>
+        </div>
+<div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-market">市场</span>
+                <span class="source">Hydrogen Central</span>
+            </div>
+            <h4 class="news-title">TEAL Mobility在比利时安特卫普开建加氢站</h4>
+            <p class="news-summary">TEAL Mobility在比利时安特卫普正式开工建设一座新的加氢站，进一步完善欧洲西北部氢能加注网络。安特卫普作为欧洲重要港口与物流枢纽，加氢基础设施落地将支撑氢燃料电池卡车及港口装备的规模化应用，助力区域氢能交通走廊建设。</p>
+        </div>
+                </div>
+                <div class="region-card">
+                    <h4>🇺🇸 北美 / Americas</h4>
+                    <div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-tech">技术</span>
+                <span class="source">Hydrogen Central</span>
+            </div>
+            <h4 class="news-title">Plug Power GenEco电解槽在Avina加州工厂投运，新增北美商用氢能产能</h4>
+            <p class="news-summary">Plug Power宣布其GenEco电解槽系统在Avina位于加利福尼亚州的工厂正式投入运营，为北美市场新增商业化氢气产能。这是Plug在北美绿氢生产网络扩张的最新节点，电解槽由光伏等可再生能源供电，为区域工业与交通客户提供低碳氢气。</p>
+        </div>
+<div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-market">市场</span>
+                <span class="source">Hydrogen Central</span>
+            </div>
+            <h4 class="news-title">PowerCell获4.4亿瑞典克朗订单，为美国公用事业级绿氢发电项目供货</h4>
+            <p class="news-summary">瑞典燃料电池企业PowerCell获得价值4.4亿瑞典克朗的订单，将为美国一项公用事业级绿氢发电装置提供核心设备。该订单显示美国绿氢发电正从示范走向公用事业规模化阶段，燃料电池在长时储能与可调出力方面的价值获得电力行业认可。</p>
+        </div>
+<div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-market">市场</span>
+                <span class="source">PV Magazine</span>
+            </div>
+            <h4 class="news-title">美国太阳能制造版图2026：约40家企业覆盖多晶硅到组件全产业链</h4>
+            <p class="news-summary">PV Magazine分析指出，美国已约有40家企业从事从多晶硅到组件的硅基光伏组件生产，各有不同的2030年增长路径。得克萨斯州等地正形成太阳能制造集群，尽管格局仍较分散，但在政策激励下，美国硅基光伏生态正朝着更集中的生产导向模式演进。</p>
+        </div>
+                </div>
+                <div class="region-card">
+                    <h4>🌏 亚太其他 / Asia-Pacific</h4>
+                    <div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-market">市场</span>
+                <span class="source">We Mean Business Coalition</span>
+            </div>
+            <h4 class="news-title">埃及签署6.5亿美元初步融资协议，建设1GW光伏配套200MWh储能</h4>
+            <p class="news-summary">埃及就一座1吉瓦光伏发电配套200兆瓦时电池储能项目签署价值6.5亿美元的初步融资协议。这是北非大规模"光伏+储能"一体化开发的最新案例，显示中东和北非地区正以光储结合模式提升清洁电力供应的可调度性。</p>
+        </div>
+<div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-market">市场</span>
+                <span class="source">储能行业情报/澳大利亚清洁能源监管机构</span>
+            </div>
+            <h4 class="news-title">澳大利亚家用电池补贴计划累计安装超60万套、16.8GWh</h4>
+            <p class="news-summary">澳大利亚联邦政府"更便宜家用电池计划"累计售出超过60万套家庭电池储能系统，总安装容量达16.8GWh，其中超过75%安装在郊区和偏远地区。该计划通过小规模技术证书机制提供前期安装折扣，在降低家庭用电开支的同时，以分布式储能缓解电网负荷压力。</p>
+        </div>
+<div class="news-card">
+            <div class="news-card-header">
+                <span class="tag tag-policy">政策</span>
+                <span class="source">IEA</span>
+            </div>
+            <h4 class="news-title">IEA路线图：乌兹别克斯坦力争风光装机8GW，提前四年完成目标</h4>
+            <p class="news-summary">IEA《乌兹别克斯坦太阳能政策路线图》显示，乌方计划到2026年将太阳能与风电总装机提升至8吉瓦，较原计划提前四年。该国正与国际金融机构合作编制电力部门总体规划，推进大型光伏、风电与储能项目招标，以实现2030年单位GDP温室气体排放较2010年下降35%的目标。</p>
+        </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 信息来源（不纳入朗读复制范围） -->
+        </div><!-- /copy-scope -->
+
+        <div class="sources-section">
+            <h3>附录：信息来源统计</h3>
+            <div class="source-category"><h5>中国行业媒体</h5><ul><li>新华社</li><li>国家能源局</li><li>人民日报</li><li>储能中国网</li><li>国际能源网</li><li>光伏盒子</li><li>光动百科</li><li>中国储能网</li><li>国家太阳能光热产业技术创新战略联盟</li><li>TaiyangNews</li></ul></div><div class="source-category"><h5>国际媒体</h5><ul><li>PV Magazine</li><li>Hydrogen Central</li><li>IEA</li><li>GlobalData</li><li>We Mean Business Coalition</li><li>E-HOT电力市场日报</li></ul></div><div class="source-category"><h5>龙头企业与研究</h5><ul><li>国家能源集团/国电电力</li><li>河北建投能源</li><li>晶科能源</li><li>华能集团</li><li>Plug Power</li><li>PowerCell</li><li>HY2GEN</li><li>Técnicas Reunidas</li><li>TEAL Mobility</li><li>RWE</li></ul></div>
+        </div>
+        
+    </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span class="footer-brand">老丁实验室 · Laodinglab</span>
+    <span class="footer-note">laodinglab.com · 独立研究 · 持续更新</span>
+  </div>
+  <div class="footer-inner" style="margin-top: 8px;">
+    <span class="footer-disclaimer">⚠️ 免责声明：本简报由自动化系统整理生成，内容仅供参考，不构成投资建议。信息来源为公开新闻，请自行核实。</span>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+    var toastEl = document.getElementById('toast');
+    var toastTimer = null;
+
+    function showToast(msg, ms) {
+        toastEl.textContent = msg;
+        toastEl.classList.add('show');
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () {
+            toastEl.classList.remove('show');
+        }, ms || 3000);
+    }
+
+    function cleanText(raw) {
+        var lines = raw.split('\n');
+        var out = [];
+        var prevBlank = false;
+        for (var i = 0; i < lines.length; i++) {
+            var line = lines[i].replace(/\s+/g, ' ').trim();
+            if (line === '') {
+                if (!prevBlank && out.length > 0) out.push('');
+                prevBlank = true;
+            } else {
+                out.push(line);
+                prevBlank = false;
+            }
+        }
+        while (out.length > 0 && out[out.length - 1] === '') out.pop();
+        return out.join('\n');
+    }
+
+    function legacyCopy(text) {
+        /* iOS/Android 兼容的同步复制：必须在用户手势内同步执行 */
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.top = '0';
+        ta.style.left = '0';
+        ta.style.width = '2em';
+        ta.style.height = '2em';
+        ta.style.padding = '0';
+        ta.style.border = 'none';
+        ta.style.outline = 'none';
+        ta.style.background = 'transparent';
+        ta.style.fontSize = '16px';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        try { ta.setSelectionRange(0, text.length); } catch (e) {}
+        var ok = false;
+        try { ok = document.execCommand('copy'); } catch (e) {}
+        document.body.removeChild(ta);
+        return ok;
+    }
+
+    window.copyBrief = function () {
+        var scope = document.getElementById('copy-scope');
+        if (!scope) return;
+        var text = cleanText(scope.innerText);
+        var fab = document.getElementById('copyFab');
+
+        function onCopied(ok) {
+            if (!ok) {
+                showToast('❌ 复制失败，请长按页面手动全选复制', 3500);
+                return;
+            }
+            if (fab) {
+                fab.classList.add('done');
+                fab.textContent = '✓';
+                setTimeout(function () {
+                    fab.classList.remove('done');
+                    fab.textContent = '📋';
+                }, 2000);
+            }
+            showToast('✅ 正文已复制（' + text.length + ' 字）\n正在尝试打开豆包 App…', 2400);
+
+            setTimeout(function () {
+                window.location.href = 'doubao://';
+            }, 600);
+
+            setTimeout(function () {
+                if (!document.hidden) {
+                    showToast('如豆包未自动打开：\n请手动切换到豆包 App，长按输入框粘贴即可朗读', 5200);
+                }
+            }, 3200);
+        }
+
+        /* 优先同步 execCommand（iOS Safari 手势内最可靠），失败立即兜 clipboard API */
+        if (legacyCopy(text)) {
+            onCopied(true);
+            return;
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(
+                function () { onCopied(true); },
+                function () { onCopied(false); }
+            );
+        } else {
+            onCopied(false);
+        }
+    };
+})();
+</script>
+
+</body>
+</html>
