@@ -17,8 +17,8 @@
   --bg-dark-light: #364765;
 
   --text: #2a3445;
-  --text-secondary: #5c6b80;
-  --text-muted: #9a9a9e;
+  --text-secondary: #4a5666;
+  --text-muted: #7b7b7e;
   --text-on-dark: #e1dad8;
   --text-on-dark-muted: #a8a4a0;
 
@@ -31,7 +31,7 @@
   --accent-2: #76819C;
   --accent-2-light: #e0e3e8;
   --accent-3: #9a8a80;
-  --accent-4: #5c6b80;
+  --accent-4: #4a5666;
 
   --shadow: rgba(42, 52, 69, 0.06);
   --shadow-hover: rgba(42, 52, 69, 0.12);
@@ -44,6 +44,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   font-family: var(--sans);
+  font-size: 15px; line-height: 1.7;
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
@@ -72,7 +73,7 @@ body {
 }
 .site-name { font-size: 15px; font-weight: 600; letter-spacing: .02em; color: var(--text-on-dark); line-height: 1.2; }
 .site-name-en {
-  font-family: var(--mono); font-size: 9px; font-weight: 400;
+  font-family: var(--mono); font-size: 12px; font-weight: 400;
   color: var(--text-on-dark-muted); letter-spacing: .12em;
   text-transform: uppercase; display: block; margin-top: 1px;
 }
@@ -105,11 +106,11 @@ body {
 }
 .page-hero-inner { max-width: 720px; margin: 0 auto; position: relative; z-index: 1; }
 .page-hero-eyebrow {
-  font-family: var(--mono); font-size: 10px; letter-spacing: .2em;
+  font-family: var(--mono); font-size: 12px; letter-spacing: .2em;
   text-transform: uppercase; color: var(--text-on-dark-muted); margin-bottom: 8px;
 }
 .page-hero-title {
-  font-size: 30px; font-weight: 700; color: var(--text-on-dark);
+  font-size: 38px; font-weight: 700; color: var(--text-on-dark);
   font-family: var(--serif); line-height: 1.3; margin-bottom: 10px;
 }
 .page-hero-desc {
@@ -121,7 +122,7 @@ body {
   margin-top: 18px;
 }
 .hero-meta span {
-  font-family: var(--mono); font-size: 10px; letter-spacing: .06em;
+  font-family: var(--mono); font-size: 12px; letter-spacing: .06em;
   background: rgba(225,218,216,0.10); border: 1px solid var(--border-dark);
   color: var(--text-on-dark-muted); padding: 4px 10px; border-radius: 20px;
 }
@@ -129,7 +130,7 @@ body {
 /* ── MAIN ── */
 .main { flex: 1; max-width: 980px; margin: 0 auto; padding: 40px 24px 56px; width: 100%; }
 .section-label {
-  font-family: var(--mono); font-size: 10px; letter-spacing: .2em;
+  font-family: var(--mono); font-size: 12px; letter-spacing: .2em;
   text-transform: uppercase; color: var(--text-muted); margin-bottom: 20px;
   display: flex; align-items: center; gap: 8px;
 }
@@ -141,12 +142,12 @@ body {
 /* ── SECTION ── */
 .doc-section { margin-bottom: 44px; }
 .doc-title {
-  font-family: var(--serif); font-size: 19px; font-weight: 700;
+  font-family: var(--serif); font-size: 23px; font-weight: 700;
   color: var(--text); margin-bottom: 6px; letter-spacing: .01em;
   display: flex; align-items: baseline; gap: 10px;
 }
 .doc-title .idx {
-  font-family: var(--mono); font-size: 11px; color: var(--accent-3);
+  font-family: var(--mono); font-size: 12px; color: var(--accent-3);
   letter-spacing: .1em; font-weight: 500;
 }
 .doc-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; font-weight: 300; }
@@ -170,19 +171,19 @@ body {
 .kpi.k3 { --kpi-g: linear-gradient(90deg, #B69C91, #9a8a80); }
 .kpi.k4 { --kpi-g: linear-gradient(90deg, #9a8a80, #76819C); }
 .kpi-label { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
-.kpi-value { font-size: 26px; font-weight: 700; line-height: 1.15; letter-spacing: -.01em; }
-.kpi-value em { font-size: 14px; font-style: normal; font-weight: 500; color: var(--text-secondary); margin-left: 3px; }
-.kpi-note { font-size: 11px; color: var(--text-muted); margin-top: 6px; font-family: var(--mono); letter-spacing: .03em; }
+.kpi-value { font-size: 28px; font-weight: 700; line-height: 1.15; letter-spacing: -.01em; }
+.kpi-value em { font-size: 15px; font-style: normal; font-weight: 500; color: var(--text-secondary); margin-left: 3px; }
+.kpi-note { font-size: 12px; color: var(--text-muted); margin-top: 6px; font-family: var(--mono); letter-spacing: .03em; }
 
 /* ── TABLE ── */
 .table-wrap {
   background: var(--bg-surface); border: 1px solid var(--border);
   border-radius: 10px; overflow-x: auto; box-shadow: 0 1px 3px var(--shadow);
 }
-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+table { width: 100%; border-collapse: collapse; font-size: 15px; }
 thead { background: rgba(42,52,69,0.04); }
 th {
-  text-align: left; padding: 11px 14px; font-weight: 600; font-size: 11px;
+  text-align: center; padding: 11px 14px; font-weight: 600; font-size: 13.5px;
   color: var(--text-secondary); letter-spacing: .06em; text-transform: uppercase;
   white-space: nowrap; border-bottom: 1px solid var(--border);
 }
@@ -190,17 +191,18 @@ td { padding: 11px 14px; border-bottom: 1px solid rgba(208,203,197,0.5); vertica
 tbody tr:last-child td { border-bottom: none; }
 tbody tr:hover { background: rgba(182,156,145,0.05); }
 td strong { font-weight: 600; }
-.num { font-family: var(--mono); font-size: 12.5px; white-space: nowrap; }
+.num { font-family: var(--mono); font-size: 14px; white-space: nowrap; }
+td.nw { white-space: nowrap; } /* 短字段不折行（2026-11-26 统一规范）：≤5字枚举/标签/公司名列 */
 
 /* badges */
 .badge {
-  display: inline-block; font-family: var(--mono); font-size: 9px; letter-spacing: .1em;
+  display: inline-block; font-family: var(--mono); font-size: 12px; letter-spacing: .08em;
   padding: 2px 6px; border-radius: 3px; vertical-align: middle; font-weight: 500; white-space: nowrap;
 }
 .b-official { background: #d8e8d8; color: #3a6a3a; }
 .b-confirmed { background: var(--accent-2-light); color: #4a5a72; }
 .b-estimate { background: #f0e6d8; color: #8a6a45; }
-.b-unknown  { background: #ebe7e3; color: #8a8580; }
+.b-unknown  { background: #ebe7e3; color: #6e6a66; }
 .b-weekly   { background: var(--accent-light); color: #7a5e53; }
 
 /* ── CHART ── */
@@ -209,7 +211,7 @@ td strong { font-weight: 600; }
   border-radius: 10px; padding: 22px 24px; margin-bottom: 16px;
   box-shadow: 0 1px 3px var(--shadow);
 }
-.chart-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+.chart-title { font-size: 17px; font-weight: 600; margin-bottom: 4px; }
 .chart-desc { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; font-weight: 300; }
 .chart-box { position: relative; height: 320px; }
 .chart-box.sm { height: 260px; }
@@ -218,7 +220,7 @@ td strong { font-weight: 600; }
 .callout {
   background: var(--bg-surface); border: 1px solid var(--border);
   border-left: 3px solid var(--accent-3); border-radius: 8px;
-  padding: 16px 20px; margin-bottom: 16px; font-size: 13px; line-height: 1.8; color: var(--text-secondary);
+  padding: 16px 20px; margin-bottom: 16px; font-size: 15px; line-height: 1.8; color: var(--text-secondary);
 }
 .callout.warn { border-left-color: #b4834f; background: #fbf7f2; }
 .callout.info { border-left-color: var(--accent-2); }
@@ -232,9 +234,9 @@ td strong { font-weight: 600; }
 }
 .co-head { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
 .co-name { font-size: 16px; font-weight: 600; }
-.co-ticker { font-family: var(--mono); font-size: 11px; color: var(--text-muted); }
-.co-hot { font-size: 11px; color: #b4834f; }
-.co-body { font-size: 13px; color: var(--text-secondary); line-height: 1.85; font-weight: 300; }
+.co-ticker { font-family: var(--mono); font-size: 12px; color: var(--text-muted); }
+.co-hot { font-size: 12px; color: #b4834f; }
+.co-body { font-size: 15px; color: var(--text-secondary); line-height: 1.85; }
 .co-body ul { list-style: none; }
 .co-body li { padding-left: 16px; position: relative; margin-bottom: 5px; }
 .co-body li::before { content: '·'; position: absolute; left: 4px; color: var(--accent-3); font-weight: 700; }
@@ -242,21 +244,21 @@ td strong { font-weight: 600; }
 /* ── ABOUT / FOOTER ── */
 .about { padding: 28px 0; border-top: 1px solid var(--border); margin-top: 40px; }
 .about-title { font-family: var(--serif); font-size: 15px; font-weight: 700; margin-bottom: 8px; color: var(--text); }
-.about-text { font-size: 13px; color: var(--text-secondary); line-height: 1.8; max-width: 680px; font-weight: 300; }
+.about-text { font-size: 15px; color: var(--text-secondary); line-height: 1.8; max-width: 680px; }
 .site-footer { padding: 16px 24px; border-top: 1px solid var(--border-dark); background: var(--bg-dark); }
 .footer-inner {
   max-width: 1200px; margin: 0 auto; display: flex;
   justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
 }
 .footer-brand { font-size: 13px; font-weight: 600; color: var(--text-on-dark-muted); }
-.footer-note { font-family: var(--mono); font-size: 10px; color: var(--text-on-dark-muted); letter-spacing: .08em; text-transform: uppercase; }
+.footer-note { font-family: var(--mono); font-size: 12px; color: var(--text-on-dark-muted); letter-spacing: .08em; text-transform: uppercase; }
 
 @media (max-width: 768px) {
   .site-header, .page-hero, .main { padding-left: 20px; padding-right: 20px; }
   .header-inner { justify-content: center; text-align: center; }
   .site-nav { display: none; }
   .page-hero { padding: 28px 20px 24px; }
-  .page-hero-title { font-size: 21px; }
+  .page-hero-title { font-size: 26px; }
   .chart-box { height: 280px; }
   .about-text { font-size: 14px; }
   .footer-inner { justify-content: center; text-align: center; }
@@ -269,22 +271,22 @@ td strong { font-weight: 600; }
 .hl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 14px; margin-bottom: 6px; }
 .hl-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; box-shadow: 0 1px 3px var(--shadow); display: flex; flex-direction: column; }
 .hl-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
-.hl-no { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; color: #fff; background: var(--accent-2); border-radius: 4px; padding: 2px 7px; }
-.hl-date { font-family: var(--mono); font-size: 11px; color: var(--text-muted); }
-.hl-title { font-family: var(--serif); font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.55; margin-bottom: 10px; }
+.hl-no { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; color: #fff; background: var(--accent-2); border-radius: 4px; padding: 2px 7px; }
+.hl-date { font-family: var(--mono); font-size: 12px; color: var(--text-muted); }
+.hl-title { font-family: var(--serif); font-size: 16px; font-weight: 700; color: var(--text); line-height: 1.55; margin-bottom: 10px; }
 .hl-metric { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
-.hl-metric span { font-family: var(--mono); font-size: 11px; background: var(--accent-2-light); color: var(--text-secondary); border-radius: 4px; padding: 3px 8px; letter-spacing: .02em; }
-.hl-pts { list-style: none; margin: 0 0 12px; padding: 0; font-size: 12.5px; line-height: 1.78; color: var(--text-secondary); font-weight: 300; }
+.hl-metric span { font-family: var(--mono); font-size: 12px; background: var(--accent-2-light); color: var(--text-secondary); border-radius: 4px; padding: 3px 8px; letter-spacing: .02em; }
+.hl-pts { list-style: none; margin: 0 0 12px; padding: 0; font-size: 15px; line-height: 1.78; color: var(--text-secondary); }
 .hl-pts li { position: relative; padding-left: 13px; margin-bottom: 5px; }
 .hl-pts li::before { content: ''; position: absolute; left: 0; top: 9px; width: 5px; height: 5px; border-radius: 50%; background: var(--accent-3); }
-.hl-impl { font-size: 12.5px; line-height: 1.75; color: var(--text-secondary); background: #f2f0ed; border-left: 2px solid var(--accent-3); border-radius: 0 6px 6px 0; padding: 8px 12px; margin-top: auto; }
+.hl-impl { font-size: 15px; line-height: 1.75; color: var(--text-secondary); background: #f2f0ed; border-left: 2px solid var(--accent-3); border-radius: 0 6px 6px 0; padding: 8px 12px; margin-top: auto; }
 .hl-impl b { color: var(--text); font-weight: 600; }
 
 /* ── 附录 ── */
 .appendix { border-top: 1px dashed var(--border); padding-top: 22px; margin-top: 8px; }
-.appendix .doc-title { font-size: 17px; }
+.appendix .doc-title { font-size: 20px; }
 .appendix .doc-title .idx { background: var(--bg-surface); color: var(--text-muted); }
-.appendix .callout { font-size: 12.5px; background: #faf8f6; margin-bottom: 0; }
+.appendix .callout { font-size: 15px; background: #faf8f6; margin-bottom: 0; }
 
 /* ── 折叠面板（附录用） ── */
 details.fold { border: 1px solid var(--border); border-radius: 8px; background: var(--bg-surface); overflow: hidden; }
@@ -299,7 +301,7 @@ details.fold > summary::before {
 }
 details.fold[open] > summary::before { transform: rotate(90deg); }
 details.fold > summary::after {
-  content: '展开'; margin-left: auto; font-family: var(--mono); font-size: 10px;
+  content: '展开'; margin-left: auto; font-family: var(--mono); font-size: 12px;
   letter-spacing: .1em; color: var(--text-muted);
 }
 details.fold[open] > summary::after { content: '收起'; }
@@ -319,8 +321,8 @@ details.fold .callout { border: none; background: transparent; padding: 10px 0 0
 .cadence-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
 .cadence-title { font-family: var(--serif); font-size: 15px; font-weight: 700; color: var(--text); }
 .cadence-note { font-size: 12.5px; color: var(--text-muted); font-weight: 300; }
-.cadence-tbl { table-layout: fixed; font-size: 12.5px; }
-.cadence-tbl th { padding: 8px 10px; font-size: 10.5px; }
+.cadence-tbl { table-layout: fixed; font-size: 14px; }
+.cadence-tbl th { padding: 8px 10px; font-size: 13.5px; }
 .cadence-tbl td { padding: 9px 10px; line-height: 1.7; vertical-align: top; border-bottom: 1px solid var(--border); overflow-wrap: break-word; }
 .cadence-tbl td:first-child { text-align: center; white-space: nowrap; }
 .cadence-tbl tr:last-child td { border-bottom: none; }
@@ -331,7 +333,7 @@ details.fold .callout { border: none; background: transparent; padding: 10px 0 0
 .cadence-foot b { color: var(--text); }
 
 /* ── 数据表列宽修复（2026-10-14）：固定布局 + 数值列可折行 ── */
-.tbl-fixed { table-layout: fixed; }
+.tbl-fixed { table-layout: fixed; min-width: 640px; }
 .tbl-fixed th, .tbl-fixed td { vertical-align: top; overflow-wrap: break-word; }
 .tbl-fixed td.num, .tbl-fixed td[colspan] { white-space: normal; line-height: 1.75; }
 
@@ -340,6 +342,7 @@ details.fold .callout { border: none; background: transparent; padding: 10px 0 0
 .prov-wrap { overflow-x: auto; }
 .prov-tbl { min-width: 1180px; table-layout: fixed; font-size: 15px; }
 .prov-tbl th { text-align: center; font-size: 13.5px; padding: 9px 8px; white-space: normal; line-height: 1.45; }
+.prov-tbl th:first-child { white-space: nowrap; }
 .prov-tbl td { padding: 8px 10px; font-size: 15px; line-height: 1.5; border-bottom: 1px solid rgba(208,203,197,0.5); }
 .prov-tbl .prov-name { font-weight: 600; text-align: left; white-space: nowrap; }
 .prov-num { font-family: var(--mono); font-size: 15px; white-space: nowrap; text-align: right; }
@@ -578,14 +581,14 @@ details.fold .callout { border: none; background: transparent; padding: 10px 0 0
           <tr><th>前三季度全国光伏（建设情况口径，11-16 发布）</th><th>数值</th><th>同比 / 占比</th><th>口径</th></tr>
         </thead>
         <tbody>
-          <tr><td><strong>1-9 月光伏新增并网</strong></td><td class="num"><strong>110.329 GW</strong>（11,032.9 万千瓦）</td><td class="num"><strong>-53.9%</strong></td><td><span class="badge b-official">官方</span></td></tr>
-          <tr><td>┖ <strong>分布式新增</strong></td><td class="num"><strong>64.524 GW</strong>（6,452.4 万千瓦）</td><td class="num"><strong>58.5% / -49.6%</strong></td><td><span class="badge b-official">官方</span></td></tr>
-          <tr><td>┖ <strong>户用新增</strong></td><td class="num"><strong style="color:#2e7d5b;">33.463 GW</strong>（3,346.3 万千瓦）</td><td class="num"><strong>占分布式 51.9% / 仅 -2.8%</strong></td><td><span class="badge b-official">官方</span> 本期回补</td></tr>
-          <tr><td>┖ 集中式新增</td><td class="num">45.806 GW（4,580.6 万千瓦）</td><td class="num">-59.0%</td><td><span class="badge b-official">官方</span></td></tr>
+          <tr><td><strong>1-9 月光伏新增并网</strong></td><td class="num"><strong>110.329 GW</strong>（11,032.9 万千瓦）</td><td class="num"><strong>-53.9%</strong></td><td class="nw"><span class="badge b-official">官方</span></td></tr>
+          <tr><td>┖ <strong>分布式新增</strong></td><td class="num"><strong>64.524 GW</strong>（6,452.4 万千瓦）</td><td class="num"><strong>58.5% / -49.6%</strong></td><td class="nw"><span class="badge b-official">官方</span></td></tr>
+          <tr><td>┖ <strong>户用新增</strong></td><td class="num"><strong style="color:#2e7d5b;">33.463 GW</strong>（3,346.3 万千瓦）</td><td class="num"><strong>占分布式 51.9% / 仅 -2.8%</strong></td><td class="nw"><span class="badge b-official">官方</span> 本期回补</td></tr>
+          <tr><td>┖ 集中式新增</td><td class="num">45.806 GW（4,580.6 万千瓦）</td><td class="num">-59.0%</td><td class="nw"><span class="badge b-official">官方</span></td></tr>
           <tr><td><strong>Q3 户用新增</strong></td><td class="num"><strong style="color:#2e7d5b;">≈11.632 GW</strong></td><td class="num">—</td><td><span class="badge b-official">官方相减</span> 3,346.3 − H1 2,183.1</td></tr>
-          <tr><td><strong>9 月底累计并网</strong></td><td class="num"><strong>1,310.55 GW</strong>（131,055.0 万千瓦）</td><td class="num">+16.5%</td><td><span class="badge b-official">官方</span></td></tr>
-          <tr><td>┖ 分布式累计 / 集中式累计</td><td class="num">598.646 GW / 711.904 GW</td><td class="num">—</td><td><span class="badge b-official">官方</span></td></tr>
-          <tr><td>┖ <strong>户用累计</strong></td><td class="num"><strong>245.258 GW</strong>（24,525.8 万千瓦）</td><td class="num">—</td><td><span class="badge b-official">官方</span> 本期回补</td></tr>
+          <tr><td><strong>9 月底累计并网</strong></td><td class="num"><strong>1,310.55 GW</strong>（131,055.0 万千瓦）</td><td class="num">+16.5%</td><td class="nw"><span class="badge b-official">官方</span></td></tr>
+          <tr><td>┖ 分布式累计 / 集中式累计</td><td class="num">598.646 GW / 711.904 GW</td><td class="num">—</td><td class="nw"><span class="badge b-official">官方</span></td></tr>
+          <tr><td>┖ <strong>户用累计</strong></td><td class="num"><strong>245.258 GW</strong>（24,525.8 万千瓦）</td><td class="num">—</td><td class="nw"><span class="badge b-official">官方</span> 本期回补</td></tr>
           <tr><td>1-9 月光伏发电量 / 利用率</td><td class="num">10,642 亿 kWh / 93.1%</td><td class="num">—</td><td><span class="badge b-official">官方</span>（10-30 发布会）</td></tr>
         </tbody>
       </table>
@@ -738,45 +741,45 @@ details.fold .callout { border: none; background: transparent; padding: 10px 0 0
           <tr>
             <td rowspan="4"><strong>正泰安能</strong><div style="font-weight:400;font-size:12px;color:#8a8578;margin-top:2px;">正泰电器 601877.SH</div></td>
             <td>① 户用<strong>自持</strong>并网</td><td class="num"><strong>26.77 GW</strong></td>
-            <td><span class="badge b-official">公告</span></td><td><b>本期更新</b>：临 2026-050 光伏电站经营数据公告（10-31）——截至 9-30 持有 <b>29,694.40MW</b>，其中户用 <b>26,765.73MW</b>（占 90.1%）；对照半年报户用 26,021.94MW，<b>Q3 净增 743.79MW</b>。累计建成超 200 万座</td>
+            <td class="nw"><span class="badge b-official">公告</span></td><td><b>本期更新</b>：临 2026-050 光伏电站经营数据公告（10-31）——截至 9-30 持有 <b>29,694.40MW</b>，其中户用 <b>26,765.73MW</b>（占 90.1%）；对照半年报户用 26,021.94MW，<b>Q3 净增 743.79MW</b>。累计建成超 200 万座</td>
           </tr>
           <tr>
             <td>② Q3 新增 / 销售（券商）</td><td class="num">2.8 GW / 1.9 GW</td>
-            <td><span class="badge b-estimate">券商</span></td><td>券商研报（10-31）：安能 26Q3 新增装机 <b>2.8GW</b>、销售 <b>1.9GW</b>，户用发电盈利能力阶段性承压；<b>非公司披露，与公告自持净增 0.744GW 不可等价</b></td>
+            <td class="nw"><span class="badge b-estimate">券商</span></td><td>券商研报（10-31）：安能 26Q3 新增装机 <b>2.8GW</b>、销售 <b>1.9GW</b>，户用发电盈利能力阶段性承压；<b>非公司披露，与公告自持净增 0.744GW 不可等价</b></td>
           </tr>
           <tr>
             <td>③ 累计<strong>开发建成</strong></td><td class="num"><strong>≈ 62.8 GW</strong></td>
-            <td><span class="badge b-estimate">推算</span></td><td>自持 26.77GW + 累计出售约 36GW（半年报 8-19 原文）。非官方直接披露，为两数相加</td>
+            <td class="nw"><span class="badge b-estimate">推算</span></td><td>自持 26.77GW + 累计出售约 36GW（半年报 8-19 原文）。非官方直接披露，为两数相加</td>
           </tr>
           <tr>
             <td>④ 累计<strong>运维管理</strong></td><td class="num"><strong>&gt; 60 GW</strong></td>
-            <td><span class="badge b-confirmed">已确认</span></td><td>半年报 8-19；累计建成超 200 万座户用电站</td>
+            <td class="nw"><span class="badge b-confirmed">已确认</span></td><td>半年报 8-19；累计建成超 200 万座户用电站</td>
           </tr>
           <tr>
-            <td><strong>创维光伏</strong></td><td>累计并网（建成）</td><td class="num"><strong>&gt;34.6 GW</strong></td>
-            <td><span class="badge b-confirmed">已确认</span></td><td>创维集团中期业绩公告 8-27（2025 年末 29.3GW / 80 万座）。10-23 以 14.98 亿元向国银金租出售 12 省市户用电站资产包（累计建成不减、自持减少）；<b>11-16 每月更新：私有化 + 分派创维光伏股份 + 撤牌组合推进，拟 11 月底前保密呈交联交所</b>；估值师区间 90-121 亿元（见 06 节）</td>
+            <td class="nw"><strong>创维光伏</strong></td><td>累计并网（建成）</td><td class="num"><strong>&gt;34.6 GW</strong></td>
+            <td class="nw"><span class="badge b-confirmed">已确认</span></td><td>创维集团中期业绩公告 8-27（2025 年末 29.3GW / 80 万座）。10-23 以 14.98 亿元向国银金租出售 12 省市户用电站资产包（累计建成不减、自持减少）；<b>11-16 每月更新：私有化 + 分派创维光伏股份 + 撤牌组合推进，拟 11 月底前保密呈交联交所</b>；估值师区间 90-121 亿元（见 06 节）</td>
           </tr>
           <tr>
-            <td><strong>天合富家</strong></td><td>累计管理资产</td><td class="num"><strong>32 GW</strong></td>
-            <td><span class="badge b-confirmed">已确认</span></td><td>天合光能半年报 8-6/7；<b>11-18 通稿口径更新为「服务超 163 万户」</b>（此前 160 万，企业口径微调）；11-15 公开确认「阶段性优化区域业务节奏」（无量化）；11-9 昆明旗舰店启幕。累计管理 <b>32GW+</b> 为企业口径（<b>「管理」≠「自持」</b>）</td>
+            <td class="nw"><strong>天合富家</strong></td><td>累计管理资产</td><td class="num"><strong>32 GW</strong></td>
+            <td class="nw"><span class="badge b-confirmed">已确认</span></td><td>天合光能半年报 8-6/7；<b>11-18 通稿口径更新为「服务超 163 万户」</b>（此前 160 万，企业口径微调）；11-15 公开确认「阶段性优化区域业务节奏」（无量化）；11-9 昆明旗舰店启幕。累计管理 <b>32GW+</b> 为企业口径（<b>「管理」≠「自持」</b>）</td>
           </tr>
           <tr>
             <td rowspan="2"><strong>阳光新能源</strong><div style="font-weight:400;font-size:12px;color:#8a8578;margin-top:2px;">阳光电源 300274.SZ</div></td>
             <td>全球累计开发建设<br><span style="font-size:12px;color:#c0392b;">（含集中式+风电+储能）</span></td><td class="num"><strong>61 GW+</strong></td>
-            <td><span class="badge b-official">公告</span></td><td>阳光电源半年报摘要 8-29；企业官网 9 月更新为 61GW+。全品类口径，已剔除户用对比</td>
+            <td class="nw"><span class="badge b-official">公告</span></td><td>阳光电源半年报摘要 8-29；企业官网 9 月更新为 61GW+。全品类口径，已剔除户用对比</td>
           </tr>
           <tr>
             <td><strong>户用（阳光家庭光伏）</strong></td><td class="num" style="color:#c0392b;"><strong>未单独披露</strong></td>
-            <td><span class="badge b-unknown">未披露</span></td><td>半年报家庭光伏章节<b>通篇定性、无量化数字</b>。三季报（10-30）亦无拆分。间接信号：新能源投资开发 H1 收入 12.58 亿元（-85.02%）、该业务净亏 3.8 亿元</td>
+            <td class="nw"><span class="badge b-unknown">未披露</span></td><td>半年报家庭光伏章节<b>通篇定性、无量化数字</b>。三季报（10-30）亦无拆分。间接信号：新能源投资开发 H1 收入 12.58 亿元（-85.02%）、该业务净亏 3.8 亿元</td>
           </tr>
           <tr>
             <td rowspan="2"><strong>美的 / 合康新能</strong></td><td>户用+工商业并网</td><td class="num"><strong>&gt;4 GW</strong></td>
-            <td><span class="badge b-confirmed">已确认</span></td><td>OFweek 获奖理由 9-3 + 合康新能公告 9-16 双源交叉确认</td>
+            <td class="nw"><span class="badge b-confirmed">已确认</span></td><td>OFweek 获奖理由 9-3 + 合康新能公告 9-16 双源交叉确认</td>
           </tr>
           <tr>
             <td>本期状态</td>
             <td class="num"><strong>无新增数据</strong><br><span style="font-size:12px;font-weight:400;color:#8a8578;">Q3 并网口径终止</span></td>
-            <td><span class="badge b-unknown">空窗</span></td>
+            <td class="nw"><span class="badge b-unknown">空窗</span></td>
             <td>10-26 临时股东大会表决担保 40→50 亿，<b>结果已于 10-27 披露（公告 2026-085）：通过</b>（总表决同意 <b>99.1029%</b>、反对 0.6806%；中小股东同意 86.4800%；特别决议 2/3 以上通过）——<b>上期「未检索到」已更正</b>；三季报全文无「并网/装机/兆瓦」字样，分季度并网口径止于 Q2（333.22 / 666.78MW）</td>
           </tr>
           <tr>
@@ -786,24 +789,24 @@ details.fold .callout { border: none; background: transparent; padding: 10px 0 0
             </td>
             <td>前三季光伏业务<strong>收入</strong><br><span style="font-size:12px;color:#8a8578;">（户用+工商业+海外，未拆分）</span></td>
             <td class="num"><strong>181.83 亿港元</strong><br><span style="font-size:12px;font-weight:400;color:#8a8578;">+11.8%</span></td>
-            <td><span class="badge b-official">公告原文</span></td>
+            <td class="nw"><span class="badge b-official">公告原文</span></td>
             <td><b>本期更新</b>：TCL 电子 11-13 九个月业绩公告（港交所）——光伏收入 <b>181.83 亿港元、同比 +11.8%</b>；<b>Q3 单季约 67.95 亿港元（推算：181.83 − H1 113.88）</b>，环比 H1 单季均值 56.94 亿回升约 19%。集团总收入 957.93 亿港元（+15.7%）、归母 21.04 亿（+43.6%）、经调整归母 22.43 亿（+54.5%）</td>
           </tr>
           <tr>
             <td>前三季 <strong>新增装机</strong></td>
             <td class="num" style="color:#c0392b;"><strong>未披露</strong></td>
-            <td><span class="badge b-unknown">未披露</span></td>
+            <td class="nw"><span class="badge b-unknown">未披露</span></td>
             <td><b>九个月业绩公告全文无装机 GW 数字</b>（与 H1 一致）。间接信号：坚持「相对轻资产」模式、国际市场聚焦欧洲重点国家（SunPower 品牌做光伏+储能+供热一体化）、中国市场「在加剧的竞争中保持稳健运营」——<b>定性表述，无量化</b></td>
           </tr>
           <tr>
             <td>累计规模</td>
             <td class="num" style="color:#c0392b;"><strong>未披露累计</strong></td>
-            <td><span class="badge b-unknown">未披露</span></td>
+            <td class="nw"><span class="badge b-unknown">未披露</span></td>
             <td>模式为签约+出售（相对轻资产），无自持口径。企业口径称户用+商用累计并网超 15GW（2025 年）、服务农户 50 万+、户用国内市占率约 20%（<b>无第三方验证</b>）</td>
           </tr>
           <tr>
-            <td><strong>海尔新能源</strong></td><td>无公开 GW 数据</td><td class="num">2025 营收破 90 亿、估值近 100 亿</td>
-            <td><span class="badge b-unknown">未披露</span></td><td>行业媒体口径（<b>均未获一手文件验证</b>）；IPO 辅导备案 2025-12-31、2026-01 B 轮超 10 亿（山东能源集团 / 鲁信创投 / 招行 / 农银投资，<b>商业数据库口径</b>）；<b>辅导文件本期仍空窗，未递表</b></td>
+            <td class="nw"><strong>海尔新能源</strong></td><td>无公开 GW 数据</td><td class="num">2025 营收破 90 亿、估值近 100 亿</td>
+            <td class="nw"><span class="badge b-unknown">未披露</span></td><td>行业媒体口径（<b>均未获一手文件验证</b>）；IPO 辅导备案 2025-12-31、2026-01 B 轮超 10 亿（山东能源集团 / 鲁信创投 / 招行 / 农银投资，<b>商业数据库口径</b>）；<b>辅导文件本期仍空窗，未递表</b></td>
           </tr>
         </tbody>
       </table>
@@ -866,7 +869,7 @@ details.fold .callout { border: none; background: transparent; padding: 10px 0 0
 
     <div class="table-wrap">
       <table class="tbl-fixed">
-        <colgroup><col style="width:19%"><col style="width:11%"><col style="width:11%"><col style="width:11%"><col style="width:20%"><col style="width:28%"></colgroup>
+        <colgroup><col style="width:15%"><col style="width:13.5%"><col style="width:13.5%"><col style="width:13.5%"><col style="width:20%"><col style="width:25.5%"></colgroup>
         <thead>
           <tr><th>公司</th><th>2022</th><th>2023</th><th>2024</th><th>2025</th><th>趋势</th></tr>
         </thead>
@@ -879,7 +882,7 @@ details.fold .callout { border: none; background: transparent; padding: 10px 0 0
           <tr><td>美的 / 合康（累计并网）</td><td class="num">~0.5 GW</td><td class="num">~1.5 GW</td><td class="num">~3.0 GW</td><td class="num">~3.5 GW</td><td>稳健增长（2026.9 确认超 4GW）</td></tr>
           <tr><td>TCL 光伏科技（光伏业务<strong>收入</strong>）</td><td class="num">3.28 亿港元</td><td class="num">62.99 亿港元</td><td class="num">128.74 亿港元</td><td class="num">210.63 亿港元 <span class="badge b-confirmed">确认</span></td><td>四年增 64 倍；2026H1 骤降至 +2.3%</td></tr>
           <tr><td>TCL 光伏科技（国内<strong>新增装机</strong>）</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">8.0 GW <span class="badge b-confirmed">年报口径</span></td><td>2025 年报口径（户用+工商业未拆分）；<b>2026H1 业绩公告未披露装机数字</b></td></tr>
-          <tr><td>海尔新能源</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td>无公开数据</td></tr>
+          <tr><td class="nw">海尔新能源</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td>无公开数据</td></tr>
         </tbody>
       </table>
     </div>
@@ -902,9 +905,9 @@ details.fold .callout { border: none; background: transparent; padding: 10px 0 0
         </thead>
         <tbody>
           <tr><td>合康新能（美的）</td><td class="num">333.22 MW</td><td class="num">666.78 MW（环比翻倍）</td><td class="num" style="color:#c0392b;">未披露（三季报全文无并网数据）</td><td><strong>分季度并网口径终止于 Q2</strong></td></tr>
-          <tr><td>正泰安能</td><td class="num">—</td><td class="num">H1 新增 &gt;5GW</td><td class="num"><strong>新增 2.8GW / 销售 1.9GW</strong><br><span style="font-size:12px;color:#8a8578;">券商口径；自持净增 0.744GW（公告）</span></td><td>本期唯一有 Q3 数字，<b>但两口径不可等价</b></td></tr>
-          <tr><td>天合富家</td><td class="num">—</td><td class="num">—</td><td class="num">三季报无户用分项；<b>11-15 确认部分区域节奏优化，无量化</b></td><td>不披露季度 · <b style="color:#c0392b;">方向转为收缩</b></td></tr>
-          <tr><td>其余 4 家</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td>不披露季度</td></tr>
+          <tr><td class="nw">正泰安能</td><td class="num">—</td><td class="num">H1 新增 &gt;5GW</td><td class="num"><strong>新增 2.8GW / 销售 1.9GW</strong><br><span style="font-size:12px;color:#8a8578;">券商口径；自持净增 0.744GW（公告）</span></td><td>本期唯一有 Q3 数字，<b>但两口径不可等价</b></td></tr>
+          <tr><td class="nw">天合富家</td><td class="num">—</td><td class="num">—</td><td class="num">三季报无户用分项；<b>11-15 确认部分区域节奏优化，无量化</b></td><td>不披露季度 · <b style="color:#c0392b;">方向转为收缩</b></td></tr>
+          <tr><td class="nw">其余 4 家</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="nw">不披露季度</td></tr>
         </tbody>
       </table>
     </div>
@@ -927,13 +930,13 @@ details.fold .callout { border: none; background: transparent; padding: 10px 0 0
           <tr><th>梯队</th><th>公司</th><th>H1 户用新增（估算）</th><th>市占率估算</th><th>本期动向</th></tr>
         </thead>
         <tbody>
-          <tr><td>第一梯队</td><td><strong>正泰安能</strong></td><td class="num">~5 GW</td><td class="num">~23%</td><td><b>浙江华电 400MW 户用 EPC 中标结果 10-27 公示</b>（399.95MWp、15.06 亿元 / 3.765 元/W）；自持 26.77GW 为最新；66.62 亿 REITs 在审、母司 H 股重新递交</td></tr>
-          <tr><td>第一梯队</td><td><strong>创维光伏</strong></td><td class="num">~4-5 GW</td><td class="num">~18-22%</td><td><b>11-01 起 61 座户用电站以虚拟电厂身份入山东现货</b>（1.81MW）；羲寰平台苏鲁粤浙四省资质、聚合超 20 万座 / 820MW；分拆仍保密呈交、未递表</td></tr>
-          <tr><td>第二梯队</td><td><strong>天合富家</strong></td><td class="num">~3-4 GW</td><td class="num">~14-18%</td><td><b>10-30 出售天合跟踪 51%-70% 控股权</b>（深南电承接），年内第三轮资产处置；11-04 业绩说明会无户用数据；户用无新数据</td></tr>
-          <tr><td>第二梯队</td><td><strong>阳光新能源</strong></td><td class="num" style="color:#c0392b;">~1-2 GW（低置信度）</td><td class="num" style="color:#c0392b;">~5-9%</td><td>本期无新披露；<b>户用仍无拆分</b>；4.09 亿 REITs 在审；H1 开发业务收入 -85%、净亏 3.8 亿的收缩趋势未改</td></tr>
-          <tr><td>第二梯队</td><td>TCL 光伏科技</td><td class="num" style="color:#c0392b;">H1 新增装机未披露</td><td class="num">~8-16%（推算，区间宽）</td><td><b>九个月业绩定档 11-13 董事会审批</b>（10-29 公告）；分拆仍未申请；TCL 科技电池组件销量为<b>上游口径，不可混用</b></td></tr>
-          <tr><td>第三梯队</td><td>美的 / 合康</td><td class="num">~1.0 GW</td><td class="num">~4-5%</td><td><b>10-26 股东会担保 40→50 亿已通过</b>（10-27 公告 2026-085，同意 99.1029%）；Q3 并网量确认未披露；定增 16.52 亿仍在深交所审核</td></tr>
-          <tr><td>第三梯队</td><td>海尔新能源</td><td class="num">不明</td><td class="num">~1-3%</td><td>辅导文件继续空窗（第三期 10-11 为最新），<b>仍未递表</b>；50 亿 REITs 在审；<b>11-03/11-05 企查查：与南宁五象新区共建绿色智算中心、与中国燃气战略合作（生物质）</b></td></tr>
+          <tr><td class="nw">第一梯队</td><td class="nw"><strong>正泰安能</strong></td><td class="num">~5 GW</td><td class="num">~23%</td><td><b>浙江华电 400MW 户用 EPC 中标结果 10-27 公示</b>（399.95MWp、15.06 亿元 / 3.765 元/W）；自持 26.77GW 为最新；66.62 亿 REITs 在审、母司 H 股重新递交</td></tr>
+          <tr><td class="nw">第一梯队</td><td class="nw"><strong>创维光伏</strong></td><td class="num">~4-5 GW</td><td class="num">~18-22%</td><td><b>11-01 起 61 座户用电站以虚拟电厂身份入山东现货</b>（1.81MW）；羲寰平台苏鲁粤浙四省资质、聚合超 20 万座 / 820MW；分拆仍保密呈交、未递表</td></tr>
+          <tr><td class="nw">第二梯队</td><td class="nw"><strong>天合富家</strong></td><td class="num">~3-4 GW</td><td class="num">~14-18%</td><td><b>10-30 出售天合跟踪 51%-70% 控股权</b>（深南电承接），年内第三轮资产处置；11-04 业绩说明会无户用数据；户用无新数据</td></tr>
+          <tr><td class="nw">第二梯队</td><td class="nw"><strong>阳光新能源</strong></td><td class="num" style="color:#c0392b;">~1-2 GW（低置信度）</td><td class="num" style="color:#c0392b;">~5-9%</td><td>本期无新披露；<b>户用仍无拆分</b>；4.09 亿 REITs 在审；H1 开发业务收入 -85%、净亏 3.8 亿的收缩趋势未改</td></tr>
+          <tr><td class="nw">第二梯队</td><td class="nw">TCL 光伏科技</td><td class="num" style="color:#c0392b;">H1 新增装机未披露</td><td class="num">~8-16%（推算，区间宽）</td><td><b>九个月业绩定档 11-13 董事会审批</b>（10-29 公告）；分拆仍未申请；TCL 科技电池组件销量为<b>上游口径，不可混用</b></td></tr>
+          <tr><td class="nw">第三梯队</td><td class="nw">美的 / 合康</td><td class="num">~1.0 GW</td><td class="num">~4-5%</td><td><b>10-26 股东会担保 40→50 亿已通过</b>（10-27 公告 2026-085，同意 99.1029%）；Q3 并网量确认未披露；定增 16.52 亿仍在深交所审核</td></tr>
+          <tr><td class="nw">第三梯队</td><td class="nw">海尔新能源</td><td class="num">不明</td><td class="num">~1-3%</td><td>辅导文件继续空窗（第三期 10-11 为最新），<b>仍未递表</b>；50 亿 REITs 在审；<b>11-03/11-05 企查查：与南宁五象新区共建绿色智算中心、与中国燃气战略合作（生物质）</b></td></tr>
         </tbody>
       </table>
     </div>
